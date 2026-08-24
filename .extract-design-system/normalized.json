@@ -1,0 +1,87 @@
+{
+  "source": {
+    "url": "https://byonyks.com/",
+    "extractedAt": "2026-08-18T23:00:00.000Z",
+    "extractor": "dembrandt"
+  },
+  "pagesIncluded": [
+    "https://byonyks.com/",
+    "https://byonyks.com/about-us/",
+    "https://byonyks.com/products/",
+    "https://byonyks.com/contact/",
+    "https://byonyks.com/farrukh-usman/",
+    "https://byonyks.com/news-and-media/",
+    "https://byonyks.com/careers/",
+    "https://byonyks.com/fda-510k-clearance/"
+  ],
+  "colors": {
+    "primary": "#011a48",
+    "secondary": "#1388cd",
+    "background": "#ffffff",
+    "palette": [
+      "#011a48",
+      "#1388cd",
+      "#ffffff",
+      "#324a6d",
+      "#69727d",
+      "#1c244b",
+      "#33373d",
+      "#99a5b6",
+      "#abb5c3",
+      "#020101",
+      "#929292",
+      "#fdfdfd"
+    ],
+    "cssVariables": {
+      "--e-global-color-blocksy_palette_3": "#011a48",
+      "--e-global-color-blocksy_palette_2": "#1388cd"
+    }
+  },
+  "typography": {
+    "headingFont": "Manrope",
+    "bodyFont": "Manrope"
+  },
+  "spacing": {
+    "scale": [
+      "1px",
+      "5px",
+      "5.5px",
+      "7.5px",
+      "10px",
+      "12px",
+      "13px",
+      "14px",
+      "14.8px",
+      "15px",
+      "15.4px",
+      "20px",
+      "20.5px",
+      "24px",
+      "30px",
+      "39.6406px",
+      "40px",
+      "50px",
+      "60px",
+      "70px",
+      "96px",
+      "100px",
+      "150px",
+      "209.938px",
+      "235.469px",
+      "236.25px",
+      "245.109px",
+      "393.75px",
+      "420px"
+    ]
+  },
+  "radius": {
+    "scale": [
+      "3px",
+      "8px",
+      "16px"
+    ]
+  },
+  "shadows": {
+    "scale": []
+  }
+}

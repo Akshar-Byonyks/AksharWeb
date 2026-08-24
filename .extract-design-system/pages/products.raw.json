@@ -1,0 +1,629 @@
+{
+  "url": "https://byonyks.com/products/",
+  "extractedAt": "2026-08-18T22:51:58.579Z",
+  "siteName": "Products",
+  "logo": {
+    "source": "img",
+    "url": "https://byonyks.com/wp-content/uploads/2026/06/Byonyks-Logo-Transparent-BG-scaled.png",
+    "width": 1919,
+    "height": 626,
+    "alt": "",
+    "safeZone": {
+      "top": 0,
+      "right": 0,
+      "bottom": 0,
+      "left": 0
+    },
+    "background": "rgb(250, 251, 252)"
+  },
+  "favicons": [
+    {
+      "type": "icon",
+      "url": "https://byonyks.com/wp-content/uploads/2024/01/FavIcon.png",
+      "sizes": "32x32"
+    },
+    {
+      "type": "icon",
+      "url": "https://byonyks.com/wp-content/uploads/2024/01/FavIcon.png",
+      "sizes": "192x192"
+    },
+    {
+      "type": "apple-touch-icon",
+      "url": "https://byonyks.com/wp-content/uploads/2024/01/FavIcon.png",
+      "sizes": null
+    },
+    {
+      "type": "apple-touch-icon",
+      "url": "https://byonyks.com/wp-content/uploads/2024/01/FavIcon.png",
+      "sizes": null
+    },
+    {
+      "type": "favicon.ico",
+      "url": "https://byonyks.com/favicon.ico",
+      "sizes": null
+    }
+  ],
+  "colors": {
+    "semantic": {},
+    "palette": [
+      {
+        "color": "rgb(255, 255, 255)",
+        "normalized": "#ffffff",
+        "count": 59,
+        "confidence": "high",
+        "sources": [
+          "elementor-button",
+          "elementor-button-content-wrapp",
+          "elementor-button-icon"
+        ],
+        "lch": "lch(100% 0 158.2)",
+        "oklch": "oklch(100% 0 89.88)"
+      },
+      {
+        "color": "rgb(105, 114, 125)",
+        "normalized": "#69727d",
+        "count": 40,
+        "confidence": "high",
+        "sources": [
+          "elementor-icon"
+        ],
+        "lch": "lch(47.65% 7.27 262.78)",
+        "oklch": "oklch(54.83% 0.02 253.44)"
+      },
+      {
+        "color": "rgb(153, 165, 182)",
+        "normalized": "#99a5b6",
+        "count": 1,
+        "confidence": "medium",
+        "sources": [
+          "hover/focus"
+        ]
+      },
+      {
+        "color": "rgb(171, 181, 195)",
+        "normalized": "#abb5c3",
+        "count": 1,
+        "confidence": "medium",
+        "sources": [
+          "hover/focus"
+        ]
+      }
+    ],
+    "cssVariables": {
+      "--e-global-color-blocksy_palette_3": {
+        "value": "#011a48",
+        "lch": "lch(10.65% 33.53 290.87)",
+        "oklch": "oklch(23.39% 0.092 260.07)"
+      },
+      "--e-global-color-blocksy_palette_2": {
+        "value": "#1388cd",
+        "lch": "lch(54.19% 44.08 263.87)",
+        "oklch": "oklch(60.2% 0.14 242.9)"
+      }
+    },
+    "_raw": [
+      {
+        "color": "rgb(1, 26, 72)",
+        "normalized": "#011a48",
+        "count": 207
+      },
+      {
+        "color": "rgb(255, 255, 255)",
+        "normalized": "#ffffff",
+        "count": 59
+      },
+      {
+        "color": "rgb(105, 114, 125)",
+        "normalized": "#69727d",
+        "count": 40
+      },
+      {
+        "color": "rgb(50, 74, 109)",
+        "normalized": "#324a6d",
+        "count": 48
+      }
+    ]
+  },
+  "typography": {
+    "styles": [
+      {
+        "context": "heading-1",
+        "family": "Manrope",
+        "fallbacks": null,
+        "size": "59px (3.69rem)",
+        "weight": 700,
+        "lineHeight": "1.00",
+        "spacing": null,
+        "transform": null
+      },
+      {
+        "context": "heading-1",
+        "family": "Manrope",
+        "fallbacks": null,
+        "size": "35px (2.19rem)",
+        "weight": 800,
+        "lineHeight": "1.00",
+        "spacing": null,
+        "transform": null
+      },
+      {
+        "context": "link",
+        "family": "-apple-system",
+        "fallbacks": "BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol",
+        "size": "23px (1.44rem)",
+        "weight": 400,
+        "lineHeight": "1.00",
+        "spacing": null,
+        "transform": null
+      },
+      {
+        "context": "heading-1",
+        "family": "-apple-system",
+        "fallbacks": "BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol",
+        "size": "23px (1.44rem)",
+        "weight": 400,
+        "lineHeight": "1.00",
+        "spacing": null,
+        "transform": null
+      },
+      {
+        "context": "heading-1",
+        "family": "Poppins",
+        "fallbacks": null,
+        "size": "22px (1.38rem)",
+        "weight": 600,
+        "lineHeight": "1.20",
+        "spacing": null,
+        "transform": "capitalize"
+      },
+      {
+        "context": "link",
+        "family": "-apple-system",
+        "fallbacks": "BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol",
+        "size": "16px (1.00rem)",
+        "weight": 400,
+        "lineHeight": "1.65",
+        "spacing": null,
+        "transform": null
+      },
+      {
+        "context": "heading-1",
+        "family": "-apple-system",
+        "fallbacks": "BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol",
+        "size": "16px (1.00rem)",
+        "weight": 400,
+        "lineHeight": "1.65",
+        "spacing": null,
+        "transform": null
+      },
+      {
+        "context": "link",
+        "family": "Poppins",
+        "fallbacks": null,
+        "size": "16px (1.00rem)",
+        "weight": 400,
+        "lineHeight": "1.00",
+        "spacing": null,
+        "transform": "capitalize"
+      },
+      {
+        "context": "heading-1",
+        "family": "Poppins",
+        "fallbacks": null,
+        "size": "16px (1.00rem)",
+        "weight": 400,
+        "lineHeight": "1.00",
+        "spacing": null,
+        "transform": "capitalize"
+      },
+      {
+        "context": "heading-1",
+        "family": "-apple-system",
+        "fallbacks": "BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol",
+        "size": "16px (1.00rem)",
+        "weight": 700,
+        "lineHeight": "1.00",
+        "spacing": null,
+        "transform": null
+      },
+      {
+        "context": "link",
+        "family": "Poppins",
+        "fallbacks": null,
+        "size": "16px (1.00rem)",
+        "weight": 300,
+        "lineHeight": "1.50",
+        "spacing": null,
+        "transform": null
+      },
+      {
+        "context": "heading-1",
+        "family": "Poppins",
+        "fallbacks": null,
+        "size": "16px (1.00rem)",
+        "weight": 300,
+        "lineHeight": "1.00",
+        "spacing": null,
+        "transform": null
+      },
+      {
+        "context": "link",
+        "family": "-apple-system",
+        "fallbacks": "BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol",
+        "size": "15px (0.94rem)",
+        "weight": 400,
+        "lineHeight": "1.00",
+        "spacing": null,
+        "transform": null
+      },
+      {
+        "context": "heading-1",
+        "family": "-apple-system",
+        "fallbacks": "BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol",
+        "size": "15px (0.94rem)",
+        "weight": 400,
+        "lineHeight": "1.00",
+        "spacing": null,
+        "transform": null
+      },
+      {
+        "context": "caption",
+        "family": "-apple-system",
+        "fallbacks": "BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol",
+        "size": "0px (0.00rem)",
+        "weight": 400,
+        "lineHeight": "NaN",
+        "spacing": null,
+        "transform": null
+      }
+    ],
+    "sources": {
+      "googleFonts": [],
+      "adobeFonts": false,
+      "variableFonts": false
+    }
+  },
+  "spacing": {
+    "scaleType": "8px",
+    "commonValues": [
+      {
+        "px": "5px",
+        "rem": "0.31rem",
+        "count": 20,
+        "numericValue": 5
+      },
+      {
+        "px": "5.5px",
+        "rem": "0.34rem",
+        "count": 4,
+        "numericValue": 5.5
+      },
+      {
+        "px": "10px",
+        "rem": "0.63rem",
+        "count": 399,
+        "numericValue": 10
+      },
+      {
+        "px": "12px",
+        "rem": "0.75rem",
+        "count": 2,
+        "numericValue": 12
+      },
+      {
+        "px": "13px",
+        "rem": "0.81rem",
+        "count": 276,
+        "numericValue": 13
+      },
+      {
+        "px": "14px",
+        "rem": "0.88rem",
+        "count": 1,
+        "numericValue": 14
+      },
+      {
+        "px": "50px",
+        "rem": "3.13rem",
+        "count": 2,
+        "numericValue": 50
+      },
+      {
+        "px": "60px",
+        "rem": "3.75rem",
+        "count": 2,
+        "numericValue": 60
+      },
+      {
+        "px": "96px",
+        "rem": "6.00rem",
+        "count": 2,
+        "numericValue": 96
+      }
+    ]
+  },
+  "borderRadius": {
+    "values": [
+      {
+        "value": "3px",
+        "count": 3,
+        "elements": [
+          "button"
+        ],
+        "confidence": "low",
+        "numericValue": 3
+      },
+      {
+        "value": "10%",
+        "count": 5,
+        "elements": [
+          "a",
+          "badge"
+        ],
+        "confidence": "medium",
+        "numericValue": 10
+      }
+    ]
+  },
+  "borders": {
+    "combinations": [
+      {
+        "width": "0px 0px 0px 16px",
+        "style": "none none none solid",
+        "color": "rgb(28, 36, 75)",
+        "count": 120,
+        "elements": [
+          "a"
+        ],
+        "confidence": "high"
+      },
+      {
+        "width": "0px 0px 0px 8px",
+        "style": "none none none solid",
+        "color": "rgb(28, 36, 75)",
+        "count": 64,
+        "elements": [
+          "a"
+        ],
+        "confidence": "high"
+      },
+      {
+        "width": "0px 0px 0px 16px",
+        "style": "none none none solid",
+        "color": "rgb(51, 55, 61)",
+        "count": 60,
+        "elements": [
+          "a"
+        ],
+        "confidence": "high"
+      },
+      {
+        "width": "0px 0px 0px 8px",
+        "style": "none none none solid",
+        "color": "rgb(51, 55, 61)",
+        "count": 32,
+        "elements": [
+          "a"
+        ],
+        "confidence": "high"
+      },
+      {
+        "width": "0px 0px 0px 2px",
+        "style": "solid",
+        "color": "rgb(5, 129, 255)",
+        "count": 2,
+        "elements": [
+          "div"
+        ],
+        "confidence": "low"
+      },
+      {
+        "width": "0px 0px 0px 3px",
+        "style": "solid",
+        "color": "rgb(5, 129, 255)",
+        "count": 1,
+        "elements": [
+          "div"
+        ],
+        "confidence": "low"
+      }
+    ]
+  },
+  "shadows": [],
+  "components": {
+    "buttons": [
+      {
+        "states": {
+          "default": {
+            "backgroundColor": "rgb(0, 76, 154)",
+            "color": "rgb(255, 255, 255)",
+            "padding": "12px 24px",
+            "borderRadius": "3px",
+            "border": "0px none rgb(255, 255, 255)",
+            "boxShadow": "none",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "transform": "none",
+            "opacity": "1"
+          },
+          "hover": {
+            "backgroundColor": "var(--dropdown-background-hover-color, rgba(255, 255, 255, 0.03))",
+            "color": "inherit",
+            "opacity": "1",
+            "transform": "none",
+            "boxShadow": "0px 0px 0px 1px var(--theme-palette-color-1)",
+            "border": "1px solid rgba(0, 0, 0, 0.01)",
+            "outline": "2px solid var(--e-p-border-widget)"
+          },
+          "active": {},
+          "focus": {
+            "outline": "0px",
+            "color": "rgb(200, 213, 220)",
+            "transform": "rotate(6deg)",
+            "opacity": "1",
+            "backgroundColor": "rgb(249, 250, 253)",
+            "boxShadow": "rgb(196, 230, 245) 0px 0px 3px",
+            "border": "1px solid rgb(180, 219, 237)"
+          }
+        },
+        "fontWeight": "400",
+        "fontSize": "15px",
+        "classes": "elementor-button elementor-button-link elementor-s",
+        "confidence": "medium"
+      }
+    ],
+    "inputs": {
+      "text": [],
+      "checkbox": [],
+      "radio": [],
+      "select": []
+    },
+    "links": [
+      {
+        "color": "rgb(19, 136, 205)",
+        "textDecoration": "none",
+        "fontWeight": "400",
+        "states": {
+          "default": {
+            "color": "rgb(19, 136, 205)",
+            "textDecoration": "none"
+          },
+          "hover": {
+            "color": "var(--has-link-decoration, #fff)"
+          }
+        }
+      },
+      {
+        "color": "rgb(255, 255, 255)",
+        "textDecoration": "none",
+        "fontWeight": "400",
+        "states": {
+          "default": {
+            "color": "rgb(255, 255, 255)",
+            "textDecoration": "none"
+          },
+          "hover": {
+            "color": "var(--has-link-decoration, #fff)"
+          }
+        }
+      },
+      {
+        "color": "rgb(105, 114, 125)",
+        "textDecoration": "none",
+        "fontWeight": "400",
+        "states": {
+          "default": {
+            "color": "rgb(105, 114, 125)",
+            "textDecoration": "none"
+          },
+          "hover": {
+            "color": "var(--has-link-decoration, #fff)"
+          }
+        }
+      },
+      {
+        "color": "rgb(51, 51, 51)",
+        "textDecoration": "underline",
+        "fontWeight": "400",
+        "states": {
+          "default": {
+            "color": "rgb(51, 51, 51)",
+            "textDecoration": "underline"
+          },
+          "hover": {
+            "color": "var(--has-link-decoration, #fff)"
+          }
+        }
+      },
+      {
+        "color": "rgb(50, 74, 109)",
+        "textDecoration": "none",
+        "fontWeight": "300",
+        "states": {
+          "default": {
+            "color": "rgb(50, 74, 109)",
+            "textDecoration": "none"
+          },
+          "hover": {
+            "color": "var(--has-link-decoration, #fff)"
+          }
+        }
+      }
+    ],
+    "badges": {
+      "all": [],
+      "byVariant": {
+        "error": [],
+        "warning": [],
+        "success": [],
+        "info": [],
+        "neutral": []
+      }
+    }
+  },
+  "breakpoints": [
+    {
+      "px": "98px"
+    },
+    {
+      "px": "479px"
+    },
+    {
+      "px": "576px"
+    },
+    {
+      "px": "600px"
+    },
+    {
+      "px": "601px"
+    },
+    {
+      "px": "640px"
+    },
+    {
+      "px": "690px"
+    },
+    {
+      "px": "767px"
+    },
+    {
+      "px": "768px"
+    },
+    {
+      "px": "782px"
+    },
+    {
+      "px": "783px"
+    },
+    {
+      "px": "799px"
+    },
+    {
+      "px": "800px"
+    },
+    {
+      "px": "1000px"
+    },
+    {
+      "px": "1024px"
+    },
+    {
+      "px": "1025px"
+    },
+    {
+      "px": "99999px"
+    }
+  ],
+  "iconSystem": [
+    {
+      "name": "SVG Icons",
+      "type": "svg"
+    }
+  ],
+  "frameworks": [
+    {
+      "name": "PrimeReact/Vue/NG",
+      "confidence": "high",
+      "evidence": "7 Prime components"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+/*
+ * Starter design tokens extracted from byonyks.com — 8 pages spanning every
+ * distinct template (home, about, product, contact/form, team-bio, news
+ * listing, careers, blog post), 2026-08-18.
+ * Generated with extract-design-system (dembrandt) + manual correction —
+ * v0.1.11's normalizer drops object-shaped palette/radius/cssVariable
+ * entries (it filters for plain strings only), so colors and radius here
+ * were reconstructed by hand from the per-page raw.json files under
+ * .extract-design-system/pages/. Review before using — see
+ * design-system/tokens.json and the chat summary for confidence notes and
+ * per-page breakdowns.
+ *
+ * Known inconsistency: button background color is NOT uniform across the
+ * site (differs per page/widget — see --color-cta-* below). Treat these as
+ * observed variants, not a single canonical CTA token.
+ */
+:root {
+  --color-primary: #011a48;   /* Elementor global palette_3; on all 8 pages, dominant by far */
+  --color-secondary: #1388cd; /* Elementor global palette_2 + link color on all 8 pages */
+  --color-background: #ffffff;
+  --font-heading: Manrope; /* dominant heading font on 5/7 non-home pages; homepage H1 uses Raleway as a one-off override */
+  --font-body: Manrope;
+  --space-1: 1px;
+  --space-2: 5px;
+  --space-3: 5.5px;
+  --space-4: 7.5px;
+  --space-5: 10px;
+  --space-6: 12px;
+  --space-7: 13px;
+  --space-8: 14px;
+  --space-9: 14.8px;
+  --space-10: 15px;
+  --space-11: 15.4px;
+  --space-12: 20px;
+  --space-13: 20.5px;
+  --space-14: 24px;
+  --space-15: 30px;
+  --space-16: 39.6406px;
+  --space-17: 40px;
+  --space-18: 50px;
+  --space-19: 60px;
+  --space-20: 70px;
+  --space-21: 96px;
+  --space-22: 100px;
+  --space-23: 150px;
+  --space-24: 209.938px;
+  --space-25: 235.469px;
+  --space-26: 236.25px;
+  --space-27: 245.109px;
+  --space-28: 393.75px;
+  --space-29: 420px;
+  --radius-1: 3px;  /* buttons, inputs, search — most common by far */
+  --radius-2: 8px;  /* one button variant, low confidence */
+  --radius-3: 16px; /* cards / div containers */
+  --e-global-color-blocksy_palette_3: #011a48;
+  --e-global-color-blocksy_palette_2: #1388cd;
+
+  /* Additional palette colors, confirmed across all or most pages */
+  --color-tertiary-navy: #324a6d;   /* secondary link color, all 8 pages */
+  --color-muted-gray: #69727d;      /* icon/muted text + link, all 8 pages */
+  --color-border-navy: #1c244b;     /* left-border accent bars on icon-list blocks, all 8 pages */
+  --color-border-charcoal: #33373d; /* same pattern, alternate value, all 8 pages */
+  --color-hover-1: #99a5b6;         /* hover/focus state, all 8 pages */
+  --color-hover-2: #abb5c3;         /* hover/focus state, 7/8 pages */
+
+  /* Lower-confidence: seen on only one sampled page each */
+  --color-text-candidate: #020101; /* near-black, contact page only — possible body-text color */
+  --color-gray-alt: #929292;       /* news-and-media only */
+  --color-offwhite: #fdfdfd;       /* home only */
+
+  /* Button background is inconsistent across pages — do not treat as one CTA token */
+  --color-cta-home: #1a4db2;
+  --color-cta-products: #004c9a;
+  --color-cta-contact: #69727d;
+}

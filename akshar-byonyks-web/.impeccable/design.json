@@ -1,0 +1,212 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-20T21:20:00Z",
+  "title": "Design System: Akshar Byonyks",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "primary",
+        "displayName": "Deep Clinical Ink",
+        "canonical": "oklch(18% 0.10 258)",
+        "tonalRamp": [
+          "oklch(15% 0.10 258)",
+          "oklch(25% 0.11 258)",
+          "oklch(35% 0.12 258)",
+          "oklch(45% 0.12 258)",
+          "oklch(55% 0.11 258)",
+          "oklch(65% 0.09 258)",
+          "oklch(80% 0.05 258)",
+          "oklch(95% 0.02 258)"
+        ]
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "Accessible Sky Blue",
+        "canonical": "oklch(45% 0.09 228)",
+        "tonalRamp": [
+          "oklch(15% 0.05 228)",
+          "oklch(25% 0.07 228)",
+          "oklch(35% 0.08 228)",
+          "oklch(45% 0.09 228)",
+          "oklch(55% 0.08 228)",
+          "oklch(65% 0.07 228)",
+          "oklch(80% 0.04 228)",
+          "oklch(95% 0.02 228)"
+        ]
+      },
+      "accent-gold": {
+        "role": "secondary",
+        "displayName": "India Gold",
+        "canonical": "oklch(63% 0.10 85)",
+        "tonalRamp": [
+          "oklch(20% 0.05 85)",
+          "oklch(30% 0.07 85)",
+          "oklch(40% 0.08 85)",
+          "oklch(50% 0.09 85)",
+          "oklch(63% 0.10 85)",
+          "oklch(74% 0.08 85)",
+          "oklch(86% 0.05 85)",
+          "oklch(95% 0.02 85)"
+        ]
+      },
+      "teal": {
+        "role": "tertiary",
+        "displayName": "Clinical Teal",
+        "canonical": "oklch(46% 0.07 175)",
+        "tonalRamp": [
+          "oklch(15% 0.04 175)",
+          "oklch(25% 0.05 175)",
+          "oklch(35% 0.06 175)",
+          "oklch(46% 0.07 175)",
+          "oklch(58% 0.06 175)",
+          "oklch(70% 0.05 175)",
+          "oklch(84% 0.03 175)",
+          "oklch(95% 0.01 175)"
+        ]
+      },
+      "plum": {
+        "role": "tertiary",
+        "displayName": "Institutional Plum",
+        "canonical": "oklch(34% 0.08 330)",
+        "tonalRamp": [
+          "oklch(12% 0.05 330)",
+          "oklch(20% 0.06 330)",
+          "oklch(27% 0.07 330)",
+          "oklch(34% 0.08 330)",
+          "oklch(46% 0.07 330)",
+          "oklch(60% 0.06 330)",
+          "oklch(78% 0.04 330)",
+          "oklch(93% 0.02 330)"
+        ]
+      },
+      "surface-2": { "role": "neutral", "displayName": "Cool Mist", "canonical": "#f4f7f9" },
+      "surface-3": { "role": "neutral", "displayName": "Pale Sky", "canonical": "#eaf1f5" },
+      "line": { "role": "neutral", "displayName": "Hairline", "canonical": "#d8e2e8" },
+      "foreground": { "role": "neutral", "displayName": "Working Gray", "canonical": "#33373d" },
+      "muted-foreground": { "role": "neutral", "displayName": "Muted Working Gray", "canonical": "#5f6b73" },
+      "destructive": { "role": "neutral", "displayName": "Clinical Alert", "canonical": "#b91c1c" },
+      "pending": { "role": "semantic", "displayName": "Pending Amber", "canonical": "#9c6410" },
+      "pending-on-ink": { "role": "semantic", "displayName": "Pending Amber (on ink)", "canonical": "#d99a3a" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headline only, largest weight in the system." },
+      "headline": { "displayName": "Headline", "purpose": "Section H2s across every page." },
+      "title": { "displayName": "Title", "purpose": "Card and list-item titles." },
+      "body": { "displayName": "Body", "purpose": "Lead paragraphs beneath section headings." },
+      "label": { "displayName": "Label", "purpose": "Rare all-caps micro-labels for genuine category markers, never decorative kickers." }
+    },
+    "shadows": [
+      {
+        "name": "popover",
+        "value": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+        "purpose": "The desktop header's mega-menu dropdown only — the system's single shadow use, reserved for genuinely floating panels."
+      }
+    ],
+    "motion": [
+      {
+        "name": "reveal-ease",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Staggered scroll-reveal for benefit and audience cards (exponential ease-out, no bounce). Repeats on every viewport entry/exit, not one-shot (20 Aug 2026, requested by name) — the IntersectionObserver stays connected and toggles visibility on every isIntersecting change, so scrolling an element out of view resets it and scrolling back over it replays the reveal. prefers-reduced-motion still forces full visibility regardless of the toggle."
+      },
+      {
+        "name": "scroll-scrub",
+        "value": "custom property --p (0 to 1), set imperatively from scroll position via requestAnimationFrame",
+        "purpose": "Drives the Home hero's access-geometry card stack, now its own section directly beneath the headline (not sharing its pinned viewport) with a short 160vh track (~60vh of scroll room): the front card scales down/rotates back/drifts up and left/fades near-zero toward the deck while the card behind it scales up/un-rotates/rises to the front (react-bits' Scroll Stack pattern, two states). Revision 2, 20 Aug 2026 — replaced a plain opacity cross-fade of two bare SVGs plus a separate caption line, which read as text slowly fading in rather than a visible scene change. Revision 3, same day — moved out of the headline's shared viewport (reported as not fitting proportionally) into its own larger section. Revision 4, same day — cards sized larger again, and opacity now runs the full 1-to-0 range (no visible floor) so the inactive card is fully transparent at rest and at scroll-end, not peeking through. Revision 5, same day — the drawn house/bed/lamp/device scene on the 'home' card was replaced with the real Byonyks X-1 product render (same asset as Our Answer, same attribution), composited directly on the card's own background using the PNG's genuine alpha channel (verified by pixel-sampling, not assumed) rather than a white backing plate. Revision 6, same day — the drawn clinic/road/clock scene on the 'in-center' card was replaced with a real hemodialysis machine photo (Wikimedia Commons, CC BY-SA), on request. Unlike the X-1 render this source wasn't a pre-cut asset, so it was cropped to the gauge/screen panel (removing a cardboard box, tiled wall, and the machine's brand/model label so it reads as generic, not a named-competitor callout), had a faint reflection of a person patched out of the dark monitor, and got a synthetic feathered-alpha edge to match the X-1 render's treatment. Every edit disclosed in public/images/README.md. Bespoke, not a reusable easing token — documented so it isn't reinvented differently elsewhere."
+      },
+      {
+        "name": "reveal-settle",
+        "value": "scale(0.96) -> scale(1), opacity 0 -> 1, 600ms, cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The single-focal-element counterpart to reveal-ease's rise. Used once, for the X-1 render in Our Answer — not for cards appearing as a list."
+      },
+      {
+        "name": "count-up",
+        "value": "cubic ease-out (1 - (1-t)^3), ~1200ms, requestAnimationFrame",
+        "purpose": "Scroll-triggered numeric count-up, reserved for genuine quantities (the 10,000+ therapies stat only)."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "container-max", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Default action button on light grounds.",
+      "html": "<button class=\"ds-btn-primary\">See specification</button>",
+      "css": ".ds-btn-primary { background: var(--primary, #0d5d8d); color: #fff; padding: 10px 24px; border-radius: var(--radius-lg, 10px); font-weight: 500; font-size: 0.95rem; border: none; transition: background 0.2s; } .ds-btn-primary:hover { background: color-mix(in oklch, var(--primary, #0d5d8d), transparent 20%); } .ds-btn-primary:focus-visible { outline: 2px solid var(--ring, #117cbc); outline-offset: 2px; }"
+    },
+    {
+      "name": "Gold Button",
+      "kind": "button",
+      "refersTo": "button-gold",
+      "description": "The system's rare accent spend — reserved for the primary action on a dark (ink) ground.",
+      "html": "<button class=\"ds-btn-gold\">Send an enquiry</button>",
+      "css": ".ds-btn-gold { background: var(--color-accent-gold, #b08d2f); color: var(--color-ink, #011a48); padding: 10px 24px; border-radius: var(--radius-lg, 10px); font-weight: 500; font-size: 0.95rem; border: none; transition: background 0.2s; } .ds-btn-gold:hover { background: color-mix(in oklch, var(--color-accent-gold, #b08d2f), transparent 15%); } .ds-btn-gold:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }"
+    },
+    {
+      "name": "Content Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Standard bordered, flat card used for benefit and news items.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">Protects the peritoneal membrane</h3><p class=\"ds-card-body\">Peritoneal dialysis uses the lining of your own abdomen to filter blood.</p></div>",
+      "css": ".ds-card { background: #fff; border: 1px solid var(--color-line, #d8e2e8); border-radius: var(--radius-xl, 14px); padding: 24px; } .ds-card-title { font-weight: 600; font-size: 1rem; color: var(--color-ink, #011a48); margin: 0 0 8px; } .ds-card-body { font-size: 0.875rem; color: var(--muted-foreground, #5f6b73); margin: 0; }"
+    },
+    {
+      "name": "Audience Doorway Card",
+      "kind": "custom",
+      "refersTo": "audience-card",
+      "description": "Featured, larger-radius card with a cursor-responsive tilt. Background and icon both take one of the system's four accent roles (blue/gold/teal/plum) so each of the four cards is a genuinely distinct doorway, not a tinted variant of one design.",
+      "html": "<a class=\"ds-doorway\" href=\"#\"><svg class=\"ds-doorway-icon\" width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M2 12h6l3-9 4 18 3-9h6\"/></svg><span class=\"ds-doorway-title\">Clinicians</span><span class=\"ds-doorway-body\">Device specifications, clinical evidence, and ByoTalks sessions.</span></a>",
+      "css": ".ds-doorway { display: block; background: color-mix(in oklch, var(--color-teal, #0e7c72), white 88%); border: 1px solid var(--color-line, #d8e2e8); border-radius: var(--radius-2xl, 18px); padding: 24px; text-decoration: none; transition: transform 0.3s ease-out; } .ds-doorway:hover { transform: translateY(-4px); } .ds-doorway-icon { color: var(--color-teal, #0e7c72); margin-bottom: 12px; } .ds-doorway-title { display: block; font-weight: 600; color: var(--color-ink, #011a48); margin-bottom: 8px; } .ds-doorway-body { display: block; font-size: 0.875rem; color: var(--muted-foreground, #5f6b73); }"
+    },
+    {
+      "name": "Pending Data Placeholder",
+      "kind": "custom",
+      "refersTo": "pending-stat",
+      "description": "A deliberate, legible way to ship an unsourced figure without inventing a number or silently omitting the section. Uses the semantic pending color, not gray and not the gold brand accent, so 'incomplete' reads as its own distinct state.",
+      "html": "<div class=\"ds-pending\"><p class=\"ds-pending-label\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 6v6l4 2\"/></svg>Figure pending source citation</p><p class=\"ds-pending-value\">Average one-way distance patients travel for a haemodialysis session</p></div>",
+      "css": ".ds-pending { border: 1px dashed color-mix(in oklch, var(--color-pending, #9c6410), transparent 60%); background: var(--color-surface-2, #f4f7f9); border-radius: var(--radius-lg, 10px); padding: 12px 16px; } .ds-pending-label { display: flex; align-items: center; gap: 6px; font-family: ui-monospace, monospace; font-size: 0.75rem; letter-spacing: 0.02em; color: var(--color-pending, #9c6410); margin: 0 0 4px; } .ds-pending-value { font-size: 0.875rem; color: var(--color-foreground, #33373d); margin: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Clinic",
+    "overview": "A clinical-trust system that spends almost all of its register in one committed navy and a near-white ground, then uses color the way a hospital uses department signage: not decoration, wayfinding. Every accent beyond navy carries one specific meaning and recurs wherever that meaning applies — gold for \"home / India,\" teal for \"clinical evidence,\" plum for \"institutional / formal\" — so a visitor who learns the code once (the four benefit cards) reads it instantly the second time (the four audience cards). The system reads as sober and evidence-led first because the Priority-1 and Priority-3 audiences (investors, clinicians) distrust marketing language, and the Priority-2 audience (patients) needs calm, high-contrast legibility over stimulation. Ink navy is not an accent here; on the Home hero it is spent at full page-scale coverage, the system's boldest color move, and everywhere else it recedes to headings and text. Every accent stays rationed to large display type and non-text graphics — never body copy, never small UI. Expanded 20 Aug 2026 from a single-accent system to this four-role one at explicit user request, beyond spec — see deviations.md.",
+    "keyCharacteristics": [
+      "Flat, bordered surfaces over shadowed ones — depth is tonal, not lifted.",
+      "Four accent roles (gold, teal, plum, primary blue), each with one fixed meaning, recurring across benefit cards, audience cards, and proof stats.",
+      "Every accent is rationed the same way gold always was: large display type and non-text graphics only.",
+      "Line-art iconography carries concepts no real image exists for yet; a real, attributed Byonyks asset (the X-1 render) replaces it wherever one exists.",
+      "Generous section rhythm keeps a dense, fact-heavy page from feeling cramped."
+    ],
+    "rules": [
+      { "name": "The Full-Bleed Rule", "body": "Ink navy is used as a whole-section background only in the highest-stakes moments (hero, CTA band) — never as a card fill or small panel.", "section": "colors" },
+      { "name": "The Accent Ration Rule", "body": "Each of the four accents (gold, teal, plum, primary-as-accent) appears on large display type, icon chips, or non-text graphics only — never body text, never small UI, never a fifth ad hoc hue.", "section": "colors" },
+      { "name": "The Wayfinding Rule", "body": "An accent's meaning is fixed sitewide: gold is always \"home/India,\" teal is always \"clinical evidence,\" plum is always \"institutional/formal.\" Never borrow one for a different meaning because it's visually convenient.", "section": "colors" },
+      { "name": "The One-Family Rule", "body": "Every type role is Noto Sans. No second face is introduced for technical or editorial contrast.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Cards and sections separate using a 1px border or a tonal background shift. A shadow is earned only by a genuinely floating element.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do spend ink navy at full section coverage only for the highest-stakes moments.",
+      "Do restrict every accent to large display type, icon chips, and non-text graphics.",
+      "Do keep each accent's meaning fixed — reuse an existing role before inventing a fifth hue.",
+      "Do separate sections with a border or tonal shift before reaching for a shadow.",
+      "Do label illustrative or unsourced content explicitly rather than presenting it as finished.",
+      "Do give every interactive element a visible 2px focus ring.",
+      "Do prefer a real, correctly-attributed image from Byonyks USA over authored illustration once one exists — caption a render as a render, never as a photograph.",
+      "Do give every scroll-driven or auto-playing animation a prefers-reduced-motion path that settles instantly, never a frozen mid-animation frame."
+    ],
+    "donts": [
+      "Don't introduce a second typeface.",
+      "Don't use the destructive red or the logo's kidney-icon red outside error states.",
+      "Don't add a kicker or eyebrow label above a heading.",
+      "Don't use hard offset shadows, glass/blur effects, gradient text, or bounce/elastic easing.",
+      "Don't ship a specific unsourced statistic as a confident claim.",
+      "Don't count up a label that isn't a real quantity.",
+      "Don't use the semantic pending color as a brand accent, or a brand accent for a pending state."
+    ]
+  }
+}
