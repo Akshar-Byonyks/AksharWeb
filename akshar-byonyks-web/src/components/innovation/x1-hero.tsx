@@ -63,7 +63,7 @@ export function X1Hero() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="h-auto min-h-11 shrink min-w-0 py-2.5 px-6 text-base whitespace-normal border-white/30 bg-transparent text-white hover:bg-white/10"
+                className="h-auto min-h-11 shrink min-w-0 py-2.5 px-6 text-base whitespace-normal border-white/45 bg-transparent text-white hover:bg-white/10"
               >
                 <Link href="#specification">See the specification</Link>
               </Button>

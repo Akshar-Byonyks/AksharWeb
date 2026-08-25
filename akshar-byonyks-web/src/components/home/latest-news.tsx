@@ -17,7 +17,7 @@ export function LatestNews() {
             </h2>
             <Link
               href="/news"
-              className="inline-flex items-center gap-1.5 rounded-sm text-sm font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              className="inline-flex items-center gap-1.5 rounded-sm py-1 text-sm font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               All news
               <ArrowRight className="size-4" aria-hidden="true" />

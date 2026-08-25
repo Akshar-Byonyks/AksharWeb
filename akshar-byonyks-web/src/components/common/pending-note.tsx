@@ -44,8 +44,8 @@ export function PendingNote({
           tone === "dark" ? "text-pending-on-ink" : "text-pending"
         )}
       >
-        <Clock className="size-3" aria-hidden="true" />
-        {note}
+        <Clock className="size-3 shrink-0" aria-hidden="true" />
+        <span className="min-w-0">{note}</span>
       </p>
       <p
         className={cn(

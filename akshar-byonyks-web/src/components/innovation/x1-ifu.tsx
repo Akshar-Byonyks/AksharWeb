@@ -43,7 +43,7 @@ export function X1Ifu() {
                   are asking for, and we will route it.
                 </p>
               </div>
-              <Button asChild size="lg" className="h-auto min-h-11 shrink-0 py-2.5 px-6 text-base whitespace-normal">
+              <Button asChild size="lg" className="h-auto min-h-11 shrink min-w-0 py-2.5 px-6 text-base whitespace-normal">
                 <Link href="/contact?enquiry=clinician">
                   Request the documentation
                 </Link>

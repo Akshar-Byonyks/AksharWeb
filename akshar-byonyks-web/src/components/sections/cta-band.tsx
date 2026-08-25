@@ -50,7 +50,7 @@ export function CtaBand({
           <div className="flex flex-wrap items-center gap-4">
             <a
               href={`tel:${siteContact.phone.replace(/\s/g, "")}`}
-              className="inline-flex items-center gap-2 rounded-sm text-white/90 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="inline-flex min-w-0 items-center gap-2 rounded-sm text-white/90 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               aria-label={
                 siteContact.phoneIsPlaceholder
                   ? "Phone number placeholder, to be confirmed"
@@ -63,7 +63,7 @@ export function CtaBand({
             <Button
               asChild
               size="lg"
-              className="h-11 bg-accent-gold px-6 text-base text-ink hover:bg-accent-gold/85"
+              className="h-auto min-h-11 shrink min-w-0 bg-accent-gold px-6 py-2.5 text-base whitespace-normal text-ink hover:bg-accent-gold/85"
             >
               <Link href={ctaHref}>{ctaLabel}</Link>
             </Button>

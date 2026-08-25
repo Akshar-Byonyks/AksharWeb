@@ -143,7 +143,7 @@ export function AccessGeometryHero() {
               <Button
                 asChild
                 size="lg"
-                className="h-11 bg-accent-gold px-6 text-base text-ink hover:bg-accent-gold/85"
+                className="h-auto min-h-11 shrink min-w-0 bg-accent-gold px-6 py-2.5 text-base whitespace-normal text-ink hover:bg-accent-gold/85"
               >
                 <Link href="/innovation/the-x1-cycler">See how it works</Link>
               </Button>
@@ -151,7 +151,7 @@ export function AccessGeometryHero() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="h-11 border-white/30 bg-transparent px-6 text-base text-white hover:bg-white/10"
+                className="h-auto min-h-11 shrink min-w-0 border-white/30 bg-transparent px-6 py-2.5 text-base whitespace-normal text-white hover:bg-white/10"
               >
                 <Link href="/contact">Talk to us</Link>
               </Button>

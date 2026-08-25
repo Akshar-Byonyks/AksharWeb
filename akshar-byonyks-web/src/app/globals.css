@@ -158,6 +158,13 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* A heading like "Specification" at 200% text on a 320px viewport, or a
+       footer label like "Grievance Redressal" in a narrow column, is a single
+       word wider than its container. Without this it paints outside the box
+       and the overflowing half is simply clipped — WCAG 1.4.4 requires text to
+       reach 200% without loss of content. `break-word` only breaks a word that
+       would otherwise overflow, so normal typography is untouched. */
+    overflow-wrap: break-word;
   }
   html {
     @apply font-sans;

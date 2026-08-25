@@ -132,7 +132,15 @@ function HomeCard({ className, style }: { className?: string; style?: CSSPropert
 
 export function AccessGeometrySceneScrubbed() {
   return (
-    <div className="relative min-h-[480px] w-full max-w-lg sm:min-h-[600px] sm:max-w-2xl">
+    // `overflow-hidden` bounds the composition to its own frame. Both cards
+    // carry a rest-state rotation, and a rotated box is wider than an
+    // upright one by (height x sin(angle)) — so the taller the card grows,
+    // the further its corners bleed sideways. At 200% text on a 320px
+    // viewport that bleed reached 17px past the viewport and scrolled the
+    // whole document. Clipping costs nothing visible: each card is at its
+    // maximum rotation exactly when its opacity is at or near zero, and the
+    // cards are `inset-0` children designed to live inside this frame.
+    <div className="relative min-h-[480px] w-full max-w-lg overflow-hidden sm:min-h-[600px] sm:max-w-2xl">
       {/* Clinic card: starts front and center, scales down, drifts up and
           left, and rotates slightly negative as it recedes toward the back
           of the stack — a card being swiped away, not a fade. Opacity runs

@@ -27,14 +27,21 @@ export function SiteFooter() {
       <div className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
           {footerColumns.map((column) => (
-            <div key={column.heading}>
+            // `min-w-0`: a `1fr` grid track floors at min-content, so a long
+            // single word ("Manufacturing", "Grievance Redressal") pushed the
+            // column wider than its share instead of wrapping inside it.
+            <div key={column.heading} className="min-w-0">
               <h2 className="text-sm font-semibold text-white">{column.heading}</h2>
-              <ul className="mt-3 flex flex-col gap-2">
+              {/* The list gap moves into the links themselves. Spacing between
+                  labels is preserved; what changes is that the padding belongs
+                  to the anchor, so the 24px target is the thing you actually
+                  click rather than dead space around it. */}
+              <ul className="mt-2 flex flex-col">
                 {column.links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/70 hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                      className="inline-block max-w-full py-1.5 text-sm text-white/70 hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                     >
                       {link.label}
                     </Link>

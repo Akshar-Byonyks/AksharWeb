@@ -11,7 +11,14 @@ import { contactCta, primaryNav } from "@/lib/navigation";
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
-      <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      {/* `min-h-16` rather than `h-16`, plus wrapping. The fixed height held at
+          100% text but could not contain the row at 200%, where the wordmark,
+          the nav and the CTA together exceed any viewport: the children had
+          nowhere to go and pushed the document sideways instead. Wrapping lets
+          the header grow downward, which is what reflow means. At normal text
+          size nothing moves — the content is ~48px tall inside a 64px
+          minimum, so the bar measures exactly the 64px it always did. */}
+      <div className="mx-auto flex min-h-16 max-w-[1280px] flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-2 sm:px-6 lg:px-8">
         <Link
           href="/"
           className="shrink-0 rounded-sm text-lg font-bold text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
@@ -20,7 +27,7 @@ export function SiteHeader() {
         </Link>
 
         <nav aria-label="Primary" className="hidden lg:block">
-          <ul className="flex items-center gap-1">
+          <ul className="flex flex-wrap items-center gap-1">
             {primaryNav.map((item) => (
               <li key={item.href} className="group relative">
                 <Link
@@ -51,7 +58,7 @@ export function SiteHeader() {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex min-w-0 flex-wrap items-center justify-end gap-2">
           <Button asChild className="hidden sm:inline-flex">
             <Link href={contactCta.href}>{contactCta.label}</Link>
           </Button>

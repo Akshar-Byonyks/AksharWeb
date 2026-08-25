@@ -1,6 +1,15 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
-import { Slot } from "radix-ui"
+// Narrow import, not the `radix-ui` barrel. The unified package does
+// `import * as Slot from "@radix-ui/react-slot"` and re-exports it, so this is
+// the identical module and `Slot.Root` is the identical component — but
+// importing the barrel dragged every Radix primitive the package re-exports
+// into the shared layout chunk (292kB raw / ~96kB gzip) on every route, for
+// the one primitive this codebase actually uses.
+//
+// The version is pinned to the exact one `radix-ui` itself depends on, so npm
+// dedupes to a single copy rather than nesting a second.
+import * as Slot from "@radix-ui/react-slot"
 
 import { cn } from "@/lib/utils"
 
