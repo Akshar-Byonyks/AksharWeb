@@ -1,5 +1,3 @@
-import { BatteryCharging, Droplet, SlidersHorizontal, Thermometer } from "lucide-react";
-
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { notMedicalAdvice } from "@/lib/claims";
 
@@ -8,30 +6,38 @@ import { notMedicalAdvice } from "@/lib/claims";
 // no more — nothing here is extrapolated from the render or from what an APD
 // cycler usually does.
 //
-// Color: all four icon chips are primary blue, not one accent each. The four
-// accent roles carry fixed sitewide meanings (DESIGN.md's Wayfinding Rule —
-// gold is home/India, teal is clinical evidence, plum is institutional), and
-// none of those meanings actually fits "battery backup" or "warms fluid."
-// Borrowing an accent because a four-up grid looks better in four colors is
-// exactly what that rule exists to prevent.
+// Rebuilt 26 Aug 2026. This was four identical bordered cards, each with a
+// 20px icon chip. The sitewide critique found that same rounded rectangle used
+// 23 times on this page alone, and the craft floor names "same-size cards of
+// icon plus heading plus text as the page structure" as the lazy container.
+//
+// Two changes. The cards are now hairline-ruled rows: the separator language
+// belongs to the specification table one section further down, so a reader
+// meets it twice on the page and reads this as continuous with the data rather
+// than as another card grid. And the icons are gone — a 20px chip beside a
+// 16px heading carried no visual weight at page scale, and dropping it lets
+// the feature text set at a real reading size instead of at card-caption size.
+//
+// The colour note that used to live here is now moot: with the chips removed
+// there is no accent to ration. It stays recorded in DESIGN.md's Wayfinding
+// Rule, which is where it belonged.
+//
+// The device itself moved up into the hero, at full container width with one
+// honest annotation. It is not repeated here.
 const features = [
   {
-    icon: Thermometer,
     title: "Warms fluid to body temperature",
     body: "The X-1 brings dialysate up to body temperature before it is infused, so an exchange does not begin with a cold fill.",
   },
   {
-    icon: BatteryCharging,
     title: "Battery backup on board",
     body: "An on-board battery carries the machine through an interruption in mains power instead of ending the cycle.",
   },
   {
-    icon: Droplet,
     title: "Needle-free",
     body: "Peritoneal dialysis works through a soft catheter in the abdomen. There are no needles in an X-1 exchange.",
   },
   {
-    icon: SlidersHorizontal,
     title: "Run from the machine itself",
     body: "Setup and each night's treatment are driven from the X-1's own on-device screen.",
   },
@@ -41,28 +47,41 @@ export function X1Features() {
   return (
     <section aria-labelledby="x1-features-heading" className="bg-background">
       <div className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 lg:px-8">
-        <h2
-          id="x1-features-heading"
-          className="max-w-xl text-3xl font-bold text-ink sm:text-4xl"
-        >
-          What the device does
-        </h2>
+        {/* The framing-and-artifact split (DESIGN.md, Layout): heading and its
+            lead at the narrower share, the material itself at the wider one.
+            The specification table below uses the same grid, so the two
+            sections share a spine down the page. */}
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-16">
+          <ScrollReveal>
+            <div>
+              <h2
+                id="x1-features-heading"
+                className="text-3xl font-bold text-balance text-ink sm:text-4xl"
+              >
+                What the device does
+              </h2>
+              <p className="mt-4 max-w-md text-lg text-muted-foreground">
+                Four things the X-1 is built to do. Everything else about it is
+                in the specification below, including what is not yet published.
+              </p>
+            </div>
+          </ScrollReveal>
 
-        <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map(({ icon: Icon, title, body }, index) => (
-            <ScrollReveal key={title} delayMs={index * 90}>
-              <div className="h-full rounded-xl border border-line bg-card p-6">
-                <div className="inline-flex size-11 items-center justify-center rounded-full bg-accent text-primary">
-                  <Icon className="size-5.5" aria-hidden="true" />
+          <dl>
+            {features.map(({ title, body }, index) => (
+              <ScrollReveal key={title} delayMs={index * 90}>
+                <div className="border-t border-line py-6 first:border-t-0 first:pt-0 sm:py-7">
+                  <dt className="text-lg font-semibold text-ink">{title}</dt>
+                  <dd className="mt-2 max-w-2xl text-base text-muted-foreground">
+                    {body}
+                  </dd>
                 </div>
-                <h3 className="mt-4 text-base font-semibold text-ink">{title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{body}</p>
-              </div>
-            </ScrollReveal>
-          ))}
+              </ScrollReveal>
+            ))}
+          </dl>
         </div>
 
-        <p className="mt-8 max-w-2xl text-sm text-muted-foreground">
+        <p className="mt-12 max-w-2xl text-sm text-muted-foreground">
           {notMedicalAdvice}
         </p>
       </div>

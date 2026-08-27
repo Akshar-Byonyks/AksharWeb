@@ -141,3 +141,93 @@ The four roles now have to survive twelve more pages without a fifth hue appeari
 ### Needs a decision before launch
 
 `/privacy-policy` is **drafted, not legally reviewed** (spec §14.4). It answers every DPDP obligation the spec names, in the plain register, but the wording needs counsel — and the Grievance Officer is a named-person requirement nobody has filled.
+
+---
+
+## 5. Ground as a carrier of meaning, and the retreat from the card grid (26 Aug 2026)
+
+Prompted by a sitewide `/impeccable critique`. The reported symptom was "too much white background, minimal visuals, too many words." Two thirds of that held up under measurement and the last third did not, which is the reason this entry exists.
+
+### The word count was the wrong diagnosis
+
+Home carried **530 words across 4,655px**; the X-1 page, 598. That is sparse for the page length, not dense. The wall-of-text feeling came from text being the *only* medium — two images existed in the entire project and both sat in the Home hero — so cutting copy would have emptied the pages further and produced the same complaint. Nothing was cut. Word count rose slightly (Home to 622) while the pages stopped reading as walls, because what changed was everything around the words.
+
+### The ink measurement in the critique was wrong, and the direction it pointed was right
+
+The critique reported Home at 9% ink and made "spend more ink" its P0 on that basis. The figure was an instrumentation error: the Home hero's background was a `linear-gradient`, and the measuring script resolved grounds by walking for `backgroundColor`, so it classified the hero as white. Home was really ~39% ink before any change. What was true, and what the screenshots showed independently, is that the ink sat entirely at the two ends and the whole middle was uniformly light.
+
+The fix therefore was not "more ink" but "ink in the middle, for a reason." Recorded here because the number was quoted to the client before it was checked.
+
+### What changed
+
+**The Full-Bleed Rule went from two moments to a ceiling of three, assigned by meaning** (DESIGN.md). Ink now carries home/night/patient-life; white carries evidence/regulation/specification. `/contact` and `/privacy-policy` still spend two, because neither has a third thing worth saying in ink — three is a ceiling, never a target. Two ink sections may not be adjacent; when the X-1 device section was first built on ink directly under the ink hero the two merged into one 2,000px mass, and the resolution was to combine them into one larger opening rather than to insert a token light band.
+
+Measured: Home 39% → **51% ink**, X-1 → **43%**, and in both cases the light and dark now alternate instead of bracketing.
+
+**Four-up card grids became hairline row lists.** One `1px #d8e2e8` rounded rectangle was doing all the compositional work — 12 instances on Home, 23 on the X-1 page — and the craft floor names that exact pattern as the lazy container. Home's benefit rows kept their accent chips because that group teaches the colour code the audience cards reuse; the X-1 feature rows dropped theirs, which were four identical blues teaching nothing.
+
+**A P1 defect was fixed that predates this pass.** The Home hero's ink-to-white transition was a percentage gradient across the whole section, and the three "dialysis gap in India" stat cards — the last block in it — sat inside the fade. Their dashed bottom borders dissolved completely and their white label text finished on a near-white ground. A percentage stop cannot know what content lands on it; the hand-off is now a fixed-height band below the content, with nothing ever laid over it.
+
+### Two accessibility failures found while verifying, both pre-existing
+
+Neither appeared in the critique — the first contrast script composited semi-transparent grounds against white instead of against the ink beneath them, and skipped single-character text nodes entirely.
+
+- **Audience card "Explore" links** measured **2.78:1** on the gold tint and **4.32:1** on the teal, against a 4.5:1 requirement. They were also a standing violation of the Accent Ration Rule, which bars accents from body text and links. Now `text-ink`; the icons keep their accent, which the rule permits.
+- **Access-geometry card labels** ("Today", "With the X-1") at `white/45` measured **4.29:1** on ink. Now `white/60`, 6.08:1.
+
+Verified after: **zero** text-contrast failures across all four routes, **zero** document overflow and **zero** sub-24px targets across 320/390/768/1440 at 100% and 200% text.
+
+### Still open
+
+- **India is not depicted anywhere,** and this was a deliberate reversal. The critique proposed an India silhouette as the recurring brand graphic; depicting the national boundary is a legal matter in Indian jurisdiction, and an outline authored from memory would probably get J&K, Ladakh and Aksai Chin wrong on an Indian company's own site. The geography argument is carried by treatment rhythm instead. **To ship a map, someone must supply a boundary-correct official outline and have it reviewed** — the "night" section is built to take one.
+- Home still shows the X-1 render twice (hero card stack, and "Our answer") at moderate size. Acceptable, but it is the only real asset the project owns and a second photographed or rendered subject would relieve it.
+- `/contact` (82% white) and `/privacy-policy` (90% white) were left light on purpose. Both are documentary, and the privacy page's empty column now carries a section index rather than a decoration.
+
+### 5a. The week figure failed, and what replaced it (26 Aug 2026, same day)
+
+The treatment-rhythm figure described above shipped and was immediately reported as not communicating. That was correct, and the reasons are worth keeping because they generalise:
+
+- **An invented notation needs a legend or an anchor.** An arc leaving a baseline and returning is not a known symbol for a journey to a clinic. Nothing on screen taught it.
+- **It encoded no quantity.** The arc's height and width meant nothing — not distance, not hours. Decoration shaped like data.
+- **Its own caption contradicted it.** "Three journeys out, and three back" describes six trips; three shapes were drawn.
+- **The second lane depended on the first landing.** "Nothing leaves the line" only means something once you have understood that things leave the line above. The first lane failed, so the second was a rule with dots on it.
+
+**Replaced by "Two Paths"** (`src/components/home/two-paths.tsx`): two routes drawn down a pinned viewport, walked simultaneously as the reader scrolls, converging at the end. The argument moved onto the one axis it always had and the figure lacked — time.
+
+**No dependency was added, despite that being offered.** Nothing here is quantitative, so a charting library would have supplied a more sophisticated way to draw nothing; and this project already has the house idiom for scroll-driven work (a `--p` custom property on a rAF-throttled handler, listeners gated on intersection, transform/clip only, no animation library). GSAP or Framer would have cost 30–50 kB on a page whose Priority-2 audience is described as majority-mobile and bandwidth-constrained.
+
+**This is the system's third scroll-driven interaction,** which DESIGN.md gates behind "a reason that is not 'the last two were nice.'" The reason recorded: this is the only inherently sequential content on the site, and scroll is the only inherently sequential input. The Home hero's card-stack track was cut from 160vh to 130vh at the same time, so the two scrubbed scenes differ in kind — hook versus explanation — rather than repeating the same clinic-versus-home move at the same depth. Restored to 180vh on 27 Aug 2026: 130vh left only 270px of scroll room at 1440x900, under one wheel flick, and the swap finished before the eye could follow it. The two scenes still differ in kind at 180vh vs. 240vh; shortening a scrub past the point where it reads as scrubbing is not contrast, it is a defect.
+
+**A factual safeguard is built into the structure.** Two columns showing home treatment and nothing else can be read as "home dialysis means never seeing a clinic." The fifth beat converges both paths on "both paths stay under your nephrologist's care," so the correction is load-bearing geometry rather than small print.
+
+**Two implementation notes worth not rediscovering:**
+
+- `pathLength="1"` with `strokeDasharray`/`strokeDashoffset` is the textbook 0–1 path draw and it does not work through a CSS custom property. The browser resolves both as px lengths and leaves `calc(1 - var(--p))` unevaluated in computed style; the paths render as static fragments. A top-down `clip-path: inset()` is both reliable and better here, because one clip over all three paths stops the convergence drawing before the paths that feed it.
+- Pinning is gated on a **measurement**, not a breakpoint: the component measures its own stage against the viewport after mount and stays unpinned when it will not fit. That is what keeps 200% text and short viewports working (verified static at 1280×720 and 390×667, pinned at 1440×900, 390×844 and 320×800, with zero text spill at any of them). It only works because the pinned and static states render identical DOM.
+
+### 5b. Two Paths: the lines did not run through the icons (26 Aug 2026)
+
+Reported after 5a shipped, and correct. Measured against the single stage-wide SVG, every marker was off, by two independent errors:
+
+- **Horizontal, ±1.14 viewBox units (~8px).** The beat row was `grid-cols-2 gap-8`, so the two column centres sat at 23.86% and 76.14%, not 25% and 75%. A gap does not split evenly around the centre line, and the paths were written against 25/75.
+- **Vertical, −3.6 to −10.6 units, and different for every marker.** Cells were `justify-center`, which centres the marker-and-label group, so each marker floated above its row centre by half its own text height. The notes wrap to different line counts, so no single offset was ever going to be right; mobile was worse, where more notes wrap to two lines.
+
+The second error is the interesting one: **it cannot be fixed by adjusting coordinates, because the offset depends on the content.** So the geometry was rebuilt to be content-independent rather than re-tuned. Each cell now draws only the segment from its own marker down to the next one, anchored at the marker's own centre offset and exactly one cell tall — which lands on the next marker by construction, whatever the rows, the wrapping or the font size do. Markers moved to the top of their cells; the grids lost their gaps and gained internal padding instead.
+
+Verified 0.00px error on both axes at 1440×900, 390×844 and 320×800.
+
+**A second defect surfaced while verifying, one that had been invisible in screenshots.** Sampling 200 points along every path against every label's bounding box showed the paths crossing the labels almost everywhere — including all four labels in the home lane, whose line is straight and whose labels are centred on it. Two rounds of capping label widths to route the paths around the text failed (and degraded wrapping to "Your own / bedroom") because that collision is structural, not incidental. Labels now carry an opaque `bg-ink` wrapper and the line passes behind them, which is how a timeline normally handles a label on its own spine.
+
+**Lesson for the next diagram:** eyeballing a screenshot did not catch either problem. Both were found by measuring geometry against the DOM — marker centres against path anchors, and sampled path points against text boxes. Any figure whose lines are supposed to meet its labels should be verified that way rather than by looking at it.
+
+### 5c. The scroll animation "stopped working" — it was the height gate (26 Aug 2026)
+
+Reported immediately after 5b: centring fixed, animation gone. Nothing was broken mechanically. Under a real scroll the stage stuck at 64px, `--p` ran 0 → 0.9995, and the segments clipped in order.
+
+**The pin gate was refusing.** It required the stage's natural height plus a 24px cushion to fit the viewport under the header. The stage measured 608px, so the interaction only engaged above roughly a 700px viewport. A 1366×768 Windows laptop has a browser viewport near 640px — it silently took the static fallback, which draws every line at once. From the outside that is identical to a broken animation.
+
+Fixed by shrinking the stage rather than by weakening the safety check: markers `size-11` → `size-10`, label blocks `py-1` → `py-0.5`, header `pb-4` → `pb-2`, convergence `mt-3` → `mt-2`. Natural height 608px → **556px**. The cushion also went from 24px to 8px, since the stage only has to fit. Threshold is now about a 628px viewport, verified pinning and animating correctly at 1366×640.
+
+`MARKER_HALF` had to move with the marker size (1.375rem → 1.25rem); it is the anchor every segment is positioned against, so the two are a manual pair. Alignment re-verified at 0.00px on both axes after the change.
+
+**The general lesson, recorded because it will recur:** a progressive enhancement that degrades silently gives the user no signal that it degraded. Every height- or capability-gated enhancement needs its threshold measured against real device viewports, not just confirmed at the size it was authored on. The fallbacks themselves were all still correct — 200% text, reduced motion, no-JS and short viewports each render the finished, unpinned diagram with every beat visible.

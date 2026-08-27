@@ -3,6 +3,7 @@ import { BuiltOnProven } from "@/components/home/built-on-proven";
 import { LatestNews } from "@/components/home/latest-news";
 import { OurAnswer } from "@/components/home/our-answer";
 import { ProofBand } from "@/components/home/proof-band";
+import { TheNight } from "@/components/home/the-night";
 import { WhoWeServe } from "@/components/home/who-we-serve";
 import { WhyDifferent } from "@/components/home/why-different";
 import { CtaBand } from "@/components/sections/cta-band";
@@ -37,6 +38,11 @@ carrying its provenance.
 `}</DirectionContract>
       <AccessGeometryHero />
       <OurAnswer />
+      {/* Third ink moment (26 Aug 2026). Placed here deliberately: "Our
+          answer" has just said what the machine is, so this is where what it
+          means lands, before the four clinical reasons in "Why it is
+          different" explain why. See DESIGN.md's revised Full-Bleed Rule. */}
+      <TheNight />
       <WhyDifferent />
       <ProofBand />
       <WhoWeServe />

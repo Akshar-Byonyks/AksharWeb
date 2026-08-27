@@ -10,14 +10,19 @@ import { ScrollReveal } from "@/components/motion/scroll-reveal";
 // Byonyks-made" here once a source and date exist.
 export function BuiltOnProven() {
   return (
+    // py-16, not py-20. The sitewide critique measured this as a 376px band
+    // holding 61 words and nothing else, and noted that every section on the
+    // page carried identical padding so no page had a rhythmic peak. This one
+    // is a short qualitative statement between two larger moments — it should
+    // read as the page taking a breath, not as another full-height section.
     <section aria-labelledby="built-on-proven-heading" className="bg-surface-2">
-      <div className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1280px] px-4 py-16 sm:px-6 lg:px-8">
         <ScrollReveal>
           <div className="max-w-3xl">
             <h2 id="built-on-proven-heading" className="text-3xl font-bold text-ink sm:text-4xl">
               Built on proven technology
             </h2>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <p className="mt-4 text-xl text-muted-foreground">
               The X-1 is not a new, unproven device. It is licensed from
               Byonyks USA, an established American medical device company
               already serving clinics across the United States, and cleared

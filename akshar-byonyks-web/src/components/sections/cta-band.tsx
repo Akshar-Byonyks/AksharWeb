@@ -39,7 +39,12 @@ export function CtaBand({
     <section aria-labelledby="cta-band-heading" className="bg-ink">
       <SilhouetteEdge className={leadIn} />
       <ScrollReveal className="block">
-        <div className="mx-auto flex max-w-[1280px] flex-col items-start gap-6 px-4 py-16 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+        {/* py-10 (py-12 at lg), down from py-16 (27 Aug 2026). Shrinking the
+            footer alone could not deliver "the waves are visible at the bottom
+            of the page" — this band sits between them and is 220px of the
+            781px mass on desktop, 286px of 1007px on phones. The waves are the
+            thing being protected, so the padding around them gives way first. */}
+        <div className="mx-auto flex max-w-[1280px] flex-col items-start gap-5 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
           <div>
             <h2 id="cta-band-heading" className="text-2xl font-bold text-white sm:text-3xl">
               {heading}

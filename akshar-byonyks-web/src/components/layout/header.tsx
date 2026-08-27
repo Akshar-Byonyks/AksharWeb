@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { NavLink } from "@/components/layout/nav-link";
 import { contactCta, primaryNav } from "@/lib/navigation";
 
 // Spec 7.2: sticky header, mega-menu on desktop, full-screen drawer on
@@ -30,24 +31,24 @@ export function SiteHeader() {
           <ul className="flex flex-wrap items-center gap-1">
             {primaryNav.map((item) => (
               <li key={item.href} className="group relative">
-                <Link
+                <NavLink
                   href={item.href}
                   className="flex items-center rounded-md px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-surface-2 hover:text-ink focus-visible:bg-surface-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 >
                   {item.label}
-                </Link>
+                </NavLink>
 
                 {item.children ? (
                   <div className="invisible absolute left-0 top-full z-10 min-w-[220px] rounded-lg border border-line bg-background p-2 opacity-0 shadow-lg transition-[opacity,visibility] group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
                     <ul>
                       {item.children.map((child) => (
                         <li key={child.href}>
-                          <Link
+                          <NavLink
                             href={child.href}
                             className="block rounded-md px-3 py-2 text-sm text-foreground hover:bg-surface-2 hover:text-ink focus-visible:bg-surface-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                           >
                             {child.label}
-                          </Link>
+                          </NavLink>
                         </li>
                       ))}
                     </ul>

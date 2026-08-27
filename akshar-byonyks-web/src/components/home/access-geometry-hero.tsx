@@ -78,20 +78,14 @@ export function AccessGeometryHero() {
     // silently breaks position: sticky for the scroll-scrub track below —
     // any ancestor with non-visible overflow kills sticky for descendants.
     //
-    // Background is ink for the first 85% then gradients to white over the
-    // last 15%, using the exact same stops as the Silk mask below. The two
-    // must move together: Silk fading to transparent reveals this gradient,
-    // so if either one changes alone you get a flat, static patch of plain
-    // ink where the two fades don't line up — reintroducing the old flat
-    // hero color right where the motion should be dissolving into white.
-    <section
-      aria-label="Introduction"
-      className="relative text-white"
-      style={{
-        backgroundImage:
-          "linear-gradient(to bottom, var(--color-ink) 0%, var(--color-ink) 85%, var(--color-background) 100%)",
-      }}
-    >
+    // Solid ink, with the hand-off to white moved out into its own fixed-height
+    // band below the content (26 Aug 2026). It used to be a percentage gradient
+    // across the whole section — ink to 85%, white by 100% — which put the
+    // "dialysis gap in India" stat cards, the last block in the section, inside
+    // the fade. Their dashed bottom borders dissolved completely and their white
+    // label text finished on a near-white ground. A percentage stop cannot know
+    // what content lands on it; a fixed band after the content can.
+    <section aria-label="Introduction" className="relative bg-ink text-white">
       {/* Silk spans the whole hero — headline, scroll-scrub track, and the
           gap stats — as one continuous canvas behind all three, not a
           separate layer per block. relative only, no overflow-hidden: that
@@ -107,11 +101,12 @@ export function AccessGeometryHero() {
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 z-0"
-            // Same 85%/100% stops as the <section> background gradient
-            // above: as Silk's own opacity drops to 0 here, what's revealed
-            // underneath is simultaneously turning from ink to white, so
-            // the silk color dissolves straight into white with no static
-            // ink plateau in between.
+            // Silk settles into plain ink over its last 15% rather than into
+            // white. Since 26 Aug 2026 this wrapper stops at the end of the
+            // content, so the mask no longer has to stay in lockstep with a
+            // section-wide gradient — it fades the wash out over the stat
+            // cards, which land on solid ink, and the ink-to-white hand-off
+            // happens in the band below this element entirely.
             style={{
               WebkitMaskImage:
                 "linear-gradient(to bottom, black 0%, black 85%, transparent 100%)",
@@ -159,14 +154,23 @@ export function AccessGeometryHero() {
           </div>
 
           {/* Card-stack section, immediately after the headline. Motion-safe:
-              a short pinned track (160vh — 60vh of scroll room, "a bit" of
-              scroll, not the prior 220vh) so the stack owns a full viewport of
-              its own instead of being cropped inside the headline's leftover
-              space. Motion-reduce: the same two cards, laid out statically. */}
+              a pinned track (180vh — 80vh of scroll room) so the stack owns a
+              full viewport of its own instead of being cropped inside the
+              headline's leftover space. Motion-reduce: the same two cards, laid out statically. */}
           {enhanced ? (
             <div
               ref={trackRef}
-              className="relative h-[160vh]"
+              // 180vh (26 Aug 2026): 80vh of scroll room, up from 30vh. At
+              // 130vh the card swap resolved inside about a third of a flick,
+              // which read as a jump-cut rather than a scrub — the stack had
+              // finished changing before the eye had time to follow it.
+              //
+              // It was short because Home carries a second scrubbed scene — the
+              // two-path journey in "the night" — and the two have to differ in
+              // kind, not just in position. They still do at this length: the
+              // journey runs 240vh (140vh of room) and explains at five beats'
+              // depth, while this stays the one-gesture opening.
+              className="relative h-[180vh]"
               style={{ "--p": 0 } as CSSProperties}
             >
               {/* top-16, not top-0: the site header is its own sticky element
@@ -202,6 +206,20 @@ export function AccessGeometryHero() {
           </div>
         </div>
       </div>
+
+      {/* The ink-to-white hand-off, as its own band outside the content
+          wrapper above. Nothing is ever laid over it, which is the whole
+          point: a fade is only safe where no text or border has to survive
+          it. Height is fixed rather than a percentage of the section so it
+          reads the same whether the section is 1,600px or 3,000px tall. */}
+      <div
+        aria-hidden="true"
+        className="h-16 w-full sm:h-24"
+        style={{
+          backgroundImage:
+            "linear-gradient(to bottom, var(--color-ink) 0%, var(--color-background) 100%)",
+        }}
+      />
     </section>
   );
 }

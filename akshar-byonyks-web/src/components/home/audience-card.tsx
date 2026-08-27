@@ -81,7 +81,16 @@ export function AudienceCard({
         <h3 className="mt-4 text-lg font-semibold text-ink">{title}</h3>
         <p className="mt-2 text-sm text-muted-foreground">{body}</p>
       </div>
-      <span className={cn("mt-6 inline-flex items-center gap-1 text-sm font-semibold", fg)}>
+      {/* text-ink, not the card's accent (fixed 26 Aug 2026). Measured, the
+          accent-coloured label failed WCAG 1.4.4 on two of the four tints —
+          gold at 2.78:1 and teal at 4.32:1 against their own card grounds,
+          where 4.5:1 is required. It was also a standing violation of
+          DESIGN.md's Accent Ration Rule, which restricts every accent to large
+          display type, icon chips and non-text graphics: "never body text,
+          never links." The icon above keeps the accent, because an icon is the
+          non-text graphic the rule allows, so each card still reads in its own
+          colour without spending that colour on 14px text. */}
+      <span className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-ink">
         Explore
         <ArrowUpRight
           className="size-4 transition-transform duration-300 group-hover/card:translate-x-0.5 group-hover/card:-translate-y-0.5"

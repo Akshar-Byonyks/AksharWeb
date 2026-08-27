@@ -24,8 +24,15 @@ export function SiteFooter() {
 
   return (
     <footer className="bg-ink">
-      <div className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
+      {/* py-8, down from py-12 (27 Aug 2026). The whole closing ink mass —
+          waves, CTA band, footer — has to fit one viewport, or the silhouette
+          is already off the top by the time the page stops scrolling. See the
+          note on the grid gap below for the rest of the budget. */}
+      <div className="mx-auto max-w-[1280px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        {/* gap-y-6, not gap-8: the vertical gap only exists at grid-cols-2,
+            i.e. on phones, which is exactly where the mass is tightest. The
+            horizontal gap that sets the desktop column rhythm stays at 8. */}
+        <div className="grid grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-4">
           {footerColumns.map((column) => (
             // `min-w-0`: a `1fr` grid track floors at min-content, so a long
             // single word ("Manufacturing", "Grievance Redressal") pushed the
@@ -35,13 +42,19 @@ export function SiteFooter() {
               {/* The list gap moves into the links themselves. Spacing between
                   labels is preserved; what changes is that the padding belongs
                   to the anchor, so the 24px target is the thing you actually
-                  click rather than dead space around it. */}
+                  click rather than dead space around it.
+
+                  py-1, down from py-1.5 (27 Aug 2026): text-sm's 20px line box
+                  plus 8px of padding is a 28px target, still clear of WCAG
+                  2.5.8's 24px floor with room to spare. This is the floor of
+                  what can be cut here — py-0.5 would land exactly on 24px and
+                  leave nothing for a future line-height change. */}
               <ul className="mt-2 flex flex-col">
                 {column.links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="inline-block max-w-full py-1.5 text-sm text-white/70 hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                      className="inline-block max-w-full py-1 text-sm text-white/70 hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                     >
                       {link.label}
                     </Link>
@@ -52,7 +65,7 @@ export function SiteFooter() {
           ))}
         </div>
 
-        <div className="mt-10 border-t border-white/15 pt-6 text-sm text-white/60">
+        <div className="mt-6 border-t border-white/15 pt-4 text-sm text-white/60">
           <p>&copy; {year} Akshar Byonyks International LLC. All rights reserved.</p>
         </div>
       </div>

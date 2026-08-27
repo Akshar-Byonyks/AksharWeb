@@ -10,6 +10,24 @@ import { ScrollReveal } from "@/components/motion/scroll-reveal";
 // (deviations.md) — regulatory (blue/trust), quality (teal/clinical),
 // impact (gold/human) — so the three read as different kinds of proof,
 // not one repeated number.
+//
+// Rebuilt 26 Aug 2026. The sitewide critique found this was the densest
+// credibility on the site — the thing the Priority-1 and Priority-3 audiences
+// actually arrive for — rendered as three plain paragraphs at text-4xl on a
+// 242px band, and called it the weakest treatment of the strongest content.
+//
+// Deliberately NOT rebuilt as a hero-metric band (big number, small label,
+// accent), which the craft floor names as a default to refuse and which would
+// read as marketing to exactly the two audiences that distrust it. It is built
+// as a register instead: hairline-separated entries, the credential set at
+// display weight, the issuing attribution given equal prominence to the
+// credential because on this site the attribution is the regulatorily load-
+// bearing half. The separator language is the specification table's, so a
+// reader meets the same documentary grammar on both pages.
+//
+// The ground stays white on purpose. Under the revised Full-Bleed Rule, ink
+// carries home/night/patient-life and white carries evidence/regulation/
+// specification. This is evidence; it belongs in the light.
 const proofPoints = [
   {
     stat: "510(k)",
@@ -27,30 +45,47 @@ const proofPoints = [
 
 export function ProofBand() {
   return (
-    <section aria-labelledby="proof-heading" className="border-y border-line bg-background">
-      <div className="mx-auto max-w-[1280px] px-4 py-16 sm:px-6 lg:px-8">
+    <section
+      aria-labelledby="proof-heading"
+      className="border-y border-line bg-background"
+    >
+      <div className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
         <h2 id="proof-heading" className="sr-only">
           Proof
         </h2>
         <ScrollReveal>
-          <div className="grid grid-cols-1 gap-10 sm:grid-cols-3">
-            {proofPoints.map(({ stat, label, detail, className }) => (
-              <div key={label}>
-                <p className={`text-4xl font-bold ${className}`}>{stat}</p>
-                <p className="mt-1 text-sm font-semibold text-ink">{label}</p>
-                <p className="mt-2 text-sm text-muted-foreground">{detail}</p>
+          {/* Divider between entries rather than around them: a rule that
+              separates reads as a record, a box that encloses reads as a card,
+              and this page already had twelve of those. */}
+          <div className="grid grid-cols-1 divide-y divide-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            {proofPoints.map(({ stat, label, detail, className }, i) => (
+              <div
+                key={label}
+                className={
+                  i === 0
+                    ? "pb-8 sm:pr-8 sm:pb-0 lg:pr-12"
+                    : "py-8 sm:px-8 sm:py-0 lg:px-12"
+                }
+              >
+                <p
+                  className={`text-5xl font-bold tracking-tight lg:text-6xl ${className}`}
+                >
+                  {stat}
+                </p>
+                <p className="mt-4 text-lg font-semibold text-ink">{label}</p>
+                <p className="mt-2 text-base text-muted-foreground">{detail}</p>
               </div>
             ))}
-            <div>
+            <div className="pt-8 sm:pt-0 sm:pl-8 lg:pl-12">
               <CountUpStat
                 to={10000}
                 suffix="+"
-                className="text-4xl font-bold text-accent-gold"
+                className="text-5xl font-bold tracking-tight text-accent-gold lg:text-6xl"
               />
-              <p className="mt-1 text-sm font-semibold text-ink">
+              <p className="mt-4 text-lg font-semibold text-ink">
                 Therapies delivered
               </p>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="mt-2 text-base text-muted-foreground">
                 Using Byonyks cycler technology, as reported by Byonyks USA.
               </p>
             </div>

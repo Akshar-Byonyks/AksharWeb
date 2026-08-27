@@ -70,7 +70,12 @@ function SceneCard({
       )}
       style={style}
     >
-      <p className="flex items-center gap-1.5 text-xs font-semibold tracking-wide text-white/45 uppercase sm:text-sm">
+      {/* white/60, not white/45 (fixed 26 Aug 2026): measured at 4.29:1 against
+          the ink card ground, just under WCAG 1.4.4's 4.5:1 for 14px text.
+          This audience skews older with diabetes-related visual impairment, so
+          PRODUCT.md's rule is to take the stricter option — /60 measures
+          6.08:1 and the label still reads as a quiet marker, not a heading. */}
+      <p className="flex items-center gap-1.5 text-xs font-semibold tracking-wide text-white/60 uppercase sm:text-sm">
         {tone === "home" && (
           <span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-accent-gold" />
         )}
@@ -100,7 +105,13 @@ function ClinicCard({ className, style }: { className?: string; style?: CSSPrope
       <Hospital
         aria-hidden="true"
         strokeWidth={1.5}
-        className="mx-auto size-28 sm:size-32"
+        // `size-*` is rem-based, so at 200% text this decorative glyph grew to
+        // 224px and pushed a 320px viewport 17px sideways. It is an
+        // illustration, not type: it carries no information that gets easier to
+        // read when it doubles, and WCAG 1.4.4 is about text. Capping the
+        // rendered box keeps the reflow clean while leaving the icon free to
+        // scale at every width where there is room for it.
+        className="mx-auto size-28 max-h-[40vw] max-w-[40vw] sm:size-32"
       />
     </SceneCard>
   );
