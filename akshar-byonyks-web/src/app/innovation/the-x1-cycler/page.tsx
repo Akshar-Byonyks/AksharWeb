@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 
 import { DirectionContract } from "@/components/common/direction-contract";
-import { X1Continue } from "@/components/innovation/x1-continue";
 import { X1Features } from "@/components/innovation/x1-features";
 import { X1Hero } from "@/components/innovation/x1-hero";
 import { X1Ifu } from "@/components/innovation/x1-ifu";
 import { X1Regulatory } from "@/components/innovation/x1-regulatory";
 import { X1SpecTable } from "@/components/innovation/x1-spec-table";
 import { CtaBand } from "@/components/sections/cta-band";
+import { KeepReading } from "@/components/sections/keep-reading";
 import { deviceName } from "@/lib/claims";
 import { siteUrl } from "@/lib/site-config";
 
@@ -112,7 +112,25 @@ regulatory sentence imported from src/lib/claims.ts rather than written here.
       <X1SpecTable />
       <X1Regulatory />
       <X1Ifu />
-      <X1Continue />
+      {/* Was `X1Continue`, a bespoke copy of this block. Both destinations
+          it pointed at were 404s at the time; `/innovation/how-it-works/` now
+          exists and the hub replaces `/innovation/market/`, which does not.
+          See keep-reading.tsx on why an unbuilt route is never linked from a
+          card whose whole copy invites the reader to open it. */}
+      <KeepReading
+        items={[
+          {
+            href: "/innovation/how-it-works",
+            title: "How peritoneal dialysis works",
+            body: "The therapy this device automates, in plain language — the peritoneum, the three steps of an exchange, and a technical layer at each step.",
+          },
+          {
+            href: "/innovation",
+            title: "Innovation",
+            body: "How the licensed technology, the therapy and the India argument fit together.",
+          },
+        ]}
+      />
       <CtaBand />
     </>
   );

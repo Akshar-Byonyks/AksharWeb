@@ -1,5 +1,4 @@
-import { Clock } from "lucide-react";
-
+import { PendingChip } from "@/components/common/pending-note";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 
 // Spec §9.2: "Specification table."
@@ -67,16 +66,14 @@ const rows: SpecRow[] = [
   },
 ];
 
-// The compact form of DESIGN.md's Placeholder / Pending Data pattern: same
-// dashed 1px border, same semantic pending color, same mono clock label,
-// sized for a table cell rather than a standalone stat card.
+// The compact form of DESIGN.md's Placeholder / Pending Data pattern. The chip
+// itself moved into pending-note.tsx on 27 Aug 2026 when a second page needed
+// it; what stays here is only the cell-specific arrangement of chip plus
+// explanation.
 function PendingValue({ note }: { note: string }) {
   return (
     <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
-      <span className="inline-flex items-center gap-1.5 rounded-sm border border-dashed border-pending/40 bg-surface-2 px-2 py-0.5 font-mono text-xs tracking-wide text-pending">
-        <Clock className="size-3" aria-hidden="true" />
-        Pending
-      </span>
+      <PendingChip />
       <span>{note}</span>
     </span>
   );

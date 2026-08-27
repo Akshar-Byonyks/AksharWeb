@@ -268,6 +268,35 @@ Two paths run down a pinned viewport, one per route through dialysis, and the re
 
 A sticky `lg:top-24` list of anchor links in the left column of a long single-measure document, currently `/privacy-policy`. Plain anchors, no scroll-spy and no active-section tracking: the value is the jump, and a client island tracking scroll position on a privacy policy is a cost this audience pays for nothing. Sections carry `scroll-mt-24` so a jump clears the sticky header. It exists because a 75ch measure centred at 1440px leaves ~818px of empty white on either side for 2,753 continuous pixels — the measure is right, and the space beside it needed a use rather than a filler.
 
+### Two-Layer Disclosure (`ClinicalLayer`)
+
+Added 27 Aug 2026, `/innovation/how-it-works/`. The site's answer to spec §9.2's "plain language for patients, expandable technical layer for clinicians": a native `<details>`/`<summary>` sitting inline at the end of a plain-language block, collapsed by default, labelled **For clinicians** in teal.
+
+- **Native, not a primitive and not hand-rolled.** CLAUDE.md's order is shadcn over hand-rolled, native over both where it does the job, and this is the clearest case on the site: it opens with no JavaScript, is keyboard- and screen-reader-operable with no ARIA authored here, and survives a failed client bundle — which matters because PRODUCT.md describes the patient audience as majority mobile and often bandwidth-constrained.
+- **Collapsed by default, and that is the whole design.** The page is written in the patient register; the clinician is the reader who goes looking. The layer that must be sought is the one whose reader will seek it.
+- **Teal is not decoration here.** Teal means "clinical evidence" sitewide, and this disclosure holds exactly that. It is a label chip plus a small chevron — never body text — so the Accent Ration Rule holds at the same time.
+- Both the platform triangle resets (`list-none` and the webkit marker) are required; with only one, Safari and Chromium disagree and one of them draws two markers. `py-3.5` on a `text-sm` line box is a 48px target — this is the one control a reader has to hit deliberately on the section.
+
+### Exchange Cycle Figure (`/innovation/how-it-works/`)
+
+Three panels — fill, dwell, drain — over one shared `0 0 160 150` viewBox, single 1.5px non-scaling stroke, on ink. The page's one illustration.
+
+**Why it is not scroll-driven.** Two Paths spent the third scroll interaction and set the test for a fourth: name what only scroll can do here. This fails that test on purpose. An exchange is a cycle of three states and a reader should be able to see and compare all three at once; scrubbing would hide two thirds of the subject at every moment in return for nothing.
+
+**Why it is an `<ol>`.** The subject genuinely is an ordered list, so the ordering is carried by the element rather than by an invented notation. The visible digit beside each title is `aria-hidden` — position is already conveyed programmatically, and without it the heading's accessible name reads "1Fill."
+
+**Every mark is named in the caption,** which is the lesson Two Paths paid for: an invented notation needs a legend or an anchor. The outline is the peritoneal cavity, the vertical line the catheter, the shaded region dialysate, and the dwell arrows mark direction only, never quantity. The caption also states that the drawing is a schematic and not an anatomical illustration — a plausible-looking organ outline drawn from memory is the same class of risk as the India boundary that was withdrawn from "the night," and the craft floor separately calls an approximated organic contour the cheap version of the effect.
+
+**Sizing.** The cavity occupies 108 of the viewBox's 160 units, so the drawing renders at roughly two thirds of whatever box it is given; the rest is not padding, the dwell arrows need it. At a 200px cap that put a 135px figure in a 405px column and the page's one illustration read as an icon. The cap is 240px.
+
+### Unbuilt Routes (extended from breadcrumbs, 27 Aug 2026)
+
+The breadcrumb rule — "unbuilt ancestors render as text, not links" — is the general rule, not a breadcrumb-specific one. Anywhere the site would point at a route that does not exist:
+
+- **A route the visitor has already been promised** (it is in the header or the footer) is **shown and not linked.** On `/innovation/`, `/innovation/market/` renders as a card-shaped block with a dashed border, no `href`, no hover state, no focus ring, and an **In preparation** pending chip. Silently omitting it would read as if the hub had forgotten the page rather than as if it were coming; linking it would 404.
+- **A route nobody has been promised** (`/innovation/whats-next/`, in the spec's sitemap but not in the nav) is not shown at all.
+- **A "Keep reading" card is never the exception.** `/innovation/the-x1-cycler/` shipped this block pointing at two unbuilt routes on the argument that nothing had promised they were live. That was wrong for a card whose entire copy is an invitation to open it, and it is fixed: `KeepReading` takes only routes that exist.
+
 ## Do's and Don'ts
 
 ### Do:

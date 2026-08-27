@@ -231,3 +231,48 @@ Fixed by shrinking the stage rather than by weakening the safety check: markers 
 `MARKER_HALF` had to move with the marker size (1.375rem → 1.25rem); it is the anchor every segment is positioned against, so the two are a manual pair. Alignment re-verified at 0.00px on both axes after the change.
 
 **The general lesson, recorded because it will recur:** a progressive enhancement that degrades silently gives the user no signal that it degraded. Every height- or capability-gated enhancement needs its threshold measured against real device viewports, not just confirmed at the size it was authored on. The fallbacks themselves were all still correct — 200% text, reduced motion, no-JS and short viewports each render the finished, unpinned diagram with every beat visible.
+
+---
+
+## 6. `/innovation/` and `/innovation/how-it-works/`: what shipped short of the spec, and why (27 Aug 2026)
+
+**Where:** `src/app/innovation/page.tsx`, `src/app/innovation/how-it-works/page.tsx`, `src/components/innovation/*`, `src/components/sections/keep-reading.tsx`.
+
+### The spec's four children, and the two that shipped
+
+§8.3 lists four children under `/innovation/`: `the-x1-cycler`, `how-it-works`, `market`, `whats-next`. Two now exist. The other two are not late — they are blocked on content this project does not hold, and building them anyway would mean fabricating it:
+
+- **`/innovation/market/`** is specified as "charts, not paragraphs. Every figure sourced and dated." PRODUCT.md's "still fully open, do not fabricate" list names exactly that material: sourced and dated statistics for scale, access geometry, cost and coverage, and modality mix. A market page built today would be an all-pending shell, which is worse than an honest absence.
+- **`/innovation/whats-next/`** (X2 and X3) is not in the primary nav at all, so no visitor has been promised it.
+
+The difference matters for how each is treated. `market` is in the header and the footer, so a visitor already knows it should exist: `/innovation/` shows it as a **card-shaped block with no `href` and an "In preparation" chip** — the pending language DESIGN.md already defines, applied to a route rather than to a figure. `whats-next` is shown nowhere.
+
+**This extends a rule that already existed.** DESIGN.md's breadcrumb entry says "unbuilt ancestors render as text, not links," for the reason that pointing a reader or a crawler at a 404 is worse than leaving a position unlinked. The same reasoning, one level down, is what governs the doorway card and what removed `/innovation/market/` from the "Keep reading" block on `/innovation/the-x1-cycler/`, where it had been shipping as a live-looking link to a 404 since 24 Aug 2026.
+
+### The four benefits appear twice sitewide, not three times
+
+§9.2 asks `/innovation/` for a "four-benefit summary" and `/innovation/how-it-works/` for "the four benefits, each with a supporting reference." Taken literally that is three instances of the same four claims — Home already carries them — on three pages a visitor may well read in sequence, which is the precise repetition the 26 Aug sitewide critique found and the reason DESIGN.md's Hairline Row List rule exists.
+
+What shipped: Home keeps them in the patient register with the accent chips that teach the wayfinding code. `how-it-works` carries them as an **evidence register** — the same four claims, no chips, each with its reference slot visible and empty. The hub carries neither, and links to them instead.
+
+The reference slots are empty because there is no reference. All four are PRODUCT.md's migrated framework and none of them arrived with a citation. Marking four visible gaps is the same decision the X-1 specification table already made, and the X-1 page's own direction contract argues for it: a register with four visible gaps is worth more to a nephrologist or an investor than a complete-looking one.
+
+### Clinical content is written, and is marked unreviewed
+
+§9.2 marks `how-it-works` **"Nephrologist review required."** That review has not happened. The page ships the clinical layers anyway — diffusion, osmosis, membrane characterisation, the CAPD/APD distinction — because they are standard physiology rather than claims about this product, and because a page explaining a therapy without them would fail the clinician audience entirely.
+
+What it does not do is imply sign-off it does not have. A `PendingNote` under the first clinical layer states, in the reader's view, that the layers are awaiting nephrologist review before launch. **Launch gate: that note comes out only when a nephrologist has actually read them**, and at the same time the four reference slots get filled. Both are one review, not two.
+
+Deliberately excluded from the clinical layers, pending that review: anything prescriptive. No numeric dwell times, no fill volumes, no peritonitis management, no candidacy criteria. Peritonitis appears once on the page, as a question for the patient to ask their nephrologist, never as guidance.
+
+### Two components generalised rather than copied
+
+`X1Continue` became `KeepReading` (`src/components/sections/keep-reading.tsx`) and the compact pending chip moved out of `x1-spec-table.tsx` into `pending-note.tsx` as `PendingChip`. Both were about to acquire a second hand-maintained copy on the new page, and both are components whose entire purpose is that two places look the same.
+
+### What stayed true regardless
+
+- No unsourced statistic anywhere on either page. The India argument on the hub is made **without a single number** — "roughly three trips a week" is a description of the therapy schedule, not a claim about India — because every figure that would strengthen it is on the do-not-fabricate list.
+- Every regulatory sentence comes from `src/lib/claims.ts` at its gated wording. Neither page upgrades the licensing claim.
+- The Drugs and Magic Remedies Act line is in the first viewport of `how-it-works`, not at the foot of it, and the page's closing section is seven questions routed to a nephrologist with no answers attached.
+- No anatomical illustration. The exchange figure is a schematic and its caption says so; an organ outline drawn from memory on a medical-device site is the same class of risk as the India boundary that was withdrawn from "the night."
+- Three full-bleed ink moments on `how-it-works` (hero, the exchange, the closing mass), two on the hub. Ceiling respected, no two adjacent.

@@ -35,10 +35,10 @@ export function X1Hero() {
         <Breadcrumbs
           tone="dark"
           items={[
-            // No `href` on Innovation: `/innovation/` is not built yet, so
-            // the crumb renders as text rather than as a link to a 404. Add
-            // `href: "/innovation"` when the hub ships.
-            { name: "Innovation" },
+            // Linked since 27 Aug 2026: the hub this crumb had been rendering
+            // as plain text now exists, so the trail resolves and the
+            // `BreadcrumbList` carries its `item` for this position.
+            { name: "Innovation", href: "/innovation" },
             { name: "The X-1 cycler" },
           ]}
         />

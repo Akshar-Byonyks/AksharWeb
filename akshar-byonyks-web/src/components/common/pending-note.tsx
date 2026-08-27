@@ -58,3 +58,19 @@ export function PendingNote({
     </div>
   );
 }
+
+// The compact form of the same pattern (DESIGN.md, "Two sizes, one
+// language"): identical dashed border, semantic pending color and mono clock
+// label, sized for a table cell or the end of a row rather than as a card.
+// Lived inside x1-spec-table.tsx until 27 Aug 2026, when the how-it-works
+// page needed the same chip for its reference slots — at which point two
+// copies of a component whose entire job is consistency would have been the
+// thing the shared component exists to prevent.
+export function PendingChip({ label = "Pending" }: { label?: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-sm border border-dashed border-pending/40 bg-surface-2 px-2 py-0.5 font-mono text-xs tracking-wide text-pending">
+      <Clock className="size-3 shrink-0" aria-hidden="true" />
+      {label}
+    </span>
+  );
+}
