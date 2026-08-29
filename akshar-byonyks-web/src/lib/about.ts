@@ -1,0 +1,160 @@
+// Who Akshar Byonyks is: the origin, the timeline, and what is still blocked.
+//
+// MEASURED BEFORE IT WAS BUILT (29 Aug 2026), which is the process change
+// `/manufacturing/` paid for. Twelve facts this page might carry were checked
+// against the rendered copy of the other seven pages first. **Four were new.**
+// The founder narrative, the founder's name, the milestone arc and the company
+// values appear nowhere else on the site; everything else — the licensing
+// sentence, the clearance, the India regulatory position — is already stated,
+// most of it on three pages.
+//
+// That result reshaped the page rather than decorating it. Spec §9.5 gives
+// `/about-us/` "who Akshar Byonyks is, the licensing relationship per §3.1,
+// links to the three children" and puts the founder narrative on a separate
+// `/about-us/our-story/`. Followed literally, the hub would have been built
+// almost entirely out of the eight facts that already exist, and the four that
+// do not would have gone on a different page. So the story is here, and the
+// child page is not built.
+//
+// THE FOUNDER STORY IS NOT AKSHAR BYONYKS'. This is the finding that governs
+// the whole file. Spec §9.5 says to migrate the narrative from
+// byonyks.com/the-vision/ — the aunt on dialysis, the mother's diabetes risk,
+// the wish for a needleless treatment at home. That page is signed **Farrukh
+// Usman, Founder and CEO** — of **Byonyks**. Akshar Byonyks is a separate
+// Indian entity whose own founders are Open Question 1.4 and are not known to
+// this project.
+//
+// Migrating "my aunt" into the first person on aksharbyonyks.com would invent
+// an origin for a company that has not told us its own. It is the same error
+// as re-badging a factory, arriving through a story instead of a certificate.
+// So the narrative is **quoted and attributed by name**, and the page says
+// plainly whose company it started.
+
+/**
+ * The origin, in the founder's own words.
+ *
+ * Quoted rather than paraphrased, and trimmed rather than rewritten: an origin
+ * story restated in a marketing voice stops being evidence of anything. The US
+ * sentence in the original ("Every clinic in America is using more than
+ * 20-year-old dialysis technologies") is deliberately not carried over — spec
+ * §3.2 lists the US-market arguments as claims that do not transfer to India,
+ * and this is one.
+ */
+export const founderStory = {
+  quote:
+    "Byonyks was started because of my experience witnessing my aunt's life on dialysis. As a diabetic, she developed chronic renal disease that led to her start on hemodialysis treatments. Her treatments began at a clinic, with the painful insertion of needles into her fistula and enduring the treatments 3x/week. Looking into the future, I worried my mother (also diabetic) would also need dialysis care. I wanted to provide her with an option that would allow for a painless, needleless treatment in her home. I want the same not only for my mother but for every mother and father on earth.",
+  attribution: "Farrukh Usman",
+  role: "Founder and Chief Executive Officer, Byonyks",
+  source: "byonyks.com/the-vision/",
+  retrieved: "29 August 2026",
+} as const;
+
+/**
+ * The milestone arc.
+ *
+ * Spec §9.6 folds the timeline into this page after the investor section was
+ * cut. What it lists is nine entries, four of which are the test houses —
+ * FiLab, HTW, SGS and TÜV SÜD — and **those four now live in the compliance
+ * register** on `/innovation/the-x1-cycler/`. Restating them here would be the
+ * duplication that retired `/manufacturing/`, reintroduced a day later on a
+ * different page.
+ *
+ * So 2023 is one entry that points at the register instead of reprinting it.
+ * A timeline is an arc; a register is a record; the arc should say that the
+ * testing happened and let the record hold what it was.
+ *
+ * ONE CORRECTION, FOUND BY CHECKING. Spec §9.6's list reads "human factors,
+ * TUV SUD Minnesota IEC and FDA submission November 2023". The FDA's own
+ * record for K243371 gives **date received 30 October 2024**. Whatever
+ * happened in November 2023, the submission the register knows about is a year
+ * later, so the testing and the submission are separate entries at their own
+ * dates. Recorded in `deviations.md`.
+ */
+export type MilestoneVerification =
+  "public-record" | "company-stated" | "pending";
+
+export type Milestone = {
+  readonly when: string;
+  readonly title: string;
+  readonly detail: string;
+  readonly verification: MilestoneVerification;
+  /** In-page or in-site link to where the detail actually lives. */
+  readonly href?: string;
+  readonly hrefLabel?: string;
+};
+
+export const milestones: readonly Milestone[] = [
+  {
+    when: "2020–21",
+    title: "Production facility established",
+    detail:
+      "Byonyks brings manufacturing online. Attributed to Byonyks and not to a country, per the attribution decision of 20 August 2026.",
+    verification: "company-stated",
+  },
+  {
+    when: "2021",
+    title: "First 1,000 treatments delivered",
+    detail:
+      "Using Byonyks cycler technology. The figure has since passed 10,000, as reported by Byonyks USA.",
+    verification: "company-stated",
+  },
+  {
+    when: "2022",
+    title: "R&D centres opened",
+    detail: "Byonyks expands its research and development capacity.",
+    verification: "company-stated",
+  },
+  {
+    when: "2023",
+    title: "Independent testing and certification",
+    detail:
+      "Biocompatibility, electrical safety, IEC certification and human factors work, through four independent laboratories across the year.",
+    verification: "company-stated",
+    href: "/innovation/the-x1-cycler#compliance",
+    hrefLabel: "Each test, its date and its laboratory",
+  },
+  {
+    when: "30 October 2024",
+    title: "510(k) submitted to the FDA",
+    detail:
+      "The date the FDA's own register records for receipt of the premarket notification.",
+    verification: "public-record",
+  },
+  {
+    when: "16 May 2025",
+    title: "FDA 510(k) clearance granted",
+    detail:
+      "K243371. The X-1 APD Cycler and the Automated PD Set DS-1 found substantially equivalent. Held by Byonyks.",
+    verification: "public-record",
+    href: "/innovation/the-x1-cycler#compliance",
+    hrefLabel: "The record, and how to check it",
+  },
+  {
+    when: "Not yet stated",
+    title: "Akshar Byonyks licensed for India",
+    detail:
+      "The date the licence was executed has not been given to this project, and the agreement's territory, exclusivity and product scope are still to be specified.",
+    verification: "pending",
+  },
+];
+
+/**
+ * The five executives, and why there are none on this site yet.
+ *
+ * Open Question 1.4 — "still fully open", and a launch gate in both the spec
+ * (§14.4) and the risk table, which puts it plainly: "Investor-first with no
+ * named team is not credible." The five names, their bios and their portraits
+ * are on this project's do-not-fabricate list, so the page states the gap
+ * rather than filling it with stock portraits or role titles nobody holds.
+ *
+ * The nine advisory nephrologists are a different matter and are already
+ * surfaced, by name and credential, as ByoTalks speakers — spec F-5's
+ * compensating route, working as intended.
+ */
+export const leadershipStatus = {
+  note: "Leadership page pending",
+  label:
+    "The five Akshar Byonyks executives — names, biographies and portraits — have not been provided to this project. Rather than fill the space with placeholders, the page is not published until they are.",
+  meanwhile:
+    "The nephrologists who advise Byonyks do appear on this site, by name and credential, as the speakers in ByoTalks.",
+} as const;

@@ -26,15 +26,15 @@ export const primaryNav: NavLink[] = [
     ],
   },
   { label: "ByoTalks", href: "/byotalks" },
-  {
-    label: "About Us",
-    href: "/about-us",
-    children: [
-      { label: "Our Story", href: "/about-us/our-story" },
-      { label: "Leadership", href: "/about-us/leadership" },
-      { label: "Careers", href: "/about-us/careers" },
-    ],
-  },
+  // No children, deliberately (29 Aug 2026). Spec §8.3 gives About Us three:
+  // /our-story/ is not built because /about-us/ absorbed the founder narrative
+  // rather than linking to it — the pre-build measurement found the story was
+  // the substance and the hub was the restatement. /leadership/ is blocked on
+  // Open Questions 1.4, the five executives, which is a launch gate and a
+  // do-not-fabricate item. /careers/ is real separate content and is later
+  // work. A mega-menu that opens onto three 404s is worse than no mega-menu,
+  // and this repo has already shipped links to unbuilt routes once.
+  { label: "About Us", href: "/about-us" },
   { label: "News", href: "/news" },
 ];
 
@@ -56,9 +56,6 @@ export const footerColumns: { heading: string; links: NavLink[] }[] = [
     heading: "Company",
     links: [
       { label: "About Us", href: "/about-us" },
-      { label: "Our Story", href: "/about-us/our-story" },
-      { label: "Leadership", href: "/about-us/leadership" },
-      { label: "Careers", href: "/about-us/careers" },
       { label: "News", href: "/news" },
     ],
   },

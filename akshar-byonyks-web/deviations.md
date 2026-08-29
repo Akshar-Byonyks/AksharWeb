@@ -485,3 +485,98 @@ is pre-existing and deliberate — it is one string from `claims.ts`, reused.
 and could have been run before it was built. "Does this page say anything the
 site does not already say?" is a cheaper question than "how do I make this page
 good?", and it should come first.
+
+---
+
+## 9. `/about-us/`: measured before it was built, and reshaped by the result (29 Aug 2026)
+
+The process change `/manufacturing/` paid for, applied for the first time.
+Twelve facts this page might carry were checked against the rendered copy of
+the other seven pages **before any component existed**.
+
+| | |
+|---|---|
+| Facts already on the site | 8 |
+| Facts **new to the site** | **4** |
+
+The four: the founder narrative, the founder's name, the milestone arc, and the
+company values. The eight: the licensing sentence, the clearance, the India
+regulatory position and so on — most of them already on three pages each.
+
+### What that changed
+
+Spec §9.5 gives `/about-us/` "who Akshar Byonyks is, the licensing relationship
+per §3.1, links to the three children," and puts the founder narrative on a
+separate `/about-us/our-story/`. Built literally, **the hub would have been made
+almost entirely of the eight facts that already exist**, with the four that do
+not on a page behind it. That is `/manufacturing/` again, and this time the
+measurement caught it before the code rather than after.
+
+So: **one page, carrying the story.** `/about-us/our-story/` is not built
+because this is it.
+
+### The founder story is not Akshar Byonyks'
+
+**The finding that governs the page.** byonyks.com's `/the-vision/` carries the
+narrative — the aunt on dialysis, the mother's diabetes risk, the wish for a
+needleless treatment at home — in the first person, signed **Farrukh Usman,
+Founder and CEO**, of **Byonyks**. Akshar Byonyks is a separate Indian entity
+whose own founders are Open Question 1.4 and are unknown to this project.
+
+Migrating "my aunt" into the first person here would have invented an origin for
+a company that has not told us its own — the same class of error as re-badging a
+factory, arriving through a story instead of a certificate. It is **quoted and
+attributed by name**, with the source URL and retrieval date under it, and the
+surrounding copy says whose company it started. That reads stronger, not weaker:
+"the man who built this device watched his aunt go through the alternative" is a
+better sentence than an unattributed one.
+
+### A date correction, found by checking
+
+Spec §9.6's milestone list reads "human factors, TUV SUD Minnesota IEC and **FDA
+submission November 2023**". The FDA's own record for K243371 gives **date
+received 30 October 2024**. The testing and the submission are therefore
+separate entries at their own dates, and the submission carries the register's.
+
+### What was cut rather than migrated
+
+byonyks.com's `/about-us/` runs two claims that do not ship here: **"62% of all
+the peritoneal dialysis machines in the US have contributions from our team
+members"** and the **"$44 billion dialysis businesses in North America"** line.
+Both are unsourced and both are US-market claims — spec §3.2's list of arguments
+that do not transfer. The project rule for an unsourceable statistic is to cut
+it, not soften it. The founder quote's own US sentence ("Every clinic in America
+is using more than 20-year-old dialysis technologies") is trimmed for the same
+reason, and the trim is recorded in `about.ts` rather than made silently.
+
+### Two tiers again, because a timeline launders evidence
+
+Evenly spaced dots imply evenly weighted facts. Two of these dates come from the
+FDA's database and five are Byonyks' own account of its history, so each entry
+is marked with the same vocabulary the compliance register uses — filled marker
+for the public record, hollow for a company statement, dashed for what has not
+happened. **The four test houses are not reprinted**; 2023 is one entry linking
+to the register that holds them. A timeline is an arc, a register is a record,
+and the arc should not become a second copy of the record.
+
+### The leadership gap is stated, not filled
+
+Spec §9.5: "Blocked on Open Questions 1.4. Launch gate." The five executives are
+on the do-not-fabricate list, so there is no `/about-us/leadership/` and the
+page says why. The risk table's "investor-first with no named team is not
+credible" is an argument for **getting the names**, not for inventing plausible
+ones. What the page does do is count the advisory nephrologists **from the real
+ByoTalks data** rather than claiming a number — spec F-5's compensating route,
+working.
+
+### A pre-existing nav defect, partly fixed
+
+The primary nav and footer pointed at **nine routes that do not exist**. Three
+were this page's own children and are now removed — a mega-menu opening onto
+three 404s is worse than no mega-menu, and this repo has shipped links to
+unbuilt routes once already.
+
+**Six remain and are deliberately untouched here:** `/news`, `/terms-of-use`,
+`/cookie-policy`, `/grievance-redressal`, `/accessibility`. The legal four are
+launch-gate pages that counsel drafts (spec §14.3) and removing their links
+would hide the gate rather than close it. They need building, not delinking.
