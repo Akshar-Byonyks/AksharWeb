@@ -664,3 +664,52 @@ Open Question 1.4 is unchanged. The site now names fourteen people who built the
 device and **zero people who run the Indian company** — which the spec's risk
 table calls out directly: "Investor-first with no named team is not credible."
 The roster helps; it does not close that gate.
+
+### 10a. The portraits, normalised (29 Aug 2026)
+
+Client: portraits confirmed usable from Byonyks; crop them to make backgrounds
+and proportions similar; then build each page.
+
+**Measured before deciding.** Sampling the top band and upper side columns of
+each image separated ten flat studio backdrops from four real-place
+photographs. That measurement chose the treatment per image rather than one
+rule being applied hopefully to all fourteen.
+
+- **Ten backdrops replaced** with `--color-surface-3`, by border-seeded flood
+  fill so a colour occurring inside the subject cannot be removed unless it is
+  connected to the frame edge.
+- **Four kept.** A bad cut-out of a real person is worse than an honest
+  photograph; they were cropped tighter instead.
+- **All fourteen reframed** to 4:5, top-anchored. 5.2 MB → 1.2 MB.
+
+**Two bugs worth keeping, because both looked like design problems and were
+not.**
+
+1. **`sharp.blur()` on a one-channel raw buffer returns three channels.** Every
+   mask lookup was therefore reading a pixel a third of the way into the image,
+   which rendered all ten subjects as faint ghosts over the new ground. Two
+   passes were spent blaming the compositing before measuring `soft.length` —
+   843,942 against 281,314 pixels — which found it immediately. **Take the
+   stride from `info`; never assume a raw buffer kept its channel count.**
+2. **`sharp.strategy.attention` decapitates portraits.** It crops to the
+   highest-entropy region, which on a head-and-shoulders shot is frequently the
+   shirt pattern or a busy background. Four of fourteen lost the top of the
+   head. A top-anchored crop with a per-image nudge is predictable and
+   reviewable; a saliency heuristic is neither.
+
+**And one that only showed at full size.** Mary Hoffman's dark-grey backdrop is
+within the general tolerance of the shadowed strands of her hair, so the fill
+walked through them and removed about a third of it. Visible in the contact
+sheet as a chewed edge; obvious at full size. Fixed with a per-image tolerance
+(52 → 26) plus a bounded 3-ring dilation to clear the rim that left behind.
+**The contact sheet found it, the full-size view confirmed it — both steps were
+necessary, and neither is optional on fourteen photographs of real people.**
+
+**Each profile page now shows its own provenance:** "Biography and portrait as
+published by Byonyks, carried here word for word", with a link to the source and
+the retrieval date. A quoted biography without a visible source is the same
+defect as an uncited statistic.
+
+Verified: all fourteen profile pages return 200, render their portrait at
+288×360, carry multiple biography paragraphs and a working source link, with no
+console errors. 37 static pages.

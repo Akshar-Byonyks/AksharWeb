@@ -208,3 +208,65 @@ fourteen biographies name **Lahore or Pakistan**, and two job titles read
 country attribution off this site. They are carried verbatim per the 29 August
 instruction and flagged per record in `leadership.ts` under `namesALocation`.
 See `deviations.md` §10.
+
+
+### Rights — CONFIRMED 29 August 2026
+
+**The client has confirmed these portraits are cleared for use from Byonyks.**
+The launch-gate item recorded above is closed. The other two items in that
+section — biographies naming a location, and portrait consistency — are not
+affected by it, and the second is now largely addressed below.
+
+### Edits made, 29 August 2026
+
+Required by this file's own rule: every edit recorded. All fourteen were
+downloaded, processed and **looked at at full size** before shipping.
+
+**Ten of fourteen — backdrop replaced.** Measured first: the background of each
+image was sampled across the top band and the upper side columns, and the mean
+colour distance from that sample decided the treatment. Ten came back as flat
+studio backdrops (spread under 12) and were replaced with the site's own
+`--color-surface-3` (#eaf1f5), so the grid reads as one set rather than
+fourteen photo shoots.
+
+- The replacement is a **border-seeded flood fill**, not a global colour match.
+  Only background actually connected to the edge of the frame is removed, so a
+  colour that also occurs inside the subject — grey hair against a grey
+  backdrop, a white collar against white — survives.
+- Mask feathered by a 1.2px blur so the join is a gradient rather than a
+  staircase.
+- **Mary Hoffman needed her own settings.** She is shot on dark grey, and the
+  shadowed strands on the left of her hair fall inside the general tolerance:
+  the first run walked through them and removed about a third of her hair.
+  Tolerance dropped from 52 to 26 for her image, which stopped at the hair but
+  left a rim of un-removed backdrop; a bounded 3-ring mask dilation removed the
+  rim. Checked at full size afterwards.
+
+**Four of fourteen — background kept.** Ahmed Muzammal (a street), Annie Usman
+(a doorway), Frank Rudolph (trees) and Rod Kenley (an event backdrop) are
+photographs of people in real places, not studio portraits. There is no safe way
+to cut a subject out of these without a segmentation model, and **a bad cut-out
+of a real person is worse than an honest photograph**. They keep their
+backgrounds and were cropped tighter instead, so less of the setting shows and
+their heads sit at the same scale as everyone else's.
+
+**All fourteen — reframed.** Every source was the same 0.62 ratio, so the 4:5
+crop takes height only, anchored at the top where the heads are. `sharp`'s
+`attention` strategy was tried first and rejected: it picks the highest-entropy
+region, which on a portrait is often the shirt or a busy background, and it
+decapitated four of the fourteen. A top-anchored crop with a per-image nudge is
+predictable and checkable, which a saliency heuristic is not.
+
+**All fourteen — re-encoded** to 900×1125 JPEG at q88 (mozjpeg). The directory
+went from **5.2 MB of PNG to 1.2 MB of JPEG**; the `.png` originals were removed
+and remain in git history at commit `1e856c0`.
+
+**Nothing was retouched.** No face, skin, colour or feature was altered on any
+image. The only changes are background replacement on a flat backdrop, framing,
+and format.
+
+**Still not fully met:** spec §9.5's "same backdrop, crop and lighting". Backdrop
+and crop are now consistent across the ten studio portraits and the crop is
+consistent across all fourteen. **Lighting is not**, and cannot be without a
+re-shoot — the four environmental photographs in particular remain visibly
+different in kind. That recommendation stands.

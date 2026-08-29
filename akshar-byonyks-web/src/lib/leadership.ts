@@ -90,7 +90,7 @@ export const executives: readonly Executive[] = [
     name: "Farrukh Usman",
     role: "Chief Executive Officer (CEO)",
     organisation: "Byonyks",
-    portrait: "/images/leadership/farrukh-usman.png",
+    portrait: "/images/leadership/farrukh-usman.jpg",
     portraitAlt:
       "Portrait of Farrukh Usman, Chief Executive Officer (CEO) at Byonyks.",
     linkedin: "https://www.linkedin.com/in/farrukh-usman-4231454",
@@ -104,7 +104,7 @@ export const executives: readonly Executive[] = [
     name: "Rod Kenley",
     role: "Chief Innovation Officer (CIO)",
     organisation: "Byonyks",
-    portrait: "/images/leadership/rod-kenley.png",
+    portrait: "/images/leadership/rod-kenley.jpg",
     portraitAlt:
       "Portrait of Rod Kenley, Chief Innovation Officer (CIO) at Byonyks.",
     linkedin: "https://www.linkedin.com/in/kenley-rod-a650096/",
@@ -117,7 +117,7 @@ export const executives: readonly Executive[] = [
     name: "Salahuddin Khan",
     role: "Chief Technology Officer (CTO)",
     organisation: "Byonyks",
-    portrait: "/images/leadership/salahuddin-khan.png",
+    portrait: "/images/leadership/salahuddin-khan.jpg",
     portraitAlt:
       "Portrait of Salahuddin Khan, Chief Technology Officer (CTO) at Byonyks.",
     linkedin: "https://www.linkedin.com/in/salahuddinkhan/",
@@ -130,7 +130,7 @@ export const executives: readonly Executive[] = [
     name: "Doug Wilkerson",
     role: "Chief Operating Officer (COO)",
     organisation: "Byonyks",
-    portrait: "/images/leadership/doug-wilkerson.png",
+    portrait: "/images/leadership/doug-wilkerson.jpg",
     portraitAlt:
       "Portrait of Doug Wilkerson, Chief Operating Officer (COO) at Byonyks.",
     linkedin: "https://www.linkedin.com/in/byonyks/",
@@ -143,7 +143,7 @@ export const executives: readonly Executive[] = [
     name: "Annie Usman",
     role: "Co-Founder & Chief Information Officer",
     organisation: "Byonyks",
-    portrait: "/images/leadership/annie-usman.png",
+    portrait: "/images/leadership/annie-usman.jpg",
     portraitAlt:
       "Portrait of Annie Usman, Co-Founder & Chief Information Officer at Byonyks.",
     linkedin: "https://www.linkedin.com/in/annie-usman-629b9155/",
@@ -157,7 +157,7 @@ export const executives: readonly Executive[] = [
     name: "Frank Rudolph",
     role: "Chief Electrical Engineer",
     organisation: "Byonyks",
-    portrait: "/images/leadership/frank-rudolph-2.png",
+    portrait: "/images/leadership/frank-rudolph-2.jpg",
     portraitAlt:
       "Portrait of Frank Rudolph, Chief Electrical Engineer at Byonyks.",
     linkedin: "https://www.linkedin.com/in/franklin-rudolph-42189a5/",
@@ -170,7 +170,7 @@ export const executives: readonly Executive[] = [
     name: "Eric Flachbart",
     role: "VP Regulatory Affairs",
     organisation: "Byonyks",
-    portrait: "/images/leadership/eric-flachbart.png",
+    portrait: "/images/leadership/eric-flachbart.jpg",
     portraitAlt:
       "Portrait of Eric Flachbart, VP Regulatory Affairs at Byonyks.",
     linkedin: "https://www.linkedin.com/in/eric-flachbart-995862/",
@@ -184,7 +184,7 @@ export const executives: readonly Executive[] = [
     postNominals: "MD",
     role: "Chief Medical Officer, North America",
     organisation: "Byonyks",
-    portrait: "/images/leadership/andrew-king-md.png",
+    portrait: "/images/leadership/andrew-king-md.jpg",
     portraitAlt:
       "Portrait of Andrew King, Chief Medical Officer, North America at Byonyks.",
     linkedin: "https://www.linkedin.com/in/andrew-king-a6597b117/",
@@ -197,7 +197,7 @@ export const executives: readonly Executive[] = [
     name: "Michael Wollowitz",
     role: "Chief Mechanical Engineer",
     organisation: "Byonyks",
-    portrait: "/images/leadership/michael-wollowitz.png",
+    portrait: "/images/leadership/michael-wollowitz.jpg",
     portraitAlt:
       "Portrait of Michael Wollowitz, Chief Mechanical Engineer at Byonyks.",
     linkedin: "https://www.linkedin.com/in/michael-wollowitz-3037bb16",
@@ -211,7 +211,7 @@ export const executives: readonly Executive[] = [
     postNominals: "R.N., B.S.N., M.B.A.",
     role: "Senior Director, Clinical Operations",
     organisation: "Byonyks",
-    portrait: "/images/leadership/mary-hoffman.png",
+    portrait: "/images/leadership/mary-hoffman.jpg",
     portraitAlt:
       "Portrait of Mary Hoffman, Senior Director, Clinical Operations at Byonyks.",
     linkedin: "https://www.linkedin.com/in/mary-hoffman-5b4320/",
@@ -224,7 +224,7 @@ export const executives: readonly Executive[] = [
     name: "Hassan Abrar",
     role: "Chief Operating Officer (COO), South Asia",
     organisation: "Byonyks",
-    portrait: "/images/leadership/hassan-abrar.png",
+    portrait: "/images/leadership/hassan-abrar.jpg",
     portraitAlt:
       "Portrait of Hassan Abrar, Chief Operating Officer (COO), South Asia at Byonyks.",
     linkedin: "https://www.linkedin.com/in/hassan-abrar-pmp-915760a3/",
@@ -238,7 +238,7 @@ export const executives: readonly Executive[] = [
     postNominals: "MD",
     role: "Chief Medical Officer, South Asia",
     organisation: "Byonyks",
-    portrait: "/images/leadership/nauman-tarif-md.png",
+    portrait: "/images/leadership/nauman-tarif-md.jpg",
     portraitAlt:
       "Portrait of Nauman Tarif, Chief Medical Officer, South Asia at Byonyks.",
     linkedin: "https://www.linkedin.com/in/nauman-tarif-232096184/",
@@ -252,7 +252,7 @@ export const executives: readonly Executive[] = [
     name: "Ahmed Muzmmal",
     role: "Director & Head of Artificial Intelligence (AI)",
     organisation: "Byonyks",
-    portrait: "/images/leadership/ahmed-muzmmal.png",
+    portrait: "/images/leadership/ahmed-muzmmal.jpg",
     portraitAlt:
       "Portrait of Ahmed Muzmmal, Director & Head of Artificial Intelligence (AI) at Byonyks.",
     linkedin: "https://www.linkedin.com/in/ahmedmuzamil/",
@@ -266,7 +266,7 @@ export const executives: readonly Executive[] = [
     name: "Senthil Kumar",
     role: "VP Business Development",
     organisation: "Byonyks",
-    portrait: "/images/leadership/senthil-kumar.png",
+    portrait: "/images/leadership/senthil-kumar.jpg",
     portraitAlt:
       "Portrait of Senthil Kumar, VP Business Development at Byonyks.",
     linkedin: "https://www.linkedin.com/in/senthilsenthil/",

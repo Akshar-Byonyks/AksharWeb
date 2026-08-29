@@ -161,6 +161,28 @@ export default async function ExecutivePage({
               </p>
             ))}
 
+            {/* Where the biography came from, on the page and not only in
+                the data. Every bio here is transcribed verbatim from the
+                subject's own page on byonyks.com; a quoted biography without a
+                visible source is the same defect as an uncited statistic, and
+                this site does not ship those. */}
+            {executive.sourceUrl ? (
+              <p className="mt-8 border-t border-line pt-5 text-sm text-muted-foreground">
+                Biography and portrait as published by {executive.organisation},
+                carried here word for word.{" "}
+                <a
+                  href={executive.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-sm text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                >
+                  Source
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+                , retrieved {executive.retrieved}.
+              </p>
+            ) : null}
+
             <p className="mt-10">
               <Link
                 href="/about-us/leadership"
