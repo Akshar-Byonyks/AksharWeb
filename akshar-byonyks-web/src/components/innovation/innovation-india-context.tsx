@@ -7,13 +7,15 @@ import { ScrollReveal } from "@/components/motion/scroll-reveal";
 // strongest single argument in the Indian market" — the one the US parent's
 // own site barely makes.
 //
-// Written entirely without numbers, on purpose. Every figure that would
-// strengthen it — how many people are on dialysis, how far they travel, what
-// share is on home therapy — is on PRODUCT.md's "still fully open, do not
-// fabricate" list, and the site's third principle is that an unsourceable
-// claim gets cut rather than softened. The geometry of the argument survives
-// without them: three trips a week is a description of the therapy schedule,
-// not a statistic about India.
+// Written entirely without numbers, and it stays that way now that the numbers
+// exist (28 Aug 2026). The figures that would strengthen it — how many people
+// are on dialysis, how far they travel, what share is on home therapy — are
+// all on `/innovation/market/`, each with a numbered source, and the reason to
+// hold them there is the same reason this section does not restate the four
+// benefits: a hub that carries its children's evidence leaves the children
+// with nothing and the reader with no reason to open them. The geometry of the
+// argument carries at this altitude on its own. Three trips a week is a
+// description of the therapy schedule, not a statistic about India.
 //
 // It does not restate the four benefits, although §9.2 lists a "four-benefit
 // summary" for this page. They already run on Home in the patient register and
@@ -53,19 +55,29 @@ export function InnovationIndiaContext() {
               <p className="text-base text-muted-foreground">
                 The sourced version of this argument &mdash; scale, cost,
                 coverage and the mix of therapies actually in use, each figure
-                dated and attributed &mdash; is the market page, and it
-                publishes when those sources are confirmed. Nothing on this
-                site states a figure it cannot source.
+                dated and attributed to a source you can open &mdash; is the
+                market page. Nothing on this site states a figure it cannot
+                source, and where one is still missing that page marks the slot
+                rather than filling it.
               </p>
             </div>
 
-            <Link
-              href="/innovation/how-it-works"
-              className="mt-8 inline-flex items-center gap-1.5 rounded-sm py-1 text-base font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-            >
-              How the therapy actually works
-              <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
-            </Link>
+            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3">
+              <Link
+                href="/innovation/market"
+                className="inline-flex items-center gap-1.5 rounded-sm py-1 text-base font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              >
+                The argument with its figures
+                <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
+              </Link>
+              <Link
+                href="/innovation/how-it-works"
+                className="inline-flex items-center gap-1.5 rounded-sm py-1 text-base font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              >
+                How the therapy actually works
+                <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
+              </Link>
+            </div>
           </div>
         </ScrollReveal>
       </div>

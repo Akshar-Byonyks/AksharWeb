@@ -1,4 +1,8 @@
+import { PERITONEAL_CAVITY } from "@/lib/figures";
+import { cn } from "@/lib/utils";
+
 import { ClinicalLayer } from "@/components/innovation/clinical-layer";
+import { InViewStage } from "@/components/innovation/in-view-stage";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 
 // The page's one figure, and its third ink moment (DESIGN.md, the Full-Bleed
@@ -28,8 +32,6 @@ const ART_H = 150;
 // version of a medical illustration, and this project has no nephrologist
 // review yet to back one — so the shape is honestly schematic and the caption
 // says so.
-const CAVITY =
-  "M26 56C26 43 38 37 54 37H106C122 37 134 43 134 56V104C134 120 114 128 80 128C46 128 26 120 26 104Z";
 
 // Dialysate level per step, in viewBox units. Lower y is fuller.
 const LEVELS = { fill: 88, dwell: 46, drain: 116 } as const;
@@ -52,19 +54,30 @@ function CycleFigure({ step }: { step: Step }) {
     >
       <defs>
         <clipPath id={clipId}>
-          <path d={CAVITY} />
+          <path d={PERITONEAL_CAVITY} />
         </clipPath>
       </defs>
 
       {/* Dialysate. Drawn first so the cavity outline sits on top of its edge
-          rather than being hidden under it. */}
+          rather than being hidden under it.
+
+          The rect runs to the bottom of the box and is positioned at the level
+          this panel's label describes, so the resting pose needs no transform
+          and the keyframes travel *to* zero. That ordering matters: the
+          finished drawing is what the server sends and what a reader without
+          JavaScript keeps, and the animation is a departure from it rather
+          than the thing that assembles it. */}
       <rect
         x="0"
         y={LEVELS[step]}
         width={ART_W}
         height={ART_H - LEVELS[step]}
         clipPath={`url(#${clipId})`}
-        className="fill-white/15"
+        className={cn(
+          "fill-white/15",
+          step === "fill" && "pd-fluid-fill",
+          step === "drain" && "pd-fluid-drain",
+        )}
       />
 
       {/* Every stroke in this figure is a 1.5px hairline at non-scaling
@@ -73,23 +86,37 @@ function CycleFigure({ step }: { step: Step }) {
           literally. `vectorEffect` is not inherited, so it is set per element
           rather than once on the group. */}
       <g strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d={CAVITY} className="stroke-white/45" vectorEffect="non-scaling-stroke" />
+        <path
+          d={PERITONEAL_CAVITY}
+          className="stroke-white/45"
+          vectorEffect="non-scaling-stroke"
+        />
 
         {/* The catheter, and the connection point at the top where the bag or
             the cycler attaches. Present in all three steps: it is not removed
             between exchanges, which is itself worth showing. */}
-        <path d="M80 8V60" className="stroke-white/70" vectorEffect="non-scaling-stroke" />
-        <circle cx="80" cy="8" r="3.5" className="stroke-white/70" vectorEffect="non-scaling-stroke" />
+        <path
+          d="M80 8V60"
+          className="stroke-white/70"
+          vectorEffect="non-scaling-stroke"
+        />
+        <circle
+          cx="80"
+          cy="8"
+          r="3.5"
+          className="stroke-white/70"
+          vectorEffect="non-scaling-stroke"
+        />
 
         {step === "fill" ? (
-          <g className="stroke-white">
+          <g className="pd-flow-down stroke-white">
             <path d="M74 22L80 28L86 22" vectorEffect="non-scaling-stroke" />
             <path d="M74 36L80 42L86 36" vectorEffect="non-scaling-stroke" />
           </g>
         ) : null}
 
         {step === "drain" ? (
-          <g className="stroke-white">
+          <g className="pd-flow-up stroke-white">
             <path d="M74 28L80 22L86 28" vectorEffect="non-scaling-stroke" />
             <path d="M74 42L80 36L86 42" vectorEffect="non-scaling-stroke" />
           </g>
@@ -99,7 +126,7 @@ function CycleFigure({ step }: { step: Step }) {
             inward through the cavity wall. They carry no quantity — they mark
             a direction, and the caption says which direction and of what. */}
         {step === "dwell" ? (
-          <g className="stroke-white">
+          <g className="pd-transfer stroke-white">
             <path d="M12 82H32" vectorEffect="non-scaling-stroke" />
             <path d="M26 77L32 82L26 87" vectorEffect="non-scaling-stroke" />
             <path d="M148 82H128" vectorEffect="non-scaling-stroke" />
@@ -107,7 +134,10 @@ function CycleFigure({ step }: { step: Step }) {
             <path d="M54 146V126" vectorEffect="non-scaling-stroke" />
             <path d="M49 132L54 126L59 132" vectorEffect="non-scaling-stroke" />
             <path d="M106 146V126" vectorEffect="non-scaling-stroke" />
-            <path d="M101 132L106 126L111 132" vectorEffect="non-scaling-stroke" />
+            <path
+              d="M101 132L106 126L111 132"
+              vectorEffect="non-scaling-stroke"
+            />
           </g>
         ) : null}
       </g>
@@ -162,41 +192,48 @@ export function ExchangeCycle() {
             Hairline-separated columns rather than three bordered cards: the
             same register the Home proof band uses, and the reason this page
             does not add another rounded rectangle to the site's count. */}
-        <ol className="mt-14 grid grid-cols-1 divide-y divide-white/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-          {steps.map(({ step, title, body }, index) => (
-            <li
-              key={step}
-              className="py-8 first:pt-0 last:pb-0 sm:px-6 sm:py-0 sm:first:pt-0 sm:first:pl-0 sm:last:pr-0"
-            >
-              <ScrollReveal delayMs={index * 90}>
-                <div className="flex flex-col items-start">
-                  <CycleFigure step={step} />
-                  <h3 className="mt-6 flex items-baseline gap-2.5 text-xl font-semibold">
-                    {/* aria-hidden, or the heading's accessible name becomes
+        {/* One observer for the whole group, not one per panel: the delays in
+            globals.css sequence fill, then dwell, then drain, so on a desktop
+            viewport — where all three sit side by side — the reader watches a
+            single cycle travel across the row rather than three figures
+            twitching at once. Total run is about 3 seconds. */}
+        <InViewStage className="mt-14">
+          <ol className="grid grid-cols-1 divide-y divide-white/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            {steps.map(({ step, title, body }, index) => (
+              <li
+                key={step}
+                className="py-8 first:pt-0 last:pb-0 sm:px-6 sm:py-0 sm:first:pt-0 sm:first:pl-0 sm:last:pr-0"
+              >
+                <ScrollReveal delayMs={index * 90}>
+                  <div className="flex flex-col items-start">
+                    <CycleFigure step={step} />
+                    <h3 className="mt-6 flex items-baseline gap-2.5 text-xl font-semibold">
+                      {/* aria-hidden, or the heading's accessible name becomes
                         "1Fill". The position is already conveyed
                         programmatically by the <ol>/<li> this sits in, so the
                         visible digit is reinforcement for sighted readers and
                         nothing else — exactly what aria-hidden is for. */}
-                    <span
-                      aria-hidden="true"
-                      // white/60, not /40: the same measurement that fixed
-                      // the hero scene cards. /40 lands near 3.5:1 on ink and
-                      // this audience skews older with diabetes-related
-                      // visual impairment, so PRODUCT.md's rule is the
-                      // stricter option. /60 measures 6.08:1 and still reads
-                      // as a quiet marker beside the title.
-                      className="text-base font-normal text-white/60"
-                    >
-                      {index + 1}
-                    </span>
-                    {title}
-                  </h3>
-                  <p className="mt-2 text-base text-white/70">{body}</p>
-                </div>
-              </ScrollReveal>
-            </li>
-          ))}
-        </ol>
+                      <span
+                        aria-hidden="true"
+                        // white/60, not /40: the same measurement that fixed
+                        // the hero scene cards. /40 lands near 3.5:1 on ink and
+                        // this audience skews older with diabetes-related
+                        // visual impairment, so PRODUCT.md's rule is the
+                        // stricter option. /60 measures 6.08:1 and still reads
+                        // as a quiet marker beside the title.
+                        className="text-base font-normal text-white/60"
+                      >
+                        {index + 1}
+                      </span>
+                      {title}
+                    </h3>
+                    <p className="mt-2 text-base text-white/70">{body}</p>
+                  </div>
+                </ScrollReveal>
+              </li>
+            ))}
+          </ol>
+        </InViewStage>
 
         <div className="mt-12 max-w-3xl space-y-5">
           {/* The legend. DESIGN.md, Two Paths: "before shipping a bespoke
@@ -204,15 +241,15 @@ export function ExchangeCycle() {
               a mark means." Every mark above is named here. */}
           <p className="text-sm text-white/60">
             Schematic, not an anatomical illustration. The outline is the
-            peritoneal cavity, the vertical line is the catheter, and the
-            shaded area is dialysate. In step 2 the arrows show waste and extra
-            fluid crossing the membrane into the fluid; they mark direction
-            only, not quantity.
+            peritoneal cavity, the vertical line is the catheter, and the shaded
+            area is dialysate. In step 2 the arrows show waste and extra fluid
+            crossing the membrane into the fluid; they mark direction only, not
+            quantity.
           </p>
           <p className="text-base text-white/75">
-            Fill volumes, dwell times and the number of exchanges in a night
-            are not the same for everyone. They are set by your nephrologist
-            and adjusted over time.
+            Fill volumes, dwell times and the number of exchanges in a night are
+            not the same for everyone. They are set by your nephrologist and
+            adjusted over time.
           </p>
         </div>
 

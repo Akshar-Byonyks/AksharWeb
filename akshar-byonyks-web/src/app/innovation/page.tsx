@@ -29,9 +29,10 @@ export const metadata: Metadata = {
 };
 
 // `CollectionPage`, not `MedicalWebPage`: this page routes, it does not make a
-// medical statement of its own. `hasPart` lists only the two children that
-// exist — pointing structured data at an unbuilt route is the same mistake the
-// breadcrumb component refuses to make.
+// medical statement of its own. `hasPart` lists only children that exist —
+// pointing structured data at an unbuilt route is the same mistake the
+// breadcrumb component refuses to make. All three now do (28 Aug 2026);
+// `/innovation/whats-next/` still does not and is still absent.
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
@@ -48,6 +49,11 @@ const jsonLd = {
       "@type": "WebPage",
       name: "How peritoneal dialysis works",
       url: `${siteUrl}/innovation/how-it-works`,
+    },
+    {
+      "@type": "WebPage",
+      name: "The India market",
+      url: `${siteUrl}/innovation/market`,
     },
   ],
 };
@@ -73,15 +79,16 @@ THESIS: a hub earns its place by routing and by carrying the one argument that
 belongs to the section rather than to any page in it — not by summarising its
 children until nobody needs to open them.
 OWN-WORLD: the same token system at its quietest. One ink opening, one closing
-mass, no accent spent anywhere, and the only piece of visual language on the
-page is the pending chip on the child that does not exist yet.
+mass, no accent spent anywhere, and the only visual language on the page is
+three hairline marks, each a compression of the figure its child draws at full
+size.
 STORY: who this is, what is in the section, and why the argument lands
 differently in India than in the market the technology was cleared in.
 FIRST VIEWPORT: ink; the breadcrumb finally resolving; the mission statement;
 the licensing and clearance sentences at their gated wording.
 FORM: statement hero, three navigational doorway cards, single-measure prose.
 FINISH: no figure without a source, no benefit restated for the third time,
-and the unbuilt child shown honestly rather than linked to a 404.
+and no evidence held at this altitude that belongs to a child page.
 `}</DirectionContract>
       <script
         type="application/ld+json"

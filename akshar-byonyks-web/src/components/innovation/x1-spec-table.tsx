@@ -49,14 +49,15 @@ const rows: SpecRow[] = [
     value: "",
     pending: "Not yet published. Clinicians can request the IFU below.",
   },
-  { attribute: "Designed and manufactured by", value: "Byonyks USA" },
+  { attribute: "Designed and manufactured by", value: "Byonyks" },
   {
     attribute: "Licensed for India by",
     value: "Akshar Byonyks International LLC",
   },
   {
     attribute: "US regulatory status",
-    value: "FDA 510(k) cleared, May 2025. Clearance held by Byonyks USA.",
+    value:
+      "FDA 510(k) K243371, cleared 16 May 2025. Class II under 21 CFR 876.5630. Clearance held by Byonyks.",
   },
   {
     attribute: "India regulatory status",

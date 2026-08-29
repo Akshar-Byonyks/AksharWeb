@@ -32,7 +32,8 @@ const proofPoints = [
   {
     stat: "510(k)",
     label: "FDA clearance",
-    detail: "Granted to Byonyks USA, May 2025 — the X-1 automated peritoneal dialysis cycler.",
+    detail:
+      "K243371, granted to Byonyks on 16 May 2025 — the X-1 automated peritoneal dialysis cycler. Held by Byonyks, not by Akshar Byonyks.",
     className: "text-primary",
   },
   {

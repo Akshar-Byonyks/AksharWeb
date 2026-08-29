@@ -178,3 +178,242 @@
     @apply font-sans;
   }
 }
+/* ---------------------------------------------------------------------------
+   Browser surfaces. The parts of the page nobody draws still ship with a
+   default that belongs to no design system, and on a navy-and-white site the
+   OS selection blue is the one that shows. Both are cheap and both are the
+   difference between a page that was built and one that was assembled.
+   --------------------------------------------------------------------------- */
+::selection {
+  background-color: color-mix(in oklch, var(--color-primary), white 72%);
+  color: var(--color-ink);
+}
+
+a {
+  /* Several components underline on hover. At the browser default the rule
+     sits on the baseline and cuts the descenders of g, y and p — which this
+     copy is full of ("dialysis", "peritoneal", "nephrologist"). */
+  text-underline-offset: 0.18em;
+}
+
+/* ---------------------------------------------------------------------------
+   The exchange cycle (`/innovation/how-it-works/`), and the day/night strips
+   in "By hand, or by machine".
+
+   One motion idea, used twice: treatment is a thing that arrives, rests and
+   leaves, and the figure should be seen doing it rather than described doing
+   it. Both play once when the figure enters the viewport and settle into the
+   authored static pose — which is also what ships with no JavaScript, so the
+   default state is the finished drawing and nothing here is load-bearing for
+   meaning.
+
+   Everything below is gated on `[data-pd-cycle="playing"]`, set by
+   `InViewStage`, and on `prefers-reduced-motion: no-preference`. Reduced
+   motion and the server render both get the settled figure, never a frozen
+   mid-frame.
+
+   Transform lengths inside an SVG resolve in user units of that element's
+   viewBox, which is why these values are viewBox coordinates and not CSS px.
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  /* Dialysate arriving. The rect's resting position IS the level the panel's
+     label describes, so the keyframe travels from empty to zero offset and
+     `both` holds it there — no snap back to a different pose at the end. */
+  @keyframes pd-fill {
+    from {
+      transform: translateY(34px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  /* Dialysate leaving. Starts full — where the fill panel just finished, one
+     column to the left — and falls to the drain panel's resting level. */
+  @keyframes pd-drain {
+    from {
+      transform: translateY(-70px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  /* Flow along the catheter. One pass that ends at the resting state rather
+     than a loop that ends dark and pops back. */
+  @keyframes pd-flow-down {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    60% {
+      opacity: 1;
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pd-flow-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    60% {
+      opacity: 1;
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Transfer across the membrane: the four arrows converge inward from
+     outside the cavity, which is the direction the caption says they mean. */
+  @keyframes pd-transfer {
+    from {
+      opacity: 0;
+      transform: scale(1.3);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* An exchange landing on the day strip. */
+  @keyframes pd-mark {
+    from {
+      opacity: 0;
+      transform: scaleY(0.2);
+    }
+    to {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+  }
+
+  /* The night band, drawn left to right across the sleeping hours. This is
+     the page's argument in one gesture: the same treatment, moved. */
+  @keyframes pd-band {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  [data-pd-cycle="playing"] .pd-fluid-fill {
+    animation: pd-fill 1100ms cubic-bezier(0.16, 1, 0.3, 1) 250ms both;
+  }
+  [data-pd-cycle="playing"] .pd-fluid-drain {
+    animation: pd-drain 1100ms cubic-bezier(0.16, 1, 0.3, 1) 1950ms both;
+  }
+  [data-pd-cycle="playing"] .pd-flow-down {
+    animation: pd-flow-down 1100ms cubic-bezier(0.16, 1, 0.3, 1) 250ms;
+  }
+  [data-pd-cycle="playing"] .pd-flow-up {
+    animation: pd-flow-up 1100ms cubic-bezier(0.16, 1, 0.3, 1) 1950ms;
+  }
+  [data-pd-cycle="playing"] .pd-transfer {
+    /* `view-box` rather than the `border-box` default, so the origin below is
+       read in the same coordinates the arrows are drawn in. */
+    transform-box: view-box;
+    transform-origin: 80px 82px;
+    animation: pd-transfer 900ms cubic-bezier(0.16, 1, 0.3, 1) 1150ms both;
+  }
+
+  [data-pd-cycle="playing"] .pd-mark {
+    transform-box: view-box;
+    transform-origin: center;
+    animation: pd-mark 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  [data-pd-cycle="playing"] .pd-band {
+    transform-box: view-box;
+    transform-origin: left center;
+    animation: pd-band 900ms cubic-bezier(0.16, 1, 0.3, 1) 240ms both;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Print.
+
+   Spec §9.4 asks for /manufacturing/'s compliance section to be
+   "print-optimised for tender attachment." A hospital procurement officer
+   attaching evidence to a tender prints the page; if it prints as a dark slab
+   with white text — or, with background printing off, as white text on white
+   paper — the requirement has not been met however good the screen looks.
+
+   These rules are deliberately unlayered. Tailwind v4 emits every utility
+   inside `@layer utilities`, and in the CSS cascade an unlayered declaration
+   beats every layered one regardless of specificity, so this block wins over
+   the section utilities it is correcting without an arms race of `!important`
+   on the components themselves. (The same cascade fact is what broke the
+   ByoTalks player against the vendor stylesheet on 28 Aug 2026 — worth knowing
+   in both directions.)
+   --------------------------------------------------------------------------- */
+@media print {
+  @page {
+    margin: 15mm;
+  }
+
+  /* ScrollReveal hides anything still below the reveal boundary at mount, and
+     the print rendering inherits whatever the DOM is wearing at the time. A
+     reader who prints before scrolling would otherwise get blank paper for
+     every section they had not reached. */
+  * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* Chrome and Safari drop background colours by default and Firefox does not,
+     so an ink section prints as either a black slab or invisible white text
+     depending on the browser. Neither is a document. Flatten it to paper. */
+  .bg-ink,
+  .bg-surface-2,
+  .bg-surface-3,
+  .bg-card {
+    background: #fff !important;
+  }
+
+  .bg-ink *,
+  .bg-ink {
+    color: #000 !important;
+  }
+
+  /* Hairlines that were drawn to be seen on ink, redrawn to be seen on paper. */
+  .bg-ink [class*="border-white"],
+  .bg-ink [class*="divide-white"] > * {
+    border-color: #999 !important;
+  }
+
+  /* Nothing that is navigation, and nothing that is an invitation. A printed
+     annexe carries the record; the call to action belongs on the screen. */
+  header,
+  footer,
+  [data-print-hidden] {
+    display: none !important;
+  }
+
+  /* Keep a credential and its attribution on one sheet. */
+  li,
+  dl > div,
+  section {
+    break-inside: avoid-page;
+  }
+
+  section {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+}

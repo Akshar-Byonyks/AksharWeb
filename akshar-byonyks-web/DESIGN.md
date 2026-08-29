@@ -78,8 +78,39 @@ Confirmed visual rejections: no drop shadows as a default depth system (cards se
 - Flat, bordered surfaces over shadowed ones — depth is tonal (surface-2/surface-3 tints), not lifted.
 - Four accent roles (gold, teal, plum, plus primary blue), each with one fixed meaning, recurring across benefit cards, audience cards, and proof stats — never a fifth ad hoc hue, never a role reused for a different meaning.
 - Every accent is rationed the same way gold always was: large display type, icon chips, and non-text graphics only, never body text or small UI.
-- Line-art iconography (SVG, single stroke weight) carries concepts no real image exists for yet; a real, correctly-attributed image — a Byonyks asset (the X-1 render) or a rights-cleared third-party photo, cropped/edited as needed and disclosed in `public/images/README.md` — replaces it wherever one exists.
+- **Photography is the default; line art is the fallback** (revised 28 Aug 2026 — see "Imagery" below). Every template gets an active search for a real, rights-cleared image before it ships as type and glyphs. Authored line art carries what genuinely cannot be photographed — a therapy inside the body, a schedule, a proportion — not whatever nobody went looking for.
 - Generous section rhythm (`py-20` / 80px between major sections) keeps a dense, fact-heavy page from feeling cramped.
+
+## Imagery
+
+**Revised 28 August 2026, on client direction: "more stock and Byonyks images from the web to make the site more lively."** This section replaces the previous doctrine, under which authored line art was the resting state and a real image was the exception that displaced it. The default is now inverted.
+
+### The rule
+
+**Look for a real photograph first.** Every page-level template, and every section large enough to hold one, gets an actual search before it ships as type and glyphs. "No image existed" is only true after someone has gone looking.
+
+**Line art is the fallback, and it is still the right answer often.** It carries what cannot be photographed: a therapy happening inside the body, a week's schedule, a proportion, a device that is not in any stock library. The exchange figure on `/innovation/how-it-works/`, the week schematic and unit figure on `/innovation/market/`, and the doorway marks on `/innovation/` are all correct as drawings and none should be replaced with a photograph. What changed is that a glyph is no longer what a section gets by default when nobody looked.
+
+### Where images come from, in order of preference
+
+1. **Byonyks USA's own assets.** Akshar Byonyks is the licensed India partner for this exact device, so the manufacturer's public marketing material is the cleanest provenance available and the only source that has the actual product in it. Caption a render as a render, never as a photograph.
+2. **Rights-cleared stock, India-specific.** Pexels and Unsplash are free for commercial use with no attribution required; Wikimedia Commons requires attribution and an edit log. **Prefer India.** A photograph that could be anywhere is worth less on this site than no photograph — PRODUCT.md's fourth principle is that content which does not transfer gets replaced rather than kept for volume, and that applies to pictures exactly as it applies to statistics.
+3. **Authored line art**, per above.
+
+### Three gates, no exceptions
+
+- **Look at it.** Download every candidate and view it before use. Of the first five candidates considered under this rule, two were rejected on sight — a European family in a field that byonyks.com itself runs, and an icon set whose every item carried a US-only claim. Neither could have been rejected from its filename or its alt text.
+- **Record it.** `public/images/README.md` takes source URL, licence, fetch date, and every edit made. Rejections go in too: why an image was *not* used is the more useful half of that file.
+- **Scrim it.** Text over an image goes through `ScrimmedImage`, which has the scrim built in and no prop to disable it. Spec §7.2 requires this be a component-level guarantee rather than a per-instance judgement, and §2 names unscrimmed hero text as the most common AA failure on marketing sites — one that axe will not catch.
+
+### The one category that is a legal question
+
+**People in a clinical or therapy context.** India's Drugs and Magic Remedies (Objectionable Advertisements) Act 1954 constrains depictions of medical treatment, and this repo previously read that constraint strictly enough to patch a bystander's reflection out of a monitor. The client approved this category on 28 August 2026 after the risk was raised in writing.
+
+So: use it, and flag every instance in `public/images/README.md` for legal sign-off before launch (spec §14.4). This is a decision the client has made and counsel has not yet reviewed — which is a different thing from a decision that has been cleared, and the file says so at each image rather than once at the top.
+
+Two things remain barred regardless, because neither is about depiction: **no fabricated device photography or renders**, and **no image that implies an outcome** — a person shown well is a person shown well, not evidence that the therapy made them well.
+
 
 ## Colors
 

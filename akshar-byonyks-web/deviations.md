@@ -276,3 +276,144 @@ Deliberately excluded from the clinical layers, pending that review: anything pr
 - The Drugs and Magic Remedies Act line is in the first viewport of `how-it-works`, not at the foot of it, and the page's closing section is seven questions routed to a nephrologist with no answers attached.
 - No anatomical illustration. The exchange figure is a schematic and its caption says so; an organ outline drawn from memory on a medical-device site is the same class of risk as the India boundary that was withdrawn from "the night."
 - Three full-bleed ink moments on `how-it-works` (hero, the exchange, the closing mass), two on the hub. Ceiling respected, no two adjacent.
+
+---
+
+## 7. `/innovation/market/`: an editorial register, and the figure that had to be refused (28 Aug 2026)
+
+**Date:** 28 Aug 2026. **Where:** `src/app/innovation/market/`, `src/components/market/*`, `src/lib/market-data.ts`.
+
+### What the spec and DESIGN.md say
+
+1. Spec §4.1 wants investor content "denser, more numeric and more sober than the rest of the site. Dated sources, footnotes, tables." §9.2 wants "charts, not paragraphs."
+2. `proof-band.tsx` established the house treatment for evidence and reasoned it out at length: the hero-metric band — big number, small label, accent colour — is "a default to refuse," because it "would read as marketing to exactly the two audiences that distrust it." A hairline register replaced it.
+3. DESIGN.md's creative north star is "The Quiet Clinic," and its Full-Bleed Rule caps ink at three whole-section moments, gated on a meaning test: ink carries home, night and patient life; the light carries evidence, regulation and specification.
+4. Deviation 3 settled the four-accent palette as sitewide but left the harder question open by name: whether a page may use teal and plum *inside figures* rather than as card-level role chips.
+
+### What shipped instead
+
+Requested by name after two review passes ("bland," "too long," "definitely needs more visuals"), with an explicit choice of the most editorial of three options offered.
+
+**The first build applied point 2 as a universal rule and produced the defect.** Ten figures rendered as ten identical hairline rows across nine sections that all shared one framing-and-artifact layout. The result was correctly called bland and long, and those were the same fault: with no formal variety, no screen is a landmark and a reader cannot feel progress. §9.2 asked for charts and the page was shipping paragraphs with numbers in them.
+
+**What changed:**
+
+- **Every section now has its own layout and its own form.** Left-framed sequence with a full-bleed unit figure; full-width ladder with its supporting figures placed *after* it; centred statement with a two-bar comparison; a rule-bounded four-column status strip; a numbered register. Nothing shares a template.
+- **Display-scale numbers**, where `proof-band.tsx` would have used a register row. The refusal in point 2 is kept where it belongs — no accent colour on a bare statistic, no count-up, no card around a number — but "one form for every group of figures" was never what that reasoning said, and reading it that way is what broke the page.
+- **A third full-bleed ink moment**, inside `the-gap.tsx`: one hundred unit marks, thirty-three filled, for "about two thirds of people with kidney failure died without receiving dialysis." Within the stated ceiling, and meaning-tested rather than spent to reach the number — every other figure on the page is evidence about a market and stays in the light; this one is about people, and is the page's emotional peak.
+- **Teal and plum inside figures**, which deviation 3 left open. Plum ("institutional / formal") marks the days a facility owns in the week schematic and the bars of the catastrophic-expenditure ladder — one colour, one idea, met twice. Teal ("evidence / clinical rigor") marks Guatemala as a cited external comparator.
+- **A colour bug fixed in passing.** The first build put gold on Guatemala's bar. Gold means home and India everywhere else on this site, so spending it on the comparator told a reader the opposite of the section's argument. India carries gold now — a sliver of it, which is the point.
+
+### The figure that was refused
+
+The obvious unit chart for the opening is 2.2 lakh arriving each year against ~175,000 treated, drawn as one bar with a filled fraction. **It would be a lie in a chart.** The first is annual incidence, the second is standing prevalence: different measures on different denominators, and subtracting one from the other yields a number that means nothing while looking authoritative. The two are shown as separate display figures with the difference stated in words, and the unit chart draws the one figure on the page that is genuinely a proportion. A chart is a claim; this one would not have been supportable.
+
+### Scope reduction, recorded
+
+The page went from nine sections and about twenty-two figures to five sections and ten, across two passes. Spec §9.2 lists "A winning solution for all" reframed for India as part of this page and **that section no longer exists** — its own code comment conceded it introduced no new claim, which made it the first thing to cut. Patients, Payers and Producer are argued by the legs themselves; the Providers case (nephrologist density as the binding constraint on centre-based capacity) is genuinely lost and is a one-row restore if wanted. Spec §3.3's legs 1 and 2 are also now one section rather than two, because they are one argument.
+
+### What stayed true regardless
+
+- **Every figure still carries a source and a date.** `Figure` cannot be constructed without a `source`, `sourceNumber()` throws on an unregistered id, and all six sources are cited at least once — a register entry nothing points at would be the page claiming work it does not do.
+- **Every colour resolves through a token.** No hex, no arbitrary Tailwind colour values.
+- **Contrast computed, not eyeballed.** Gold on ink is 5.39:1, which clears AA for the display number and the on-ink citation markers; the citation marker takes a separate `onInk` variant because primary blue on ink is 1.9:1 and would have rendered an unreadable link as a working one.
+- **Ink ceiling respected and no two moments adjacent** — hero, the untreated figure a full screen below it, and the closing mass.
+- **The jargon is gone.** "Catastrophic health expenditure" is now defined in plain words — spending more than 40% of everything the household spends outside food — before any percentage appears, checked against the source's own threshold rather than paraphrased.
+- **No map of India**, for the reason `figures.ts` already records. The argument is a schedule, not a geography, and it is drawn as one.
+
+
+---
+
+## 8. `/manufacturing/`: the 510(k) number, and a sitewide claim that had to be narrowed (29 Aug 2026)
+
+Spec §9.4 asks this page for "certifications with numbers and dates: ISO 13485,
+IEC via SGS and TUV SUD, biocompatibility via FiLab, FDA 510(k) number." Getting
+the last of those meant looking the clearance up, and looking it up changed two
+things about the rest of the site.
+
+### The number existed all along
+
+`K243371`. It had been a `PendingNote` on `/innovation/the-x1-cycler/` since
+that page was built, on the reasoning that nobody had supplied it. That
+reasoning was wrong in the same way the ByoTalks video ids were wrong the day
+before: **510(k) decisions are public**, the FDA publishes an API over them, and
+a search on the applicant returns exactly one record. Every field now on the
+page — device name, product code, regulation, class, submission date, decision
+date, decision — is copied from that record and from nowhere else.
+
+- Submitted 30 October 2024, found substantially equivalent 16 May 2025.
+- Class II, 21 CFR 876.5630, product code FKX, Traditional 510(k).
+- Verified against `https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID=K243371` on 29 August 2026.
+
+"May 2025" everywhere on the site is now "16 May 2025", which is what the
+register says.
+
+### The clearance is not held by Byonyks USA
+
+**This is the finding that matters, and it is a correction rather than an
+addition.** `src/lib/claims.ts` said, in the site's only sentence about the US
+clearance: "That clearance is held by Byonyks USA, not by Akshar Byonyks." The
+FDA's record names the applicant as **"Byonyks Pvt, Ltd."** Two Byonyks
+establishments are separately registered with the FDA and both list this
+device; one is a US entity, and it appears on the record as the US agent, not as
+the applicant.
+
+So the site was asserting something its own primary source contradicts, on the
+most load-bearing regulatory sentence it has. Both affected strings were
+**narrowed to "Byonyks"**:
+
+| Was | Is |
+|---|---|
+| "That clearance is held by Byonyks USA" | "That clearance is held by Byonyks" |
+| "Byonyks USA designs and manufactures the device." | "Byonyks designs and manufactures the device." |
+| `fdaClearance.holder: "Byonyks USA"` | `fdaClearance.holder: "Byonyks"` |
+| `MedicalDevice.manufacturer.name: "Byonyks USA"` | `"Byonyks"` |
+
+Nothing was added. An over-specific attribution was removed, and what remains is
+true under either entity — and is already the formulation **spec F-1 requires**
+for manufacturing ("attribute to Byonyks, never to a country"). The licensing
+relationship is untouched: naming Byonyks USA as the licensor is spec F-2's own
+instruction and is a corporate fact the client asserts, not a regulatory one the
+FDA publishes.
+
+**This wants a lawyer's eye before launch.** Adding it to the §14.4 gate list.
+
+### A second overclaim, found in the same sweep
+
+Home's "built on proven" section said the X-1 was licensed from a company
+"already serving clinics across the United States." Byonyks' own February 2026
+headline is "FDA-Cleared X1 APD Cycler **Set to Enter** U.S. Market." A device
+about to enter a market is not already serving it. The sentence now states the
+clearance and the test houses, which are both supportable.
+
+### What the page is, given F-1
+
+F-1 predicted this page becomes "two coming-soon cards" and that a manufacturing
+page with no manufacturing is worse than none. The build's answer is that it is
+**not a facility tour, it is a chain of custody**, and its structure is the one
+distinction a diligence reader needs first: *what you can check* against *what
+Byonyks states*. One verified credential gets display weight; five attributed
+ones sit in a hairline register, each naming the specific certificate number
+that has not reached this project rather than the page implying it is complete.
+
+- **The India hubs are not called manufacturing facilities.** Open Questions 2.3
+  is still open and spec §9.4 bars it, because whether a site manufactures
+  decides its CDSCO licence route (§14.2). The cards say "function and
+  completion date not confirmed", which is a real fact, instead of "coming
+  soon", which is not one.
+- **Neither applicant address is reproduced.** F-1 attributes to Byonyks and
+  never to a country, and no marketing site prints its licensor's street
+  address. The link to the FDA's own page is right there and shows the reader
+  everything the site leaves out. What the site may not do is *assert* a
+  location, in either direction — and it does not.
+- **A print stylesheet**, because §9.4 asks for the compliance section to be
+  attachable to a tender. Header, footer, the closing CTA and "keep reading" are
+  dropped; ink flattens to paper; ScrollReveal's hidden state is forced visible,
+  without which a reader who prints before scrolling gets blank sheets.
+
+### What stayed true regardless
+
+- **Every colour resolves through a token.** No hex, no arbitrary Tailwind colour values.
+- **Ink ceiling respected**: two moments, hero and closing mass. The compliance register stays in the light, which is exactly the meaning test the Full-Bleed Rule sets — a certification band on a dark ground would be styled as persuasion.
+- **A structural guard, in the shape of `market-data.ts`'s.** `compliance.ts` throws at module load if an entry sits in the public-record register without a reference number. A verification badge over an unverifiable claim fails the build rather than shipping.
+- **No `Certification` structured data.** Most entries have no certificate number to put in it; `PropertyValue` states the one number that is real and guesses no enum.

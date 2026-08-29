@@ -16,10 +16,10 @@ import { ScrollReveal } from "@/components/motion/scroll-reveal";
 // pointing at `/innovation/how-it-works/` and `/innovation/market/` while
 // neither was built, so both 404'd. That was defensible for a section header
 // nobody promised was live; it is not defensible for a card whose entire copy
-// is an invitation to read the thing. `/innovation/market/` is still unbuilt
-// and is therefore not linked from anywhere on this page or the X-1 page — it
-// stays in the primary nav only, which is a separate decision the site has to
-// make once, not per component.
+// is an invitation to read the thing. Both routes exist as of 28 Aug 2026 and
+// both are linked again. The rule that produced the gap has not changed and is
+// the reason it closed cleanly: the cards followed the routes, rather than the
+// routes being owed to the cards.
 export type ReadingLink = { href: string; title: string; body: string };
 
 export function KeepReading({

@@ -8,8 +8,8 @@
 //
 // The three hard rules they encode (PRODUCT.md, non-negotiable):
 //   1. Never state or imply Akshar Byonyks holds the FDA clearance. Byonyks
-//      USA holds it. The correct construction is "the X-1 cycler, cleared by
-//      the US FDA under 510(k)", with the clearance attributed to Byonyks.
+//      holds it. The correct construction is "the X-1 cycler, cleared by the
+//      US FDA under 510(k)", with the clearance attributed to Byonyks.
 //   2. Never imply FDA clearance authorises sale in India. The Indian
 //      position is stated separately, as it actually is.
 //   3. Never describe Akshar Byonyks as the manufacturer unless and until it
@@ -22,19 +22,42 @@
 // Only verbal confirmation exists today, so the wording below says "licensed
 // to bring the X-1 to India" and stops there. Do not upgrade it here — or
 // anywhere — until that approval is on paper.
+//
+// NARROWED 29 AUGUST 2026, AGAINST THE PUBLIC RECORD. Two sentences here used
+// to attribute the FDA clearance and the manufacture of the device to
+// "Byonyks USA" specifically. The FDA's own 510(k) database does not support
+// that: the applicant of record on K243371 is "Byonyks Pvt, Ltd.", and two
+// separately registered Byonyks establishments both list this device. Nobody
+// on this project supplied that detail — publishing the K-number for spec
+// §9.4 meant looking the clearance up, and looking it up meant reading who
+// holds it.
+//
+// Both sentences now say "Byonyks", which is true under either entity and is
+// already the formulation spec F-1 requires. This is strictly a narrowing —
+// nothing was added, an over-specific attribution was removed — and it does
+// not touch the licensing relationship, where naming Byonyks USA as the
+// licensor is spec F-2's own instruction and is a corporate fact the client
+// asserts rather than a regulatory one the FDA publishes. Recorded in
+// `deviations.md`. It still wants a lawyer's eye before launch.
 
 export const deviceName = "X-1 automated peritoneal dialysis cycler";
 export const deviceShortName = "X-1";
 
+/**
+ * The clearance, as the FDA's register states it. The full record — device
+ * class, regulation, product code, submission date — lives in
+ * `src/lib/compliance.ts`, which is also where the link to the register is.
+ */
 export const fdaClearance = {
   route: "510(k)",
-  holder: "Byonyks USA",
-  granted: "May 2025",
+  kNumber: "K243371",
+  holder: "Byonyks",
+  granted: "16 May 2025",
 } as const;
 
 /** Rule 1. The only sentence on the site that states the US clearance. */
 export const usRegulatoryStatement =
-  "The X-1 is cleared by the US Food and Drug Administration under 510(k), granted May 2025. That clearance is held by Byonyks USA, not by Akshar Byonyks.";
+  "The X-1 is cleared by the US Food and Drug Administration under 510(k) K243371, granted 16 May 2025. That clearance is held by Byonyks, not by Akshar Byonyks.";
 
 /**
  * Rule 2. Open Questions 1.6 / spec §14.2: the CDSCO authorised-agent
@@ -50,7 +73,7 @@ export const indiaRegulatoryStatement =
 
 /** Rule 3, and the licensing relationship, at the gated wording only. */
 export const licensingStatement =
-  "Akshar Byonyks International LLC is licensed to bring the X-1 to India. Byonyks USA designs and manufactures the device.";
+  "Akshar Byonyks International LLC is licensed to bring the X-1 to India. Byonyks designs and manufactures the device.";
 
 /** Rule 3. Spec F-1: attribute to Byonyks, never to a country. */
 export const manufacturingStatement =

@@ -105,9 +105,15 @@ than asserted.
       <ByHandOrMachine />
       <PdBenefits />
       <AskYourNephrologist />
-      {/* `/innovation/market/` is deliberately not offered here: it is not
-          built, and a card inviting a reader to read it would 404. The hub is
-          a real destination and the X-1 page is this page's true sibling. */}
+      {/* `/innovation/market/` now exists and is still not offered here, for a
+          reason that has changed from "it would 404" to a judgement about this
+          page's reader (28 Aug 2026). This is the site's most patient-facing
+          surface. Sending someone who has just learned what a peritoneal
+          exchange is to a page of cost-effectiveness ratios and catastrophic-
+          expenditure percentages is the wrong second read, and the market page
+          links back here for the reader travelling the other way. The X-1 page
+          is this page's true sibling; the hub is where anyone who wants the
+          third door will find it. */}
       <KeepReading
         items={[
           {

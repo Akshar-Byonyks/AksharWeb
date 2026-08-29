@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
-// Spec §11.2 structured data. `MedicalDevice` names Byonyks USA as
+// Spec §11.2 structured data. `MedicalDevice` names Byonyks as the
 // manufacturer and says nothing about Akshar Byonyks in that role — the same
 // non-negotiable that governs the visible copy (src/lib/claims.ts) applies to
 // the machine-readable version of it. Kept deliberately narrow: no property is
@@ -61,10 +61,10 @@ const jsonLd = {
     name: deviceName,
     alternateName: "Byonyks X-1",
     description:
-      "An automated peritoneal dialysis cycler for use at home, cleared by the US Food and Drug Administration under 510(k) in May 2025.",
+      "An automated peritoneal dialysis cycler for use at home, cleared by the US Food and Drug Administration under 510(k) K243371 on 16 May 2025.",
     manufacturer: {
       "@type": "Organization",
-      name: "Byonyks USA",
+      name: "Byonyks",
       url: "https://byonyks.com",
     },
   },
@@ -112,11 +112,13 @@ regulatory sentence imported from src/lib/claims.ts rather than written here.
       <X1SpecTable />
       <X1Regulatory />
       <X1Ifu />
-      {/* Was `X1Continue`, a bespoke copy of this block. Both destinations
-          it pointed at were 404s at the time; `/innovation/how-it-works/` now
-          exists and the hub replaces `/innovation/market/`, which does not.
-          See keep-reading.tsx on why an unbuilt route is never linked from a
-          card whose whole copy invites the reader to open it. */}
+      {/* Was `X1Continue`, a bespoke copy of this block. Both destinations it
+          pointed at were 404s at the time, so it fell back to the hub; both
+          now exist and it points at the two it was always meant to (28 Aug
+          2026). The pairing is the right one for this page's readers as well
+          as its original intent — a reader who has just worked through a
+          specification wants either the therapy underneath it or the market
+          argument for it, and the hub is neither. */}
       <KeepReading
         items={[
           {
@@ -125,9 +127,9 @@ regulatory sentence imported from src/lib/claims.ts rather than written here.
             body: "The therapy this device automates, in plain language — the peritoneum, the three steps of an exchange, and a technical layer at each step.",
           },
           {
-            href: "/innovation",
-            title: "Innovation",
-            body: "How the licensed technology, the therapy and the India argument fit together.",
+            href: "/innovation/market",
+            title: "The India market",
+            body: "Why this device matters more here than in the market that cleared it — in sourced, dated figures, with the gaps still showing.",
           },
         ]}
       />

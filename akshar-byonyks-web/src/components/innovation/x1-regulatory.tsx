@@ -1,7 +1,8 @@
-import { Landmark, ShieldCheck } from "lucide-react";
+import { ExternalLink, Landmark, ShieldCheck } from "lucide-react";
 
 import { PendingNote } from "@/components/common/pending-note";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
+import { fda510k } from "@/lib/compliance";
 import {
   indiaRegulatoryStatement,
   licensingStatement,
@@ -59,16 +60,32 @@ export function X1Regulatory() {
               <p className="mt-2 text-sm text-muted-foreground">
                 {usRegulatoryStatement}
               </p>
-              {/* The K-number is the one thing a clinician or an investor can
-                  independently verify on the FDA database, and spec §9.4 says
-                  to publish it. Nobody has given it to this project yet, so it
-                  is marked rather than omitted — and marking it also stops
-                  this card sitting half-empty beside the taller one. */}
-              <PendingNote
-                className="mt-4"
-                note="Reference pending"
-                label="The 510(k) number, so the clearance can be looked up directly on the FDA database."
-              />
+              {/* THE K-NUMBER, 29 AUG 2026. This slot was a `PendingNote`
+                  from the day the page was built, on the reasoning that
+                  nobody had given the number to this project. Nobody had to:
+                  510(k) decisions are published, and the FDA's own API
+                  returns exactly one record for this applicant. Spec §9.4
+                  asks for the number precisely so a reader can check the
+                  clearance without trusting this site, so the number is
+                  useless without the link and they ship together. */}
+              <div className="mt-4 rounded-lg border border-line bg-surface-2 px-4 py-3">
+                <p className="font-mono text-xs tracking-wide text-muted-foreground">
+                  Premarket notification
+                </p>
+                <p className="mt-1 font-mono text-lg font-semibold text-ink">
+                  {fda510k.kNumber}
+                </p>
+                <a
+                  href={fda510k.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-flex items-center gap-1.5 rounded-sm py-1 text-sm font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                >
+                  Look it up on the FDA database
+                  <ExternalLink className="size-3.5 shrink-0" aria-hidden="true" />
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              </div>
             </div>
 
             <div className="rounded-xl border border-line bg-card p-6">

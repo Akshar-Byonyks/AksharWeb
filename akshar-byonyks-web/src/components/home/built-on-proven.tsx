@@ -24,11 +24,10 @@ export function BuiltOnProven() {
             </h2>
             <p className="mt-4 text-xl text-muted-foreground">
               The X-1 is not a new, unproven device. It is licensed from
-              Byonyks USA, an established American medical device company
-              already serving clinics across the United States, and cleared
-              by the US FDA under 510(k) in May 2025. Akshar Byonyks brings
-              that same technology — and the manufacturing standards behind
-              it — to India.
+              Byonyks USA, and the cycler itself was cleared by the US FDA
+              under 510(k) K243371 on 16 May 2025 after testing by SGS,
+              TÜV SÜD and FiLab. Akshar Byonyks brings that same technology
+              — and the manufacturing standards behind it — to India.
             </p>
             <a
               href="https://byonyks.com"
