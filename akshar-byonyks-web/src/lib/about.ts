@@ -154,7 +154,7 @@ export const milestones: readonly Milestone[] = [
 export const leadershipStatus = {
   note: "Akshar Byonyks executives pending",
   label:
-    "Dr. Vishnu Patel is published; no photograph of him has been provided. The rest of the Akshar Byonyks executive team — names, biographies and portraits — has not been provided to this project. The other fourteen people on the leadership page are Byonyks' executives, who built the device.",
+    "Dr. Vishnu Patel is published. The rest of the Akshar Byonyks executive team — names, biographies and portraits — has not been provided to this project. The other fourteen people on the leadership page are Byonyks' executives, who built the device.",
   meanwhile:
     "The nephrologists who advise Byonyks do appear on this site, by name and credential, as the speakers in ByoTalks.",
 } as const;

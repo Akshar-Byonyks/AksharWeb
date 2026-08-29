@@ -7,12 +7,7 @@ import { PendingNote } from "@/components/common/pending-note";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { CtaBand } from "@/components/sections/cta-band";
-import {
-  aksharExecutives,
-  byonyksExecutives,
-  executives,
-  type Executive,
-} from "@/lib/leadership";
+import { executives, type Executive } from "@/lib/leadership";
 import { licensingStatement } from "@/lib/claims";
 import { siteUrl } from "@/lib/site-config";
 
@@ -36,26 +31,27 @@ export const metadata: Metadata = {
 
 // §9.5 `/about-us/leadership/` and, at `[slug]`, a page each.
 //
-// TWO COMPANIES, TWO LABELLED GROUPS. Byonyks' fourteen executives were
-// transcribed from byonyks.com on client instruction, 29 Aug 2026; Dr. Vishnu
-// Patel was supplied by the client the same day and is the first Akshar
-// Byonyks executive on the site. Provenance is on every record — see
-// `src/lib/leadership.ts`, which also carries what still needs a decision
-// before launch (four biographies name a location spec F-1 keeps off this
-// site; portrait rights are unconfirmed; portrait treatment is not consistent
-// in the way §9.5 asks for; and one portrait does not exist yet).
+// ONE LIST, ON CLIENT INSTRUCTION, 29 Aug 2026: "Dont make Akshar Byonyks and
+// Byonyks 2 seperate lists. Should be one in the same." An earlier build split
+// the roster into two labelled sections; that is gone. Byonyks' fourteen were
+// transcribed from byonyks.com, Dr. Vishnu Patel was supplied by the client,
+// and provenance is on every record — see `src/lib/leadership.ts`, which also
+// carries what still needs a decision before launch (four biographies name a
+// location spec F-1 keeps off this site, portrait rights are unconfirmed, and
+// portrait treatment is not consistent in the way §9.5 asks for).
 //
-// THE SPLIT IS THE POINT. Spec §3.1's first non-negotiable is that the two
-// companies are never blurred, and the failure mode for a page like this is
-// not a false sentence — it is fifteen faces under one masthead, told apart
-// only by a caption, which a reader completes for themselves. So the roster is
-// two sections under two company headings, the first viewport says which is
-// which, and every card still prints the company under the role.
+// WITH THE HEADINGS GONE, THE PER-CARD COMPANY LABEL IS THE WHOLE DEFENCE.
+// Spec §3.1's first non-negotiable is that the two companies are never
+// blurred, and the failure mode for a page like this is not a false sentence —
+// it is fifteen faces under one masthead that a reader completes for
+// themselves. So every card prints its `organisation` under the role, the
+// intro says the list spans both companies, and each profile repeats it. Do
+// not remove that label to tidy the cards up.
 //
 // AND IT SAYS WHO IS STILL MISSING. Open Question 1.4 is not closed by one
-// name. The pending note sits below both grids: they are real content and
-// lead, but nobody may leave believing they have met the Indian company's
-// leadership in full.
+// name. The pending note sits below the grid: it is real content and leads,
+// but nobody may leave believing they have met the Indian company's leadership
+// in full.
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
@@ -144,57 +140,30 @@ export default function LeadershipPage() {
               Leadership
             </h1>
             <p className="mt-6 text-xl text-white/75">
-              Two companies, listed separately. {licensingStatement} Everyone
-              below is named with the company they work for.
+              {licensingStatement} Everyone below is named with the company they
+              work for.
             </p>
           </div>
         </div>
       </section>
 
-      <section aria-labelledby="akshar-roster-heading" className="bg-background">
+      <section aria-labelledby="roster-heading" className="bg-background">
         <div className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 lg:px-8">
           <h2
-            id="akshar-roster-heading"
+            id="roster-heading"
             className="text-3xl font-bold tracking-tight text-balance text-ink sm:text-4xl"
           >
-            Akshar Byonyks
+            The leadership team
           </h2>
           <p className="mt-4 max-w-3xl text-lg text-muted-foreground">
-            The company this site belongs to, and the licensee for India.
+            {executives.length} people across Akshar Byonyks and Byonyks. Each
+            card names the company that person works for, and each profile is
+            their own biography, carried word for word, with a note of where it
+            came from.
           </p>
 
           <ul className="mt-12 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-            {aksharExecutives.map((executive, index) => (
-              <ExecutiveCard
-                key={executive.slug}
-                executive={executive}
-                index={index}
-              />
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section
-        aria-labelledby="byonyks-roster-heading"
-        className="border-t border-line bg-background"
-      >
-        <div className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 lg:px-8">
-          <h2
-            id="byonyks-roster-heading"
-            className="text-3xl font-bold tracking-tight text-balance text-ink sm:text-4xl"
-          >
-            Byonyks
-          </h2>
-          <p className="mt-4 max-w-3xl text-lg text-muted-foreground">
-            The licensor — the engineers, clinicians and regulatory staff who
-            took the X-1 through to FDA clearance. {byonyksExecutives.length}{" "}
-            people, as published by Byonyks. Each profile is their own
-            biography, carried word for word, with a link to where it came from.
-          </p>
-
-          <ul className="mt-12 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-            {byonyksExecutives.map((executive, index) => (
+            {executives.map((executive, index) => (
               <ExecutiveCard
                 key={executive.slug}
                 executive={executive}
@@ -222,7 +191,7 @@ export default function LeadershipPage() {
               <PendingNote
                 className="mt-8"
                 note="Akshar Byonyks executives pending"
-                label="The remaining names, biographies and portraits of the Akshar Byonyks executive team have not yet been provided — and no photograph has been provided for Dr. Patel. Neither is waiting on design or engineering."
+                label="The remaining names, biographies and portraits of the Akshar Byonyks executive team have not yet been provided. This page is not waiting on design or engineering."
               />
               <p className="mt-8">
                 <Link

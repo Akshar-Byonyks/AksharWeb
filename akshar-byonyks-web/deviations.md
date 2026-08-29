@@ -767,3 +767,81 @@ visible to the client on every visit — which is how the photograph arrives.
 
 **Open Question 1.4 is not closed by one name.** The pending note stays, below
 both grids, and now also says the photograph is missing.
+
+---
+
+## 12. One list, and Dr. Patel's portrait (29 Aug 2026)
+
+Client, same day as §11: *"Dont make Akshar Byonyks and Byonyks 2 seperate
+lists. Should be one in the same."* Plus his photograph.
+
+### The split is gone
+
+§11 had built the roster as two labelled sections under two company headings,
+because one Akshar Byonyks name above fourteen Byonyks names in a single grid is
+the blur spec §3.1 forbids. The client's instruction reverses that and it is
+their call; the two sections are now one list of fifteen, Dr. Patel first.
+
+**What was kept, and why it was not up for grabs.** Every card still prints its
+`organisation` under the role, the intro still says the list spans both
+companies, and each profile still names the employer in the visible copy and in
+the JSON-LD's `worksFor`. The instruction was about the *lists*; §3.1's
+requirement that the two companies are never blurred is not something a layout
+change can satisfy on its own. **With the section headings gone, that per-card
+label is now the whole of the defence** — which is recorded at the top of
+`leadership.ts` and in the page, so nobody removes it later to tidy up the
+cards.
+
+### The portrait, and why it took four attempts
+
+His backdrop is a **graded warm-brown vignette**, not the flat colour the other
+ten studio portraits have — measured spread 25.4, swinging ~90 levels between
+the top corners and mid-height. The existing fixed-tolerance flood fill is the
+wrong tool for that, and the failures were instructive:
+
+1. **Fixed tolerance, single seed** — cannot cross the gradient without also
+   being wide enough to walk into him.
+2. **Local-delta region growing** — compares each pixel to the neighbour it
+   spread from, which handles gradients. It **consumed his cheek, jaw, neck and
+   shirt**: backdrop-to-skin is a soft transition here, and once across it, skin
+   is itself a smooth gradient in the same hue family. Also, seeding from every
+   border pixel put seeds directly **on his shoulders**, which run off the
+   bottom and both lower sides.
+3. **Quadratic surface fit** — model the vignette, judge each pixel against the
+   colour predicted at its own position. Right idea, poisoned input: a fixed 10%
+   top band already contained his hair, residual 32.5. Bounding the sample by
+   the **measured** top of his head (y=21) and rejecting outliers twice took the
+   residual to **3.0**.
+4. **Hard threshold on a soft edge** — even with a good surface, a binary
+   in/out decision on his slightly out-of-focus jaw cut a **ragged, stair-
+   stepped silhouette**.
+
+**What finally worked was not a colour rule at all.** Shadow could not be
+separated from skin by colour or luminance — measured, and they overlap almost
+completely, because the backdrop is literally brown and so is he. What separates
+them is **texture**: the backdrop is smooth everywhere, gradient p99 = 4.1, and
+his silhouette is an edge even where soft. So the fill flows through anything
+flat and may not cross anything steep, with the fitted surface kept as a second,
+independent condition. At a gradient ceiling of 8 the subject holds at 57% of
+the frame; at 14 it collapses to 24%, i.e. the fill has broken into him — which
+is how the ceiling was chosen.
+
+Then three bounded clean-ups: a 3-ring dilation to close the dark contact-shadow
+rim (the colour guard was refusing to absorb the exact pixels dilation exists
+for), a connected-component rule to absorb stray islands (he is one mass), and a
+28px trim of the left edge for one shadow patch that was **bridged to his
+shoulder** and so counted as part of him — cheaper and safer than widening a
+tolerance that would have to pass over his face to reach it.
+
+**Framing:** full width kept and the top padded with the same ground colour,
+rather than cutting width to reach 4:5. His source is framed tighter than the
+others, and cutting width left his head visibly larger than everyone else's in
+the grid. Padding above his head is invisible because that area is already
+exactly that colour. Sides and bottom were not padded — his shoulders run to
+those edges and ground beyond them would read as a cut-out.
+
+**Nothing about him was retouched.** No face, skin, colour or feature altered.
+
+`portraitPending` and the placeholder built in §11 are now unused but retained:
+the rest of the Akshar Byonyks team is still outstanding, and the next record to
+arrive without a photograph should publish the same way rather than wait.

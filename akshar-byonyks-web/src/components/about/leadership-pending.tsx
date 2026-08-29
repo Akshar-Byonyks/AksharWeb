@@ -31,11 +31,11 @@ export function LeadershipPending() {
               The people
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              The leadership page lists two companies separately. Dr. Vishnu
-              Patel, Vice President, for Akshar Byonyks; and{" "}
+              Dr. Vishnu Patel, Vice President, for Akshar Byonyks, and{" "}
               {byonyksExecutives.length} executives at Byonyks — the engineers,
               clinicians and regulatory staff who took the X-1 through to
-              clearance — with their biographies as Byonyks publishes them.
+              clearance. Each is listed with the company they work for and with
+              their biography as it was given to us.
             </p>
             <p className="mt-6">
               <Link

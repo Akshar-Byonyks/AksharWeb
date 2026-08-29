@@ -13,16 +13,22 @@
 // A FIFTEENTH WAS SUPPLIED BY THE CLIENT, 29 AUG 2026: Dr. Vishnu Patel, Vice
 // President, Akshar Byonyks — the first executive of this site's own company
 // to appear on it. Same treatment: carried verbatim, attributed on the page,
-// dated. No photograph came with it, so the record declares `portraitPending`
-// and the page says so in words rather than inventing a face or waiting.
+// dated. His photograph followed the same day and is normalised to the same
+// ground and crop as the rest.
 //
-// TWO COMPANIES ON ONE ROSTER, AND THEY ARE KEPT APART. Fourteen of the
-// fifteen records are Byonyks' executives, not Akshar Byonyks'. Every record
-// carries its `organisation`, every card prints it, the grid is split into two
-// labelled groups, and the JSON-LD's `worksFor` says it too. Spec §3.1's first
-// non-negotiable is that the two companies are never blurred, and a face grid
-// is the easiest place on a website to blur them by omission — so the label is
-// not optional metadata here, it is the thing that keeps the page truthful.
+// TWO COMPANIES ON ONE ROSTER. Fourteen of the fifteen records are Byonyks'
+// executives, not Akshar Byonyks'. The page presents them as ONE LIST on
+// client instruction, 29 Aug 2026 — "Dont make Akshar Byonyks and Byonyks 2
+// seperate lists. Should be one in the same." An earlier build split them into
+// two labelled sections; that split is gone.
+//
+// WHICH MAKES `organisation` THE ONLY THING KEEPING THIS PAGE TRUTHFUL, so it
+// is on every record, printed on every card, printed on every profile, and in
+// the JSON-LD's `worksFor`. Spec §3.1's first non-negotiable is that the two
+// companies are never blurred; a face grid is the easiest place on a website
+// to blur them by omission, and with the section headings gone the per-card
+// label is the whole of the defence. It is not optional metadata. Do not
+// remove it without a written client decision recorded in deviations.md.
 //
 // **Open Question 1.4 is still open.** Dr. Vishnu Patel was supplied by the
 // client on 29 Aug 2026 and is the first Akshar Byonyks executive on the site;
@@ -119,21 +125,26 @@ export const executives: readonly Executive[] = [
     // 29 Aug 2026, and carried verbatim but for a missing full stop at the end
     // of the last sentence.
     //
-    // He leads the roster because he is the only person here who works for the
-    // company whose site this is. Everyone below him works for the licensor,
-    // and the page is now split into two labelled groups so that ordering
-    // cannot be mistaken for seniority within one company.
+    // He leads the roster on client instruction. The list is one list — Akshar
+    // Byonyks and Byonyks together — also on client instruction, 29 Aug 2026.
+    // The `organisation` on every record is what now carries the distinction
+    // spec §3.1 requires, so it is printed on every card and every profile and
+    // in the JSON-LD's `worksFor`.
     slug: "vishnu-patel",
     name: "Vishnu Patel",
     postNominals: "MD",
     role: "Vice President",
     organisation: "Akshar Byonyks",
-    // No photograph has been provided. The card and the profile publish a
-    // marked placeholder that says so, rather than the record waiting in a
-    // branch until a picture arrives. See `portraitPending` on the type.
-    portraitPending: true,
+    // Supplied by the client 29 Aug 2026, separately from the biography.
+    // Backdrop replaced with --color-surface-3 to match the other ten studio
+    // portraits, and reframed to 4:5. Nothing about him was altered. The
+    // method had to differ from theirs — his backdrop is a graded brown
+    // vignette rather than a flat colour, and brown is close enough to skin
+    // that the usual fill ate his face on the first two attempts. Full method
+    // and every failure in public/images/README.md.
+    portrait: "/images/leadership/vishnu-patel.jpg",
     portraitAlt:
-      "Portrait of Vishnu Patel, MD, Vice President at Akshar Byonyks. Photograph pending.",
+      "Portrait of Vishnu Patel, MD, Vice President at Akshar Byonyks.",
     suppliedBy: "Akshar Byonyks",
     retrieved: "29 August 2026",
     bio: "Dr. Vishnu Patel is Vice President of Akshar Byonyks International (ABI), bringing extensive experience in nephrology, dialysis care, healthcare leadership, and business development. As a practicing nephrologist and physician executive, he provides clinical and strategic insight to ABI’s mission of expanding access to innovative, patient-centered peritoneal dialysis technology.\n\nAt Akshar Byonyks, Dr. Patel focuses on strategic partnerships, clinical integration, and the development of manufacturing and distribution capabilities in India and international markets. His work is guided by a commitment to making high-quality home dialysis solutions more accessible, affordable, and scalable for patients worldwide.\n\nDr. Patel also serves in physician leadership and healthcare business roles in the United States, giving him a practical perspective on translating medical innovation into sustainable solutions that improve patient care.",
@@ -330,13 +341,11 @@ export const executives: readonly Executive[] = [
 ];
 
 /**
- * The roster, grouped by employer. The page renders these as two labelled
- * sections rather than one mixed grid: fifteen faces under one heading, told
- * apart only by a caption, is the blur §3.1 forbids.
+ * The licensor's staff. The leadership page renders one combined list (client
+ * instruction, 29 Aug 2026), so this is not used to split the grid — it is
+ * used where prose needs to say how many of these people work for Byonyks
+ * rather than for Akshar Byonyks.
  */
-export const aksharExecutives = executives.filter(
-  (executive) => executive.organisation === "Akshar Byonyks",
-);
 export const byonyksExecutives = executives.filter(
   (executive) => executive.organisation === "Byonyks",
 );

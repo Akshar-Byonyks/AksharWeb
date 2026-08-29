@@ -285,3 +285,42 @@ this is; anything other than his own photograph is a fabrication about a real
 person. When the photograph arrives: process it to 900×1125 (4:5) to match the
 other fourteen, add `portrait` to his record and remove `portraitPending`, and
 record the edit here.
+
+
+### leadership/vishnu-patel.jpg — supplied and normalised (29 August 2026)
+
+Supplied directly by the client, separately from the biography, and confirmed by
+them for use. Downloaded, **looked at at full size before use**, and processed
+to the same ground and framing as the rest of the set. 900×1125, 92 KB.
+
+**This one needed a different method from the other ten.** Its backdrop is a
+graded warm-brown vignette rather than a flat colour — measured spread 25.4,
+about 90 levels of swing corner to centre — and brown is close enough to his
+skin that colour alone cannot tell backdrop from face. Two attempts removed
+parts of him before the method was right:
+
+- **The vignette is fitted as a quadratic surface per channel**, sampled only
+  from regions bounded by the *measured* top of his head, with two rounds of
+  outlier rejection. Every pixel is judged against the backdrop colour predicted
+  at its own position. Residual 3.0.
+- **The fill is stopped by gradient, not by colour.** The backdrop is smooth
+  everywhere (gradient p99 = 4.1); his silhouette is an edge. Shadow therefore
+  reads as more backdrop instead of as something to chase, and skin — which
+  colour and luminance both fail to distinguish from the brown — is protected by
+  the edge it sits behind.
+- **Bounded clean-ups:** 3-ring dilation for the contact-shadow rim, a
+  connected-component rule for stray islands, and a 28px left-edge trim for one
+  patch bridged to his shoulder.
+- **Framing:** full width kept, top padded with the same ground colour so his
+  head sits at a scale comparable to the rest. Sides and bottom deliberately not
+  padded — his shoulders reach those edges and ground beyond them would read as
+  a cut-out.
+
+**Nothing about him was retouched** — no face, skin, colour or feature altered.
+The only changes are background replacement, framing and format, the same as the
+rest of the set.
+
+This closes the "no photograph" note recorded above for him. It does **not**
+close §9.5's consistency item: his lighting is his own, and the four
+environmental photographs in the set remain different in kind. A re-shoot is
+still the answer there.
