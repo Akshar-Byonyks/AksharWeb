@@ -57,6 +57,14 @@ export function LeadershipPending() {
               label={leadershipStatus.label}
             />
 
+            {/* The leadership page exists as of 29 Aug 2026 — route, grid,
+                profile template and the spec §9.5 contract that enforces a
+                150–250 word bio and a portrait. It is deliberately not linked
+                from here or from the navigation while its roster is empty: a
+                link whose destination is an apology is worse than the honest
+                note above it. Both turn on in the same edit that adds the
+                five people. */}
+
             <p className="mt-8 text-lg text-foreground">
               {withBoardSeat.length} of the {speakers.length} clinicians who
               have given ByoTalks sessions sit on Byonyks&rsquo; Scientific
