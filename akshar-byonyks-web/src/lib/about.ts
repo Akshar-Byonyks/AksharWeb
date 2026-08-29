@@ -154,7 +154,7 @@ export const milestones: readonly Milestone[] = [
 export const leadershipStatus = {
   note: "Leadership page pending",
   label:
-    "The five Akshar Byonyks executives — names, biographies and portraits — have not been provided to this project. Rather than fill the space with placeholders, the page is not published until they are.",
+    "The five Akshar Byonyks executives — names, biographies and portraits — have not been provided to this project. The leadership page lists Byonyks' executives, who built the device; the people running the Indian company are a separate roster and are not published yet.",
   meanwhile:
     "The nephrologists who advise Byonyks do appear on this site, by name and credential, as the speakers in ByoTalks.",
 } as const;

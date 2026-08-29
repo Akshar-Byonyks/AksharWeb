@@ -580,3 +580,87 @@ unbuilt routes once already.
 `/cookie-policy`, `/grievance-redressal`, `/accessibility`. The legal four are
 launch-gate pages that counsel drafts (spec §14.3) and removing their links
 would hide the gate rather than close it. They need building, not delinking.
+
+---
+
+## 10. `/about-us/leadership/`: the licensor's roster, on client instruction (29 Aug 2026)
+
+Built empty in the morning, populated in the afternoon. Both halves are worth
+recording because the second reverses a recommendation the first one made.
+
+### What was built first, and why it was empty
+
+Spec §9.5 specifies five Akshar Byonyks executives with 150–250 word bios and
+consistent portraits, then says **"Blocked on Open Questions 1.4. Launch gate."**
+1.4 is open and those five are on the do-not-fabricate list, so the first build
+shipped the route, the grid, the `[slug]` profile template, the structured data
+and a module-load contract — and no people.
+
+It also recorded, in writing, why byonyks.com's own fourteen executives were
+**not** used to fill the gap: four biographies name Lahore or Pakistan against
+spec F-1, two job titles carry "South Asia", portrait rights are unconfirmed,
+and they are the licensor's staff answering a different question from the one
+the page asks.
+
+### The client's answer
+
+> "Simply pull data from byonyks.com and use that in the about us page."
+
+Instruction taken. Fourteen executives transcribed verbatim — name, role,
+biography, portrait, LinkedIn — with the source URL and retrieval date on every
+record. Nothing paraphrased, nothing invented, no biography edited.
+
+### What was built to keep it truthful
+
+The failure mode for this page is not a false sentence. It is **fourteen faces
+under an Akshar Byonyks masthead with nothing saying otherwise**, which a reader
+completes for themselves. So:
+
+- Every record carries `organisation: "Byonyks"`, **every card prints it**, and
+  the profile JSON-LD's `worksFor` says it too. Spec §3.1's first
+  non-negotiable, enforced by the data shape rather than by remembering.
+- **The first viewport names Byonyks** — "These are the executives of Byonyks,
+  the company that designs and manufactures the cycler."
+- A closing section, **"The Akshar Byonyks team"**, carries the pending note for
+  the five. It sits below the grid rather than above it: the roster is real
+  content and leads, but nobody may leave believing they have met the Indian
+  company's leadership.
+- `/about-us/`'s own "The people" section links through and repeats the
+  distinction before the reader arrives.
+
+### Two contracts, because there are two kinds of record
+
+Spec §9.5's 150–250 word rule is enforced at module load — **for biographies
+this project authors**. Eight of the fourteen transcribed ones fall outside it
+(49 words at the short end, 517 at the long) and the rule is deliberately not
+applied to them: padding a 49-word bio to 150 means inventing facts about a real
+person, and cutting a 517-word one means deciding which half of someone's career
+matters. Transcribed records answer to **provenance** instead — a source URL and
+a retrieval date, both required, both enforced.
+
+### Three things that remain open, and are the client's
+
+1. **Four biographies name Lahore or Pakistan** — Farrukh Usman, Annie Usman,
+   Nauman Tarif, Ahmed Muzammal — and two titles read "South Asia". This
+   **conflicts with spec F-1**, the client's own attribution decision of 20 Aug
+   2026. Carried verbatim per the 29 Aug instruction, flagged per record in
+   `namesALocation` so the conflict is visible in the data. The alternative —
+   silently editing a real person's published biography to delete where they
+   work — was not taken and should not be taken by anyone else without asking
+   them.
+2. **Portrait rights are unconfirmed.** Fourteen named individuals'
+   photographs from another company's site. Byonyks USA's approval covers name
+   and marks, verbally (F-6 / OQ 1.5); nothing covers employee photographs.
+   Launch gate.
+3. **§9.5's "consistent backdrop, crop and lighting" is not met.** The source
+   backdrops run white cut-out to dark grey to outdoors; two images are event
+   stills rather than portraits. The grid normalises the crop and nothing else
+   is fixable without editing other people's photographs. A re-shoot is the
+   answer.
+
+### And the question this page still does not answer
+
+Open Question 1.4 is unchanged. The site now names fourteen people who built the
+device and **zero people who run the Indian company** — which the spec's risk
+table calls out directly: "Investor-first with no named team is not credible."
+The roster helps; it does not close that gate.

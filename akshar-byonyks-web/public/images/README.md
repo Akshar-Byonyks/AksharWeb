@@ -149,3 +149,62 @@ exist.
 **If the client can supply site photography of either hub under construction,
 that replaces this entire note.** A real photograph of a real building going up,
 captioned as what it is, would be the strongest asset on the page.
+
+
+---
+
+## leadership/ — executive portraits, added 29 August 2026
+
+**Fourteen photographs of named, identifiable, living people.** They are the
+most rights-sensitive assets in this directory by a wide margin, and they are
+here on an explicit client instruction: *"Simply pull data from byonyks.com and
+use that in the about us page."*
+
+- **Source:** each person's own page on byonyks.com — `byonyks.com/<slug>/` —
+  fetched 29 August 2026. Every filename matches the slug it came from, and
+  `src/lib/leadership.ts` carries the source URL and retrieval date on each
+  record.
+- **What they are:** Byonyks' published executive portraits. Downloaded and
+  served from this origin rather than hotlinked, so the page does not make
+  fourteen third-party requests and does not break if the source moves.
+- **Looked at, all fourteen** (the standing gate). They are genuine portraits
+  of the people they are captioned as. Nothing was edited.
+
+### Rights — LAUNCH GATE, unresolved
+
+These are employees of another company, photographed for that company's
+website. Byonyks USA's approval for use of its **name and marks** is verbal
+only (spec F-6, Open Questions 1.5). Nothing on record covers **employee
+photographs**, which is a separate permission and arguably a separate one per
+person depending on their contracts.
+
+**Needed before launch:** written permission from Byonyks USA covering the use
+of these fourteen portraits and biographies on aksharbyonyks.com. This is not a
+formality to tidy up later — it is the difference between a licensed partner
+showcasing its licensor and a website using fourteen people's faces without
+asking.
+
+### Consistency — spec §9.5 not met, and not fixable here
+
+§9.5 requires "consistent portrait treatment: same backdrop, crop and
+lighting." The source set is not consistent and cannot be made so without
+editing other people's photographs:
+
+- Backdrops run **white cut-out, pale blue, pale green, dark grey, and outdoors
+  under trees**.
+- At least two are **video stills or event photographs** rather than portraits —
+  one subject is mid-sentence wearing a headset microphone, another is a
+  full-length shot in what appears to be a workshop.
+
+The grid normalises what can be normalised: one aspect ratio, one `object-cover`
+crop, one bordered ground. The rest needs a re-shoot, which is the honest
+recommendation and the same one §9.5 already makes.
+
+### The four biographies that name a location
+
+Not an image issue, recorded here because it travels with this set: four of the
+fourteen biographies name **Lahore or Pakistan**, and two job titles read
+**"South Asia"**. Spec F-1 — the client's own decision of 20 August 2026 — keeps
+country attribution off this site. They are carried verbatim per the 29 August
+instruction and flagged per record in `leadership.ts` under `namesALocation`.
+See `deviations.md` §10.
