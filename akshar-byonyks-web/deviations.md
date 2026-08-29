@@ -417,3 +417,71 @@ that has not reached this project rather than the page implying it is complete.
 - **Ink ceiling respected**: two moments, hero and closing mass. The compliance register stays in the light, which is exactly the meaning test the Full-Bleed Rule sets — a certification band on a dark ground would be styled as persuasion.
 - **A structural guard, in the shape of `market-data.ts`'s.** `compliance.ts` throws at module load if an entry sits in the public-record register without a reference number. A verification badge over an unverifiable claim fails the build rather than shipping.
 - **No `Certification` structured data.** Most entries have no certificate number to put in it; `PropertyValue` states the one number that is real and guesses no enum.
+
+### 8a. The page was retired the same day it shipped (29 Aug 2026)
+
+**Client, on reading it: "Is the manufacturing page needed? I feel like it adds
+unnecessary content to the website that repeats what is already here."**
+
+Measured rather than argued. Every one of the page's nineteen facts was checked
+against the rendered copy of the other six pages:
+
+| | |
+|---|---|
+| Facts that appeared **elsewhere too** | **11** |
+| Facts found **only** on `/manufacturing/` | 8 |
+
+And the split ran the wrong way. The duplicated eleven were the **prominent**
+ones — the entire hero chain (licensed / designs and manufactures / India being
+established) was already on `/innovation/`, `/innovation/the-x1-cycler/` and
+`/innovation/market/`; ISO 13485 and the clearance were on Home's proof band.
+The unique eight were **fine print**: product code, regulation, submission date,
+decision, the register link, HTW, and two pending hub cards.
+
+At ~785 words including nav and footer chrome, roughly half the real copy was
+restatement — in nav slot three of five, under a label that promised a factory
+the page opened by saying does not exist. **Both of those were foreseeable.**
+Spec §2.1 had already called this page thin and kept it anyway; F-1 warned that
+a manufacturing page with no manufacturing is worse than none. The first build
+designed around that warning instead of acting on it.
+
+**What changed**
+
+- The compliance record moved to `/innovation/the-x1-cycler/` as
+  **"Quality and compliance"** (`x1-compliance.tsx`), one section below the
+  regulatory panels it evidences. The two-tier split — public record against
+  company statement — survives intact; it was always the substance.
+- **The hero chain was deleted, not moved.** It was the duplication.
+- The FDA record's `detail` lost its trailing "held by Byonyks, not by Akshar
+  Byonyks" sentence, which the regulatory panel now sits directly on top of.
+- The regulatory card's external FDA link became an in-page link to
+  `#compliance`. Two links to the same register in one viewport is one more
+  than a reader needs.
+- **Primary nav is four items, not spec §8.2's five.** Recorded here as the
+  deviation it is.
+- `/manufacturing` returns a **308** to `/innovation/the-x1-cycler#compliance`.
+  byonyks.com carries the same path and partners may have it written down.
+- The print stylesheet moved with the content: the X-1 page now prints as the
+  tender document, with Keep Reading and the CTA band excluded.
+- `indiaHubs` is **parked, not deleted** — nothing renders it. A company's own
+  footprint is About Us material and `/about-us/` is not built. The research is
+  real and the constraint attached to it is load-bearing: whoever builds that
+  page must not quietly turn these into factories while Open Question 2.3 is
+  open.
+
+**Result**
+
+| | Before | After |
+|---|---|---|
+| `/innovation/the-x1-cycler/` | ~754 words | ~1,131 words |
+| `/manufacturing/` | ~785 words | — |
+| Pages stating the FDA record's detail | 1 | 1 |
+
+Net: one fewer page, one fewer nav item, ~400 fewer words sitewide, and no fact
+duplicated by the move. The licensing chain still appears on three pages, which
+is pre-existing and deliberate — it is one string from `claims.ts`, reused.
+
+**The reusable lesson.** The measurement that retired this page took ten minutes
+and could have been run before it was built. "Does this page say anything the
+site does not already say?" is a cheaper question than "how do I make this page
+good?", and it should come first.

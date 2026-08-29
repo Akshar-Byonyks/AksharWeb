@@ -4,63 +4,77 @@ import { PendingChip } from "@/components/common/pending-note";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { companyStated, fda510k, publicRecord } from "@/lib/compliance";
 
-// §9.4 "Quality and compliance": certifications with numbers and dates,
-// print-optimised for tender attachment.
+// Spec §9.4's "quality and compliance" content, living on the device page.
 //
-// THE SPLIT IS THE POINT. The spec asks for one list. One list would put a
-// clearance anybody can pull off a government register in the same visual
-// grammar as five test-house milestones that exist, in this project, as
-// sentences in a client audit with no certificate number attached to any of
-// them. A procurement officer attaching this to a tender and an investor
-// running diligence both need to know which is which before they need to know
-// anything else, so the distinction is the section's structure rather than a
-// disclaimer under it.
+// WHY IT IS HERE AND NOT ON `/manufacturing/` (29 Aug 2026). It shipped as a
+// standalone page first. Measured against the rest of the site afterwards,
+// **eleven of that page's nineteen facts already appeared somewhere else** —
+// and they were the prominent ones. Its entire hero was the licensing chain
+// that `/innovation/`, this page and `/innovation/market/` all already carry;
+// ISO 13485 and the clearance were on Home's proof band. What was genuinely
+// only there was fine print: the product code, the regulation, the submission
+// date, the decision, the link to the register, and two pending hub cards.
 //
-// It is also the honest reading of spec F-1. F-1's resolution is "attribute to
-// Byonyks, never to a country" — an instruction about *attribution*, and a page
-// that attributes properly has to show where each attribution lands.
+// Roughly half a page of restatement, in nav slot three of five, under a label
+// — "Manufacturing" — that promised a factory the page then opened by saying
+// does not exist. The spec's own audit had already called that page thin
+// (§2.1) and F-1 warned that a manufacturing page with no manufacturing is
+// worse than none; this build took the warning seriously the second time.
 //
-// Ground: white, per the Full-Bleed Rule's meaning test. Ink carries home,
-// night and the patient's life; white carries evidence, regulation and
-// specification. "Putting a certification band on a dark ground would style it
-// as persuasion," and this is the section that has the least business being
-// persuasive.
+// So the record moved to where a reader is already looking at the device, one
+// section below the regulatory statement it evidences, and the page went away.
+// Client decision, 29 Aug 2026. Recorded in `deviations.md`.
+//
+// THE SPLIT IS THE POINT, AND IT IS WHAT SURVIVED THE MERGE. Spec §9.4 asks
+// for one list of certifications. One list would put a clearance anybody can
+// pull off a government register in the same visual grammar as five test-house
+// milestones that exist, in this project, as sentences in a client audit with
+// no certificate number attached to any of them. An investor running diligence
+// and a procurement officer attaching this to a tender both need to know which
+// is which before they need anything else, so the distinction is the section's
+// structure rather than a disclaimer under it.
+//
+// Ground: `surface-2`, which keeps the Full-Bleed Rule's meaning test intact —
+// ink carries home, night and the patient's life; the light carries evidence,
+// regulation and specification, because "a certification band on a dark ground
+// would be styled as persuasion." It also keeps the page's alternation honest,
+// sitting between the regulatory panels (background) and the IFU request (ink).
 //
 // Colour: primary blue on the public-record panel only. Home's proof band
-// already fixed regulatory proof to blue, and confining it to the one verified
-// entry means the colour is doing the same job as the layout instead of
-// decorating both registers equally. Teal is deliberately not borrowed for the
-// stated register: teal means clinical evidence, and a company statement
-// awaiting its certificate is not evidence yet.
-export function ComplianceRegister() {
+// fixed regulatory proof to blue, and confining it to the one verified entry
+// makes the colour do the same job as the layout. Teal is deliberately not
+// borrowed for the stated register: teal means clinical evidence, and a company
+// statement awaiting its certificate is not evidence yet.
+export function X1Compliance() {
   return (
     <section
       aria-labelledby="compliance-heading"
       id="compliance"
-      className="scroll-mt-24 bg-background"
+      className="scroll-mt-24 bg-surface-2"
     >
-      <div className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
+      <div className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 lg:px-8">
         <ScrollReveal>
           <div className="max-w-3xl">
             <h2
               id="compliance-heading"
               className="text-3xl font-bold tracking-tight text-balance text-ink sm:text-4xl"
             >
-              The compliance record
+              Quality and compliance
             </h2>
+            {/* Deliberately does not restate who manufactures or who holds the
+                clearance. The regulatory panels immediately above say both,
+                from `claims.ts`, and saying it twice in two adjacent sections
+                is exactly the repetition that cost the standalone page its
+                existence. */}
             <p className="mt-4 text-lg text-muted-foreground">
               Everything below is one of two things: a public record you can
-              check yourself, or a statement by Byonyks that is attributed to
-              Byonyks. Nothing here is a claim by Akshar Byonyks about its own
-              manufacturing, because Akshar Byonyks does not manufacture.
+              check yourself, or a statement by Byonyks, attributed to Byonyks.
+              Which one it is decides how much weight it carries, so it decides
+              how this section is laid out.
             </p>
-            {/* Spec §9.4 asks for this section to be print-optimised for
-                tender attachment. Saying so is half the feature — a
-                procurement officer who does not know the page prints cleanly
-                will screenshot it instead. */}
             <p className="mt-3 text-base text-muted-foreground">
-              This page is formatted to print as a plain annexe, without
-              navigation or images, for attaching to a tender.
+              This page is formatted to print as a plain document, without
+              navigation, for attaching to a tender.
             </p>
           </div>
         </ScrollReveal>
@@ -158,8 +172,8 @@ export function ComplianceRegister() {
         </ScrollReveal>
 
         {/* Register two. Hairline rows, no cards: the same documentary grammar
-            Home's proof band and the X-1 specification table use, so a reader
-            meets one register language across the site rather than three. */}
+            the specification table above and Home's proof band already use, so
+            a reader meets one register language across the site. */}
         <ScrollReveal>
           <h3 className="mt-16 text-sm font-semibold tracking-wide text-ink uppercase">
             Stated by Byonyks

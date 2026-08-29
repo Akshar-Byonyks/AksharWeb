@@ -7,10 +7,14 @@ export type NavLink = {
   children?: NavLink[];
 };
 
-// Spec 8.2: five items plus a persistent CTA. Becomes six with "Investors"
-// before "About Us" if that section is approved (Open Questions 2.4) —
-// add it to this array only, nothing else needs to change. Children per
-// item mirror the sitemap in spec 8.3 and drive the desktop mega-menu.
+// Spec 8.2 specifies five items plus a persistent CTA. **Four ship**, as of
+// 29 Aug 2026: "Manufacturing" was retired on the client's decision after a
+// measurement found eleven of that page's nineteen facts already stated
+// elsewhere, and its label promising a factory the page opened by saying does
+// not exist. Its compliance record now lives on /innovation/the-x1-cycler as
+// "Quality and compliance", and /manufacturing redirects there. Recorded in
+// deviations.md. Children per item mirror the sitemap in spec 8.3 and drive
+// the desktop mega-menu.
 export const primaryNav: NavLink[] = [
   {
     label: "Innovation",
@@ -22,7 +26,6 @@ export const primaryNav: NavLink[] = [
     ],
   },
   { label: "ByoTalks", href: "/byotalks" },
-  { label: "Manufacturing", href: "/manufacturing" },
   {
     label: "About Us",
     href: "/about-us",
@@ -56,7 +59,6 @@ export const footerColumns: { heading: string; links: NavLink[] }[] = [
       { label: "Our Story", href: "/about-us/our-story" },
       { label: "Leadership", href: "/about-us/leadership" },
       { label: "Careers", href: "/about-us/careers" },
-      { label: "Manufacturing", href: "/manufacturing" },
       { label: "News", href: "/news" },
     ],
   },

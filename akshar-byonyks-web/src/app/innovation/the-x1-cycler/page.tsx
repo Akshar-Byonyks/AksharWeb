@@ -4,6 +4,7 @@ import { DirectionContract } from "@/components/common/direction-contract";
 import { X1Features } from "@/components/innovation/x1-features";
 import { X1Hero } from "@/components/innovation/x1-hero";
 import { X1Ifu } from "@/components/innovation/x1-ifu";
+import { X1Compliance } from "@/components/innovation/x1-compliance";
 import { X1Regulatory } from "@/components/innovation/x1-regulatory";
 import { X1SpecTable } from "@/components/innovation/x1-spec-table";
 import { CtaBand } from "@/components/sections/cta-band";
@@ -111,6 +112,9 @@ regulatory sentence imported from src/lib/claims.ts rather than written here.
       <X1Features />
       <X1SpecTable />
       <X1Regulatory />
+      {/* Absorbed from `/manufacturing/` on 29 Aug 2026 — see the component
+          for the measurement that retired that page. */}
+      <X1Compliance />
       <X1Ifu />
       {/* Was `X1Continue`, a bespoke copy of this block. Both destinations it
           pointed at were 404s at the time, so it fell back to the hub; both
@@ -119,21 +123,27 @@ regulatory sentence imported from src/lib/claims.ts rather than written here.
           as its original intent — a reader who has just worked through a
           specification wants either the therapy underneath it or the market
           argument for it, and the hub is neither. */}
-      <KeepReading
-        items={[
-          {
-            href: "/innovation/how-it-works",
-            title: "How peritoneal dialysis works",
-            body: "The therapy this device automates, in plain language — the peritoneum, the three steps of an exchange, and a technical layer at each step.",
-          },
-          {
-            href: "/innovation/market",
-            title: "The India market",
-            body: "Why this device matters more here than in the market that cleared it — in sourced, dated figures, with the gaps still showing.",
-          },
-        ]}
-      />
-      <CtaBand />
+      {/* Neither belongs in a printed document: one is navigation, the other
+          is an invitation. `data-print-hidden` is read by the print block in
+          globals.css, which exists so this page can be attached to a tender
+          (spec §9.4). */}
+      <div data-print-hidden>
+        <KeepReading
+          items={[
+            {
+              href: "/innovation/how-it-works",
+              title: "How peritoneal dialysis works",
+              body: "The therapy this device automates, in plain language — the peritoneum, the three steps of an exchange, and a technical layer at each step.",
+            },
+            {
+              href: "/innovation/market",
+              title: "The India market",
+              body: "Why this device matters more here than in the market that cleared it — in sourced, dated figures, with the gaps still showing.",
+            },
+          ]}
+        />
+        <CtaBand />
+      </div>
     </>
   );
 }

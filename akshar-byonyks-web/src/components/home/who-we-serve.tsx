@@ -42,8 +42,8 @@ const audiences = [
   {
     icon: Building2,
     title: "Distributors & government",
-    body: "Corporate credentials, certifications, and manufacturing partnership details.",
-    href: "/manufacturing",
+    body: "The compliance record: the FDA clearance you can look up, and the certifications behind the device.",
+    href: "/innovation/the-x1-cycler#compliance",
     tint: "plum",
   },
 ] as const;

@@ -1,4 +1,4 @@
-import { ExternalLink, Landmark, ShieldCheck } from "lucide-react";
+import { ArrowDown, Landmark, ShieldCheck } from "lucide-react";
 
 import { PendingNote } from "@/components/common/pending-note";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
@@ -75,15 +75,16 @@ export function X1Regulatory() {
                 <p className="mt-1 font-mono text-lg font-semibold text-ink">
                   {fda510k.kNumber}
                 </p>
+                {/* In-page, not out to the FDA. The full record and the
+                    external link live in "Quality and compliance" directly
+                    below; two links to the same register in one viewport is
+                    one more than a reader needs. */}
                 <a
-                  href={fda510k.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#compliance"
                   className="mt-2 inline-flex items-center gap-1.5 rounded-sm py-1 text-sm font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 >
-                  Look it up on the FDA database
-                  <ExternalLink className="size-3.5 shrink-0" aria-hidden="true" />
-                  <span className="sr-only"> (opens in a new tab)</span>
+                  The full record, and how to check it
+                  <ArrowDown className="size-3.5 shrink-0" aria-hidden="true" />
                 </a>
               </div>
             </div>

@@ -99,7 +99,7 @@ export const publicRecord: readonly Credential[] = [
     reference: fda510k.kNumber,
     date: fda510k.decisionDate,
     detail:
-      "Class II device under 21 CFR 876.5630, product code FKX, classified as an automatic peritoneal delivery system. Submitted 30 October 2024 and found substantially equivalent on 16 May 2025. The clearance is held by Byonyks, not by Akshar Byonyks, and it authorises marketing in the United States only.",
+      "Class II device under 21 CFR 876.5630, product code FKX, classified as an automatic peritoneal delivery system. Submitted 30 October 2024 and found substantially equivalent on 16 May 2025.",
     verification: {
       kind: "public-record",
       register: fda510k.register,
@@ -192,7 +192,14 @@ export const companyStated: readonly Credential[] = [
 ];
 
 /**
- * The two India hubs.
+ * The two India hubs. PARKED — nothing renders these as of 29 Aug 2026.
+ *
+ * They were the one piece of `/manufacturing/` with nowhere else to go when
+ * that page was retired (see `x1-compliance.tsx`). They do not belong on a
+ * device page: a company's own footprint is About Us material, and
+ * `/about-us/` is not built yet. Kept here rather than deleted because the
+ * research behind them is real and the constraint below is the load-bearing
+ * part — whoever builds that page must not quietly turn these into factories.
  *
  * Open Questions 2.3, still open as of this build: construction is underway on
  * both, there is no confirmed completion date, and **their function is not
