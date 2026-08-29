@@ -10,17 +10,25 @@
 // published material, carried verbatim, with the source URL and the retrieval
 // date on each record. Nothing is paraphrased and nothing is invented.
 //
-// THESE ARE BYONYKS' EXECUTIVES, NOT AKSHAR BYONYKS'. Every record carries
-// `organisation: "Byonyks"`, every card prints it, and the JSON-LD's
-// `worksFor` says it too. Spec §3.1's first non-negotiable is that the two
-// companies are never blurred, and a face grid is the easiest place on a
-// website to blur them by omission — so the label is not optional metadata
-// here, it is the thing that keeps the page truthful.
+// A FIFTEENTH WAS SUPPLIED BY THE CLIENT, 29 AUG 2026: Dr. Vishnu Patel, Vice
+// President, Akshar Byonyks — the first executive of this site's own company
+// to appear on it. Same treatment: carried verbatim, attributed on the page,
+// dated. No photograph came with it, so the record declares `portraitPending`
+// and the page says so in words rather than inventing a face or waiting.
 //
-// **Open Question 1.4 is still open.** The five Akshar Byonyks executives have
-// not been provided, and this roster does not stand in for them: it answers
-// "who built the device" and leaves "who runs the Indian company" answered by
-// the pending note on /about-us/. Both statements are on the page.
+// TWO COMPANIES ON ONE ROSTER, AND THEY ARE KEPT APART. Fourteen of the
+// fifteen records are Byonyks' executives, not Akshar Byonyks'. Every record
+// carries its `organisation`, every card prints it, the grid is split into two
+// labelled groups, and the JSON-LD's `worksFor` says it too. Spec §3.1's first
+// non-negotiable is that the two companies are never blurred, and a face grid
+// is the easiest place on a website to blur them by omission — so the label is
+// not optional metadata here, it is the thing that keeps the page truthful.
+//
+// **Open Question 1.4 is still open.** Dr. Vishnu Patel was supplied by the
+// client on 29 Aug 2026 and is the first Akshar Byonyks executive on the site;
+// the rest of that team has not been provided. The Byonyks roster does not
+// stand in for them — it answers "who built the device" and leaves "who runs
+// the Indian company" to a pending note that is still on the page.
 //
 // ─── THREE THINGS THAT NEED A DECISION BEFORE LAUNCH ────────────────────────
 //
@@ -49,13 +57,18 @@
 //
 // ─── THE CONTRACT ───────────────────────────────────────────────────────────
 //
-// Spec §9.5 wants bios of 150 to 250 words. **Eight of these fourteen are
-// outside that range** — 49 words at the short end, 517 at the long. That rule
-// is enforced below for biographies this project authors, and deliberately not
-// for transcribed ones: padding a 49-word bio to 150 means inventing facts
-// about a real person, and cutting a 517-word one means deciding which half of
-// someone's career matters. Verbatim records answer to a different contract —
-// provenance — and that is the one enforced on them.
+// Spec §9.5 wants bios of 150 to 250 words. **Nine of these fifteen are
+// outside that range** — 49 words at the short end, 517 at the long, and Dr.
+// Patel's supplied bio at 124. That rule is enforced below for biographies
+// this project authors, and deliberately not for ones carried verbatim:
+// padding a 124-word bio to 150 means inventing facts about a real person, and
+// cutting a 517-word one means deciding which half of someone's career
+// matters. Verbatim records answer to a different contract — provenance — and
+// that is the one enforced on them.
+//
+// Dr. Patel's is 26 words short of §9.5's floor. That is the client's own copy
+// about the client's own executive, so it is theirs to extend; it is not
+// something to pad here.
 
 export type Executive = {
   readonly slug: string;
@@ -68,14 +81,30 @@ export type Executive = {
    * every profile, and never inferred from the site it appears on.
    */
   readonly organisation: "Akshar Byonyks" | "Byonyks";
-  /** 150–250 words when authored here; verbatim when transcribed. */
+  /** 150–250 words when authored here; verbatim when transcribed or supplied. */
   readonly bio: string;
-  readonly portrait: string;
+  readonly portrait?: string;
   readonly portraitAlt: string;
   readonly linkedin?: string;
   /** Where a transcribed record came from. Required for transcribed records. */
   readonly sourceUrl?: string;
+  /**
+   * Who supplied a verbatim record that has no public page to cite — the
+   * client's own copy about its own people. Carries the same obligation as
+   * `sourceUrl`: a `retrieved` date is required either way, and the profile
+   * prints the attribution. A biography of a real person with no stated origin
+   * is the same defect as an uncited statistic, whether it came off a website
+   * or out of an email.
+   */
+  readonly suppliedBy?: string;
   readonly retrieved?: string;
+  /**
+   * No photograph provided yet. The record publishes with a placeholder that
+   * says so on the page, rather than sitting in a branch until one arrives.
+   * Deliberately explicit: a missing `portrait` alone still fails the build,
+   * so a portrait can only go missing on purpose.
+   */
+  readonly portraitPending?: boolean;
   /**
    * Spec F-1 flag: this biography names a country or city that the 20 Aug 2026
    * attribution decision keeps off this site. Present so the conflict is
@@ -85,6 +114,30 @@ export type Executive = {
 };
 
 export const executives: readonly Executive[] = [
+  {
+    // THE FIRST AKSHAR BYONYKS EXECUTIVE ON THE SITE. Supplied by the client,
+    // 29 Aug 2026, and carried verbatim but for a missing full stop at the end
+    // of the last sentence.
+    //
+    // He leads the roster because he is the only person here who works for the
+    // company whose site this is. Everyone below him works for the licensor,
+    // and the page is now split into two labelled groups so that ordering
+    // cannot be mistaken for seniority within one company.
+    slug: "vishnu-patel",
+    name: "Vishnu Patel",
+    postNominals: "MD",
+    role: "Vice President",
+    organisation: "Akshar Byonyks",
+    // No photograph has been provided. The card and the profile publish a
+    // marked placeholder that says so, rather than the record waiting in a
+    // branch until a picture arrives. See `portraitPending` on the type.
+    portraitPending: true,
+    portraitAlt:
+      "Portrait of Vishnu Patel, MD, Vice President at Akshar Byonyks. Photograph pending.",
+    suppliedBy: "Akshar Byonyks",
+    retrieved: "29 August 2026",
+    bio: "Dr. Vishnu Patel is Vice President of Akshar Byonyks International (ABI), bringing extensive experience in nephrology, dialysis care, healthcare leadership, and business development. As a practicing nephrologist and physician executive, he provides clinical and strategic insight to ABI’s mission of expanding access to innovative, patient-centered peritoneal dialysis technology.\n\nAt Akshar Byonyks, Dr. Patel focuses on strategic partnerships, clinical integration, and the development of manufacturing and distribution capabilities in India and international markets. His work is guided by a commitment to making high-quality home dialysis solutions more accessible, affordable, and scalable for patients worldwide.\n\nDr. Patel also serves in physician leadership and healthcare business roles in the United States, giving him a practical perspective on translating medical innovation into sustainable solutions that improve patient care.",
+  },
   {
     slug: "farrukh-usman",
     name: "Farrukh Usman",
@@ -276,6 +329,18 @@ export const executives: readonly Executive[] = [
   },
 ];
 
+/**
+ * The roster, grouped by employer. The page renders these as two labelled
+ * sections rather than one mixed grid: fifteen faces under one heading, told
+ * apart only by a caption, is the blur §3.1 forbids.
+ */
+export const aksharExecutives = executives.filter(
+  (executive) => executive.organisation === "Akshar Byonyks",
+);
+export const byonyksExecutives = executives.filter(
+  (executive) => executive.organisation === "Byonyks",
+);
+
 export function getExecutive(slug: string): Executive | undefined {
   return executives.find((executive) => executive.slug === slug);
 }
@@ -296,18 +361,31 @@ const MIN_BIO_WORDS = 150;
 const MAX_BIO_WORDS = 250;
 
 for (const executive of executives) {
-  if (!executive.portrait || !executive.portraitAlt) {
+  if (!executive.portraitAlt) {
     throw new Error(
-      `leadership: "${executive.name}" has no portrait. Spec §9.5 requires one for every executive. ` +
-        "A grid where some faces are missing reads as a company with something to hide.",
+      `leadership: "${executive.name}" has no alt text for a portrait.`,
     );
   }
 
-  if (executive.sourceUrl) {
-    // Transcribed. The contract is provenance, not length — see the header.
+  // A portrait can be absent, but only on purpose. Spec §9.5 requires one for
+  // every executive, and a grid where some faces are quietly missing reads as
+  // a company with something to hide — so the omission has to be declared, and
+  // the page then says out loud that the photograph is pending.
+  if (!executive.portrait && !executive.portraitPending) {
+    throw new Error(
+      `leadership: "${executive.name}" has no portrait and has not declared \`portraitPending\`. ` +
+        "Add the photograph, or mark it pending so the page can say so.",
+    );
+  }
+
+  if (executive.sourceUrl || executive.suppliedBy) {
+    // Not authored here. The contract is provenance, not length — see the
+    // header. Applies equally to a biography lifted from a public page and one
+    // handed over by the client: both are somebody else's words about a real
+    // person, and neither may be padded or cut to hit a word count.
     if (!executive.retrieved) {
       throw new Error(
-        `leadership: "${executive.name}" is transcribed from ${executive.sourceUrl} with no retrieval date. ` +
+        `leadership: "${executive.name}" is carried verbatim from ${executive.sourceUrl ?? executive.suppliedBy} with no date. ` +
           "A quoted biography without a date is a claim about someone that nobody can check against its source.",
       );
     }

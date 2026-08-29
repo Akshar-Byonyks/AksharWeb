@@ -152,9 +152,9 @@ export const milestones: readonly Milestone[] = [
  * compensating route, working as intended.
  */
 export const leadershipStatus = {
-  note: "Leadership page pending",
+  note: "Akshar Byonyks executives pending",
   label:
-    "The five Akshar Byonyks executives — names, biographies and portraits — have not been provided to this project. The leadership page lists Byonyks' executives, who built the device; the people running the Indian company are a separate roster and are not published yet.",
+    "Dr. Vishnu Patel is published; no photograph of him has been provided. The rest of the Akshar Byonyks executive team — names, biographies and portraits — has not been provided to this project. The other fourteen people on the leadership page are Byonyks' executives, who built the device.",
   meanwhile:
     "The nephrologists who advise Byonyks do appear on this site, by name and credential, as the speakers in ByoTalks.",
 } as const;

@@ -4,19 +4,19 @@ import { ArrowRight } from "lucide-react";
 import { PendingNote } from "@/components/common/pending-note";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { leadershipStatus } from "@/lib/about";
-import { executives } from "@/lib/leadership";
+import { byonyksExecutives } from "@/lib/leadership";
 
 // The team, on the About page.
 //
-// Rewritten 29 Aug 2026, when `/about-us/leadership/` was populated from
-// byonyks.com on client instruction. Until then this section was a pending
-// note and nothing else, because there was nowhere to send anybody.
+// Rewritten twice on 29 Aug 2026: first when `/about-us/leadership/` was
+// populated from byonyks.com on client instruction, then again when the first
+// Akshar Byonyks executive was supplied. Before that this section was a
+// pending note and nothing else, because there was nowhere to send anybody.
 //
 // IT STILL CARRIES THE PENDING NOTE, and that is the point of the section
-// rather than a leftover. The leadership page answers "who built the device";
-// Open Question 1.4 — the five Akshar Byonyks executives — is a different
-// question, still open, and a launch gate. A reader who follows the link must
-// already know which of the two they are about to get, or the roster answers
+// rather than a leftover. Open Question 1.4 is not closed by one name, and it
+// is a launch gate. A reader who follows the link must already know that most
+// of what is on the other end is the licensor's team, or the roster answers
 // the wrong question on their behalf.
 export function LeadershipPending() {
   return (
@@ -31,17 +31,18 @@ export function LeadershipPending() {
               The people
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              {executives.length} executives at Byonyks — the engineers,
+              The leadership page lists two companies separately. Dr. Vishnu
+              Patel, Vice President, for Akshar Byonyks; and{" "}
+              {byonyksExecutives.length} executives at Byonyks — the engineers,
               clinicians and regulatory staff who took the X-1 through to
-              clearance — are listed with their biographies, as Byonyks
-              publishes them.
+              clearance — with their biographies as Byonyks publishes them.
             </p>
             <p className="mt-6">
               <Link
                 href="/about-us/leadership"
                 className="inline-flex items-center gap-1.5 rounded-sm py-1 text-base font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
               >
-                The team behind the X-1
+                The leadership team
                 <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
               </Link>
             </p>

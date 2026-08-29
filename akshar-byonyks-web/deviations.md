@@ -713,3 +713,57 @@ defect as an uncited statistic.
 Verified: all fourteen profile pages return 200, render their portrait at
 288×360, carry multiple biography paragraphs and a working source link, with no
 console errors. 37 static pages.
+
+---
+
+## 11. The first Akshar Byonyks executive (29 Aug 2026)
+
+Client supplied one record — Dr. Vishnu Patel, MD, Vice President — to sit at
+the top of the leadership list. Carried verbatim, with one character added: the
+supplied text ended without a full stop.
+
+**The roster is now two companies, so it is now two grids.** One person from
+Akshar Byonyks above fourteen from Byonyks, in a single mixed grid, told apart
+only by a caption, is exactly the blur spec §3.1 forbids — and a reader who
+skims the top of a leadership page and sees an Akshar Byonyks masthead over
+fifteen faces has been told something false without a false sentence being
+written. The page is now two labelled sections under two company headings, the
+first viewport carries `licensingStatement` verbatim from `claims.ts`, and every
+card still prints its own `organisation` — the heading scrolls away, but a card
+gets screenshotted and read on its own.
+
+**A third kind of record, and the contract that goes with it.** There were two
+before: authored here (§9.5's 150–250 words, enforced) and transcribed from a
+public page (provenance, enforced). This one is neither — somebody else's words
+with no URL to cite. Rather than let it through unchecked, `suppliedBy` carries
+the same obligation as `sourceUrl`: a date is required, and the profile prints
+"Biography supplied by Akshar Byonyks, carried here word for word. Received 29
+August 2026." **A biography of a real person with no stated origin is the same
+defect as an uncited statistic, whether it arrived off a website or out of an
+email.**
+
+**No photograph was supplied**, and the portrait contract deliberately fails the
+build on a missing one. It still does — but a record may now declare
+`portraitPending`, which publishes a marked placeholder instead: the initials,
+plus "Photograph pending" in the site's existing pending language (dashed
+border, mono clock label, the semantic pending amber). Not a grey silhouette,
+which is a picture of nobody presented as a picture. The omission has to be
+declared, so a portrait can still only go missing on purpose, and the gap is
+visible to the client on every visit — which is how the photograph arrives.
+`ProfilePage`'s `image` key is omitted rather than pointed at the placeholder.
+
+### Two things carried as supplied, and flagged rather than edited
+
+1. **124 words, against §9.5's 150 floor.** Padding it means inventing facts
+   about a real person — the same reasoning already applied to the transcribed
+   records. It is the client's copy about the client's own executive, so it is
+   theirs to extend.
+2. **"the development of manufacturing and distribution capabilities in
+   India."** This does not say Akshar Byonyks manufactures — it describes
+   building a capability — and `claims.ts` still says "Byonyks designs and
+   manufactures the device" everywhere the site speaks in its own voice. Worth
+   watching: it is one edit away from the claim the project is not allowed to
+   make.
+
+**Open Question 1.4 is not closed by one name.** The pending note stays, below
+both grids, and now also says the photograph is missing.

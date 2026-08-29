@@ -1,19 +1,25 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+import { ExecutivePortrait } from "@/components/about/executive-portrait";
 import { PendingNote } from "@/components/common/pending-note";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { CtaBand } from "@/components/sections/cta-band";
-import { executives } from "@/lib/leadership";
+import {
+  aksharExecutives,
+  byonyksExecutives,
+  executives,
+  type Executive,
+} from "@/lib/leadership";
+import { licensingStatement } from "@/lib/claims";
 import { siteUrl } from "@/lib/site-config";
 
 const path = "/about-us/leadership";
 
 const description =
-  "The executive team at Byonyks, the company that designs and manufactures the X-1 automated peritoneal dialysis cycler that Akshar Byonyks is licensed to bring to India.";
+  "The leadership of Akshar Byonyks, licensed to bring the X-1 to India, and of Byonyks, the company that designs and manufactures the cycler.";
 
 export const metadata: Metadata = {
   title: "Leadership",
@@ -30,25 +36,26 @@ export const metadata: Metadata = {
 
 // §9.5 `/about-us/leadership/` and, at `[slug]`, a page each.
 //
-// POPULATED FROM byonyks.com ON CLIENT INSTRUCTION, 29 AUG 2026. The roster is
-// Byonyks' fourteen executives, transcribed verbatim with provenance on every
-// record — see `src/lib/leadership.ts`, which also carries the three things
-// that still need a decision before launch (four biographies name a location
-// spec F-1 keeps off this site; portrait rights are unconfirmed; and the
-// portrait treatment is not consistent in the way §9.5 asks for).
+// TWO COMPANIES, TWO LABELLED GROUPS. Byonyks' fourteen executives were
+// transcribed from byonyks.com on client instruction, 29 Aug 2026; Dr. Vishnu
+// Patel was supplied by the client the same day and is the first Akshar
+// Byonyks executive on the site. Provenance is on every record — see
+// `src/lib/leadership.ts`, which also carries what still needs a decision
+// before launch (four biographies name a location spec F-1 keeps off this
+// site; portrait rights are unconfirmed; portrait treatment is not consistent
+// in the way §9.5 asks for; and one portrait does not exist yet).
 //
-// THE PAGE SAYS WHOSE TEAM THIS IS, TWICE, WHERE IT CANNOT BE MISSED. The
-// first viewport names Byonyks, and every card carries the company under the
-// role. Spec §3.1's first non-negotiable is that the two companies are never
-// blurred, and the failure mode for a page like this is not a false sentence —
-// it is fourteen faces under an Akshar Byonyks masthead with nothing saying
-// otherwise, which a reader completes for themselves.
+// THE SPLIT IS THE POINT. Spec §3.1's first non-negotiable is that the two
+// companies are never blurred, and the failure mode for a page like this is
+// not a false sentence — it is fifteen faces under one masthead, told apart
+// only by a caption, which a reader completes for themselves. So the roster is
+// two sections under two company headings, the first viewport says which is
+// which, and every card still prints the company under the role.
 //
-// AND IT SAYS WHO IS STILL MISSING. Open Question 1.4 — the five Akshar
-// Byonyks executives — is open, is a launch gate, and is a different question
-// from the one this roster answers. That note sits below the grid rather than
-// above it: the grid is real content and leads, but a reader must not leave
-// this page believing they have met the Indian company's leadership.
+// AND IT SAYS WHO IS STILL MISSING. Open Question 1.4 is not closed by one
+// name. The pending note sits below both grids: they are real content and
+// lead, but nobody may leave believing they have met the Indian company's
+// leadership in full.
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
@@ -66,6 +73,51 @@ const jsonLd = {
     })),
   },
 };
+
+function ExecutiveCard({
+  executive,
+  index,
+}: {
+  executive: Executive;
+  index: number;
+}) {
+  return (
+    <ScrollReveal delayMs={(index % 3) * 90}>
+      <li>
+        <Link
+          href={`${path}/${executive.slug}`}
+          className="group block rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+        >
+          {/* One aspect ratio and one ground for all fifteen. It normalises
+              the crop; it cannot normalise the backdrops, which run white to
+              dark grey in the source set. Spec §9.5 asks for consistent
+              treatment and only a re-shoot delivers that — see leadership.ts. */}
+          <ExecutivePortrait
+            executive={executive}
+            sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 92vw"
+          />
+          <h3 className="mt-5 text-xl font-semibold text-balance text-ink group-hover:text-primary">
+            {executive.name}
+            {executive.postNominals ? (
+              <span className="font-normal text-muted-foreground">
+                , {executive.postNominals}
+              </span>
+            ) : null}
+          </h3>
+          <p className="mt-1 text-base text-muted-foreground">
+            {executive.role}
+          </p>
+          {/* The company, on every card, always — even inside a section that
+              is already headed with it. The heading scrolls away; the card
+              gets screenshotted, shared and read on its own. */}
+          <p className="mt-1 font-mono text-xs tracking-wide text-muted-foreground">
+            {executive.organisation}
+          </p>
+        </Link>
+      </li>
+    </ScrollReveal>
+  );
+}
 
 export default function LeadershipPage() {
   return (
@@ -89,71 +141,65 @@ export default function LeadershipPage() {
               id="leadership-heading"
               className="text-4xl font-bold tracking-tight text-balance text-white sm:text-5xl"
             >
-              The team behind the X-1
+              Leadership
             </h1>
             <p className="mt-6 text-xl text-white/75">
-              These are the executives of <strong>Byonyks</strong>, the company
-              that designs and manufactures the cycler. Akshar Byonyks is
-              licensed to bring that device to India; its own executive team is
-              listed further down, and is not yet published.
+              Two companies, listed separately. {licensingStatement} Everyone
+              below is named with the company they work for.
             </p>
           </div>
         </div>
       </section>
 
-      <section aria-labelledby="roster-heading" className="bg-background">
+      <section aria-labelledby="akshar-roster-heading" className="bg-background">
         <div className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 lg:px-8">
           <h2
-            id="roster-heading"
+            id="akshar-roster-heading"
             className="text-3xl font-bold tracking-tight text-balance text-ink sm:text-4xl"
           >
-            Byonyks executive team
+            Akshar Byonyks
           </h2>
           <p className="mt-4 max-w-3xl text-lg text-muted-foreground">
-            Fourteen people, as published by Byonyks. Each profile is their own
+            The company this site belongs to, and the licensee for India.
+          </p>
+
+          <ul className="mt-12 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+            {aksharExecutives.map((executive, index) => (
+              <ExecutiveCard
+                key={executive.slug}
+                executive={executive}
+                index={index}
+              />
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section
+        aria-labelledby="byonyks-roster-heading"
+        className="border-t border-line bg-background"
+      >
+        <div className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 lg:px-8">
+          <h2
+            id="byonyks-roster-heading"
+            className="text-3xl font-bold tracking-tight text-balance text-ink sm:text-4xl"
+          >
+            Byonyks
+          </h2>
+          <p className="mt-4 max-w-3xl text-lg text-muted-foreground">
+            The licensor — the engineers, clinicians and regulatory staff who
+            took the X-1 through to FDA clearance. {byonyksExecutives.length}{" "}
+            people, as published by Byonyks. Each profile is their own
             biography, carried word for word, with a link to where it came from.
           </p>
 
           <ul className="mt-12 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-            {executives.map((executive, index) => (
-              <ScrollReveal key={executive.slug} delayMs={(index % 3) * 90}>
-                <li>
-                  <Link
-                    href={`${path}/${executive.slug}`}
-                    className="group block rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
-                  >
-                    {/* One aspect ratio and one ground for all fourteen. It
-                        normalises the crop; it cannot normalise the backdrops,
-                        which run white to dark grey in the source set. Spec
-                        §9.5 asks for consistent treatment and only a re-shoot
-                        delivers that — recorded in leadership.ts. */}
-                    <div className="relative aspect-4/5 overflow-hidden rounded-xl border border-line bg-surface-2">
-                      <Image
-                        src={executive.portrait}
-                        alt={executive.portraitAlt}
-                        fill
-                        sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 92vw"
-                        className="object-cover"
-                      />
-                    </div>
-                    <h3 className="mt-5 text-xl font-semibold text-balance text-ink group-hover:text-primary">
-                      {executive.name}
-                      {executive.postNominals ? (
-                        <span className="font-normal text-muted-foreground">
-                          , {executive.postNominals}
-                        </span>
-                      ) : null}
-                    </h3>
-                    <p className="mt-1 text-base text-muted-foreground">
-                      {executive.role}
-                    </p>
-                    {/* The company, on every card, always. */}
-                    <p className="mt-1 font-mono text-xs tracking-wide text-muted-foreground">
-                      {executive.organisation}
-                    </p>
-                  </Link>
-                </li>
-              </ScrollReveal>
+            {byonyksExecutives.map((executive, index) => (
+              <ExecutiveCard
+                key={executive.slug}
+                executive={executive}
+                index={index}
+              />
             ))}
           </ul>
         </div>
@@ -167,16 +213,16 @@ export default function LeadershipPage() {
                 id="akshar-team-heading"
                 className="text-3xl font-bold tracking-tight text-balance text-ink sm:text-4xl"
               >
-                The Akshar Byonyks team
+                The rest of the Akshar Byonyks team
               </h2>
               <p className="mt-4 text-lg text-muted-foreground">
-                A different question, and one this page does not yet answer.
-                Everyone above works for the licensor.
+                One name is published above. The others are not, and this page
+                is built to carry them the day they arrive.
               </p>
               <PendingNote
                 className="mt-8"
-                note="Five executives pending"
-                label="The names, biographies and portraits of the Akshar Byonyks executive team have not yet been provided. This page is built to publish them the day they are — it is not waiting on design or engineering."
+                note="Akshar Byonyks executives pending"
+                label="The remaining names, biographies and portraits of the Akshar Byonyks executive team have not yet been provided — and no photograph has been provided for Dr. Patel. Neither is waiting on design or engineering."
               />
               <p className="mt-8">
                 <Link

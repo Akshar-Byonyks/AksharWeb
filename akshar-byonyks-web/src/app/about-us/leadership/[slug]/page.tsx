@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 // lucide dropped its brand icons, so this is the generic external-link mark
@@ -7,6 +6,7 @@ import { notFound } from "next/navigation";
 // is not worth a dependency.
 import { ArrowLeft, ExternalLink } from "lucide-react";
 
+import { ExecutivePortrait } from "@/components/about/executive-portrait";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { CtaBand } from "@/components/sections/cta-band";
 import { executives, getExecutive } from "@/lib/leadership";
@@ -14,12 +14,11 @@ import { siteUrl } from "@/lib/site-config";
 
 // §9.5's `[slug]`, the executive profile.
 //
-// Prerendered from the roster, and the roster is currently empty (Open
-// Question 1.4 — see `leadership.ts`). `generateStaticParams` returning no
-// paths is the correct behaviour, not a bug: there are no profiles because
-// there are no people, and every one of these URLs 404s until there are. That
-// is the honest state and it is better than five placeholder profiles that
-// resolve.
+// Prerendered from the roster, so a URL exists for exactly the people who
+// exist and every other slug 404s. Nothing here is a placeholder profile — a
+// resolving page for a person we cannot describe is worse than a 404. The one
+// gap that is published is a missing photograph, and the page says so in
+// words rather than filling it with a silhouette.
 export function generateStaticParams() {
   return executives.map((executive) => ({ slug: executive.slug }));
 }
@@ -60,6 +59,8 @@ export default async function ExecutivePage({
   if (!executive) notFound();
 
   const path = `/about-us/leadership/${executive.slug}`;
+  // The attribution line only claims a portrait when there is one.
+  const carriedNoun = executive.portrait ? "Biography and portrait" : "Biography";
 
   // `Person`, with `worksFor` naming the actual employer rather than assuming
   // it is this site's company. Spec §3.1's first non-negotiable, in the
@@ -72,7 +73,11 @@ export default async function ExecutivePage({
       "@type": "Person",
       name: executive.name,
       jobTitle: executive.role,
-      image: `${siteUrl}${executive.portrait}`,
+      // Omitted rather than pointed at a placeholder: structured data that
+      // promises an image of a person should resolve to one.
+      ...(executive.portrait
+        ? { image: `${siteUrl}${executive.portrait}` }
+        : {}),
       worksFor: { "@type": "Organization", name: executive.organisation },
       ...(executive.linkedin ? { sameAs: [executive.linkedin] } : {}),
     },
@@ -96,16 +101,13 @@ export default async function ExecutivePage({
             ]}
           />
           <div className="mt-10 grid grid-cols-1 gap-10 lg:mt-14 lg:grid-cols-[18rem_1fr] lg:gap-14">
-            <div className="relative aspect-4/5 w-full max-w-72 overflow-hidden rounded-xl border border-white/15 bg-white/5">
-              <Image
-                src={executive.portrait}
-                alt={executive.portraitAlt}
-                fill
-                sizes="(min-width: 1024px) 18rem, 92vw"
-                className="object-cover"
-                priority
-              />
-            </div>
+            <ExecutivePortrait
+              executive={executive}
+              tone="dark"
+              sizes="(min-width: 1024px) 18rem, 92vw"
+              priority
+              className="w-full max-w-72"
+            />
             <div>
               <h1
                 id="executive-heading"
@@ -162,14 +164,17 @@ export default async function ExecutivePage({
             ))}
 
             {/* Where the biography came from, on the page and not only in
-                the data. Every bio here is transcribed verbatim from the
-                subject's own page on byonyks.com; a quoted biography without a
-                visible source is the same defect as an uncited statistic, and
-                this site does not ship those. */}
+                the data. Nothing here was written by this project: the Byonyks
+                records are transcribed from each subject's own page, and Dr.
+                Patel's was supplied by Akshar Byonyks. A quoted biography of a
+                real person with no visible origin is the same defect as an
+                uncited statistic, and this site does not ship those — so the
+                supplied record gets an attribution line too, not just the ones
+                with a URL to point at. */}
             {executive.sourceUrl ? (
               <p className="mt-8 border-t border-line pt-5 text-sm text-muted-foreground">
-                Biography and portrait as published by {executive.organisation},
-                carried here word for word.{" "}
+                {carriedNoun} as published by {executive.organisation}, carried
+                here word for word.{" "}
                 <a
                   href={executive.sourceUrl}
                   target="_blank"
@@ -180,6 +185,11 @@ export default async function ExecutivePage({
                   <span className="sr-only"> (opens in a new tab)</span>
                 </a>
                 , retrieved {executive.retrieved}.
+              </p>
+            ) : executive.suppliedBy ? (
+              <p className="mt-8 border-t border-line pt-5 text-sm text-muted-foreground">
+                {carriedNoun} supplied by {executive.suppliedBy}, carried here
+                word for word. Received {executive.retrieved}.
               </p>
             ) : null}
 

@@ -270,3 +270,18 @@ and crop are now consistent across the ten studio portraits and the crop is
 consistent across all fourteen. **Lighting is not**, and cannot be without a
 re-shoot — the four environmental photographs in particular remain visibly
 different in kind. That recommendation stands.
+
+
+### leadership/vishnu-patel — no photograph (29 August 2026)
+
+The first Akshar Byonyks executive published on the site arrived without one.
+There is no file in this directory for him and none is expected until the client
+sends it. The page publishes a marked placeholder — initials plus "Photograph
+pending" — rather than a stock portrait, a silhouette, or an empty frame.
+
+**Do not fill this with a lookalike, an AI-generated face, or a stock
+photograph.** It is a real, named, living executive of the company whose site
+this is; anything other than his own photograph is a fabrication about a real
+person. When the photograph arrives: process it to 900×1125 (4:5) to match the
+other fourteen, add `portrait` to his record and remove `portraitPending`, and
+record the edit here.
