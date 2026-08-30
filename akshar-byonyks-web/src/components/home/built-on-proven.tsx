@@ -36,6 +36,7 @@ export function BuiltOnProven() {
               className="mt-5 inline-flex items-center gap-1.5 rounded-sm py-1 text-sm font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               Visit Byonyks USA
+              <span className="sr-only"> (opens in a new tab)</span>
               <ExternalLink className="size-3.5" aria-hidden="true" />
             </a>
           </div>

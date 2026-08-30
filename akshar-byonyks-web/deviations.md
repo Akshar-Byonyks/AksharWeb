@@ -992,3 +992,119 @@ links, no targets under 24px.
 February 2026 signals a stalled company, and that the minimum viable cadence is
 one post a month — that is a content-ownership problem, not a build one, and the
 spec assigns it an owner in Phase 0.
+
+---
+
+## 15. The last five routes: terms, cookies, grievance, accessibility, careers (30 Aug 2026)
+
+Client: *"Complete all of them."* All five 404ing links are now real pages.
+**Every nav and footer link on this site resolves.**
+
+### The scaffolding was extracted first
+
+The privacy policy had grown a good structure — ink header, sticky section index
+beside a measure-limited column, `scroll-mt` so anchor jumps clear the sticky
+header. The alternative to extracting it was five copies of that layout, which
+is how a heading gets renamed on one document and not the other four. It now
+lives in `components/legal/legal-document.tsx` and all five use it. The privacy
+policy was moved onto it in the same pass; nothing about that page changed but
+where its scaffolding is defined.
+
+**A side effect worth noting:** the shared `MailLink` and `InternalLink` carry
+`py-1`, which silently closed the four sub-24px targets the audit had been
+reporting on the privacy policy.
+
+### Each page states facts it could establish, and marks the rest
+
+- **`/terms-of-use/`.** Nothing on this site is gated, sold or account-based,
+  which removes most of what a terms document normally governs. **No
+  arbitration clause**: spec §14.3 says the tooling notes' guidance is US-framed
+  and that arbitration in consumer contracts is treated differently under
+  Indian law. Copying it would have been the single most likely clause here to
+  be unenforceable, so the dispute-resolution seat is marked pending for
+  counsel. Registered address and CDSCO position likewise.
+- **`/cookie-policy/`.** **The claims here were measured, not assumed.** Fourteen
+  routes were loaded in a clean browser profile and the cookie jar,
+  `localStorage`, `sessionStorage` and every outbound request host read back.
+  Result: **no cookies, no storage keys, one third-party host** —
+  `cdn.jsdelivr.net`, the video placeholder's stylesheet and script. "We use
+  only essential cookies" would have been the easy version of this page and
+  false in the other direction. What could **not** be measured locally —
+  Cloudflare's production edge and Turnstile — is marked as pending production
+  verification rather than folded into the "none" claim.
+- **`/grievance-redressal/`.** Spec §14.3 wants "named officer, contact,
+  process, timeline." Three of the four are real and usable today. **The named
+  officer is not**, and that gap sits at the top of the page in the semantic
+  amber rather than the bottom, because someone arriving here is arriving with a
+  complaint and the first thing they need is whether a real person is at the end
+  of it. The statutory response period is left to rules under the DPDP Act, so
+  the page states a **service commitment that is ours to keep** (3 working days
+  to acknowledge, 30 days to answer) and marks the prescribed statutory period
+  as counsel's to confirm. A wrong statutory deadline on a statutory page is
+  worse than an admitted gap.
+- **`/accessibility/`.** Written from measurement rather than from a template.
+  Fourteen routes at 1400px and 390px were checked for document language, skip
+  link, main landmark, heading order, `h1` count, missing alt text, horizontal
+  overflow and unlabelled new-tab links; contrast was computed by compositing
+  alpha colours over their real backdrops. **Three gaps are named with their
+  WCAG criteria**: machine-generated captions on all eight ByoTalks recordings
+  (SC 1.2.2 — the most consequential gap on the site), no audio description
+  (SC 1.2.5), and no assistive-technology testing or independent audit. The page
+  deliberately does **not** claim "WCAG 2.1 AA compliant", because automated
+  structural checks cannot support that claim.
+- **`/about-us/careers/`.** No open roles, said in the first viewport.
+
+### Three departures on Careers, each deliberate
+
+1. **The departments grid is not migrated.** byonyks.com lists eight teams
+   including **Microbiology and Manufacturing**. Those are Byonyks' teams.
+   Reproducing them under an Akshar Byonyks masthead would assert this company
+   has a manufacturing line — the project's hardest standing rule is that Akshar
+   Byonyks is never described as the manufacturer. The India org structure is on
+   the do-not-fabricate list and Open Question 1.4 is still open, so the section
+   says whose teams those are and marks ours pending.
+2. **The 21st.dev icon portfolio is not used.** F-7 requires an account, and the
+   spec's own note says licensing is inconsistent per component and each must be
+   checked before shipping. No account exists and no licence has been checked,
+   so shipping one would be shipping an unlicensed asset. These are lucide icons
+   — already a dependency, ISC licensed, single-stroke at consistent weight,
+   which is what §7.2's iconography rule actually asks for. **Client decision
+   needed if the 21st.dev direction is to be honoured.**
+3. **The value descriptions are authored, not migrated.** byonyks.com carries
+   the five value *names* as headings over icon images with no body text, and its
+   hiring process is an unreadable diagram. There was nothing to migrate but the
+   names. The sentences are written for this site and each is anchored to
+   something the site actually does — but they are ours and **need client
+   sign-off**.
+
+### The audit caught me borrowing a number
+
+The first draft of the Careers "Innovation" value read *"...refused to accept
+that **86%** of the people who need dialysis simply would not get it."* That
+figure is a Byonyks press-release claim which `/news/` carries under
+attribution, and which `news-data.ts` — written the day before — explicitly says
+**may not be restated in Akshar Byonyks' own voice without its own primary
+source**. A careers page is exactly where a number like that gets borrowed for
+colour. It was caught on review of the rendered page and the sentence was
+rewritten without it. The rule held; it just needed enforcing against its own
+author.
+
+### Audit result
+
+Detector clean on all six templates. Across fourteen routes at two viewports:
+no heading-level jumps, one `h1` per page, no missing alt text, no horizontal
+overflow, no unlabelled new-tab links, and **zero flags on any of the five new
+pages**. Two pre-existing flags remain and are **not defects**: the source
+citations on `/innovation/market/` and two links on `/contact/` are inline text
+links inside sentences, which WCAG 2.2 SC 2.5.8 explicitly exempts.
+
+One real fix outside the five: Home's "Visit Byonyks USA" link opened a new tab
+without saying so. Fixed rather than listed.
+
+### Still open
+
+Nothing routed from the navigation 404s any more. Outstanding on these pages is
+not engineering: the **Grievance Officer appointment**, the **registered office
+address**, the **retention period**, the **jurisdiction seat**, **written trade
+mark permission**, **human-verified captions**, an **independent accessibility
+audit**, and **client sign-off on the authored careers values**.

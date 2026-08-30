@@ -26,16 +26,19 @@ export const primaryNav: NavLink[] = [
     ],
   },
   { label: "ByoTalks", href: "/byotalks" },
-  // One child, not spec §8.3's three. /leadership/ is built and populated
+  // Two children, not spec §8.3's three. /leadership/ is built and populated
   // (29 Aug 2026) so it is linked. /our-story/ is not built because /about-us/
   // absorbed the founder narrative rather than linking to it — the pre-build
   // measurement found the story was the substance and the hub the restatement.
-  // /careers/ is real separate content and is later work. Links follow routes
-  // here, never the other way round.
+  // /careers/ was built 30 Aug 2026 and is linked. /our-story/ is still not a
+  // route. Links follow routes here, never the other way round.
   {
     label: "About Us",
     href: "/about-us",
-    children: [{ label: "Leadership", href: "/about-us/leadership" }],
+    children: [
+      { label: "Leadership", href: "/about-us/leadership" },
+      { label: "Careers", href: "/about-us/careers" },
+    ],
   },
   { label: "News", href: "/news" },
 ];
@@ -59,6 +62,7 @@ export const footerColumns: { heading: string; links: NavLink[] }[] = [
     links: [
       { label: "About Us", href: "/about-us" },
       { label: "Leadership", href: "/about-us/leadership" },
+      { label: "Careers", href: "/about-us/careers" },
       { label: "News", href: "/news" },
     ],
   },
