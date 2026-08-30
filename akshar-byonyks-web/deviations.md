@@ -893,3 +893,102 @@ nobody is decapitated. The eleven that are already exactly 4:5 are unaffected.
 
 Nothing else changed: all fifteen still carry their `organisation` on the card,
 the list is still one list, and every biography still carries its provenance.
+
+---
+
+## 14. `/news/` and the two migrated articles (29 Aug 2026)
+
+Spec §9.7 and the client's audit response: *"Build future highlights and from
+the experts to be later populated / Keep latest updates as is / Keep both news
+articles."* Built as specified: three sections, two of them scaffolds, two real
+articles at `/news/[slug]`.
+
+### The bodies came from the markup, not from a summary
+
+Both releases were collected from byonyks.com. The first attempt used a fetch
+tool that renders a page through a summarising model, and its output **read
+like an article without being one** — the opening line it produced ("Device
+manufacturer Byonyks announced…") is not the article's opening line ("Itasca,
+IL – Device maker Byonyks has received…"), and several sentences were
+paraphrases of direct quotes. It was caught because the excerpt on the index
+page did not match the body it returned.
+
+**A text may not be labelled "carried word for word" unless it came from the
+source markup.** Both bodies were re-fetched as raw HTML and extracted from the
+paragraph elements. The site says these are verbatim, so they are.
+
+### The statistics are carried, not adopted
+
+Between them these releases assert that 85% of Americans on dialysis do not
+receive PD, that PD has a 10% survival advantage over in-center hemodialysis
+(attributed to the U.S. Renal Data System), that ~86% of the world's population
+needing dialysis has no access, and that Byonyks has delivered 10,000+
+therapies. The project rule is that no unsourced statistic ships, and it holds
+here **because none of these are presented as this site's figures**: they sit
+inside an attributed, dated, linked republication of somebody else's press
+release — the same contract the leadership biographies answer to.
+`carriedClaims` lists them per record so the exposure is visible in the data.
+**If any of these numbers is ever lifted out of an article page and stated in
+Akshar Byonyks' own voice, it needs its own primary source first.**
+
+### Whose news this is, said before the first sentence
+
+A news index under an Akshar Byonyks masthead is exactly where a reader assumes
+"our news", and the newer of the two articles is about entering the **United
+States** market. So: the publisher is on every card, in the hero, in the article
+header, in the `NewsArticle` author/publisher, and in an editorial note that
+sits **above** the body rather than a footnote below it. Spec §3.1's first
+non-negotiable, applied the same way it is on the leadership grid.
+
+### Section order kept, against the instinct to improve it
+
+§9.7 says "structure exactly as the audit specifies" and lists Featured
+Highlights, From the Experts, Latest Updates. Two empty sections above the only
+live content is a poor first impression, and **moving Latest Updates to the top
+was considered and rejected**: the order is a specified requirement, and the
+spec's own remedy for the empty ones is a design remedy — "an empty section must
+look deliberate, not broken" — not a reordering. They render as compact,
+labelled cards that say what will go in them and admit they are empty. Both are
+empty at source too: byonyks.com's own "From the Experts" heading has nothing
+under it, and its "Featured Highlights" is a photo gallery with no articles
+behind it. There was nothing to migrate and nothing was invented to fill them.
+
+### `/impeccable audit` — run, for the first time on this project
+
+The standing CLAUDE.md rule says run it on every new template. It had never been
+run. It was run here and it found things:
+
+- **P2, fixed.** The detector flagged `border-l-4` on the editorial aside —
+  "the most recognizable tell of AI-generated UIs". True, and replaced with the
+  site's own idiom: a bordered box with a mono eyebrow, as `PendingNote` does.
+- **P1, fixed.** The category chips used `border-white/45`… after measurement.
+  They started at `border-white/25`, which is **2.19:1 against the ink** and
+  under WCAG 1.4.11's 3:1 for a component boundary. `/45` is 4.30:1 and is
+  already the site's on-ink border weight (x1-hero, market-hero,
+  how-it-works-hero), so this is not a new token.
+- **P3, fixed.** The inline "Source" and "Wire release" links measured 45×19 and
+  97×20. Inline links in a sentence are exempt from WCAG 2.2's 24×24 target
+  rule, but `py-1` — which the codebase already uses on its standalone text
+  links — clears it anyway without changing the layout.
+
+**One thing the audit reported that was wrong, and it was my checker.** The
+first contrast sweep reported ~11 failures per page. Nearly all were false:
+the script parsed `oklab(0.999994 0.0000455 0.0000200 / 0.75)` as if the first
+three numbers were RGB, so every alpha colour on the ink background came back as
+1.24:1. Recomputed properly by compositing alpha over the real backdrop, every
+pair passes — the worst is the 14px breadcrumb at **6.68:1**, and the 12px date
+and category text are **8.69:1**. A tool that reports failures is not the same
+as a failure.
+
+Clean after the fixes: no detector findings, no heading-level jumps, one `h1`
+per page, no horizontal overflow at 390px or 1400px, no unlabelled new-tab
+links, no targets under 24px.
+
+### Still open
+
+`/news/` was one of six 404ing nav and footer links. **Five remain:**
+`/terms-of-use`, `/cookie-policy`, `/grievance-redressal`, `/accessibility` and
+`/about-us/careers`. Spec §9.7 also warns that a news index whose newest post is
+February 2026 signals a stalled company, and that the minimum viable cadence is
+one post a month — that is a content-ownership problem, not a build one, and the
+spec assigns it an owner in Phase 0.
