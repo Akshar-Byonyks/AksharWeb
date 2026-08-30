@@ -1,5 +1,12 @@
 import type { NextConfig } from "next";
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+import createNextIntlPlugin from "next-intl/plugin";
+
+// The Hindi track. There is no `[locale]` segment and no middleware — the
+// plugin only needs to know where the request config lives, so the two `/hi`
+// pages can call `getTranslations({ locale: "hi" })` and the other nineteen
+// routes keep the URLs they already have. Reasoning in `src/i18n/request.ts`.
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   async redirects() {
@@ -17,6 +24,6 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);
 
 initOpenNextCloudflareForDev();

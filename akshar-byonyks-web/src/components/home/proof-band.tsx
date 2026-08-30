@@ -1,3 +1,7 @@
+import {
+  DisplayFigure,
+  displayFigureClass,
+} from "@/components/common/display-figure";
 import { CountUpStat } from "@/components/home/count-up-stat";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 
@@ -34,13 +38,13 @@ const proofPoints = [
     label: "FDA clearance",
     detail:
       "K243371, granted to Byonyks on 16 May 2025 — the X-1 automated peritoneal dialysis cycler. Held by Byonyks, not by Akshar Byonyks.",
-    className: "text-primary",
+    tone: "primary" as const,
   },
   {
     stat: "ISO 13485",
     label: "Certified manufacturing",
     detail: "The X-1 is manufactured at a Byonyks ISO 13485 certified facility.",
-    className: "text-teal",
+    tone: "teal" as const,
   },
 ];
 
@@ -59,7 +63,7 @@ export function ProofBand() {
               separates reads as a record, a box that encloses reads as a card,
               and this page already had twelve of those. */}
           <div className="grid grid-cols-1 divide-y divide-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-            {proofPoints.map(({ stat, label, detail, className }, i) => (
+            {proofPoints.map(({ stat, label, detail, tone }, i) => (
               <div
                 key={label}
                 className={
@@ -68,11 +72,15 @@ export function ProofBand() {
                     : "py-8 sm:px-8 sm:py-0 lg:px-12"
                 }
               >
-                <p
-                  className={`text-5xl font-bold tracking-tight lg:text-6xl ${className}`}
-                >
+                {/* Moved onto the named display-numeral role, 30 Aug 2026.
+                    This band and `figure-register.tsx` were setting the same
+                    idea at two sizes, and only one of them had tabular
+                    figures on. `tone` is carried on the data rather than as a
+                    class string so the role stays the only place the size and
+                    the numerals are decided. */}
+                <DisplayFigure size="hero" tone={tone}>
                   {stat}
-                </p>
+                </DisplayFigure>
                 <p className="mt-4 text-lg font-semibold text-ink">{label}</p>
                 <p className="mt-2 text-base text-muted-foreground">{detail}</p>
               </div>
@@ -81,7 +89,7 @@ export function ProofBand() {
               <CountUpStat
                 to={10000}
                 suffix="+"
-                className="text-5xl font-bold tracking-tight text-accent-gold lg:text-6xl"
+                className={displayFigureClass({ size: "hero", tone: "gold" })}
               />
               <p className="mt-4 text-lg font-semibold text-ink">
                 Therapies delivered

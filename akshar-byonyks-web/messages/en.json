@@ -1,0 +1,74 @@
+{
+  "_readme": "The English source for the Hindi track. Only the strings the /hi pages render live here; the other nineteen routes are authored directly in their components and are not translated. Keys must stay identical in hi.json — the module-load check in src/i18n/messages.ts throws if they drift.",
+
+  "notice": {
+    "label": "Translation awaiting review",
+    "body": "These Hindi pages are a translation of our English pages. They have not yet been checked by a qualified medical translator. Where the two differ, the English is authoritative.",
+    "readEnglish": "Read this in English"
+  },
+
+  "provenance": {
+    "record": "On the public record"
+  },
+
+  "common": {
+    "languageName": "हिन्दी",
+    "switchToHindi": "हिन्दी में पढ़ें",
+    "switchToEnglish": "Read in English",
+    "notMedicalAdvice": "This is general information, not medical advice. Whether peritoneal dialysis is right for you is a decision for you and your nephrologist.",
+    "backToHindiHome": "Hindi home"
+  },
+
+  "home": {
+    "title": "Home dialysis, explained",
+    "standfirst": "Akshar Byonyks is licensed to bring the Byonyks X-1 automated peritoneal dialysis cycler to India. This page explains, in plain language, what that therapy is and who to ask about it.",
+    "whoWeAreHeading": "Who we are",
+    "whoWeAre": "Akshar Byonyks International LLC is an Indian company. Byonyks designs and manufactures the X-1 automated peritoneal dialysis cycler, and Akshar Byonyks is licensed to bring that device to India. Two companies, one device, and a licence between them.",
+    "clearanceHeading": "About the approval",
+    "clearance": "The X-1 was cleared by the United States Food and Drug Administration under 510(k) K243371 on 16 May 2025. That clearance is held by Byonyks, not by Akshar Byonyks, and it authorises marketing in the United States.",
+    "indiaPosition": "A United States clearance is not an Indian approval. India's regulatory position for this device is separate, is still being established under the Medical Device Rules 2017, and will be stated here precisely once it is confirmed. Nothing on this page should be read as saying the device is approved for sale in India.",
+    "therapyHeading": "What peritoneal dialysis is",
+    "therapyLead": "Healthy kidneys clean waste and extra fluid from the blood all day, without stopping. When they can no longer do that, the job has to be done another way.",
+    "therapyBody": "Peritoneal dialysis does it inside the body, using the lining of your own abdomen as the filter. A soft tube is placed through the abdominal wall in a short operation and stays there. Clean fluid runs in, waste and extra fluid pass into it from the blood vessels in the lining, and the used fluid is drained away. No blood leaves the body, and there are no needles in an exchange.",
+    "therapyLink": "How the therapy works, step by step",
+    "whyHomeHeading": "Why this matters at home",
+    "whyHome": "In-centre haemodialysis organises the week around a facility — roughly three trips, plus the road between them. Automated peritoneal dialysis does not shorten that journey. It removes it: the therapy runs overnight, at home, on a schedule set with your nephrologist.",
+    "contactHeading": "How to reach us",
+    "contactBody": "You can write to us in Hindi or in English. A person reads every message, and we will reply in the language you wrote in.",
+    "contactEmailLabel": "Email",
+    "contactFormNote": "Our enquiry form is in English. If you would rather not use it, email us directly at the address above and tell us what you would like to know.",
+    "clinicalWarning": "If your concern is urgent, do not write to us. Speak to your nephrologist or seek medical care."
+  },
+
+  "pd": {
+    "title": "How peritoneal dialysis works",
+    "standfirst": "The therapy in everyday language: what the peritoneum is, what one exchange involves, and the difference between doing it by hand and by machine.",
+    "peritoneumHeading": "Your own body does the filtering",
+    "peritoneum": "The peritoneum is the thin membrane that lines the inside of your abdomen and covers the organs inside it. It is full of small blood vessels, and it lets some things pass through it — which is what makes it usable as a filter.",
+    "catheter": "A soft tube called a catheter is placed through the abdominal wall in a short operation, and stays there. A sterile fluid called dialysate runs in through it.",
+    "exchangeHeading": "One exchange, three steps",
+    "exchangeLead": "A treatment is made of exchanges, and an exchange is always the same three steps. Everything else — how many, how long, how much fluid — is the part your nephrologist sets.",
+    "fillTitle": "Fill",
+    "fill": "Sterile dialysate runs down the catheter into the space around your organs. It flows in under gravity or from the cycler. It is not injected.",
+    "dwellTitle": "Dwell",
+    "dwell": "The fluid stays there. Waste and extra fluid cross out of the blood vessels in the membrane and into it. How long it stays is part of the prescription.",
+    "drainTitle": "Drain",
+    "drain": "The used fluid drains back out through the same catheter and is discarded. The next exchange begins with fresh fluid.",
+    "byHandHeading": "By hand, or by machine",
+    "byHandTitle": "By hand, through the day",
+    "byHand": "The exchanges are done by hand, several times through the day, using gravity and a bag. There is no machine. Each one takes some of the time.",
+    "byMachineTitle": "By machine, overnight",
+    "byMachine": "A machine called a cycler performs the exchanges, usually overnight while you sleep. The daytime hours are left free of exchanges.",
+    "x1Heading": "What the X-1 does",
+    "x1": "The X-1 is a cycler of the second kind. It runs the exchanges overnight, at home, warming the fluid to body temperature before each fill, and each night's treatment is started from the screen on the machine itself.",
+    "questionsHeading": "Questions worth asking your nephrologist",
+    "questionsLead": "Whether this therapy suits a particular person is a clinical decision, and it is not one this page can make. These are the questions the decision usually turns on.",
+    "q1": "Given my medical history, am I a candidate for peritoneal dialysis at all?",
+    "q2": "Would exchanges by hand through the day, or by a cycler overnight, suit my situation better?",
+    "q3": "What would my prescription look like — how many exchanges, and how long would each one dwell?",
+    "q4": "What does having the catheter placed involve, and how long before it can be used?",
+    "q5": "What signs of infection should we watch for, and who do we call at night?",
+    "q6": "What training would my family and I get, and who supports us after it?",
+    "q7": "How would the supplies reach us, and what happens if a delivery is late?"
+  }
+}

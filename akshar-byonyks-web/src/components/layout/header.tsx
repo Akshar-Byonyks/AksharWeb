@@ -60,6 +60,20 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex min-w-0 flex-wrap items-center justify-end gap-2">
+          {/* The Hindi track, 30 Aug 2026. In the header rather than the footer
+              because PRODUCT.md's Priority-2 audience is "often reading in a
+              second language under stress", and a language switch eight
+              thousand pixels down the home page is not a switch. Set in
+              Devanagari and marked `lang="hi"` so a screen reader pronounces
+              it — a switch labelled in the language you cannot read is the
+              standard way this control fails. */}
+          <Link
+            href="/hi"
+            lang="hi"
+            className="rounded-md px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-surface-2 hover:text-ink focus-visible:bg-surface-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          >
+            हिन्दी
+          </Link>
           <Button asChild className="hidden sm:inline-flex">
             <Link href={contactCta.href}>{contactCta.label}</Link>
           </Button>

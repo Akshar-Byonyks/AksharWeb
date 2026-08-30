@@ -54,6 +54,7 @@ export function SiteFooter() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
+                      lang={link.lang}
                       className="inline-block max-w-full py-1 text-sm text-white/70 hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                     >
                       {link.label}

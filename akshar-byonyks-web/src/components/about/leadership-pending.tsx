@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-import { PendingNote } from "@/components/common/pending-note";
+import { ProvenanceMark } from "@/components/common/provenance";
+import { DocumentGrid, GridBlock } from "@/components/layout/document-grid";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { leadershipStatus } from "@/lib/about";
 import { byonyksExecutives } from "@/lib/leadership";
@@ -21,9 +22,19 @@ import { byonyksExecutives } from "@/lib/leadership";
 export function LeadershipPending() {
   return (
     <section aria-labelledby="leadership-heading" className="bg-surface-2">
-      <div className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 lg:px-8">
+      <DocumentGrid className="py-20">
         <ScrollReveal>
-          <div className="max-w-3xl">
+          {/* The gap moves into the margin, 30 Aug 2026. It used to be a dashed
+              PendingNote card sitting under the prose; as a provenance mark it
+              says the same thing in the same amber, beside the paragraph it
+              qualifies, in the register every other page now uses. */}
+          <GridBlock
+            rail={
+              <ProvenanceMark
+                provenance={{ status: "pending", missing: leadershipStatus.label }}
+              />
+            }
+          >
             <h2
               id="leadership-heading"
               className="text-3xl font-bold tracking-tight text-balance text-ink sm:text-4xl"
@@ -47,18 +58,12 @@ export function LeadershipPending() {
               </Link>
             </p>
 
-            <PendingNote
-              className="mt-10"
-              note={leadershipStatus.note}
-              label={leadershipStatus.label}
-            />
-
-            <p className="mt-6 text-base text-muted-foreground">
+            <p className="mt-8 text-base text-muted-foreground">
               {leadershipStatus.meanwhile}
             </p>
-          </div>
+          </GridBlock>
         </ScrollReveal>
-      </div>
+      </DocumentGrid>
     </section>
   );
 }

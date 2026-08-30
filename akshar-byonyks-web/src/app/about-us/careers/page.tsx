@@ -10,7 +10,11 @@ import {
 } from "lucide-react";
 
 import { DirectionContract } from "@/components/common/direction-contract";
-import { PendingNote } from "@/components/common/pending-note";
+import { ProvenanceMark } from "@/components/common/provenance";
+import {
+  DocumentGrid,
+  GridBlock,
+} from "@/components/layout/document-grid";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { CtaBand } from "@/components/sections/cta-band";
@@ -257,9 +261,22 @@ headcount we do not have.
       </section>
 
       <section aria-labelledby="teams-heading" className="bg-background">
-        <div className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 lg:px-8">
+        <DocumentGrid className="py-20">
           <ScrollReveal>
-            <div className="max-w-3xl">
+            {/* The gap moves into the margin, 30 Aug 2026. Same amber, same
+                words, beside the paragraph it qualifies instead of stacked
+                under it as a dashed card. */}
+            <GridBlock
+              rail={
+                <ProvenanceMark
+                  provenance={{
+                    status: "pending",
+                    missing:
+                      "What the Indian operation will be made of — which functions are hired here, which are shared with Byonyks, and in what order — is not yet settled. It will be published here when it is, rather than described in advance.",
+                  }}
+                />
+              }
+            >
               <h2
                 id="teams-heading"
                 className="text-3xl font-bold tracking-tight text-balance text-ink sm:text-4xl"
@@ -274,11 +291,6 @@ headcount we do not have.
                 </strong>
                 , and this page will not borrow them.
               </p>
-              <PendingNote
-                className="mt-8"
-                note="Akshar Byonyks team structure pending"
-                label="What the Indian operation will be made of — which functions are hired here, which are shared with Byonyks, and in what order — is not yet settled. It will be published here when it is, rather than described in advance."
-              />
               <p className="mt-8">
                 <Link
                   href="/about-us/leadership"
@@ -288,9 +300,9 @@ headcount we do not have.
                   <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
                 </Link>
               </p>
-            </div>
+            </GridBlock>
           </ScrollReveal>
-        </div>
+        </DocumentGrid>
       </section>
 
       <section aria-labelledby="apply-heading" className="bg-surface-2">

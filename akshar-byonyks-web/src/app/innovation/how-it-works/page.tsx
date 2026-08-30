@@ -27,7 +27,10 @@ export const metadata: Metadata = {
   description,
   alternates: {
     canonical: path,
-    languages: { "en-IN": path },
+    // Reciprocal with the Hindi track (30 Aug 2026). A crawler that finds
+    // either page must be able to find the other, or the pair reads as
+    // duplicate content rather than as one page in two languages.
+    languages: { "en-IN": path, "hi-IN": "/hi/peritoneal-dialysis" },
   },
   openGraph: {
     title: "How peritoneal dialysis works | Akshar Byonyks",

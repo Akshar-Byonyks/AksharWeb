@@ -4,6 +4,8 @@
 export type NavLink = {
   label: string;
   href: string;
+  /** Set when the label is not in the page's own language. */
+  lang?: string;
   children?: NavLink[];
 };
 
@@ -64,6 +66,10 @@ export const footerColumns: { heading: string; links: NavLink[] }[] = [
       { label: "Leadership", href: "/about-us/leadership" },
       { label: "Careers", href: "/about-us/careers" },
       { label: "News", href: "/news" },
+      // The ledger. In Company rather than Legal: it is not a policy, it is
+      // this company's account of what it can and cannot substantiate.
+      { label: "What We Know", href: "/what-we-know" },
+      { label: "हिन्दी", href: "/hi", lang: "hi" },
     ],
   },
   {

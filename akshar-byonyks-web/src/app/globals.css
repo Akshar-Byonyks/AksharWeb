@@ -34,6 +34,25 @@
     the ink figure only clears the 3:1 UI-component floor, not 4.5:1 text,
     so text on ink uses --color-pending-on-ink instead. */
   --color-pending-on-ink: #d99a3a; /* 6.95:1 on --color-ink. */
+
+  /* THE PROVENANCE SCALE (30 Aug 2026, deviations.md §16).
+     No new hue. The four accent roles already documented above are given a
+     second, structural job: they carry how a fact on this site is known.
+
+       plum    institutional / formal  -> "on the public record"
+       teal    clinical evidence       -> "published source"
+       primary the site's own voice    -> "stated by Byonyks"
+       pending not yet established     -> "not yet established"
+
+     Gold is deliberately NOT in this scale. Gold means "home / India" and
+     keeping it out is what stops the scale from becoming decoration.
+
+     These are the on-ink counterparts, chosen so all four land within
+     6.6-7.0:1 on --color-ink and read as one tonal family with the
+     pre-existing --color-pending-on-ink rather than four unrelated tints. */
+  --color-plum-on-ink: #c096b1; /* 6.63:1 on --color-ink. */
+  --color-teal-on-ink: #4fb3a8; /* 6.72:1 on --color-ink. */
+  --color-primary-on-ink: #6faed6; /* 7.00:1 on --color-ink. */
 }
 
 @theme inline {
@@ -194,6 +213,71 @@ a {
      sits on the baseline and cuts the descenders of g, y and p — which this
      copy is full of ("dialysis", "peritoneal", "nephrologist"). */
   text-underline-offset: 0.18em;
+}
+
+/* The caret in the enquiry form. At the default it is the OS text colour,
+   which on this ground is near-black against a navy-and-white system. */
+input,
+textarea,
+select {
+  caret-color: var(--color-primary);
+}
+
+/* ---------------------------------------------------------------------------
+   Devanagari, for the Hindi track at /hi.
+
+   Scoped to the language rather than fixed per component, so a third Hindi
+   page cannot be added without inheriting it, and so nothing about the
+   nineteen English routes changes.
+
+   1. LETTER-SPACING OFF. Every display and heading role on this site carries
+      `tracking-tight` (-0.02em), which is right for Noto Sans Latin at large
+      sizes and wrong for Devanagari at any size. Devanagari conjuncts are
+      single ligated forms and the matras sit above and below the shirorekha,
+      positioned relative to the glyphs they attach to. Pulling the glyphs
+      together does not tighten the line, it collides the marks.
+
+   2. MORE LEADING. Devanagari occupies more vertical space than Latin at the
+      same font-size — the shirorekha, the matras above it and the vowel signs
+      below all live outside the Latin x-height band — so a line height tuned
+      for Latin sets Hindi too tight. This is the same "tune line height to the
+      face and the language, not a universal ratio" the type system already
+      applies between display and body.
+   --------------------------------------------------------------------------- */
+[lang|="hi"],
+[lang|="hi"] * {
+  letter-spacing: normal;
+}
+
+[lang|="hi"] p,
+[lang|="hi"] li,
+[lang|="hi"] dd,
+[lang|="hi"] dt {
+  line-height: 1.75;
+}
+
+[lang|="hi"] h1,
+[lang|="hi"] h2,
+[lang|="hi"] h3 {
+  line-height: 1.4;
+}
+
+/* Tabular figures wherever numbers are meant to be COMPARED rather than read
+   as words: the X-1 specification, the compliance register, the ledger, the
+   market page's tables.
+
+   Proportional digits set `1` narrower than `8`, so a stacked column of
+   figures reads ragged and the eye cannot compare magnitudes down it. This is
+   the same reasoning `display-figure.tsx` carries for the large numerals; the
+   craft floor names it as one of the browser surfaces that ships with a
+   default belonging to no design system.
+
+   Deliberately scoped to tables and the mono register rather than applied
+   globally: tabular figures in running prose are slightly worse to read,
+   because the even advance is exactly what you do not want mid-sentence. */
+table,
+.font-mono {
+  font-variant-numeric: tabular-nums;
 }
 
 /* ---------------------------------------------------------------------------

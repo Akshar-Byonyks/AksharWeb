@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+import {
+  DocumentGrid,
+  GridBlock,
+  RailNote,
+} from "@/components/layout/document-grid";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 
 // Spec §9.2's "India context block", and the argument PRODUCT.md calls "the
@@ -26,9 +31,34 @@ import { ScrollReveal } from "@/components/motion/scroll-reveal";
 export function InnovationIndiaContext() {
   return (
     <section aria-labelledby="innovation-india-heading" className="bg-surface-2">
-      <div className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 lg:px-8">
+      <DocumentGrid className="py-20">
         <ScrollReveal>
-          <div className="max-w-3xl">
+          {/* The note on sourcing moves into the margin, 30 Aug 2026, and gains
+              the link it always wanted. It was a muted paragraph at the foot
+              of the prose explaining that this site does not state a figure it
+              cannot source — which is a statement about method, not part of
+              the argument, and belongs beside the argument rather than in it.
+              It is also the natural place to hand a sceptical reader the
+              ledger, since it is the sentence that makes them want one. */}
+          <GridBlock
+            rail={
+              <RailNote label="On sourcing">
+                <p>
+                  Nothing on this site states a figure it cannot source, and
+                  where one is still missing the slot is marked rather than
+                  filled.
+                </p>
+                <p className="mt-2">
+                  <Link
+                    href="/what-we-know"
+                    className="rounded-sm font-semibold text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                  >
+                    Every claim, and how it is known
+                  </Link>
+                </p>
+              </RailNote>
+            }
+          >
             <h2
               id="innovation-india-heading"
               className="text-3xl font-bold tracking-tight text-balance text-ink sm:text-4xl"
@@ -56,9 +86,7 @@ export function InnovationIndiaContext() {
                 The sourced version of this argument &mdash; scale, cost,
                 coverage and the mix of therapies actually in use, each figure
                 dated and attributed to a source you can open &mdash; is the
-                market page. Nothing on this site states a figure it cannot
-                source, and where one is still missing that page marks the slot
-                rather than filling it.
+                market page.
               </p>
             </div>
 
@@ -78,9 +106,9 @@ export function InnovationIndiaContext() {
                 <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
               </Link>
             </div>
-          </div>
+          </GridBlock>
         </ScrollReveal>
-      </div>
+      </DocumentGrid>
     </section>
   );
 }

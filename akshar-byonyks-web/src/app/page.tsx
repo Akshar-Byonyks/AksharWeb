@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import { AccessGeometryHero } from "@/components/home/access-geometry-hero";
 import { BuiltOnProven } from "@/components/home/built-on-proven";
 import { LatestNews } from "@/components/home/latest-news";
@@ -8,6 +10,18 @@ import { WhoWeServe } from "@/components/home/who-we-serve";
 import { WhyDifferent } from "@/components/home/why-different";
 import { CtaBand } from "@/components/sections/cta-band";
 import { DirectionContract } from "@/components/common/direction-contract";
+
+// Home had no metadata export of its own and inherited the root layout's.
+// It needs one now to declare the Hindi counterpart: a crawler that finds
+// /hi must be able to find its way back here, or the pair reads as duplicate
+// content rather than as one page in two languages. Title and description are
+// deliberately left inheriting, so this adds the alternates and nothing else.
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+    languages: { "en-IN": "/", "hi-IN": "/hi" },
+  },
+};
 
 // §9.1 Home. Direction: Access-geometry-led. Section order follows the spec's
 // nine rows, with rows 1–2 fused into AccessGeometryHero per the shape brief.

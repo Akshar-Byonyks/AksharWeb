@@ -62,13 +62,24 @@ export function AboutHero() {
         {/* A definition list, because that is literally what this is. The
             questions are marked up as terms so a screen reader announces the
             pairing rather than six loose paragraphs. */}
-        <dl className="mt-14 max-w-4xl space-y-8 border-t border-white/15 pt-10 lg:mt-16">
+        {/* Set as a two-track list, 30 Aug 2026. The sitewide critique
+            measured this hero using 53% of a 1440px canvas with the right
+            47% empty. Three questions side by side would have filled it and
+            read as parallel — but these are a sequence a reader works
+            through, so the question moves into its own track and the answer
+            keeps the measure. Same reading order, the width used, and the
+            pairing a definition list is for made visible rather than merely
+            marked up. */}
+        <dl className="mt-14 divide-y divide-white/10 border-t border-white/15 lg:mt-16">
           {questions.map(({ q, a }) => (
-            <div key={q}>
+            <div
+              key={q}
+              className="py-8 lg:grid lg:grid-cols-[minmax(0,22rem)_minmax(0,64ch)] lg:gap-x-12"
+            >
               <dt className="text-xl font-semibold text-balance text-white sm:text-2xl">
                 {q}
               </dt>
-              <dd className="mt-3 text-lg text-white/75">{a}</dd>
+              <dd className="mt-3 text-lg text-white/75 lg:mt-0">{a}</dd>
             </div>
           ))}
         </dl>

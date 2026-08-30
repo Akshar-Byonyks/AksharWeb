@@ -1,3 +1,4 @@
+import { DisplayFigure } from "@/components/common/display-figure";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { cn } from "@/lib/utils";
 import { type Figure, getSource, type SourceId } from "@/lib/market-data";
@@ -124,16 +125,18 @@ export function FigureRegister({
                 : "border-t border-line py-6 first:border-t-0 first:pt-0 sm:py-7"
             )}
           >
-            <dt
-              className={cn(
-                "font-bold tracking-tight text-ink tabular-nums",
-                emphasis === "lead"
-                  ? "text-4xl lg:text-5xl"
-                  : "text-2xl lg:text-3xl"
-              )}
+            {/* Moved onto the named display-numeral role, 30 Aug 2026. The
+                two steps this component already used ARE the role's "lead"
+                and "dense", so nothing here renders differently — it just
+                stops being a second place where the size and the tabular
+                figures are decided. */}
+            <DisplayFigure
+              as="dt"
+              size={emphasis === "lead" ? "lead" : "dense"}
+              tone="ink"
             >
               {figure.value}
-            </dt>
+            </DisplayFigure>
             <dd className="mt-3 max-w-2xl text-lg font-semibold text-ink">
               {figure.label}
             </dd>

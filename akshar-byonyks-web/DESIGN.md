@@ -9,6 +9,9 @@ colors:
   plum: "#6b3a5c"
   pending: "#9c6410"
   pending-on-ink: "#d99a3a"
+  plum-on-ink: "#c096b1"
+  teal-on-ink: "#4fb3a8"
+  primary-on-ink: "#6faed6"
   line: "#d8e2e8"
   surface-2: "#f4f7f9"
   surface-3: "#eaf1f5"
@@ -38,6 +41,13 @@ typography:
     fontSize: "0.75rem"
     fontWeight: 600
     letterSpacing: "0.05em"
+  figure:
+    fontFamily: "Noto Sans, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "clamp(1.5rem, 4vw, 3.75rem)"
+    fontWeight: 700
+    lineHeight: 1.05
+    letterSpacing: "-0.025em"
+    fontVariantNumeric: "tabular-nums"
 rounded:
   sm: "6px"
   md: "8px"
@@ -138,6 +148,27 @@ Navy and a WCAG-AA blue carry the system's weight; four rationed accent roles ca
 ### Semantic
 - **Pending Amber** (`#9c6410` on light grounds, `#d99a3a` — `--color-pending-on-ink` — on the ink hero ground): "figure pending source citation" only. Not a brand accent and never reused as one; a state color stays a state color. The two-value split exists because the base color only clears WCAG's 3:1 UI-component floor on ink, not the 4.5:1 text floor — the lighter value is for text on ink, the base value for everything else.
 
+### The provenance scale (added 30 Aug 2026)
+
+**No new hue.** The four accent roles above are given a second, structural job: they carry **how a fact on this site is known**. Each keeps the meaning it already had.
+
+| Status | Meaning | Light | On ink |
+|---|---|---|---|
+| **On the public record** | A register anyone can open — the FDA 510(k) database, a government scheme document, a filing | `plum` `#6b3a5c` | `#c096b1` |
+| **Published source** | Research or a dated public report by someone other than Byonyks or Akshar Byonyks | `teal` `#0e7c72` | `#4fb3a8` |
+| **Stated by Byonyks** | Byonyks' own account, true as an attribution and marked as one | `primary` `#0d5d8d` | `#6faed6` |
+| **Not yet established** | Nobody has given us this yet, or nobody has confirmed it | `pending` `#9c6410` | `#d99a3a` |
+
+The three on-ink values were chosen so all four land within **6.6–7.0:1 on `--color-ink`** and read as one tonal family with the pre-existing `pending-on-ink`, rather than four unrelated tints.
+
+**Gold is deliberately not in this scale.** Gold means "home / India". The discipline of not reaching for the fifth accent is the reason the other four still mean something.
+
+**Why this exists.** The site already knew, at 58 separate points, how each of its facts was known — and rendered every one as the same small amber chip. The critique of 30 Aug 2026 found that chip had become the most repeated visual element on the site, so the one thing here a competitor cannot copy was reading as a defect list. The scale is not an invention: `compliance.ts` had already split `public-record` from `company-stated` for the X-1 page, and this promotes that distinction to the whole site.
+
+**Form.** A **1px** hairline rule in the role colour, plus a mono label, in the document spine's gutter — never a thick coloured border, which the craft floor bans above 1px and which the detector flags as a side-tab. Colour is never the sole carrier: the label says the status in words. On mobile there is no gutter, so the mark becomes a footnote **under** the block — never above it, which would be a kicker.
+
+Implemented in `components/common/provenance.tsx`; the legend and the full register live at `/what-we-know/`.
+
 ### Named Rules
 **The Full-Bleed Rule.** Ink navy is used as a whole-section background in exactly the highest-stakes moments — never as a card fill, never as a small panel. Its rarity at full coverage is what makes those moments read as the page's emotional peaks. Revised 24 Aug 2026: there are still exactly two such moments, but the second is now **one shaped closing mass** rather than a single band. The CTA band and the site footer are the same continuous ink field, entered across the silhouette edge (below) and carrying no border between them — the footer is not a third ink spend, it is the bottom of the second one. The corollary is that anything else wanting to sit inside that closing mass joins the existing ink rather than introducing a new dark surface of its own.
 
@@ -170,6 +201,34 @@ This is the Wayfinding Rule extended from accent chips to grounds: a ground now 
 - **Body** (400, `1.125rem`, 1.6 line-height): lead paragraphs under section headings; measure capped by the surrounding `max-w-xl`/`max-w-2xl` container rather than a fixed ch value.
 - **Label** (600, `0.75rem`, 0.05em tracking, uppercase): the rare all-caps micro-label ("The dialysis gap in India"), used only where content genuinely needs a category marker — never as a decorative kicker above a heading.
 
+- **Figure** (700, four steps from `1.5rem` to `3.75rem`, -0.025em tracking, **tabular figures**): a number set at display size because the number is the thing being read. See below.
+
+### The display numeral (added 30 Aug 2026)
+
+This site is at its best when it sets a number enormous and lets it carry the section: `510(k)`, `K243371`, `≈two thirds`, `₹2,838`, `2.2 lakh`, `≈175,000`. That is not decoration — PRODUCT.md's Priority-1 and Priority-3 audiences "read fast and distrust marketing language", and a figure at display size with its source on the same row reads as evidence where a sentence reads as a claim.
+
+It was happening in two places at two sizes, and only one of them had tabular figures on. It is now one role, `components/common/display-figure.tsx`, with a four-step ramp read off the site rather than imposed on it — so adopting it changed no rendered pixel on `/innovation/market/`:
+
+| Step | Size | Used by |
+|---|---|---|
+| `hero` | `text-5xl lg:text-6xl` | Home's proof register |
+| `lead` | `text-4xl lg:text-5xl` | Market page legs, the ledger counts |
+| `row` | `text-3xl lg:text-4xl` | A figure supporting prose |
+| `dense` | `text-2xl lg:text-3xl` | A card, a cell, a two-up pair |
+
+**Tabular figures are not cosmetic.** Proportional digits set `1` narrower than `8`, so a stacked column of numbers reads ragged and the eye cannot compare magnitudes down it. `globals.css` also turns them on for `table` and `.font-mono`, and deliberately **not** globally: an even advance is exactly what you do not want mid-sentence.
+
+**This is not the hero-metric template** the craft floor refuses. That pattern is a decorative band of big numbers with small labels, used to make a page feel substantial. Every use of this role carries a source, a date or a status on the same row — `proof-band.tsx` made this argument when it refused to become one, and the role inherits it.
+
+### Devanagari (added 30 Aug 2026, for the Hindi track at `/hi`)
+
+Two rules, scoped in `globals.css` to `[lang|="hi"]` so a third Hindi page inherits them and the nineteen English routes are untouched:
+
+- **Letter-spacing is reset to `normal`.** Every display role here carries `tracking-tight`, which is right for Noto Sans Latin and wrong for Devanagari at any size: conjuncts are single ligated forms and the matras are positioned relative to the glyphs they attach to, so tightening collides the marks rather than the letters.
+- **Line height opens up** (1.75 body, 1.4 headings). Devanagari occupies more vertical space than Latin at the same size — the shirorekha, the matras above it, the vowel signs below — so a leading tuned for Latin sets Hindi too tight.
+
+**Never `font-mono` on Devanagari.** The mono stack carries no Devanagari glyphs, so the browser substitutes an arbitrary fallback and the label stops belonging to the system it is meant to signal. The Hindi status label uses Noto Sans at the same size and weight; the register is carried by size, weight and colour instead of by the face.
+
 ### Named Rules
 **The One-Family Rule.** Every role — display, body, label — is Noto Sans. No second face is introduced for "technical" or "editorial" contrast; weight and size carry that distinction instead.
 
@@ -178,6 +237,20 @@ This is the Wayfinding Rule extended from accent chips to grounds: a ground now 
 A single centered container, `max-w-[1280px]`, with responsive edge padding (`px-4` mobile, `sm:px-6`, `lg:px-8`) — used identically by the header, footer, and every Home section. Sections stack vertically at `py-20` (major content sections) or `py-16` (dense "band" sections: proof stats, CTA), alternating `bg-background` and `bg-surface-2` to separate sections tonally without rules. The one place a section boundary is not a straight line is the closing transition into the ink mass (see Silhouette Edge), which is why that boundary carries no hairline: a rule drawn across it would seam a mass meant to read as continuous. Card grids run 1 column on mobile, 2 on `sm:`, up to 4 on `lg:` for four-item groups (benefit cards, audience cards), with `gap-5`. No sidebar or off-canvas layout anywhere on Home; the mobile drawer nav is the one exception, using a native `<dialog>`.
 
 **The framing-and-artifact split** (added 24 Aug 2026, `/innovation/the-x1-cycler/`). A section built around one dense artifact — a long specification table, and later a comparison table or a chart — splits into two columns from `lg:` up, `grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]` with `gap-16`: the heading and its lead paragraph on the left at the narrower share, the artifact on the right at the wider one. It stacks to one column below `lg`, heading first. The alternative — heading full-width above a `max-w-3xl` table — leaves half the desktop viewport empty beside thirteen rows of data and reads as an unfinished section rather than a deliberately narrow measure. Prose sections keep the full-width heading and the `max-w-2xl`/`max-w-3xl` measure; this pattern is for sections whose subject is a structured artifact, not a paragraph.
+
+**The document spine** (added 30 Aug 2026, `components/layout/document-grid.tsx`). The sitewide critique measured the span of every section's own text at 1440px and found sections alternating between ~83% of the canvas and ~53% — with every 53% section pinned to the container's left edge and roughly 670px of dead white beside it. `/about-us` ran 53, 53, 62, 53.
+
+The 768px measure was not the bug; it is correct for 18px body copy and it stays. What was wrong was that it had nothing beside it, so a correct reading column read as an unfinished page.
+
+So a prose section is now a two-track grid, `lg:grid-cols-[14rem_minmax(0,74ch)]` with `gap-x-12`: a gutter pinned to the container's left edge, and the measure next to it. The gutter carries the provenance of the block beside it (see Colors → The provenance scale), a date, or a note on method.
+
+Three rules make it a system rather than an indent:
+
+1. **The rail must be occupied.** A gutter with nothing in it is worse than no gutter. A block with no provenance, no date and no note beside it is a `wide` block, not a railed one.
+2. **A section is railed or wide, including its heading.** Railing the prose on `/about-us` while leaving the milestone timeline alone produced headings at three different x positions on one page. A railed section puts its heading in a `GridBlock` too; a wide section — a figure, a table, a card grid, a timeline — keeps everything at the container edge. A page therefore alternates between exactly two left edges.
+3. **The rail is a margin, not navigation.** This is why it is not a copy of `legal-document.tsx`, which centres an index-plus-measure pair: that index is a sticky table of contents whose job is navigation, and navigation wants to be centred and stay put. Annotation wants to be a margin.
+
+The result is the narrow-narrow-WIDE-narrow rhythm `layout.md` asks for, which uniform 53% could never produce. Distinct from **the framing-and-artifact split** above: that pattern is for a section whose subject is a structured artifact; this one is for prose that has something to say about where it came from.
 
 ## Elevation & Depth
 

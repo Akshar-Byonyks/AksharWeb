@@ -1108,3 +1108,123 @@ not engineering: the **Grievance Officer appointment**, the **registered office
 address**, the **retention period**, the **jurisdiction seat**, **written trade
 mark permission**, **human-verified captions**, an **independent accessibility
 audit**, and **client sign-off on the authored careers values**.
+
+---
+
+## 16. The provenance scale, the document spine, and the ledger (30 Aug 2026)
+
+Client, after a sitewide audit and critique: *"Conduct fixes 1, 2, 4, 5, 6… except removing the silk."* Five directions from the critique's Part 3, built. **The silk hero stays** — the critique argued against it, the client kept it, and that is the client's call. It is untouched.
+
+### What the audit measured, before any of this
+
+- **Content span at 1440px.** Sections alternated between ~83% of the canvas and ~53%, and every 53% section was pinned left with ~670px of dead white beside it. `/about-us` ran **53, 53, 62, 53**.
+- **58 rendered "pending" markers** across sixteen routes, fifteen on `/innovation/the-x1-cycler/` alone.
+- **Two display-numeral treatments** at different sizes, only one with tabular figures.
+- Zero contrast failures across eighteen routes; zero heading-order, alt-text or overflow flags. The structural floor was already good, which is why this work is composition and system rather than repair.
+
+### 16.1 The provenance scale — accents get a second job
+
+**No new hue.** The four accent roles DESIGN.md already documents now also carry *how a fact is known*: plum = on the public record, teal = published source, primary = stated by Byonyks, pending amber = not yet established. Each keeps the meaning it already had. **Gold stays out**, because gold means "home / India" and not reaching for the fifth accent is why the other four still mean something.
+
+**This is a promotion, not an invention.** `compliance.ts` already split `public-record` from `company-stated` when the X-1 page was built. All this does is take that distinction sitewide and add the two statuses the rest of the site needed.
+
+**The type makes bad provenance unrepresentable.** `Provenance` is a discriminated union, not a status string with optional fields: a `record` cannot be constructed without a URL a reader can open. "On the public record" is a claim about verifiability, and if it can render without the link it is decoration. Same instinct as the module-load contracts in `leadership.ts`, moved one step earlier to compile time.
+
+**Three on-ink values added**, chosen so all four land within **6.6–7.0:1 on ink** and read as one tonal family with the pre-existing `pending-on-ink` rather than four unrelated tints.
+
+**Form.** A **1px** rule and a mono label in the gutter. Not a thick coloured border — the craft floor bans that above 1px, and the detector flags it as a side-tab. On mobile the mark becomes a footnote **under** the block, never above it, because a status label stacked on a heading is a kicker and this design system rejects those outright.
+
+**It removed a real flag.** `origin-story.tsx`'s founder quotation had a **4px gold left border** — a detector `side-tab` finding on the one block whose entire point is that it is somebody else's words. It now carries the provenance rail at 1px, saying *where it was published and when it was checked*, in words as well as colour. Decoration became information and the flag went with it. **Detector findings: 5 → 4.**
+
+### 16.2 The document spine — the legal grid, generalised
+
+A prose section is now a two-track grid: a 14rem gutter pinned to the container's left edge, and a 74ch measure beside it. `/about-us`'s hero went **53% → 68%**, "The people" **53% → 65%**, `/innovation`'s India section **53% → 65%**.
+
+**Three rules make it a system rather than an indent**, and the second was learned the hard way:
+
+1. **The rail must be occupied.** An empty gutter is worse than no gutter. No provenance, no date, no note → the block is `wide`, not railed.
+2. **A section is railed or wide, including its heading.** Railing the prose on `/about-us` while leaving the milestone timeline alone produced headings at **three different x positions on one page**. Fixed by making the choice per-section, so a page alternates between exactly two left edges.
+3. **The rail is a margin, not navigation.** Which is why this is *not* a copy of `legal-document.tsx`. That shell centres an index-plus-measure pair, and that is right for a sticky table of contents: navigation wants to be centred and stay put. Annotation wants to be a margin. The five legal documents keep their own shell.
+
+`milestones.tsx` needed **no change** under rule 2: a timeline that already draws its own rule with dates hanging off it is a wide figure, and nesting it in a second margin would have drawn two rules two hundred pixels apart saying the same thing.
+
+### 16.3 `/what-we-know/` — the ledger
+
+One page carrying every factual claim on the site with its basis: **37 entries — 1 public record, 15 published sources, 6 stated by Byonyks, 15 not yet established.**
+
+**It derives; it does not restate.** Entries are assembled from `compliance.ts`, `market-data.ts` and `byotalks.ts` — the same data the pages themselves render. A ledger that retyped those facts would be a second copy free to drift, which is the exact defect `market-data.ts` documents on its own opening lines (byonyks.com carries Guatemala at 56%; the paper says 45%). **Only the gaps are hand-written**, because an absence has no data structure to derive from — and the file says so, and says the drift risk is a person's job to catch.
+
+**No client-side filter**, for the reason `legal-document.tsx` gives for its own index: four anchors do the whole job, and a filter island on a static register would be a cost this audience pays for nothing. It would also *hide entries*, which on a page whose entire argument is "here is all of it" is the wrong default.
+
+**One data bug caught on first render.** Market figures' `asOf` is the period a figure *describes*, not a fetch date, so the first draft rendered "Retrieved Stated in the 2016 programme guidelines…". The type now gives each status its own date semantics: a public register is dated by when it was **checked** (it can change under you), research and company credentials by the period they **describe** (it cannot).
+
+### 16.4 The display numeral
+
+One named role replacing two ad hoc treatments, with a four-step ramp **read off the site rather than imposed on it** — so adopting it changed no rendered pixel on `/innovation/market/`, the best page on the site. Tabular figures are now on everywhere a column of numbers is meant to be compared, and deliberately **not** globally: an even digit advance is exactly what you do not want mid-sentence.
+
+Also themed, per the craft floor's "browser surfaces": the **caret colour** in the enquiry form, which was shipping as OS near-black on a navy-and-white system.
+
+### 16.5 What was NOT done, and why
+
+- **The silk hero stays.** Client decision, stated plainly. The 227 KB gzipped of three.js it loads on Home is therefore still there, and it is still more than the entire rest of Home's JavaScript (189 KB gz). It remains undocumented in this file's own terms — a stock React Bits component with no licence check recorded — and that is worth revisiting.
+- **The scrim was not recalibrated.** Not in the selected set. The hero photographs on `/innovation/` and `/byotalks/` still survive at roughly 10% of available dynamic range.
+- **The placeholder `tel:` link stays.** Client decision: `+91 00000 00000` remains a live tappable link sitewide.
+- **The 404 is still the framework default**, and the mobile menu button is still 32×32. Both were in the other list.
+
+### Verification
+
+`tsc` and `eslint --max-warnings 0` clean. **49 static pages.** Zero contrast failures across **21 routes** with alpha composited over real backdrops. Zero heading-order, `h1`-count, alt-text, overflow, new-tab-label or target-size flags at 1440px and 390px. Detector 5 → 4; the three remaining `#000`/`#999` findings are the pre-existing `@media print` values documented in `globals.css` itself, and the fourth is `button.tsx`'s `0.8rem`. **The narrow ignores for the print values could not be persisted — `hook-admin.mjs` is blocked by this environment's sandbox — so they will keep reporting.**
+
+**One defect found in this work and fixed:** the new provenance source links were 20px tall standalone links in the margin. SC 2.5.8's inline exception covers targets constrained by surrounding prose, which these are not, so they took `py-1` to clear 24px rather than an argued exemption.
+
+---
+
+## 17. The Hindi track (30 Aug 2026)
+
+Two routes — `/hi` and `/hi/peritoneal-dialysis` — in Hindi, for the Priority-2 audience PRODUCT.md describes as *"frequently older, often reading in a second language under stress."* The site was serving that audience entirely in English. `next-intl` had been a dependency since the first build with **zero importing files**, and Noto Sans has shipped the Devanagari subset from day one "for the Hindi roadmap". The roadmap had nothing on it.
+
+### No `[locale]` segment, and no middleware — a deliberate departure
+
+The conventional shape is `app/[locale]/` plus negotiating middleware. That is right for a site that is *translated*. This one is not, and should not be: **two of twenty-one routes carry Hindi**, and the specification table, the compliance register, the market case and the five legal documents are not going to. Translating a regulatory position nobody has confirmed yet multiplies the risk rather than the reach — and a hedged English sentence reads as a commitment once it is in a second language.
+
+A `[locale]` segment would therefore have put a locale prefix on nineteen routes that will never have a second locale, and changed every canonical URL and internal link on the site, for two pages. The critique named this trade explicitly: *"every route gains a locale segment — do this before the URL structure sets, or don't do it."* This is the third option: a real Hindi track, and **twenty English URLs that do not move**.
+
+next-intl supports it directly. `getTranslations({ locale: "hi" })` passes the explicit locale through to `getRequestConfig`, and the library's own types document the no-segment case. The catalogue, plural rules and formatting are all real; only the routing is ours.
+
+**Context7 was unavailable in this session**, and `CLAUDE.md` requires consulting it before writing next-intl code. The API was verified instead against the installed package's own type declarations in `node_modules/next-intl/dist/types/`, which is the closest available substitute and is stated here rather than glossed over.
+
+### Why a catalogue at all, for two pages
+
+Because **the reviewer is a person, not a build step.** The Hindi here has not been checked by a qualified medical translator. When it is, that person needs one file with the English and the Hindi side by side — not two JSX files to read around. `messages/hi.json` opens with a note telling the reviewer exactly which strings to check hardest.
+
+### The gap is declared, in Hindi, above the fold
+
+Every Hindi page opens with a notice — in the same semantic amber and dashed border this site uses for everything unfinished — saying the translation has not been checked by a qualified medical translator and that **the English is authoritative where the two differ**. Above the content, not below it: the same reasoning the ByoTalks player uses for machine-generated captions. A reader deciding whether to trust a medical page needs to know how it was made *before* they read it. It is carried in `claims-ledger.ts` as `pending-hindi-review` and appears on `/what-we-know/` with the other fifteen gaps.
+
+### Three correctness fixes the work exposed
+
+1. **`lang` on the boundary.** The root layout declares `lang="en-IN"`, which is right for nineteen routes and wrong for two. A screen reader chooses pronunciation from that attribute, and Devanagari read with an English voice is not accented, it is unintelligible. `app/hi/layout.tsx` carries `lang="hi-IN"` — a layout rather than a per-page attribute, so a third Hindi page cannot be added without it. WCAG 3.1.2.
+2. **`font-mono` on Devanagari, removed.** The mono stack carries no Devanagari glyphs, so the notice label was rendering in an arbitrary substituted face — and `tracking-wide` on Devanagari is worse than cosmetic, because conjuncts are ligated forms and the matras are positioned relative to the glyphs they attach to. Letter-spacing pulls the marks apart. Fixed systemically in `globals.css` under `[lang|="hi"]`: tracking reset to normal, and line height opened to 1.75 body / 1.4 headings, because Devanagari occupies more vertical space than Latin at the same size.
+3. **English inside a Hindi region.** The FDA register's name is a proper name and stays English — but it was rendering unmarked inside `lang="hi-IN"`. `ProvenanceMark` now takes a translated status label and marks the source name `lang="en"`, so a screen reader switches voice for the register's name and reads the status in Hindi.
+
+### The regulatory sentences are translated, not summarised
+
+`home.clearance` and `home.indiaPosition` carry the three constraints PRODUCT.md calls non-negotiable: the clearance belongs to **Byonyks, not Akshar Byonyks**; a US clearance is **not** an Indian authorisation; Akshar Byonyks is **not** the manufacturer. The K-number and decision date are read from `compliance.ts` rather than retyped into the catalogue, so they cannot drift from the English.
+
+### A contract, because the failure is silent
+
+next-intl renders a missing key as **the key path**. A Hindi page missing `home.indiaPosition` does not crash and does not warn — it renders the literal string `home.indiaPosition` where the sentence about India's regulatory position should be, builds, deploys, and looks roughly right to anyone who does not read Hindi. That is not a typo; it is the regulatory sentence going missing in the language of the audience least able to cross-check it.
+
+`src/i18n/messages.ts` compares the key sets at module load and fails the build instead. It also catches the likelier version: a reviewer renames or drops a key while rewording.
+
+### What is not translated, and deliberately so
+
+The seven questions to ask a nephrologist **are** carried — under the Drugs and Magic Remedies (Objectionable Advertisements) Act 1954 the decision belongs to a physician, and giving the reader the words to ask honours that better than telling them to ask.
+
+The **four benefits are not**, because their clinical references are still pending and an unreferenced benefit claim reads as a promise in any language. The **authored figures are not**: their labels are drawn in English inside the SVG, and a Devanagari page with an English diagram is worse than the same page with the three steps set as prose.
+
+The **contact form is not**. It is the one dynamic route on the site and carries Turnstile; forking it for two pages would fork the validation messages too. `/hi` instead carries the email address, a Hindi sentence saying you may write in either language and will be answered in the one you used, and a note that the form itself is in English.
+
+### Still open
+
+**The Hindi awaits review by a qualified medical translator.** It is marked on every Hindi page, in Hindi, and listed on `/what-we-know/`. Until it is reviewed the English is authoritative — and that is stated to the reader rather than only in this file.
