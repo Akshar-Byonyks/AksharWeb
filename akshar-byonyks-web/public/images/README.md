@@ -324,3 +324,32 @@ This closes the "no photograph" note recorded above for him. It does **not**
 close §9.5's consistency item: his lighting is his own, and the four
 environmental photographs in the set remain different in kind. A re-shoot is
 still the answer there.
+
+
+### Four portraits reverted to originals — 29 August 2026
+
+**Client instruction:** *"Revert to original portrait photos for Vishnu Patel,
+Mary Hoffman, Hassan Abrar, and Nauman Tarif."*
+
+These four now serve **the untouched source files**. The backdrop replacement,
+reframe and re-encode described above **no longer apply to them**:
+
+| File | Source of the restored copy | Size |
+| --- | --- | --- |
+| `vishnu-patel.jpg` | the file the client supplied, byte for byte | 525×598, 53 KB |
+| `mary-hoffman.png` | recovered from git `1e856c0` | 418×673, 437 KB |
+| `hassan-abrar.png` | recovered from git `1e856c0` | 636×1024, 224 KB |
+| `nauman-tarif-md.png` | recovered from git `1e856c0` | 418×673, 305 KB |
+
+Their processed `.jpg` versions were deleted. The other eleven portraits are
+unchanged and remain normalised to 900×1125 on `--color-surface-3`.
+
+Because three of these are 0.62 and the grid frame is 4:5, the frame crops them.
+The portrait component anchors the crop to the **top** so that no one loses the
+top of their head; checked on all four.
+
+**Directory weight: 1.3 MB → 2.0 MB.** The three PNGs are photographs stored in
+a lossless format, which is why they are large. Re-encoding them to JPEG at
+their original dimensions — no crop, no backdrop change — would recover most of
+that without touching anything the client asked to keep. Left as-is deliberately:
+the instruction was the original files.

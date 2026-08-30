@@ -13,8 +13,16 @@
 // A FIFTEENTH WAS SUPPLIED BY THE CLIENT, 29 AUG 2026: Dr. Vishnu Patel, Vice
 // President, Akshar Byonyks — the first executive of this site's own company
 // to appear on it. Same treatment: carried verbatim, attributed on the page,
-// dated. His photograph followed the same day and is normalised to the same
-// ground and crop as the rest.
+// dated. His photograph followed the same day.
+//
+// FOUR PORTRAITS ARE THE ORIGINAL FILES, UNMODIFIED — Vishnu Patel, Mary
+// Hoffman, Hassan Abrar and Nauman Tarif. Client instruction, 29 Aug 2026,
+// reverting the backdrop replacement and reframe that had been applied to
+// them. They keep their own backdrops (brown, dark grey, pale blue, pale
+// blue-white) and their own aspect ratios, and the 4:5 grid frame crops them
+// top-anchored rather than the file being recut. The other eleven are still
+// normalised to 900×1125 on --color-surface-3. Point 3 below is therefore
+// further from met than it was, by choice.
 //
 // TWO COMPANIES ON ONE ROSTER. Fourteen of the fifteen records are Byonyks'
 // executives, not Akshar Byonyks'. The page presents them as ONE LIST on
@@ -136,12 +144,12 @@ export const executives: readonly Executive[] = [
     role: "Vice President",
     organisation: "Akshar Byonyks",
     // Supplied by the client 29 Aug 2026, separately from the biography.
-    // Backdrop replaced with --color-surface-3 to match the other ten studio
-    // portraits, and reframed to 4:5. Nothing about him was altered. The
-    // method had to differ from theirs — his backdrop is a graded brown
-    // vignette rather than a flat colour, and brown is close enough to skin
-    // that the usual fill ate his face on the first two attempts. Full method
-    // and every failure in public/images/README.md.
+    //
+    // ORIGINAL FILE, UNMODIFIED. Client instruction, 29 Aug 2026, reverting
+    // the backdrop replacement and reframe that had been applied earlier that
+    // day. It keeps its brown backdrop and its own 0.878 ratio; the 4:5 grid
+    // frame crops it, top-anchored. See public/images/README.md for what was
+    // done and then undone.
     portrait: "/images/leadership/vishnu-patel.jpg",
     portraitAlt:
       "Portrait of Vishnu Patel, MD, Vice President at Akshar Byonyks.",
@@ -275,7 +283,11 @@ export const executives: readonly Executive[] = [
     postNominals: "R.N., B.S.N., M.B.A.",
     role: "Senior Director, Clinical Operations",
     organisation: "Byonyks",
-    portrait: "/images/leadership/mary-hoffman.jpg",
+    // ORIGINAL FILE, UNMODIFIED. Client instruction, 29 Aug 2026: reverted
+    // from the processed version, which had this backdrop replaced with
+    // --color-surface-3 and the frame recropped to 4:5. Keeps its own backdrop
+    // and its own 0.62 ratio; the grid frame crops it, top-anchored.
+    portrait: "/images/leadership/mary-hoffman.png",
     portraitAlt:
       "Portrait of Mary Hoffman, Senior Director, Clinical Operations at Byonyks.",
     linkedin: "https://www.linkedin.com/in/mary-hoffman-5b4320/",
@@ -288,7 +300,11 @@ export const executives: readonly Executive[] = [
     name: "Hassan Abrar",
     role: "Chief Operating Officer (COO), South Asia",
     organisation: "Byonyks",
-    portrait: "/images/leadership/hassan-abrar.jpg",
+    // ORIGINAL FILE, UNMODIFIED. Client instruction, 29 Aug 2026: reverted
+    // from the processed version, which had this backdrop replaced with
+    // --color-surface-3 and the frame recropped to 4:5. Keeps its own backdrop
+    // and its own 0.62 ratio; the grid frame crops it, top-anchored.
+    portrait: "/images/leadership/hassan-abrar.png",
     portraitAlt:
       "Portrait of Hassan Abrar, Chief Operating Officer (COO), South Asia at Byonyks.",
     linkedin: "https://www.linkedin.com/in/hassan-abrar-pmp-915760a3/",
@@ -302,7 +318,11 @@ export const executives: readonly Executive[] = [
     postNominals: "MD",
     role: "Chief Medical Officer, South Asia",
     organisation: "Byonyks",
-    portrait: "/images/leadership/nauman-tarif-md.jpg",
+    // ORIGINAL FILE, UNMODIFIED. Client instruction, 29 Aug 2026: reverted
+    // from the processed version, which had this backdrop replaced with
+    // --color-surface-3 and the frame recropped to 4:5. Keeps its own backdrop
+    // and its own 0.62 ratio; the grid frame crops it, top-anchored.
+    portrait: "/images/leadership/nauman-tarif-md.png",
     portraitAlt:
       "Portrait of Nauman Tarif, Chief Medical Officer, South Asia at Byonyks.",
     linkedin: "https://www.linkedin.com/in/nauman-tarif-232096184/",

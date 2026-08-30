@@ -47,12 +47,19 @@ export function ExecutivePortrait({
   if (executive.portrait) {
     return (
       <div className={frame}>
+        {/* `object-top`, not the default centre. Four of these are their
+            original files at their original aspect ratios — three of them
+            0.62, well outside this 4:5 frame — so the frame crops them. A
+            centred crop on a tall portrait takes the top of the head off.
+            Anchoring to the top spends the whole crop on the chest instead,
+            which is what a portrait can afford to lose. The eleven that are
+            already 4:5 are unaffected. */}
         <Image
           src={executive.portrait}
           alt={executive.portraitAlt}
           fill
           sizes={sizes}
-          className="object-cover"
+          className="object-cover object-top"
           priority={priority}
         />
       </div>

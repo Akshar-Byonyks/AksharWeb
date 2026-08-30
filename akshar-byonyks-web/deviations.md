@@ -845,3 +845,51 @@ those edges and ground beyond them would read as a cut-out.
 `portraitPending` and the placeholder built in §11 are now unused but retained:
 the rest of the Akshar Byonyks team is still outstanding, and the next record to
 arrive without a photograph should publish the same way rather than wait.
+
+---
+
+## 13. Four portraits reverted to their originals (29 Aug 2026)
+
+Client: *"Revert to original portrait photos for Vishnu Patel, Mary Hoffman,
+Hassan Abrar, and Nauman Tarif."* Done — those four are now the untouched
+source files, and the normalisation applied to them earlier today is undone.
+
+| Portrait | Now serving | Backdrop | Ratio |
+| --- | --- | --- | --- |
+| Vishnu Patel | `vishnu-patel.jpg`, the file the client sent | brown vignette | 0.878 |
+| Mary Hoffman | `mary-hoffman.png` | dark grey | 0.621 |
+| Hassan Abrar | `hassan-abrar.png` | pale blue | 0.621 |
+| Nauman Tarif | `nauman-tarif-md.png` | pale blue-white | 0.621 |
+
+The three PNGs were recovered from git at `1e856c0`, which is why the earlier
+pass kept them in history instead of only in a scratch directory. The other
+eleven are unchanged: still 900×1125 on `--color-surface-3`.
+
+### One code change was needed, and it is not cosmetic
+
+The grid frame is 4:5. Three of these four are **0.62**, well outside it, so the
+frame now crops them — and `object-cover` defaults to a **centred** crop, which
+on a tall portrait takes the top of the head off. The shared portrait component
+now anchors to the top (`object-top`), so the whole crop is spent on the chest
+instead, which is what a portrait can afford to lose. Verified on all four:
+nobody is decapitated. The eleven that are already exactly 4:5 are unaffected.
+
+### What this costs, stated rather than buried
+
+- **Page weight.** `public/images/leadership/` goes from **1.3 MB to 2.0 MB**.
+  The three restored files are PNGs of photographs — 437 KB for a 418×673 image
+  — which is a bad format for the job. Next's image optimiser transcodes them at
+  request time so what a visitor downloads is far smaller, but the repo and the
+  Workers bundle carry the full size. **Re-encoding them to JPEG at their
+  original dimensions, with no crop and no backdrop change, would recover most
+  of that and alter nothing the client objected to.** Not done here, because the
+  instruction said original files and that is what is committed; it is a
+  one-line follow-up if wanted.
+- **Spec §9.5 consistency moves further away.** The set now runs brown, dark
+  grey, pale blue, pale blue-white and `--color-surface-3` across fifteen
+  cards, with two different aspect ratios underneath. That was already an open
+  item needing a re-shoot; it is now more visible. **This is the client's call
+  and it is recorded as theirs, not as a defect that crept in.**
+
+Nothing else changed: all fifteen still carry their `organisation` on the card,
+the list is still one list, and every biography still carries its provenance.
