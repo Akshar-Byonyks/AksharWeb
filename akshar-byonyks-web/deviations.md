@@ -1228,3 +1228,220 @@ The **contact form is not**. It is the one dynamic route on the site and carries
 ### Still open
 
 **The Hindi awaits review by a qualified medical translator.** It is marked on every Hindi page, in Hindi, and listed on `/what-we-know/`. Until it is reviewed the English is authoritative — and that is stated to the reader rather than only in this file.
+
+---
+
+## 18. Spending the accents (30 Aug 2026)
+
+Client, on the home page: *"there are hints of other colors other than blue, white, and gold. Where else can we implement hints of other colors."* The answer was not that the site needed more colour. It was that the site already had a four-role colour code, taught it entirely on Home, and then almost never spoke it again.
+
+### What the measurement showed
+
+Across twenty-one routes: **teal in six places, three of them on Home. Plum in five, two of them on Home.** With zero of either: `/byotalks`, `/byotalks/[slug]`, `/news`, `/about-us/leadership`, `/about-us/leadership/[slug]`, `/about-us/careers`, `/innovation`, `/innovation/how-it-works`, and the five legal documents.
+
+`why-different.tsx` had already written the diagnosis into its own source when the home page was rebuilt — the accent meanings *"get too few exposures to be learnable"* — and then nothing acted on it. The amber `pending` marker is the control in this experiment: it has **58 exposures** and is the one status on the site a reader recognises instantly. The mechanism works. It was just never used.
+
+### `AccentRail`, and why it is not a second annotation language
+
+The new component is a 1px rule with content beside it — deliberately the **same** form as `ProvenanceMark`, because a reader should learn one margin grammar here rather than two. The two answer different questions and are kept apart in the docs as well as the source:
+
+- `ProvenanceMark` / `ProvenanceChip` — **how a fact is known.** Status, source, date. A citation.
+- `AccentRail` — **what kind of thing this is.** No label, no date, `aria-hidden` on the rule.
+
+They share a palette because they share the same four meanings, which is the reason the provenance scale could be built in §16 without inventing a hue.
+
+**Colour is never the sole carrier here, and that is what licenses a 1px rule at all.** Everything a rail marks is fully legible in text — a clinician's credentials, a company's name. Nothing is lost in monochrome.
+
+### The three placements, and the reasoning that selected them
+
+**Teal on `/byotalks`.** Recorded sessions from named nephrologists is the most literal instance of "clinical evidence" this project has, and spec F-5 makes those credentials the reason the page exists. The page's *only* accent was **gold on the play button** — an accent spent on an affordance, and the wrong one, since gold means home/India. That is a Wayfinding Rule violation that had been sitting in the open since the previews were added on 28 Aug.
+
+**Teal was not the fix for the button.** A control is not a meaning, so the circle went neutral white and teal went to the credentials instead. The same reasoning keeps links primary sitewide, including the FDA link inside the now-plum public-record panel.
+
+**Plum on `/about-us/leadership` and `/news`.** Both carry one string that the site's most-repeated non-negotiable depends on — spec §3.1, that Akshar Byonyks and Byonyks are never blurred — and both were rendering it in the design system's quietest treatment. The roster page's own comment calls its `organisation` label *"the whole defence"*; it was 12px mono grey.
+
+**One plum for both companies, not one each.** Giving Akshar Byonyks and Byonyks different accents would make colour encode company identity, which is a fifth meaning the four-role system does not have and the Wayfinding Rule forbids inventing. The rail says an attribution is being made; the words say which one.
+
+**`/news` was proposed as plum, questioned, and kept as plum for a stated reason.** Under the provenance scale a Byonyks press release is `stated`, which is primary — so the first instinct was that plum was simply an error. It is not, because the index card is not answering the provenance question. It answers the prior one, *whose is this*, exactly as the leadership card does. The provenance question belongs on the article page against its source URL and retrieval date, and is noted below as still open.
+
+**Plum on `/innovation/the-x1-cycler`, which is a correctness fix rather than an addition.** This page **invented** the public-record/company-stated split, §16 generalised it into the sitewide scale, and the page itself was never migrated — it was the last file hand-rolling the distinction it originated, and it rendered it **backwards** against `/what-we-know/`, where all thirty-seven claims are listed under the four colours. Under the scale a public register is plum and a company statement is primary. The K-number took plum, both registers took a real `ProvenanceChip`, and a status can no longer be renamed here without being renamed everywhere.
+
+### Accents on ink, for the first time
+
+The three on-ink tints added in §16 (6.6–7.0:1 on `--color-ink`) had no callers. A dark ground could previously carry white and gold and nothing else. Two now use them — the ByoTalks hero's clinical note in teal, the leadership profile's company line in plum — and both sit **below** the heading. A coloured label stacked over an h1 is a kicker, which DESIGN.md rejects outright; the same reasoning puts the provenance mark under a block on mobile rather than over it.
+
+### Where accents were deliberately not added
+
+`/innovation`'s three doorways already refuse them in their own source, and correctly: none of the three meanings fits three equal doors, and a fourth would be the ad hoc hue the Accent Ration Rule bans. `market-hero` is already gold and the page is about India. `about-hero` has no accent meaning present, so a rail there would be decoration — which is the thing this whole system exists to refuse. The five legal documents stay monochrome.
+
+### One real AA defect found, and the measurement bug that had hidden it
+
+The contrast sweep for this work reported 145 failures on five routes, including the header nav at 1.05:1. That was the **script**, not the site: it read `getComputedStyle` colours with a regex, so Tailwind v4's `oklch(0.29 0.09 262)` parsed as `rgb(0.29, 0.09, 262)`. Rewritten to rasterise every colour through a 1×1 canvas, which also resolves `color-mix()` and alpha correctly.
+
+The corrected sweep then found a genuine failure that §16's own sweep had passed: **`text-muted-foreground/80` at 12px = 3.59:1**, under AA, on the twenty date lines of `/what-we-know/`. `--muted-foreground` is `#5f6b73`, a deliberate 5.06:1 on white, and the 80% opacity threw that away for nothing — the date is already separated from the source by being its own mono line. Fixed in `provenance.tsx`. The dark tone measures 6.68:1 and is unchanged.
+
+**§16's "zero contrast failures across 21 routes" should be read with this in mind.** It was measured with the broken parser.
+
+### Verification
+
+`tsc` and `eslint --max-warnings 0` clean. Detector **4 findings, unchanged** — the three `@media print` values documented in `globals.css` and `button.tsx`'s `0.8rem`, all pre-existing, none from this work. Zero contrast failures across eight routes with colours rasterised and alpha composited over real backdrops; zero sub-24px targets. The one remaining sweep hit is `lite-youtube`'s own `.lyt-visually-hidden` span — 1×1px, `clip: rect(0,0,0,0)`, `clip-path: inset(50%)` — screen-reader-only text inside the play button, and a gap in the script's visibility filter rather than a page defect.
+
+### Still open
+
+- **The news article pages carry no provenance mark.** Each record has a `sourceUrl` and a `retrieved` date and would take a `stated` mark honestly. The index cards were done; `[slug]` was left, deliberately, rather than widening this change.
+- **The `[slug]` leadership biography attribution is still hand-rolled prose** ("carried here word for word… Source, retrieved X"). It is accurate and it is not on the scale. Same call as above.
+
+---
+
+## 19. The opening curtain (30 Aug 2026)
+
+Client instruction: *"import stroke text from ReactBits. Use it to make a loading screen for the site when it is first loaded that says Akshar Byonyks and waits for the silk background to be loaded before giving the user access to the website."*
+
+### The cost, stated once
+
+Anything standing between a visitor and this site's content costs more here than on most sites. PRODUCT.md describes the Priority-2 audience as *"frequently older, often reading in a second language under stress"*, and commit `5752b72` exists specifically to fix progressive-enhancement failures on these pages. A curtain is the opposite instinct.
+
+It is the client's call, it is a reasonable one for a front door, and the version below is the one that does not become a defect. The reason it is defensible at all is that **it holds back nothing that is not already downloading** — it is a cover over a load that happens regardless, not an added wait.
+
+### StrokeText: adapted, not adopted
+
+`StrokeText` is real — React Bits ships it, described as *"outlined letterforms draw themselves on, then flood with fill"*. It was fetched from the upstream repository rather than written from memory, and then changed in three ways.
+
+**Licence, checked and now on file.** React Bits is **MIT + Commons Clause** (David Haz, 2026). The Commons Clause forbids selling, sublicensing or redistributing the components themselves, *"whether alone, in a bundle, or as a ported version"*; using them inside an application or website, commercially included, is explicitly granted. This is the latter. §16.5 recorded that the silk component had shipped with **no licence check on file** — the same licence covers it, and that open question is closed.
+
+**GSAP is gone.** The original imports `gsap` and `gsap/ScrollTrigger` and registers the plugin at module scope. `futureIdeas.md` already records rejecting `BounceCards` partly for *"a GSAP dependency the stack does not have"*, and importing ~70 KB of animation library into the component that renders **inside the curtain holding the page back** would have had the splash waiting on its own weight. The original timeline does exactly two things — tween `strokeDashoffset` with a per-character stagger, then widen a clip — and both are CSS animations with a `calc()` delay, which also puts them on the compositor rather than on a JS tick during the busiest frames of the load. The cost is honest: the four triggers (`mount`, `hover`, `scroll`, `loop`) collapse to `mount`, the only one this site wants.
+
+**No hex enters the component.** The original's defaults are `#A78BFA` and `#F8FAFC`.
+
+### Four defects found by measuring, not by reading
+
+**1. `var()` does not work in SVG presentation attributes.** `stroke="var(--color-accent-gold)"` parses as an invalid paint and the glyphs render with no stroke at all. It is a CSS value function; it resolves in a declaration, not in an XML attribute. The original never meets this because it ships hardcoded hex — passing tokens is this project's requirement, and this is what it costs. Both are CSS properties on SVG, so `style` is the equivalent and correct route.
+
+**2. CSS animations do not run on elements inside `<defs>`.** The original widens a `<rect>` inside a `<clipPath>` through gsap's `attr` plugin. Reproducing that as a CSS animation on the rect's `width` fails silently — measured, the rect sat at `width: 0px` for the entire timeline and the white flood never appeared. Elements in `<defs>` are never rendered, so the browser does not animate them. Replaced with `clip-path: inset()` on the rendered `<text>`, which animates normally, runs on the compositor, and takes percentages against the element's own box — so the flood needs **no measurement at all**.
+
+**3. Stroke width is in user units, and the viewBox is scaled.** `strokeWidth` is measured against the 128-unit font inside the viewBox, which is then fitted to its container. The original's `1.4` default rendered here as **0.87 CSS px** — a sub-pixel hairline, invisible on a dark ground. Raised to 3.5.
+
+**4. The SVG kept a fixed pixel height at every width.** The original hardcodes `height: fontSize * 1.3`, correct only at the one width where the viewBox happens to fit unscaled. At 390px the glyphs scaled down to 57px inside a box that stayed 166px, leaving 109px of dead space and a visibly orphaned Skip button. `height: auto` against the viewBox ratio makes the box hug the letters at every width.
+
+A fifth was self-inflicted and worth recording: the first build held the SVG at `opacity: 0` until `getBBox()` succeeded, reasoning that a mis-scaled wordmark is worse than none. On a splash that is backwards — the measurement is asynchronous and can be starved, and the observed failure was a perfectly working curtain **with an empty middle**. It now renders against an estimated viewBox immediately and tightens on the next frame.
+
+### The curtain, and the six things that keep it from becoming a defect
+
+1. **Home only.** Silk exists on `/` and nowhere else, so "wait for silk" is only coherent there. Someone arriving on `/privacy-policy` from a search result meets the page. The other twenty routes never render the markup — confirmed in the build, where every non-Home route's bundle is unchanged.
+2. ~~**Once per session.**~~ **Every load of Home** — client instruction, 30 Aug 2026. It shipped once-per-session via `sessionStorage` and the client asked for it on every reload, so the key and its try/catch are gone. A client-side navigation back to Home still does not replay it; only a real document load runs the arming script.
+3. **It fails open.** Ceiling of 3s in the effect, and a **6s failsafe outside React** (below).
+4. **No JavaScript, no curtain.** Verified against the production build: JS off delivers the site unobstructed.
+5. **Reduced motion is not made to wait.** Those visitors never load silk — the hero gates it behind the same query — so waiting would hang them until the ceiling. They get a still, fully drawn wordmark and a 350ms beat.
+6. ~~**Nobody is trapped.** A real Skip button~~ — **removed on client instruction, 30 Aug 2026.** Stated plainly because it is the one guarantee this feature gave up: a keyboard or screen-reader visitor now has no way out except waiting, and no way to see how long that is.
+
+   What is left in its place is that there is nothing to escape *to*. The curtain holds no focusable element, so Tab does nothing rather than moving focus somewhere invisible, and everything behind stays `inert`. **The two ceilings stopped being a backstop and became the entire safety story**, which is the reason neither may be raised.
+
+### Arming by injected stylesheet, not by an attribute
+
+The obvious build sets `data-splash` on `<html>` and selects on it. That works, and it logs a **React hydration mismatch on every first visit** — `<html>` is React-rendered and the server never sent the attribute. `suppressHydrationWarning` did **not** suppress it under Next 15.5. Appending a `<style>` element the framework does not own touches no React-rendered attribute, so there is nothing to diff. Zero console errors after the change.
+
+Context7 was again unavailable this session, so this was resolved by measurement rather than by documentation — the same substitution recorded in §17.
+
+### The failsafe, which is the most important twelve characters in the feature
+
+Testing broke the design's central claim on the first try. **Block the silk chunk and `next/dynamic` throws during render, Home's subtree never hydrates, and `SiteSplash`'s effect never runs** — so the 3-second ceiling, which lives inside that effect, never arms. The curtain is server-rendered markup held up by an injected stylesheet: with no JavaScript alive to take it down, it stays up **forever**. A flaky CDN would have locked visitors out of a medical-device site behind a decoration.
+
+So the same inline script that raises the curtain now also schedules its removal, before React exists and independent of whether React ever works. Verified against the production build with the app page chunk aborted: React never hydrated (`data-splash-inert` count 0, proving the effect never ran) and the curtain still lifted at **6063 ms** with the scroll released.
+
+**The general lesson, which is not about splash screens:** a timeout that guarantees a fail-open is worth exactly as much as the assumption that the code containing it runs. If the thing being guarded is visible without JavaScript, the guarantee has to be too.
+
+### Two focus bugs, both found by pressing Tab
+
+Neither was visible in the code.
+
+1. The component renders inside `<main>`, so marking `#main-content` inert made **the curtain's own Skip button unreachable**. `<main>` is no longer marked; its children are, minus the curtain.
+2. The root layout's "Skip to main content" link is a direct child of `<body>`, ahead of `<header>`, so it was **the first thing Tab reached** while the curtain was up — a link into inert content, offered from behind a curtain. It is inert now too.
+
+### Two changes on client instruction, 30 Aug 2026
+
+**The Skip button is gone** and **the curtain fires on every load of Home** rather than once per session. Both are recorded above where the original guarantees were claimed, rather than quietly edited out of them.
+
+Together they change the risk profile in one direction: the curtain is now a recurring, unskippable wait. It is bounded — measured at **2.5 s** on the production build, hard-stopped at 3 s by the effect and 6 s by the failsafe — and that bound is now the only thing standing between a returning reader and a toll booth. If either ceiling is ever raised, this is the paragraph that should stop it.
+
+### Cost
+
+Home: **12.1 kB → 13.4 kB** route, 132 kB → 134 kB first load. Every other route unchanged. For comparison, the gsap dependency this port dropped is roughly 70 KB.
+
+### Verification
+
+`tsc` and `eslint --max-warnings 0` clean. Build: **49 static pages**. Detector **4 findings, unchanged** — the three `@media print` values and `button.tsx`'s `0.8rem`, all pre-existing, none from this work. Contrast on the curtain: Skip **8.65:1** at 12px, gold on ink **5.39:1** on display type, white on ink **16.9:1**; Skip target **52×32**. No horizontal overflow at 390px. Fifteen behavioural checks pass **against the production build**, including: the curtain fires on three consecutive loads; a client-side navigation back to Home does not replay it; nothing inside it is focusable and Tab moves nowhere; scroll is locked while it is up and released after; and — with the app page chunk aborted so React never hydrates (`data-splash-inert` count 0, proving the effect never ran) — the failsafe still lifts it at **6065 ms**.
+
+Timing was measured **inside the page**, not across the test harness: an earlier suite reported the curtain lifting at 5.9 s and that was the harness's own round-trips being counted, not the curtain. In-page it is inert at 562 ms and gone at 2535 ms. Worth recording because the wrong number would have looked like the failsafe firing on every load.
+
+### Still open
+
+- **The floor is 1100 ms and it is a guess.** It exists so the wordmark is a moment rather than a flicker. Nobody has watched a real visitor meet it, and it is the first number to change if the curtain feels slow.
+- **`SPLASH_MIN_MS_REDUCED` (350 ms) shows a still wordmark to reduced-motion visitors.** The alternative — not showing the curtain to them at all — is defensible and was not chosen, because the wordmark is a brand moment rather than a motion effect. Worth revisiting if anyone objects.
+- **There is no way to skip the curtain, by instruction.** If a visitor ever reports being stuck behind it, the fix is not a new Skip button unless the client asks for one — it is to lower `SPLASH_MAX_MS`.
+
+### A legal document, quietly falsified and quietly repaired
+
+`/cookie-policy` states — as a **measured** fact, not boilerplate, and its source comment says so — that after browsing this site the cookie store, `localStorage` and `sessionStorage` are all empty. The once-per-session gate wrote `ab-splash-seen` to `sessionStorage`, which made that page **false** for as long as the gate existed, and nothing caught it: a legal claim broken by a splash screen.
+
+Removing the gate on the client's instruction repaired it by accident. That is not a good enough reason to leave it, so it was re-measured rather than assumed — seven routes plus a full curtain cycle, all three stores empty — and `lib/splash.ts` now carries the rule in the place someone would reintroduce the bug: **if the curtain ever needs to remember anything about a visitor, the cookie policy is part of that change, not a follow-up.**
+
+---
+
+## 20. The gooey nav (31 Aug 2026)
+
+Client instruction: *"import navigation-1 from reactbits as well and use it for the navigation bar."*
+
+### What "navigation-1" turned out to be
+
+**A React Bits Pro block** — $99–$299, login-gated, delivered into a buyer's repo through their CLI. Its source cannot be obtained without a licence, and rebuilding it from marketing previews would have been guesswork sold as a port, so it was not attempted. Put to the client with the alternatives; the answer was GooeyNav.
+
+**GooeyNav is the only free React Bits navigation component with no dependencies.** That decided it, and the shortlist is worth recording so nobody re-runs it: PillNav wants gsap *and* `react-router-dom` — the wrong router entirely for a Next.js app — while CardNav (gsap + react-icons), FlowingMenu, BubbleMenu and StaggeredMenu all want gsap, the dependency `futureIdeas.md` already rejected a component over. LineSidebar is dependency-free but is a sidebar.
+
+### Seven defects in the component as shipped
+
+Each is a defect rather than a preference, and every one of them was found by running it rather than by reading it.
+
+1. **Its styles were global, and one was destructive.** The component ships a `<style>` tag containing bare `li::after { content: ""; position: absolute; inset: 0; background: white }`. In a header that renders on every route, that paints a white box over **every list item on the site** — the specification table, the compliance register, `/what-we-know/`, the footer. All of it is now scoped under `.gooey-nav` in `globals.css`.
+2. **Enter did not navigate.** `handleKeyDown` calls `preventDefault()` on Enter and Space and then runs only the particle effect, so a keyboard user pressing Enter on a nav link got an animation and stayed put. The handler is gone; the browser was already doing the job.
+3. **The active item was local state.** `activeIndex` starts at a prop and only changes on click — wrong after a back button, a link from body copy, or a direct load of any inner page. It is derived from `usePathname()` now, using the identical section-parent rule `nav-link.tsx` uses, and it drives `aria-current="page"`, which the original never set at all.
+4. **`<a href>` meant a full page reload** on every nav click.
+5. **The duplicated label was read twice.** The colour-inversion trick draws the active label a second time in an overlay. It was removed outright rather than hidden: the active link is `text-ink font-semibold` and inverts on its own.
+6. **No reduced-motion branch.** Fifteen particle elements per activation, unconditionally.
+7. **It needs a dark ground to exist at all.** The effect is `blur(7px) contrast(100)` over `mix-blend-mode: lighten` with a black backing plate — on the white header it was invisible.
+
+### Three more found in integration
+
+**`querySelectorAll("li")` is wrong the moment the nav has submenus.** The original has none, so it indexes every `<li>` under the nav. This site's dropdowns contribute five more in document order, so index 3 landed on "The India Market" — an element inside a hidden panel, measuring 0×0 — instead of "News". The indicator rendered at zero size in the corner and never moved. Now `:scope > li`.
+
+**The backing plate escaped.** At `inset: -75px` of solid black, with the effect as a bare sibling, it painted a grey band across the header and a black block into the section below: `mix-blend-mode` was compositing against the page rather than against the nav's own ground. The effect now lives in a clipped stage with the blend isolated to it — and the links and dropdowns stay **outside** that stage, or `overflow: hidden` would cut the submenus off at the panel's edge.
+
+**Then the plate showed through anyway**, because `overflow` plus `z-index` make the stage its own stacking context: the blend was lightening against transparency, where black stays black. The stage carries the ink background itself now, so black disappears into it and the pale tile survives.
+
+### Two decisions where the design system won
+
+**It is not a pill.** The component is a pill and DESIGN.md's Shapes rule is explicit — *"no sharp or pill shapes"* — so the detector flagged it and **the component was conformed to the system rather than the system amended for the import**. `rounded-lg` panel, `rounded-md` tile matching the nav links' own radius. The nineteen existing `rounded-full` uses are circles for icon chips and caps on progress meters; neither is a container, and neither is what that rule is about.
+
+**No accent.** White on ink. A navigation indicator is a control, not one of the four meanings — the same reasoning that returned the ByoTalks play button to neutral in §18. Gold here would have said "home / India" about the News tab. The original's four-colour particle variety has nowhere to land in a system where every hue already means something.
+
+**`#000` and `#fff` are now documented in DESIGN.md as compositing primitives**, not palette entries. Neither is ever seen — black is what the blend erases, white is what survives it — and both must be true extremes for the arithmetic. `--color-ink` is navy and leaves a coloured halo; `--color-background` is redefined to near-black by the `.dark` block and would invert the effect outright.
+
+### What did not change
+
+`aria-current="page"` and `font-semibold` remain the accessible signal; the tile is decoration on top and nothing is lost without it. **When no section matches — `/contact`, `/what-we-know/`, the five legal documents — the tile hides rather than highlighting something arbitrary**, which the original has no representation for. The header is still a Server Component with the nav as a client island, still wraps rather than overflows at 200% text, and `NavLink` still backs the mobile drawer untouched.
+
+### Verification
+
+`tsc` and `eslint --max-warnings 0` clean. Build: **49 static pages**; `/news` 1.77 kB and the shared bundle 103 kB, both unchanged — the port is effectively free, against the ~70 KB gsap would have cost.
+
+Seventeen checks pass **against the production build**: the active section is right on four routes including two section-parent cases; the indicator hides on three routes with no section; submenus open on hover *and* on keyboard focus; Enter navigates; 15 particles fire on click and 0 remain after; an inactive link measures **9.8:1** on ink at 14px with a 60×36 target; no hydration errors; reduced motion creates no particles; no horizontal overflow at 200% text; and the mobile drawer is untouched.
+
+Detector **4 → 5**. The one addition is the `#000` compositing plate, now documented in DESIGN.md; the other four are the pre-existing `@media print` values and `button.tsx`'s `0.8rem`.
+
+### A dev-server trap worth recording
+
+Mid-integration a hydration mismatch appeared that was **not a code defect**: Turbopack was serving stale server-rendered HTML — `gooey-nav relative` with no `gooey-stage` — against a freshly compiled client bundle. Three forced recompiles did not clear it; restarting the dev server did. `curl | grep` on the served markup is the quick way to tell a real mismatch from a stale one, and it is worth doing before changing any code in response to a hydration error here.
+
+### Still open
+
+- **The particle burst fires on click only.** A section reached by keyboard, by browser back, or by a link in body copy moves the tile without a burst. That is defensible — the burst marks a deliberate act — but it is an asymmetry nobody has ruled on.
+- **The dropdown panels are still hover/`focus-within`**, inherited unchanged from the previous header. They are keyboard-reachable but they are not a menu button with `aria-expanded`, and on touch there is no way to open a submenu without navigating to the section first. That predates this work and was not widened by it.

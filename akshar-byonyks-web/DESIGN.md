@@ -187,6 +187,33 @@ This is the Wayfinding Rule extended from accent chips to grounds: a ground now 
 
 **The Wayfinding Rule.** An accent's meaning is fixed sitewide, not per-section: gold always means "home/India," teal always means "clinical evidence," plum always means "institutional/formal." A component may not borrow an accent's color for a different meaning just because it's visually convenient.
 
+### The wayfinding rail
+
+**A code taught once is decoration.** Measured on 30 Aug 2026, teal appeared in six places across twenty-one routes and plum in five — three and two of those on Home, which is where all four roles are introduced. `/byotalks`, `/news`, both leadership routes and `/about-us/careers` carried neither. `why-different.tsx` had already written the diagnosis into its own source: the meanings "get too few exposures to be learnable."
+
+`AccentRail` (`components/common/accent-rail.tsx`) is the form those further exposures take — a **1px** rule with the content set beside it, deliberately the same margin grammar as `ProvenanceMark`, because a reader should meet one annotation language on this site rather than two. What differs is the question each answers:
+
+| | Question | Carries | Example |
+|---|---|---|---|
+| `ProvenanceMark` / `ProvenanceChip` | **How is this fact known?** | Status label, source, date | "Public record · FDA 510(k) database · Retrieved 29 August 2026" |
+| `AccentRail` | **What kind of thing is this?** | Nothing but the rule; `aria-hidden` | The plum rule beside "Byonyks" on a leadership card |
+
+They share a palette because they share the same four meanings. That is the same reason the provenance scale could be built without inventing a hue.
+
+**Colour is never the sole carrier on a rail, and that is what licenses it at 1px.** Everything an `AccentRail` marks is already fully legible in text — a clinician's credentials, a company's name — so the rule reinforces a category a reader can also simply read. It is marked `aria-hidden` and nothing is lost in monochrome. A rail may never be the only place a distinction appears.
+
+**Where each accent now lives.**
+
+- **Teal — clinical evidence.** The speaker credentials on `/byotalks` session cards and in the speaker register, and the "clinician to clinician" note in the hero. This is the site's largest concentration of clinical credentials and it carried no accent at all.
+- **Plum — institutional / formal.** The `organisation` label on every leadership card and profile, and the `Published by` line on every news card. Both pages name the danger in their own source comments: spec §3.1's first non-negotiable, that Akshar Byonyks and Byonyks are never blurred. **One plum for both companies** — giving each its own accent would make colour encode company identity, a fifth meaning the system does not have.
+- **Primary and plum on `/innovation/the-x1-cycler`**, via `ProvenanceChip` rather than a rail: the K-number is a public register and takes plum; the stated register takes primary.
+
+**A control is not a meaning.** The ByoTalks play button was a gold-filled circle — gold spent on an affordance. It is neutral white now. Teal was the obvious swap and is wrong for the same reason. Links stay primary sitewide for the same reason, including the FDA link inside the plum public-record panel.
+
+**Where accents were deliberately not added.** `/innovation`'s three doorways (none of the three meanings fits three equal doors, and a fourth tint would be the ad hoc hue the Accent Ration Rule bans), `market-hero` (already gold, correctly — the page is about India), `about-hero` (no accent meaning is present, and adding one would be decoration), and all five legal documents.
+
+**Accents on ink.** The three on-ink tints added 30 Aug 2026 — `--color-teal-on-ink`, `--color-plum-on-ink`, `--color-primary-on-ink`, all 6.6–7.0:1 on `--color-ink` — mean a dark ground can carry an accent for the first time; before them an ink hero had white and gold and nothing else. A rail on ink goes **below** the heading, never above it: a coloured label stacked over an h1 is a kicker, which this system rejects outright.
+
 ## Typography
 
 **Display Font:** Noto Sans (with system-ui, sans-serif fallback)
@@ -400,6 +427,33 @@ The breadcrumb rule — "unbuilt ancestors render as text, not links" — is the
 - **A route the visitor has already been promised** (it is in the header or the footer) is **shown and not linked.** On `/innovation/`, `/innovation/market/` renders as a card-shaped block with a dashed border, no `href`, no hover state, no focus ring, and an **In preparation** pending chip. Silently omitting it would read as if the hub had forgotten the page rather than as if it were coming; linking it would 404.
 - **A route nobody has been promised** (`/innovation/whats-next/`, in the spec's sitemap but not in the nav) is not shown at all.
 - **A "Keep reading" card is never the exception.** `/innovation/the-x1-cycler/` shipped this block pointing at two unbuilt routes on the argument that nothing had promised they were live. That was wrong for a card whose entire copy is an invitation to open it, and it is fixed: `KeepReading` takes only routes that exist.
+
+### The opening curtain
+
+Home, and only Home, opens behind a full-bleed ink curtain carrying the wordmark in gold outline that draws on and floods white. It runs on **every load of Home**, holds until the silk background has its first frame on screen, and lifts — measured at 2.5 s on the production build.
+
+**It is a cover over a load that happens anyway.** That is the whole justification, and the line that decides whether any future addition to it is acceptable: the curtain must never make a visitor wait for something they were not already waiting for. The moment it holds back content that was ready, it is a toll booth.
+
+**Where it is allowed.** `/` only. Silk exists nowhere else, so "wait for the background" is meaningless on the other twenty routes, and a visitor arriving on `/grievance-redressal` from a search result meets the page. The arming script in `layout.tsx` is the single place that rule lives; `SiteSplash` never second-guesses it.
+
+**Timing.** A floor of 1100 ms so the wordmark is a moment rather than a flicker; a ceiling of 3000 ms in the effect; a **6000 ms failsafe outside React entirely**. Reduced motion gets a still, fully drawn wordmark and 350 ms — those visitors never load silk, so waiting for it would hang them. A client-side navigation back to Home does **not** replay it; only a real document load runs the arming script.
+
+**It fails open, and that is a structural requirement rather than a nicety.** The curtain is server-rendered markup raised by an injected stylesheet, so it is visible before and independent of JavaScript. A ceiling that lives only in a React effect is therefore worth exactly as much as the assumption that the page hydrates — and when a chunk fails, it does not. The inline script that raises the curtain also schedules its removal. **Any future gate on this site inherits that rule: if it is visible without JavaScript, its escape hatch has to be too.**
+
+**There is no way to skip it, by client instruction (30 Aug 2026).** That is a real cost and it is stated rather than glossed: a keyboard or screen-reader visitor waits it out with no exit and no visible progress. What stands in for one is that there is nothing to escape *to* — the curtain holds **no focusable element**, so Tab does nothing rather than moving focus somewhere invisible, and `inert` covers the header, the footer, the layout's own skip link and every sibling inside `<main>`. The scroll is locked only while it is actually up.
+
+**Which means the timers are the whole safety story, not a backstop.** With no Skip button and no once-per-session gate, the 3 s ceiling and the 6 s failsafe are the only things standing between a returning reader and a toll booth. **Neither may be raised.** If the curtain ever needs to feel shorter, lower `SPLASH_MAX_MS`; do not reach for a new escape hatch unless the client asks for one.
+
+**Colour.** Gold draws, white floods, on ink — the site's established pairing, and the Accent Ration Rule's permission for an accent on large display type. Nothing here carries meaning by colour: the wordmark's text is on the wrapper's `aria-label`, and the curtain is decoration over content that already exists in the markup beneath it.
+
+### Ported components
+
+`StrokeText` (`components/motion/stroke-text.tsx`) comes from React Bits, and the treatment it got is the standard for anything taken from there — the verdict `futureIdeas.md` reached for `SpotlightCard`: **adapted, not adopted.**
+
+- **Licence is MIT + Commons Clause.** Using a component inside this site is granted, including commercially. Selling, sublicensing or redistributing the components themselves — "whether alone, in a bundle, or as a ported version" — is not. The same licence covers the silk hero.
+- **Their colours are hardcoded hex and must move onto tokens.** Note that `var()` does **not** resolve inside SVG presentation attributes (`stroke=`, `fill=`); paint has to go through `style` or it renders as an invalid value and disappears.
+- **Do not bring gsap in with them.** Both animations `StrokeText` needed — a staggered `stroke-dashoffset` draw and a wipe — are plain CSS, and the CSS versions run on the compositor.
+- **Assume their sizing assumes an unscaled viewBox.** `strokeWidth` is in user units and a fitted viewBox shrinks it; a hardcoded pixel height leaves the artwork floating in dead space on narrow screens.
 
 ## Do's and Don'ts
 

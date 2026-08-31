@@ -14,16 +14,22 @@ export function OurAnswer() {
       <div className="mx-auto grid max-w-[1280px] grid-cols-1 items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
         <ScrollReveal variant="settle">
           <figure>
-            <div className="overflow-hidden rounded-2xl border border-line bg-surface-2">
-              <Image
-                src="/images/x1-apd-cycler.png"
-                alt="The Byonyks X-1 automated peritoneal dialysis cycler, screen powered on and ready to start a cycle"
-                width={910}
-                height={518}
-                className="h-auto w-full"
-                sizes="(min-width: 1024px) 560px, 100vw"
-              />
-            </div>
+            {/* NO PLATE AND NO FRAME — the render sits straight on the
+                section, which is how this asset is already handled in the hero
+                scene and in `x1-hero`. The PNG is genuinely transparent
+                (sampled at every corner: `rgba(0,0,0,0)`), so there is nothing
+                to contain: it carried a `bg-surface-2` fill one step off the
+                section's white, then a `border-line` rule, and each in turn
+                drew a rectangle around a product shot that has its own
+                silhouette. */}
+            <Image
+              src="/images/x1-apd-cycler.png"
+              alt="The Byonyks X-1 automated peritoneal dialysis cycler, screen powered on and ready to start a cycle"
+              width={910}
+              height={518}
+              className="h-auto w-full"
+              sizes="(min-width: 1024px) 560px, 100vw"
+            />
           </figure>
         </ScrollReveal>
 

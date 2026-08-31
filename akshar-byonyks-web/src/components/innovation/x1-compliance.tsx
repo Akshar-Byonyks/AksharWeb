@@ -1,6 +1,7 @@
 import { ExternalLink } from "lucide-react";
 
 import { PendingChip } from "@/components/common/pending-note";
+import { ProvenanceChip } from "@/components/common/provenance";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { companyStated, fda510k, publicRecord } from "@/lib/compliance";
 
@@ -40,11 +41,29 @@ import { companyStated, fda510k, publicRecord } from "@/lib/compliance";
 // would be styled as persuasion." It also keeps the page's alternation honest,
 // sitting between the regulatory panels (background) and the IFU request (ink).
 //
-// Colour: primary blue on the public-record panel only. Home's proof band
-// fixed regulatory proof to blue, and confining it to the one verified entry
-// makes the colour do the same job as the layout. Teal is deliberately not
-// borrowed for the stated register: teal means clinical evidence, and a company
-// statement awaiting its certificate is not evidence yet.
+// COLOUR, CORRECTED 30 Aug 2026. This section shipped with primary blue on
+// the public-record panel and nothing on the stated register, on the reasoning
+// that "Home's proof band fixed regulatory proof to blue". That was right when
+// it was written and is now drift, because this file's own distinction has
+// since been generalised into the sitewide provenance scale — which reads a
+// public register as PLUM and a company statement as PRIMARY. Left alone, the
+// page that invented the split was the one page rendering it backwards against
+// `/what-we-know/`, where all thirty-seven of the site's claims are listed
+// under the same four colours.
+//
+// So the K-number takes plum and the stated rows take primary, and both
+// registers now carry a real `ProvenanceChip` rather than a hand-rolled label.
+// This file was the last place on the site still hand-rolling the distinction
+// it originated; a status cannot now be renamed here without renaming it
+// everywhere.
+//
+// The FDA link stays primary. Links are primary sitewide, and a control is not
+// a meaning — the same reason the ByoTalks play button was returned to neutral
+// rather than given an accent of its own.
+//
+// Teal is still deliberately not borrowed for the stated register: teal means
+// clinical evidence, and a company statement awaiting its certificate is not
+// evidence yet.
 export function X1Compliance() {
   return (
     <section
@@ -104,9 +123,10 @@ export function X1Compliance() {
                     <p className="font-mono text-xs tracking-wide text-muted-foreground">
                       Premarket notification
                     </p>
-                    <p className="mt-1 font-mono text-4xl font-bold tracking-tight text-primary sm:text-5xl">
+                    <p className="mt-1 font-mono text-4xl font-bold tracking-tight text-plum sm:text-5xl">
                       {credential.reference}
                     </p>
+                    <ProvenanceChip status="record" className="mt-3" />
                     <p className="mt-3 text-lg font-semibold text-ink">
                       {credential.title}
                     </p>
@@ -206,12 +226,16 @@ export function X1Compliance() {
                       {credential.detail}
                     </p>
                     <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+                      <ProvenanceChip status="stated" />
                       <p className="text-sm text-muted-foreground">
-                        Stated by:{" "}
                         {verification.kind === "company-stated"
                           ? verification.recordedIn
                           : verification.register}
                       </p>
+                      {/* PendingChip stays. It answers a different question —
+                          not "how is this known" but "which specific number is
+                          missing" — and the scale's own `pending` status is for
+                          a claim with no basis at all, which is not this. */}
                       {credential.referencePending ? (
                         <PendingChip
                           label={`${credential.referencePending} pending`}

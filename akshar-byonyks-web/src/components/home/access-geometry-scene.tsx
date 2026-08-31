@@ -43,6 +43,20 @@ import { cn } from "@/lib/utils";
 // glass/blur effects, and a bg-white/[0.06] or bg-accent-gold/10 wash over
 // the moving Silk background behind these cards is exactly that. Border +
 // content sitting directly on Silk instead.
+// Per-word displacement for the clinic title, in px and degrees. A fixed table
+// rather than anything generated: this component server-renders, so a random
+// value would differ on the client and tear on hydration. Five entries, which
+// is coprime with neither of the two titles' word counts by accident — it just
+// has to be long enough that a four-word line does not fall into a visible
+// repeat.
+const CLINIC_JITTER = [
+  { y: -5, r: -2.2 },
+  { y: 6, r: 1.6 },
+  { y: -3, r: 2.4 },
+  { y: 5, r: -1.5 },
+  { y: -6, r: 1.9 },
+];
+
 function SceneCard({
   tone,
   eyebrow,
@@ -85,8 +99,69 @@ function SceneCard({
         {children}
       </div>
       <div>
-        <p className="text-xl font-semibold text-white sm:text-2xl">{title}</p>
-        <p className="mt-1.5 text-base text-white/60 sm:text-lg">{caption}</p>
+        {/* THE TITLE IS THE POINT OF THE CARD, so it is set at DESIGN.md's
+            Headline role (700) rather than its Title role (600, 1.125rem).
+            These two lines are the whole argument of the opening — "roughly
+            three trips a week" against "the household sleeps" — and at
+            `text-xl font-semibold` they were the fourth thing the eye reached,
+            after the eyebrow, the image and the card's own edge.
+
+            CHAOS AND ORDER ARE SET, NOT COLOURED. The obvious move is tinting
+            the two titles apart, and it is unavailable twice over: the Accent
+            Ration Rule keeps every accent off text at this size, and the
+            Wayfinding Rule has already spent gold on "home / India" as the
+            card's identity. So the contrast is carried by arrangement, which
+            also survives monochrome and never makes colour the sole carrier of
+            the distinction — the words themselves already say which is which. */}
+        {tone === "clinic" ? (
+          <p className="text-2xl font-bold tracking-tight text-balance text-white sm:text-3xl lg:text-4xl">
+            {/* Every word knocked off the line it should be on. Displacement
+                and rotation are per-word and FIXED, never generated — this
+                renders on the server, and a random offset would hydrate to a
+                different value and tear.
+
+                Kept deliberately small: ±6px and under 2.5deg. This audience
+                skews older with diabetes-related visual impairment, so the
+                word has to stay a word. Baselines stay horizontal and the
+                spaces between words are real text nodes, so the line still
+                wraps normally and a screen reader still reads one sentence. */}
+            {title.split(" ").map((word, i) => {
+              const jitter = CLINIC_JITTER[i % CLINIC_JITTER.length];
+              return (
+                <span key={`${word}-${i}`}>
+                  {i > 0 ? " " : null}
+                  <span
+                    className="inline-block"
+                    style={{
+                      transform: `translateY(${jitter.y}px) rotate(${jitter.r}deg)`,
+                    }}
+                  >
+                    {word}
+                  </span>
+                </span>
+              );
+            })}
+          </p>
+        ) : (
+          <p className="text-2xl font-bold tracking-tight text-balance text-white sm:text-3xl lg:text-4xl">
+            {title}
+          </p>
+        )}
+
+        {/* Order, stated once: a 1px gold rule under the home title and
+            nothing under the clinic one. This is `AccentRail`'s grammar and
+            gold's fixed meaning — "home / India" — not a flourish, and it sits
+            BELOW the heading because a coloured mark above one is a kicker,
+            which this system rejects outright. `aria-hidden`: the distinction
+            is already in the words. */}
+        {tone === "home" ? (
+          <span
+            aria-hidden="true"
+            className="mx-auto mt-4 block h-px w-16 bg-accent-gold"
+          />
+        ) : null}
+
+        <p className="mt-4 text-base text-white/60 sm:text-lg">{caption}</p>
       </div>
     </div>
   );

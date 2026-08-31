@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Clock } from "lucide-react";
 
+import { AccentRail } from "@/components/common/accent-rail";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { CtaBand } from "@/components/sections/cta-band";
@@ -36,6 +37,20 @@ export const metadata: Metadata = {
 // own remedy for the empty ones is a design remedy — "an empty section must
 // look deliberate, not broken" — not a reordering. So they are kept in place
 // and made compact and deliberate, sized as statements rather than voids.
+//
+// PLUM ON THE PUBLISHER LINE, 30 Aug 2026 — the same mark, for the same
+// danger, as the company label on /about-us/leadership/. Both pages are places
+// where a reader completes an unlabelled name into "ours", and both answer it
+// with one string in the site's quietest treatment. Plum means "institutional
+// / formal"; whose announcement this is, is an institutional attribution.
+//
+// NOT THE PROVENANCE SCALE, and the distinction is worth stating because these
+// releases would qualify for it. The scale answers "how is this known" — a
+// Byonyks release is `stated`, which is primary blue, and that is what the
+// article page itself should carry against its source URL and retrieval date.
+// The index card is answering the prior question, "whose is this", so it takes
+// the wayfinding rail rather than a citation. Two questions, two marks; the
+// palette is shared because the meanings are.
 //
 // BOTH ARTICLES ARE BYONYKS' PRESS RELEASES, and every card says so. This is a
 // news index under an Akshar Byonyks masthead, which is precisely where a
@@ -178,9 +193,11 @@ export default function NewsPage() {
                       {article.excerpt}
                     </p>
                     {/* Whose announcement it is, on every card, always. */}
-                    <p className="mt-4 font-mono text-xs tracking-wide text-muted-foreground">
-                      Published by {article.publisher}
-                    </p>
+                    <AccentRail accent="plum" className="mt-4">
+                      <p className="font-mono text-xs tracking-wide text-plum">
+                        Published by {article.publisher}
+                      </p>
+                    </AccentRail>
                     <span className="mt-5 inline-flex items-center gap-1.5 text-base font-semibold text-primary group-hover:underline">
                       Read the release
                       <ArrowRight className="size-4 shrink-0" aria-hidden="true" />

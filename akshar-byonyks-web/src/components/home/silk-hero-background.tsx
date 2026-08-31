@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import Silk from "@/components/home/silk";
+import { signalSilkReady } from "@/lib/splash";
 
 // --color-primary (#0d5d8d, "Accessible Sky Blue" in DESIGN.md) is the
 // site's workhorse blue — links, primary buttons, stat numbers, icon fills —
@@ -21,6 +22,17 @@ export default function SilkHeroBackground() {
   );
 
   return (
-    <Silk speed={5} scale={1.3} color={color} noiseIntensity={0} rotation={0} />
+    <Silk
+      speed={5}
+      scale={1.3}
+      color={color}
+      noiseIntensity={0}
+      rotation={0}
+      // Tells the opening curtain there are pixels on the canvas. Nothing on
+      // this page reads the result — the curtain is in the root layout and
+      // this is the far end of a module-level bus, deliberately, so that
+      // wiring it did not require making the layout a client component.
+      onFirstFrame={signalSilkReady}
+    />
   );
 }

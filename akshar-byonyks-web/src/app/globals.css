@@ -501,3 +501,85 @@ table,
     padding-bottom: 0.5rem !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   THE OPENING CURTAIN, and the stroke wordmark inside it.
+
+   Same discipline as the peritoneal-cycle keyframes above, and for the same
+   reason: THE FINISHED STATE IS THE DEFAULT DECLARATION. A fully drawn, fully
+   filled wordmark is what renders with no JavaScript, under reduced motion,
+   and on the server. Animation is only ever something that
+   `prefers-reduced-motion: no-preference` adds on top. Nothing below is
+   load-bearing for meaning.
+
+   Custom properties come from `StrokeText`'s inline style — durations, the
+   per-character stagger, the dash length and the measured wipe width, which
+   is the one value that cannot be known until the webfont has loaded and the
+   text node has been measured.
+   --------------------------------------------------------------------------- */
+
+/* Drawn. The animation below runs from `--stroke-dash` back to this. */
+.stroke-text-char {
+  stroke-dasharray: var(--stroke-dash);
+  stroke-dashoffset: 0;
+}
+
+/* Flooded. `clip-path` rather than a rect inside a <clipPath>: elements in
+   <defs> are never rendered, so the browser does not run CSS animations on
+   them — measured, the rect never left `width: 0`. An inset on the rendered
+   <text> animates normally, needs no measured width, and its percentages
+   resolve against the element's own box. */
+.stroke-text-fill {
+  clip-path: inset(0 0 0 0);
+}
+
+/* The curtain is inert markup until the arming script decides otherwise, so a
+   second visit in the same session, every route other than Home, and every
+   visitor with JavaScript off never see it and never pay for it.
+
+   ARMING IS DONE BY INJECTING A STYLESHEET, not by setting an attribute on
+   <html>. The obvious version — `document.documentElement.dataset.splash` plus
+   an `html[data-splash]` selector here — was built first and reverted: React
+   19 finds an attribute on <html> that the server never sent and logs a
+   hydration mismatch on every first visit, and `suppressHydrationWarning` did
+   not suppress it under Next 15.5. Appending a <style> the framework does not
+   own touches no React-rendered attribute at all, so there is nothing to
+   mismatch. The rules it carries are in `layout.tsx`. */
+.site-splash {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .stroke-text-char {
+    stroke-dashoffset: var(--stroke-dash);
+    animation: stroke-text-draw var(--stroke-draw)
+      cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    /* The per-character cascade. `--i` is set on each tspan by the component. */
+    animation-delay: calc(var(--i) * var(--stroke-stagger));
+  }
+
+  .stroke-text-fill {
+    clip-path: inset(0 100% 0 0);
+    animation: stroke-text-fill var(--stroke-fill-duration) ease-in-out forwards;
+    animation-delay: var(--stroke-fill-delay);
+  }
+
+  /* Only the fade out is animated. There is no fade IN: the curtain is present
+     in the first paint, which is the whole reason it exists rather than being
+     mounted after hydration. */
+  .site-splash {
+    transition: opacity 450ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes stroke-text-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes stroke-text-fill {
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+}

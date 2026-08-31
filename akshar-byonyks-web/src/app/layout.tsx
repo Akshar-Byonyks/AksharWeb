@@ -3,8 +3,9 @@ import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 
 import { SiteFooter } from "@/components/layout/footer";
-import { SiteHeader } from "@/components/layout/header";
+import { AnimatedNav } from "@/components/ui/animated-nav";
 import { siteUrl } from "@/lib/site-config";
+import { SPLASH_ARM_ID, SPLASH_FAILSAFE_MS, SPLASH_PATH } from "@/lib/splash";
 
 // Spec Section 6: Noto Sans for both display and text roles — one family,
 // self-hosted, Devanagari subset included from day one for the Hindi roadmap.
@@ -35,28 +36,61 @@ export default function RootLayout({
   return (
     <html lang="en-IN" className={notoSans.variable}>
       <body className="flex min-h-screen flex-col antialiased">
-        {/* WCAG 2.4.1 Bypass Blocks. The landmark set alone technically
-            satisfies it (technique ARIA11), but the sticky header repeats five
-            nav items and a CTA ahead of the content on every route, and
-            PRODUCT.md's standing instruction for this audience is to take the
-            stricter option.
+        {/* ARMS THE OPENING CURTAIN, AND IS THE ONLY THING THAT DOES.
+            `site-splash.tsx` never second-guesses this, so the rule about who
+            sees a splash lives in exactly one place.
 
-            Parked off-screen with a transform rather than `sr-only` +
-            `focus:not-sr-only`: both of those emit a `position` declaration at
-            the same specificity, so which one wins depends on Tailwind's
-            emitted source order rather than on anything stated here. A
-            translate keeps the link in the layout, in the a11y tree and
-            focusable at all times, and the reveal is then unambiguous.
+            IT INJECTS A STYLESHEET RATHER THAN SETTING AN ATTRIBUTE. The first
+            build set `data-splash` on <html> and selected on it from
+            globals.css. That works and it also logs a React hydration mismatch
+            on every first visit, because <html> is React-rendered and the
+            server never sent the attribute — and `suppressHydrationWarning`
+            did not suppress it under Next 15.5. A <style> element appended by
+            hand is owned by nobody, so there is nothing for React to diff.
 
-            `z-100` clears the header's `z-50`; without it the link slides in
-            behind the sticky bar it exists to bypass. */}
+            Inline and synchronous as the first thing in the body: the rules
+            have to be in effect before the header paints, or the visitor sees
+            the real page for a frame and then has it covered up — which is
+            worse than no splash at all.
+
+            Everything stays inside try/catch even though the only storage
+            call is gone: this runs before anything else on the page, and an
+            exception here would be an exception before a single other line of
+            the site has executed. Failing means no curtain, which is the safe
+            side of that coin.
+
+            No JavaScript at all means this never runs, no stylesheet is
+            injected, `.site-splash` stays at `display: none`, and the site is
+            delivered unobstructed.
+
+            IT ALSO SCHEDULES ITS OWN REMOVAL, and that line is the most
+            important one here. The curtain is server-rendered markup held up
+            by this stylesheet; the timeout that lifts it normally lives in a
+            React effect. Testing found the hole: abort the silk chunk and
+            `next/dynamic` throws during render, Home never hydrates, that
+            effect never runs, and the curtain stays up forever with nothing
+            alive to remove it. Whatever happens to React, this timer does not
+            depend on it. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{if(location.pathname!==${JSON.stringify(
+              SPLASH_PATH,
+            )})return;var s=document.createElement("style");s.id=${JSON.stringify(
+              SPLASH_ARM_ID,
+            )};s.textContent=".site-splash{display:flex}html,body{overflow:hidden}";document.head.appendChild(s);setTimeout(function(){s.remove()},${SPLASH_FAILSAFE_MS})}catch(e){}})()`,
+          }}
+        />
         <a
           href="#main-content"
           className="fixed top-0 left-0 z-100 -translate-y-full rounded-b-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition-transform focus:translate-y-0 focus:outline-2 focus:outline-offset-2 focus:outline-ring motion-reduce:transition-none"
         >
           Skip to main content
         </a>
-        <SiteHeader />
+        {/* Replaced `SiteHeader` site-wide, 31 Aug 2026. Sticky rather than
+            `fixed` so it keeps the space in the document the old header held
+            — every route's own top spacing still works. `header.tsx` is left
+            on disk, unused, so this is one import away from being reverted. */}
+        <AnimatedNav />
         {/* `tabIndex={-1}` so the fragment jump moves focus into the region
             itself, not merely the scroll position — Safari and older WebKit
             need it. It is a landmark rather than a control, so it takes no

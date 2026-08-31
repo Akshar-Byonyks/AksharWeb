@@ -129,8 +129,19 @@ function ProvenanceBody({
 }) {
   const meta = provenanceMeta[provenance.status];
   const muted = tone === "dark" ? "text-white/70" : "text-muted-foreground";
-  const dateTone =
-    tone === "dark" ? "text-white/60" : "text-muted-foreground/80";
+  // NOT `text-muted-foreground/80`, which is what this shipped as and what a
+  // corrected contrast sweep caught on 30 Aug 2026: `--muted-foreground` is
+  // #5f6b73, a deliberate 5.06:1 on white, and dropping it to 80% opacity
+  // takes it to 3.59:1 — under AA on the twenty date lines of /what-we-know/.
+  // The date is already separated from the source by being its own mono line;
+  // the extra transparency bought nothing and cost the contrast floor.
+  //
+  // (The earlier sweep that passed this was measuring `getComputedStyle`
+  // colours with a regex, which reads oklch(0.29 0.09 262) as rgb(0.29, 0.09,
+  // 262). Colours are rasterised through a canvas now.)
+  //
+  // The dark tone is unchanged and measures 6.68:1 on ink.
+  const dateTone = tone === "dark" ? "text-white/60" : "text-muted-foreground";
 
   return (
     <>

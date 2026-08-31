@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { TwoPaths } from "@/components/home/two-paths";
 
@@ -20,9 +22,48 @@ import { TwoPaths } from "@/components/home/two-paths";
 // The figure beneath has been rebuilt once already. The first version drew the
 // week as arcs leaving a baseline; it was reported as unreadable and it was —
 // see two-paths.tsx for what replaced it and why.
+// THE GROUND IS THE ANIMATION. This section spends its scroll on one idea, so
+// the colour of the section itself moves with it: dusk at the top, full ink by
+// the time the figure has finished drawing. `--p` is the same 0-1 progress the
+// figure runs on, set by `TwoPaths` on this element rather than on its own
+// track — a wrapper cannot read a custom property from a descendant, and the
+// heading above the figure and the note below it are part of the same evening.
+//
+// A FLAT COLOUR, NOT A GRADIENT, and that is the whole point of the rebuild.
+// The first attempt washed a gradient behind the figure and every opaque label
+// plate in it turned into a visible rectangle. A gradient cannot be matched by
+// anything that is not in register with it; a flat value can be matched exactly
+// by anything that names the same variable, which is what `--night-ground` is
+// for. Every element in the figure that has to disappear into the ground —
+// label plates, marker discs, the dark half of the moon — paints with it, so
+// they are invisible at every scroll position by construction rather than by
+// coincidence.
+//
+// 12% toward the site own daylight ground, measured rather than chosen: at that
+// depth the smallest text in the section (white/60 at 12px) holds 5.56:1 and
+// gold holds 4.00:1 against a 3:1 floor, since the Accent Ration Rule already
+// keeps gold to large type and non-text graphics. It moves toward
+// `--color-white` rather than `--color-background` deliberately — the latter
+// inverts under the stylesheet vestigial dark block, which would turn dusk into
+// something darker than midnight.
+//
+// With no JavaScript, reduced motion, or a viewport too short to pin, `--p` is
+// never set and `var(--p, 1)` resolves to 1: pure ink, exactly the ground this
+// section has always had. The fallback is the finished state, never a frozen
+// mid-scroll frame.
 export function TheNight() {
   return (
-    <section aria-labelledby="the-night-heading" className="bg-ink text-white">
+    <section
+      aria-labelledby="the-night-heading"
+      className="text-white"
+      style={
+        {
+          "--night-ground":
+            "color-mix(in oklab, var(--color-ink), var(--color-white) calc((1 - var(--p, 1)) * 12%))",
+          background: "var(--night-ground)",
+        } as CSSProperties
+      }
+    >
       <div className="mx-auto max-w-[1280px] px-4 pt-20 sm:px-6 lg:px-8 lg:pt-28">
         <ScrollReveal>
           <div className="max-w-3xl">

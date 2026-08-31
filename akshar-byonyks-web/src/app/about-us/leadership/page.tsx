@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ExecutivePortrait } from "@/components/about/executive-portrait";
+import { AccentRail } from "@/components/common/accent-rail";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { CtaBand } from "@/components/sections/cta-band";
@@ -37,6 +38,20 @@ export const metadata: Metadata = {
 // carries what still needs a decision before launch (four biographies name a
 // location spec F-1 keeps off this site, portrait rights are unconfirmed, and
 // portrait treatment is not consistent in the way §9.5 asks for).
+//
+// PLUM ON THE COMPANY LABEL, 30 Aug 2026. Plum means "institutional / formal"
+// sitewide, and the `organisation` line is the most literally institutional
+// string on this page — it is the label the comment below calls the whole
+// defence, and it was rendering in the quietest treatment the design system
+// has. Colour is not the sole carrier: the company is written out in words on
+// every card, so the rail reinforces a distinction a reader can also simply
+// read, and the defence survives intact in monochrome.
+//
+// ONE PLUM FOR BOTH COMPANIES, not one colour each. Giving Akshar Byonyks and
+// Byonyks different accents would make colour encode company identity, which
+// is a fifth meaning the four-role system does not have and the Wayfinding
+// Rule forbids inventing. The rail marks that an attribution is being made;
+// the words say which one.
 //
 // WITH THE HEADINGS GONE, THE PER-CARD COMPANY LABEL IS THE WHOLE DEFENCE.
 // Spec §3.1's first non-negotiable is that the two companies are never
@@ -110,9 +125,11 @@ function ExecutiveCard({
           {/* The company, on every card, always — even inside a section that
               is already headed with it. The heading scrolls away; the card
               gets screenshotted, shared and read on its own. */}
-          <p className="mt-1 font-mono text-xs tracking-wide text-muted-foreground">
-            {executive.organisation}
-          </p>
+          <AccentRail accent="plum" className="mt-2">
+            <p className="font-mono text-xs tracking-wide text-plum">
+              {executive.organisation}
+            </p>
+          </AccentRail>
         </Link>
       </li>
     </ScrollReveal>

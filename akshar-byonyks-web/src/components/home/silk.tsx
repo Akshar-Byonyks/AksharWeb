@@ -89,9 +89,19 @@ void main() {
 }
 `;
 
-const SilkPlane = forwardRef<Mesh, { uniforms: SilkUniforms }>(
-  function SilkPlane({ uniforms }, ref) {
+// `onFirstFrame` is this project's addition, not React Bits'. Everything
+// else in this file — shaders, uniforms, the plane — is the ported component
+// unmodified. It exists so the opening curtain can wait for real pixels
+// rather than for a chunk to finish downloading: the dynamic import resolving
+// only means three.js has parsed, and dropping the curtain there would reveal
+// an empty canvas that fills in a beat later. See `lib/splash.ts`.
+const SilkPlane = forwardRef<
+  Mesh,
+  { uniforms: SilkUniforms; onFirstFrame?: () => void }
+>(
+  function SilkPlane({ uniforms, onFirstFrame }, ref) {
     const { viewport } = useThree();
+    const frames = useRef(0);
 
     useLayoutEffect(() => {
       const mesh = (ref as React.RefObject<Mesh>).current;
@@ -106,6 +116,12 @@ const SilkPlane = forwardRef<Mesh, { uniforms: SilkUniforms }>(
       if (material) {
         material.uniforms.uTime.value += 0.1 * delta;
       }
+
+      // Signalled on the SECOND tick, not the first. `useFrame` runs before
+      // the renderer draws, so at the first callback nothing has reached the
+      // screen yet; by the second, frame one is on the glass.
+      frames.current += 1;
+      if (frames.current === 2) onFirstFrame?.();
     });
 
     return (
@@ -127,6 +143,8 @@ export interface SilkProps {
   color?: string;
   noiseIntensity?: number;
   rotation?: number;
+  /** Project addition — fires once, after the first frame is on screen. */
+  onFirstFrame?: () => void;
 }
 
 export default function Silk({
@@ -135,6 +153,7 @@ export default function Silk({
   color = "#7B7481",
   noiseIntensity = 1.5,
   rotation = 0,
+  onFirstFrame,
 }: SilkProps) {
   const meshRef = useRef<Mesh>(null);
 
@@ -163,7 +182,11 @@ export default function Silk({
 
   return (
     <Canvas dpr={[1, 2]} frameloop="always">
-      <SilkPlane ref={meshRef} uniforms={uniforms} />
+      <SilkPlane
+        ref={meshRef}
+        uniforms={uniforms}
+        onFirstFrame={onFirstFrame}
+      />
     </Canvas>
   );
 }

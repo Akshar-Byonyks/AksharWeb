@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Play } from "lucide-react";
 
+import { AccentRail } from "@/components/common/accent-rail";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { byotalksSessions, formatDuration } from "@/lib/byotalks";
 
@@ -76,7 +77,15 @@ export function SessionIndex() {
                       aria-hidden="true"
                       className="absolute inset-0 flex items-center justify-center bg-ink/25 opacity-0 transition-opacity duration-[250ms] group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
                     >
-                      <span className="flex size-14 items-center justify-center rounded-full bg-accent-gold text-ink">
+                      {/* A NEUTRAL CONTROL, DELIBERATELY (30 Aug 2026). This circle was gold,
+                            and gold means "home / India" under the Wayfinding Rule —
+                            an accent spent on a play button, which is an
+                            affordance and not a meaning. Teal was the obvious
+                            swap and is just as wrong for the same reason: a
+                            control is not clinical evidence. Teal on this page
+                            marks the credentials instead, which is the thing
+                            that actually is. */}
+                      <span className="flex size-14 items-center justify-center rounded-full bg-white text-ink">
                         <Play className="size-6 translate-x-0.5" />
                       </span>
                     </span>
@@ -89,7 +98,12 @@ export function SessionIndex() {
                     {session.title}
                   </h3>
 
-                  <div className="mt-3">
+                  {/* Teal, because this is what teal means. Spec F-5 makes
+                      these credentials the reason this page exists — "for the
+                      clinician audience, those names are the credential that
+                      opens a conversation" — and they were rendering as the
+                      same grey as everything else on the card. */}
+                  <AccentRail accent="teal" className="mt-3">
                     <p className="text-base font-semibold text-ink">
                       {session.speaker}
                     </p>
@@ -103,7 +117,7 @@ export function SessionIndex() {
                         </li>
                       ))}
                     </ul>
-                  </div>
+                  </AccentRail>
 
                   <p className="mt-4 grow text-base text-muted-foreground">
                     {session.summary}

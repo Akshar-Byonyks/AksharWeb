@@ -5,7 +5,6 @@ import { ChevronDown } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
-import { PendingNote } from "@/components/common/pending-note";
 import {
   AccessGeometrySceneScrubbed,
   AccessGeometrySceneStatic,
@@ -26,12 +25,6 @@ const SilkHeroBackground = dynamic(
 // fused into one opening movement. The motion amendment: this is one scene
 // redrawn by scroll, not two static images; `prefers-reduced-motion` gets a
 // static side-by-side instead of the pinned track, never a frozen mid-point.
-const INDIA_GAP_STATS = [
-  "Share of India's dialysis patients on in-center haemodialysis vs. home therapies",
-  "Average one-way distance patients travel for a haemodialysis session",
-  "India's estimated ESKD population currently receiving any form of dialysis",
-];
-
 export function AccessGeometryHero() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [enhanced, setEnhanced] = useState(false);
@@ -81,10 +74,14 @@ export function AccessGeometryHero() {
     // Solid ink, with the hand-off to white moved out into its own fixed-height
     // band below the content (26 Aug 2026). It used to be a percentage gradient
     // across the whole section — ink to 85%, white by 100% — which put the
-    // "dialysis gap in India" stat cards, the last block in the section, inside
-    // the fade. Their dashed bottom borders dissolved completely and their white
-    // label text finished on a near-white ground. A percentage stop cannot know
-    // what content lands on it; a fixed band after the content can.
+    // "dialysis gap in India" stat cards, then the last block in the section,
+    // inside the fade. Their dashed bottom borders dissolved completely and
+    // their white label text finished on a near-white ground. A percentage stop
+    // cannot know what content lands on it; a fixed band after the content can.
+    //
+    // Those stat cards were removed on 31 Aug 2026. The band stays, and so does
+    // the reasoning — it is what keeps the fade off whatever content ends up
+    // closing this section next.
     <section aria-label="Introduction" className="relative bg-ink text-white">
       {/* Silk spans the whole hero — headline, scroll-scrub track, and the
           gap stats — as one continuous canvas behind all three, not a
@@ -101,17 +98,25 @@ export function AccessGeometryHero() {
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 z-0"
-            // Silk settles into plain ink over its last 15% rather than into
-            // white. Since 26 Aug 2026 this wrapper stops at the end of the
-            // content, so the mask no longer has to stay in lockstep with a
-            // section-wide gradient — it fades the wash out over the stat
-            // cards, which land on solid ink, and the ink-to-white hand-off
-            // happens in the band below this element entirely.
+            // Silk settles into plain ink, never into white — the ink-to-white
+            // hand-off happens in the band below this element entirely.
+            //
+            // A FIXED SETTLE, NOT A PERCENTAGE (31 Aug 2026). The stop used to
+            // be 85%, sized so the fade landed on the "dialysis gap in India"
+            // stat cards that closed the section. Those are gone, and the last
+            // content is now the scrub track — whose scene stays pinned to the
+            // very bottom of this wrapper, so a 15% tail would have pulled the
+            // wash out from behind a scene that is still on screen.
+            //
+            // 200px measured up from the bottom instead, for the same reason
+            // the hand-off band below is a fixed height: a percentage cannot
+            // know what content lands on it, and the settle should read the
+            // same whether this section is 1,600px or 3,000px tall.
             style={{
               WebkitMaskImage:
-                "linear-gradient(to bottom, black 0%, black 85%, transparent 100%)",
+                "linear-gradient(to bottom, black 0%, black calc(100% - 200px), transparent 100%)",
               maskImage:
-                "linear-gradient(to bottom, black 0%, black 85%, transparent 100%)",
+                "linear-gradient(to bottom, black 0%, black calc(100% - 200px), transparent 100%)",
             }}
           >
             <SilkHeroBackground />
@@ -194,16 +199,6 @@ export function AccessGeometryHero() {
             </div>
           )}
 
-          <div className="mx-auto max-w-[1280px] px-4 pb-16 sm:px-6 lg:px-8">
-            <p className="text-xs font-semibold tracking-wide text-white/50 uppercase">
-              The dialysis gap in India
-            </p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-3">
-              {INDIA_GAP_STATS.map((label) => (
-                <PendingNote key={label} label={label} tone="dark" />
-              ))}
-            </div>
-          </div>
         </div>
       </div>
 

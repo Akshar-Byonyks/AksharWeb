@@ -1,3 +1,4 @@
+import { AccentRail } from "@/components/common/accent-rail";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { distinctSpeakers } from "@/lib/byotalks";
 
@@ -26,6 +27,13 @@ import { distinctSpeakers } from "@/lib/byotalks";
 //
 // Surface-2, not ink: these are credentials, and DESIGN.md puts evidence and
 // attribution in the light.
+//
+// TEAL, ADDED 30 Aug 2026. This section is the largest concentration of
+// clinical credentials on the site and it carried no accent at all, on a page
+// whose only accent was gold on a play button. Teal means "clinical evidence"
+// sitewide; nine named nephrologists and what each one is, is the most literal
+// instance of that meaning this project has. It rides the shared `AccentRail`,
+// so the mark here and the mark on the session cards cannot drift apart.
 export function SpeakerRegister() {
   const speakers = distinctSpeakers();
 
@@ -57,24 +65,32 @@ export function SpeakerRegister() {
             {speakers.map(({ speaker, credentials, sessionCount }, index) => (
               <ScrollReveal key={speaker} delayMs={index * 70}>
                 <div className="h-full bg-card p-6">
-                  <dt className="text-lg font-semibold text-ink">{speaker}</dt>
-                  <dd>
-                    <ul className="mt-2 space-y-1">
-                      {credentials.map((credential) => (
-                        <li
-                          key={credential}
-                          className="text-sm text-muted-foreground"
-                        >
-                          {credential}
-                        </li>
-                      ))}
-                    </ul>
-                    <p className="mt-4 font-mono text-xs tracking-wide text-muted-foreground">
-                      {sessionCount === 1
-                        ? "1 session"
-                        : `${sessionCount} sessions`}
-                    </p>
-                  </dd>
+                  <AccentRail accent="teal">
+                    <dt className="text-lg font-semibold text-ink">
+                      {speaker}
+                    </dt>
+                    <dd>
+                      <ul className="mt-2 space-y-1">
+                        {credentials.map((credential) => (
+                          <li
+                            key={credential}
+                            className="text-sm text-muted-foreground"
+                          >
+                            {credential}
+                          </li>
+                        ))}
+                      </ul>
+                      {/* The count stays muted. A session count is a fact about
+                          this library, not a credential, and colouring it would
+                          spend the accent on the one line in the card that is
+                          not clinical evidence. */}
+                      <p className="mt-4 font-mono text-xs tracking-wide text-muted-foreground">
+                        {sessionCount === 1
+                          ? "1 session"
+                          : `${sessionCount} sessions`}
+                      </p>
+                    </dd>
+                  </AccentRail>
                 </div>
               </ScrollReveal>
             ))}

@@ -1,3 +1,4 @@
+import { AccentRail } from "@/components/common/accent-rail";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ScrimmedImage } from "@/components/common/scrimmed-image";
 import { byotalksSessions, distinctSpeakers } from "@/lib/byotalks";
@@ -51,11 +52,23 @@ export function ByoTalksHero() {
             peritonitis, and what a home programme has to provide around the
             patient.
           </p>
-          <p className="mt-5 max-w-2xl text-base text-white/60">
-            Clinician to clinician. These are not product presentations, and
-            nothing in them is a recommendation about an individual&rsquo;s
-            treatment.
-          </p>
+          {/* The first accent on an ink ground anywhere on this site, and it
+              is here because the on-ink tints only existed as of 30 Aug 2026
+              (`--color-teal-on-ink`, 6.72:1 on ink). Until then a dark hero
+              could carry white or gold and nothing else.
+
+              BELOW the heading, never above it. A coloured label stacked over
+              an h1 is a kicker, which DESIGN.md rejects outright — the same
+              reasoning that puts the provenance mark under a block on mobile
+              rather than over it. This sentence is an annotation on what the
+              page is, so it reads as one. */}
+          <AccentRail accent="teal" tone="dark" className="mt-6 max-w-2xl">
+            <p className="text-base text-white/60">
+              Clinician to clinician. These are not product presentations, and
+              nothing in them is a recommendation about an individual&rsquo;s
+              treatment.
+            </p>
+          </AccentRail>
         </div>
       </div>
     </section>

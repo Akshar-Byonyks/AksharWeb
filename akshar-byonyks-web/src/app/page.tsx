@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { AccessGeometryHero } from "@/components/home/access-geometry-hero";
+import { SiteSplash } from "@/components/motion/site-splash";
 import { BuiltOnProven } from "@/components/home/built-on-proven";
 import { LatestNews } from "@/components/home/latest-news";
 import { OurAnswer } from "@/components/home/our-answer";
@@ -28,6 +29,22 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
+      {/* THE OPENING CURTAIN LIVES ON HOME, NOT IN THE ROOT LAYOUT, and that
+          placement is the whole reason it is cheap. Silk exists on this route
+          and nowhere else, so "hold until the background is ready" is only a
+          coherent instruction here; putting the component in the layout would
+          have shipped and hydrated it on twenty routes that can never show it.
+
+          It is server-rendered — present in the first paint rather than
+          mounted after hydration — because a curtain that arrives late paints
+          the real page and then covers it up. What decides whether it is
+          actually visible is the inline script in the root layout, which runs
+          before this markup and is the single place that rule lives.
+
+          `position: fixed` with `z-200`, so being inside <main> costs it
+          nothing: it still covers the header, and the header, main and footer
+          are all set `inert` while it is up. */}
+      <SiteSplash />
       {/* Moved here from the root layout on 24 Aug 2026: a direction contract
           belongs to its own surface, and this one was being emitted on every
           route once a second page existed. */}

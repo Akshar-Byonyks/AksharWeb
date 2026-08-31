@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 
 import { ExecutivePortrait } from "@/components/about/executive-portrait";
+import { AccentRail } from "@/components/common/accent-rail";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { CtaBand } from "@/components/sections/cta-band";
 import { executives, getExecutive } from "@/lib/leadership";
@@ -121,9 +122,16 @@ export default async function ExecutivePage({
                 ) : null}
               </h1>
               <p className="mt-4 text-xl text-white/75">{executive.role}</p>
-              <p className="mt-1 text-base text-white/60">
-                {executive.organisation}
-              </p>
+              {/* Plum on ink, matching the roster card this page was opened
+                  from. The one line on a profile that a reader is most likely
+                  to complete wrongly — "an executive, on the Akshar Byonyks
+                  site, therefore an Akshar Byonyks executive" — is the one
+                  line the page had set at 60% white. */}
+              <AccentRail accent="plum" tone="dark" className="mt-2">
+                <p className="font-mono text-xs tracking-wide text-plum-on-ink">
+                  {executive.organisation}
+                </p>
+              </AccentRail>
               {executive.linkedin ? (
                 <p className="mt-6">
                   <a
