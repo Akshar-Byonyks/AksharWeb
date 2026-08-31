@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
 import { ExecutivePortrait } from "@/components/about/executive-portrait";
-import { PendingNote } from "@/components/common/pending-note";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { CtaBand } from "@/components/sections/cta-band";
@@ -48,10 +46,16 @@ export const metadata: Metadata = {
 // intro says the list spans both companies, and each profile repeats it. Do
 // not remove that label to tidy the cards up.
 //
-// AND IT SAYS WHO IS STILL MISSING. Open Question 1.4 is not closed by one
-// name. The pending note sits below the grid: it is real content and leads,
-// but nobody may leave believing they have met the Indian company's leadership
-// in full.
+// WHO IS STILL MISSING IS NO LONGER SAID ON THIS PAGE (30 Aug 2026, client
+// instruction). A "The rest of the Akshar Byonyks team" section used to sit
+// below the grid with a pending note; it is gone.
+//
+// Open Question 1.4 is still open, and the site still publishes that fact —
+// `/what-we-know/` carries it as `pending-executives` and names this page in
+// its "Appears on" list. What this page keeps is the defence that matters
+// most: the per-card `organisation` label, plus an intro that says the list
+// spans both companies. Those are what stop a reader completing "fifteen
+// executives" into "Akshar Byonyks' leadership", and they are not optional.
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
@@ -174,38 +178,16 @@ export default function LeadershipPage() {
         </div>
       </section>
 
-      <section aria-labelledby="akshar-team-heading" className="bg-surface-2">
-        <div className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 lg:px-8">
-          <ScrollReveal>
-            <div className="max-w-3xl">
-              <h2
-                id="akshar-team-heading"
-                className="text-3xl font-bold tracking-tight text-balance text-ink sm:text-4xl"
-              >
-                The rest of the Akshar Byonyks team
-              </h2>
-              <p className="mt-4 text-lg text-muted-foreground">
-                One name is published above. The others are not, and this page
-                is built to carry them the day they arrive.
-              </p>
-              <PendingNote
-                className="mt-8"
-                note="Akshar Byonyks executives pending"
-                label="The remaining names, biographies and portraits of the Akshar Byonyks executive team have not yet been provided. This page is not waiting on design or engineering."
-              />
-              <p className="mt-8">
-                <Link
-                  href="/about-us"
-                  className="inline-flex items-center gap-1.5 rounded-sm py-1 text-base font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                >
-                  What Akshar Byonyks is, and what it is licensed to do
-                  <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
-                </Link>
-              </p>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
+      {/* REMOVED 30 Aug 2026, at the client's instruction: the "The rest of the
+          Akshar Byonyks team" section — heading, the "one name is published
+          above" line, the pending note and the link back to /about-us.
+
+          The gap it declared is not lost. `/what-we-know/` carries it as
+          `pending-executives`, sourced from `claims-ledger.ts`, and that entry
+          names this page in its "Appears on" list — so the roster page still
+          says which company each person works for, and the site still publishes
+          the fact that the Akshar Byonyks roster is incomplete. What went is
+          the section that said it twice. */}
 
       <CtaBand
         heading="Talk to Akshar Byonyks"
