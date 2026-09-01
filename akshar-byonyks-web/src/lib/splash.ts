@@ -67,6 +67,48 @@ export const SPLASH_FILL_DURATION_S = 0.6;
 export const SPLASH_STAGGER_S = 0.04;
 
 /**
+ * THE WORDMARK'S FACE AND ITS BOX, kept together because they are one fact.
+ *
+ * The curtain set "Akshar Byonyks" in Noto Sans 700 until 1 Sep 2026, when the
+ * client asked for the logo's face instead. `layout.tsx` carries why Yellowtail
+ * stands in for a face nobody has supplied, and why it is recorded as an
+ * approximation rather than presented as the real thing. **It was chosen twice
+ * that day** — first against the Byonyks mark, then re-chosen against the
+ * Akshar Byonyks lockup when the client supplied it, which turned out to use a
+ * completely different script. The metrics below were re-measured with it.
+ *
+ * THE THREE NUMBERS ARE MEASURED, NOT ESTIMATED. `getBBox()` and
+ * `getComputedTextLength()` on "Akshar Byonyks" set in Yellowtail at 128px,
+ * with letter-spacing at zero, in Chromium with the webfont loaded: 0.403em of
+ * mean advance per character, 0.969em of ascent and 0.305em of descent. Each is
+ * rounded outwards below, exactly as the Noto Sans defaults in
+ * `stroke-text.tsx` are, so the box stays a superset of the glyphs — an
+ * overflowing swash is clipped by the SVG viewport, while a box a few per cent
+ * too large costs only scale.
+ *
+ * THESE NUMBERS ARE NOTHING LIKE THE SANS DEFAULTS, which is the whole reason
+ * they are props rather than constants: Yellowtail's mean advance is 0.403em
+ * against Noto Sans 700's 0.569em, so a script wordmark set in the sans box
+ * sits in a frame a third too wide and shrinks to fit it.
+ *
+ * LETTER-SPACING IS ZERO AND MUST STAY ZERO. Yellowtail is a connected script.
+ * The component's -2px default pulls the joins apart and turns a signature into
+ * fourteen separate letters.
+ *
+ * IF THE REAL LOGO FONT ARRIVES: re-measure with it rather than reusing these.
+ * Set the string at 128px in an <svg><text>, wait on `document.fonts.ready`,
+ * then read `getBBox()` — ascent is `-y / 128`, descent is `(y + height) / 128`
+ * and the advance is `getComputedTextLength() / 128 / characterCount`.
+ */
+export const SPLASH_FONT_METRICS = {
+  family: "var(--font-wordmark), cursive",
+  advanceEm: 0.44,
+  ascentEm: 1.02,
+  descentEm: 0.35,
+  letterSpacing: 0,
+} as const;
+
+/**
  * Floor. Below this the wordmark is a flicker rather than a moment, and a
  * curtain that flashes reads as a bug — but it now also guarantees the flood
  * has landed, so it is DERIVED rather than chosen. Change the timings above

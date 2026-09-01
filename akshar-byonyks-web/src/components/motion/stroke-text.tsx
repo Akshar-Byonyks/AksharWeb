@@ -107,6 +107,21 @@ export type StrokeTextProps = {
   fontSize?: number;
   fontWeight?: number;
   letterSpacing?: number;
+  /**
+   * A CSS font-family value, normally a token reference. Defaults to whatever
+   * the wrapper inherits, which is Noto Sans everywhere on this site.
+   *
+   * PASSING THIS MEANS PASSING METRICS TOO. The viewBox below is computed from
+   * the three `*Em` constants, and those describe one face — swapping the
+   * family without swapping them clips the glyphs against the SVG viewport.
+   */
+  fontFamily?: string;
+  /** Mean advance per character, in em. See the metric block below. */
+  advanceEm?: number;
+  /** Ascent above the baseline, in em. */
+  ascentEm?: number;
+  /** Descent below the baseline, in em. */
+  descentEm?: number;
   className?: string;
 };
 
@@ -118,6 +133,12 @@ export type StrokeTextProps = {
 // first frames — an overflowing glyph would be clipped by the SVG viewport,
 // and a box slightly larger than its contents only costs a few per cent of
 // scale, which nothing on a splash screen is measured against.
+//
+// THEY ARE DEFAULTS NOW, NOT CONSTANTS (1 Sep 2026), because the curtain's
+// wordmark moved to a script face and a script's box is nothing like a sans's
+// — Pacifico runs a third taller below the baseline. A caller that changes
+// `fontFamily` must pass its own three, measured the same way. The defaults
+// stay Noto Sans so every existing call site is unaffected.
 const ADVANCE_EM = 0.62;
 const ASCENT_EM = 1.15;
 const DESCENT_EM = 0.35;
@@ -134,6 +155,10 @@ export function StrokeText({
   fontSize = 128,
   fontWeight = 700,
   letterSpacing = -2,
+  fontFamily,
+  advanceEm = ADVANCE_EM,
+  ascentEm = ASCENT_EM,
+  descentEm = DESCENT_EM,
   className,
 }: StrokeTextProps) {
   const characters = useMemo(() => Array.from(text), [text]);
@@ -147,19 +172,20 @@ export function StrokeText({
     fontSize: `${fontSize}px`,
     fontWeight,
     letterSpacing: `${letterSpacing}px`,
+    ...(fontFamily ? { fontFamily } : null),
   };
 
   // The whole geometry, from the props and nothing else. Same value on the
   // server, on the first paint and on every frame after — which is the point.
   const pad = Math.max(strokeWidth, fontSize * 0.1);
   const contentWidth =
-    characters.length * fontSize * ADVANCE_EM +
+    characters.length * fontSize * advanceEm +
     Math.max(0, characters.length - 1) * letterSpacing;
   const viewBox = [
     -pad,
-    -(fontSize * ASCENT_EM + pad),
+    -(fontSize * ascentEm + pad),
     contentWidth + pad * 2,
-    fontSize * (ASCENT_EM + DESCENT_EM) + pad * 2,
+    fontSize * (ascentEm + descentEm) + pad * 2,
   ].join(" ");
 
   // ANCHORED FROM THE MIDDLE, NOT THE START. The box above is a superset of

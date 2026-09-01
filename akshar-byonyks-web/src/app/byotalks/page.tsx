@@ -6,6 +6,7 @@ import { SessionIndex } from "@/components/byotalks/session-index";
 import { SpeakerRegister } from "@/components/byotalks/speaker-register";
 import { CtaBand } from "@/components/sections/cta-band";
 import { KeepReading } from "@/components/sections/keep-reading";
+import { defaultOg } from "@/lib/seo";
 import { byotalksSessions } from "@/lib/byotalks";
 import { siteUrl } from "@/lib/site-config";
 
@@ -30,6 +31,7 @@ export const metadata: Metadata = {
     description,
     url: path,
     type: "website",
+    images: defaultOg,
   },
   twitter: { card: "summary" },
 };
@@ -126,7 +128,7 @@ misspelled speaker name the old site carried corrected where it is written.
             body: "The therapy these sessions discuss, in plain language — with a technical layer at each step for clinicians.",
           },
           {
-            href: "/innovation/the-x1-cycler",
+            href: "/products/the-x1-cycler",
             title: "The X-1 cycler",
             body: "The device Akshar Byonyks is licensed to bring to India — specification, regulatory position, and what is not yet published.",
           },

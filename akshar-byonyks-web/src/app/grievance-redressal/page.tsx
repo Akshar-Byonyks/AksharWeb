@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { defaultOg } from "@/lib/seo";
+
 import { DirectionContract } from "@/components/common/direction-contract";
 import { PendingNote } from "@/components/common/pending-note";
 import {
@@ -24,6 +26,7 @@ export const metadata: Metadata = {
     description,
     url: path,
     type: "website",
+    images: defaultOg,
   },
   twitter: { card: "summary" },
 };

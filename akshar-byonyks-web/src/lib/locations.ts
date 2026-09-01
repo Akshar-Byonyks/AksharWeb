@@ -3,26 +3,41 @@ import type { Provenance } from "@/components/common/provenance";
 // WHERE THE GROUP OPERATES, and — the part that carries the weight — which
 // company holds each site.
 //
-// THIS PAGE EXISTS BECAUSE THE CLIENT ASKED FOR IT ON 31 AUG 2026, and it
-// names Pakistan, on the client's explicit instruction given the same day.
-// That reverses the standing "get rid of Pakistan office" direction the audit
-// gave and that spec F-1 is built around. The reversal is recorded in
-// deviations.md §9 rather than left as an undocumented contradiction between
-// this file and the spec, because a future reader finding Lahore here and
-// "Lahore removed per the audit" in §9.8 deserves to know which is current
-// and who decided.
+// THIS PAGE EXISTS BECAUSE THE CLIENT ASKED FOR IT ON 31 AUG 2026.
+//
+// THREE SITES WERE REMOVED ON 1 SEP 2026, on the client's instruction:
+// Bengaluru, Punjab and Lahore. What went with each of them is worth stating,
+// because two of the three took a load-bearing fact off this page:
+//
+//   • BENGALURU was the only Akshar Byonyks row, and the only one with a
+//     street address. It is replaced rather than deleted — see `india-office`
+//     below — because deleting it outright would leave an Akshar Byonyks
+//     locations page on which this company holds no premises at all, and every
+//     remaining row belongs to the licensor. The city and the address are
+//     gone; the fact that there is an India office is not. Its address now
+//     reads "coming soon", which is the client's own wording for it on
+//     /contact the same day.
+//   • PUNJAB was the manufacturing site, and the origin of the ISO 13485
+//     certification the X-1 is built under. That certification is still stated
+//     on the X-1 product page; what this page no longer does is name the
+//     building or the country it stands in.
+//   • LAHORE was the research and development site.
+//
+// Removing the last two restores spec F-1's standing direction — attribute
+// manufacturing to Byonyks, never to a country — which the 31 Aug instruction
+// had reversed for one day. deviations.md §9 records both turns.
 //
 // TWO COMPANIES, NEVER BLURRED. `entity` is not decoration. Akshar Byonyks is
 // the India licensee; Byonyks designs, manufactures and holds the FDA
-// clearance. byonyks.com solves this by filing Pakistan and India together
-// under "South Asia", which keeps the proof while hiding the country — spec
-// F-1 refuses that framing by name, and so does this page. Every row says
-// which company and which country, or it does not ship.
+// clearance. byonyks.com solves this by filing its sites under "South Asia",
+// which keeps the proof while hiding the country — spec F-1 refuses that
+// framing by name, and so does this page. Every row says which company and
+// which country, or it does not ship.
 //
-// NOTHING HERE IS INVENTED. Every address, phone number, function and date is
-// published by Byonyks on byonyks.com and retrieved on the date below. Where
-// the source is incomplete — and the India address is — the gap is a field, a
-// visible marker and a sentence, never a plausible guess.
+// NOTHING HERE IS INVENTED. Every address, function and date is published by
+// Byonyks on byonyks.com and retrieved on the date below. Where there is no
+// published fact — and for the India office there is none — the gap is a
+// field, a visible marker and a sentence, never a plausible guess.
 
 /** Retrieved together, in one pass, so one date covers the set. */
 export const LOCATIONS_RETRIEVED = "31 August 2026";
@@ -32,7 +47,10 @@ export type LocationStatus = "operating" | "planned";
 
 export type Location = {
   readonly id: string;
-  /** What to call the place. A city, except where only a province is published. */
+  /**
+   * What to call the place. A city where one is published; the country where
+   * none is — see `india-office`, whose city is deliberately not named.
+   */
   readonly place: string;
   /** State or province. Present where it disambiguates; see `hyderabad`. */
   readonly region?: string;
@@ -69,35 +87,40 @@ export type Location = {
   };
 };
 
-// The India address is published with a dropped segment — byonyks.com renders
-// it "43, Residency Road, , Bangalore", and that doubled comma is the same
-// truncation Open Questions 1.1 records as the reason no India address ships
-// on /contact. `null` holds the dropped line's place rather than closing the
-// gap silently, so the page can say a line is missing instead of presenting a
-// three-line address as complete.
 export const locations: readonly Location[] = [
   {
-    id: "bengaluru",
-    // "Bengaluru" in our own voice, the official name and the one this
-    // audience uses; the address below stays verbatim as published, which is
-    // why the two spellings differ on the same row. Quoting a source and
-    // writing prose are different acts.
-    place: "Bengaluru",
-    region: "Karnataka",
+    id: "india-office",
+    // NO CITY, ON PURPOSE. The Bengaluru row was removed on 1 Sep 2026 and
+    // nothing has been published to replace it, so this row names the country
+    // it can substantiate and stops. Putting a different city here would be
+    // the exact failure the rest of this file is arranged to prevent: an
+    // address nobody supplied, written down because a card looked empty.
+    // "India office" as the heading, not "India". The card sets `place` as its
+    // title and `country · entity · role` beneath, so a row whose place is its
+    // country rendered as "India" over "INDIA · AKSHAR BYONYKS · INDIA
+    // OFFICE" — a heading that looked like a placeholder above a line that
+    // said the same word twice.
+    place: "India office",
     country: "India",
     entity: "Akshar Byonyks",
-    role: "India office",
+    // THE ROLE SLOT CARRIES THE STATUS ON THIS PAGE — the two announced sites
+    // put "Announced" here for the same reason. "Address coming soon" is the
+    // client's own wording (1 Sep 2026) and it says precisely what is coming:
+    // the address. Not "Coming soon", which on a card for an office that is
+    // already open would read as the office being the thing that has not
+    // arrived.
+    role: "Address coming soon",
     detail:
-      "The office for the India market, and the address behind every enquiry this site sends.",
+      "The office for the India market, and where every enquiry this site sends is read. Its address has not been published yet.",
     status: "operating",
-    address: ["43, Residency Road", null, "Bangalore, Karnataka 560025"],
-    phone: "+91 97 8660 0505",
+    // PENDING, NOT STATED. Every other row on this page is Byonyks' own
+    // published account of itself; this one is the absence of a published
+    // account, and the scale has a status for exactly that.
     provenance: {
-      status: "stated",
-      statedBy: BYONYKS,
-      asOf: LOCATIONS_RETRIEVED,
+      status: "pending",
+      missing: "The India office address has not been published.",
     },
-    gap: "One line of this address is missing from the published source, and it is not guessed here.",
+    gap: "The India office address is coming soon. Until it is published, enquiries reach the same people by email and by phone — see the Contact page.",
   },
   {
     id: "itasca",
@@ -122,61 +145,12 @@ export const locations: readonly Location[] = [
     },
   },
   {
-    id: "punjab",
-    // A province, not a city, because a city is not published. The factory is
-    // the origin of both the ISO 13485 certification and the 10,000+ therapies
-    // figure the rest of this site attributes to Byonyks rather than to a
-    // country — so it is the one row that most changes what the page means.
-    place: "Punjab",
-    country: "Pakistan",
-    entity: BYONYKS,
-    role: "Manufacturing",
-    detail:
-      "The group's dialysis device manufacturing unit, and the site behind the ISO 13485 certification the X-1 is built under.",
-    status: "operating",
-    established: "2021",
-    provenance: {
-      status: "stated",
-      statedBy: BYONYKS,
-      asOf: LOCATIONS_RETRIEVED,
-    },
-    gap: "Byonyks publishes the province but not the town, and the ISO 13485 certificate number has not reached this project.",
-    image: {
-      src: "/images/locations/punjab-manufacturing.jpg",
-      alt: "The entrance to a single-storey industrial building, with BYONYKS mounted vertically in metal letters on a blue panel beside the door.",
-      kind: "photograph",
-    },
-  },
-  {
-    id: "lahore",
-    place: "Lahore",
-    region: "Punjab",
-    country: "Pakistan",
-    entity: BYONYKS,
-    role: "Research and development",
-    detail: "The group's research centre for dialysis technology.",
-    status: "operating",
-    address: ["45 A Commercial, Sector XX", "DHA Phase 3", "Lahore, Punjab"],
-    phone: "+92 42 111 543 639",
-    provenance: {
-      status: "stated",
-      statedBy: BYONYKS,
-      asOf: LOCATIONS_RETRIEVED,
-    },
-    image: {
-      src: "/images/locations/lahore-research.jpg",
-      alt: "A three-storey glass-fronted commercial building with illuminated Byonyks and Bloodless Dialysis signage above the ground floor.",
-      kind: "photograph",
-    },
-  },
-  {
     id: "hyderabad",
     place: "Hyderabad",
     // TELANGANA IS LOAD-BEARING, not padding. There is a Hyderabad in Sindh,
-    // Pakistan, and this page now names Pakistan sites two rows above. Leaving
-    // the state off would make the single most important claim on the page —
-    // that the group's next two facilities are in India — ambiguous exactly
-    // where it must not be.
+    // Pakistan, and this page named Pakistan sites until 1 Sep 2026. Leaving
+    // the state off would make the claim ambiguous exactly where it must not
+    // be.
     region: "Telangana",
     country: "India",
     entity: BYONYKS,
@@ -226,13 +200,7 @@ export const locations: readonly Location[] = [
 // ONE REGISTER, INDIA AT THE TOP (1 Sep 2026, on request). This replaced a
 // split into "Operating today" and "Announced, not open", which sorted the
 // page by a distinction the reader cares about second and buried the thing
-// they care about first: an India-market site had its India office third in
-// the first group and its two India sites in a separate group further down.
-//
-// There are three India sites and three others, so on the three-column grid
-// this fills the entire top row with India and the second row with the rest —
-// the highlight is the layout itself, not a decoration applied to it. Each
-// group keeps the order declared above.
+// they care about first.
 //
 // The operating/announced distinction did not disappear with the split: it
 // moved onto the cards, where every face carries its own role ("Announced" for
@@ -262,6 +230,19 @@ if (byIndiaFirst.length !== locations.length) {
 // MODULE-LOAD CONTRACTS, in the manner of `leadership.ts`, `news-data.ts` and
 // `compliance.ts`: the rules that must not be broken are enforced where they
 // cannot be forgotten, not left to review.
+
+// AT LEAST ONE ROW MUST BE OURS. Added 1 Sep 2026, when removing the Bengaluru
+// row nearly left an Akshar Byonyks locations page listing only the licensor's
+// premises — a page that would answer "where is Byonyks" under this company's
+// masthead and never answer "where are you". If a future edit removes the
+// India office, it has to decide what this page is for rather than discover
+// the answer in production.
+if (!locations.some((l) => l.entity === "Akshar Byonyks")) {
+  throw new Error(
+    "locations: no Akshar Byonyks site remains. A locations page under this masthead that lists only the licensor's buildings does not answer the question it is asked.",
+  );
+}
+
 for (const l of locations) {
   if (!l.place || !l.country) {
     throw new Error(`locations: "${l.id}" must name a place and a country.`);
@@ -296,10 +277,10 @@ for (const l of locations) {
   }
 
   // A BUILDING THAT DOES NOT EXIST CANNOT BE PHOTOGRAPHED. Byonyks publishes
-  // architectural drawings for the two announced sites and photographs for the
-  // three operating ones, and the page labels each image with its kind — so
-  // this is the one pairing that must never be mislabelled. CLAUDE.md's "never
-  // caption a render as a photograph" is the rule; this is the enforcement.
+  // architectural drawings for the two announced sites and a photograph for
+  // its head office, and the page labels each image with its kind — so this is
+  // the one pairing that must never be mislabelled. CLAUDE.md's "never caption
+  // a render as a photograph" is the rule; this is the enforcement.
   if (l.image) {
     const expected = l.status === "planned" ? "plan drawing" : "photograph";
     if (l.image.kind !== expected) {

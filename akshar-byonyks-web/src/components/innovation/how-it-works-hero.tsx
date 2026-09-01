@@ -62,7 +62,7 @@ export function HowItWorksHero() {
               variant="outline"
               className="h-auto min-h-11 shrink min-w-0 border-white/45 bg-transparent px-6 py-2.5 text-base whitespace-normal text-white hover:bg-white/10"
             >
-              <Link href="/innovation/the-x1-cycler">See the X-1 cycler</Link>
+              <Link href="/products/the-x1-cycler">See the X-1 cycler</Link>
             </Button>
           </div>
         </div>

@@ -6,7 +6,7 @@ import { licensingStatement, usRegulatoryStatement } from "@/lib/claims";
 // the four children, India context block, CTA."
 //
 // The hub existed as a nav item and a breadcrumb position for the whole build
-// and never as a page, which is why `/innovation/the-x1-cycler/` shipped with
+// and never as a page, which is why `/products/the-x1-cycler/` shipped with
 // an unlinked "Innovation" crumb and a code comment promising to link it when
 // the hub arrived. This is that page; both crumbs now resolve.
 //

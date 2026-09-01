@@ -11,6 +11,7 @@ import {
   SPLASH_FADE_MS,
   SPLASH_FILL_DELAY_S,
   SPLASH_FILL_DURATION_S,
+  SPLASH_FONT_METRICS,
   SPLASH_MAX_MS,
   SPLASH_MIN_MS,
   SPLASH_MIN_MS_REDUCED,
@@ -221,8 +222,23 @@ export function SiteSplash() {
           text="Akshar Byonyks"
           strokeColor="var(--color-accent-gold)"
           fillColor="currentColor"
+          // THE BYONYKS LOGO'S FACE, on client instruction (1 Sep 2026), and
+          // the only element on this site that is not Noto Sans. The family
+          // and the three metrics travel together from `splash.ts` — the
+          // viewBox is computed from them, and a script's box is nothing like
+          // a sans's, so changing one without the others clips the glyphs.
+          fontFamily={SPLASH_FONT_METRICS.family}
+          advanceEm={SPLASH_FONT_METRICS.advanceEm}
+          ascentEm={SPLASH_FONT_METRICS.ascentEm}
+          descentEm={SPLASH_FONT_METRICS.descentEm}
+          // Zero, not the component's -2px default. Yellowtail is a connected
+          // script and negative tracking pulls its joins apart.
+          letterSpacing={SPLASH_FONT_METRICS.letterSpacing}
           fontSize={128}
-          fontWeight={700}
+          // 400 is the only weight Yellowtail ships. The real mark is bolder;
+          // on an outline that draws and floods, letterform structure carries
+          // the resemblance and stroke weight does not.
+          fontWeight={400}
           // STROKE WIDTH IS IN USER UNITS, NOT PIXELS, and that is the one
           // number the original component gets wrong once its SVG is scaled.
           // `strokeWidth` is measured against the 128-unit font inside the

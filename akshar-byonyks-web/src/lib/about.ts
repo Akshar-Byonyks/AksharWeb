@@ -55,7 +55,7 @@ export const founderStory = {
  * Spec §9.6 folds the timeline into this page after the investor section was
  * cut. What it lists is nine entries, four of which are the test houses —
  * FiLab, HTW, SGS and TÜV SÜD — and **those four now live in the compliance
- * register** on `/innovation/the-x1-cycler/`. Restating them here would be the
+ * register** on `/products/the-x1-cycler/`. Restating them here would be the
  * duplication that retired `/manufacturing/`, reintroduced a day later on a
  * different page.
  *
@@ -110,7 +110,7 @@ export const milestones: readonly Milestone[] = [
     detail:
       "Biocompatibility, electrical safety, IEC certification and human factors work, through four independent laboratories across the year.",
     verification: "company-stated",
-    href: "/innovation/the-x1-cycler#compliance",
+    href: "/products/the-x1-cycler#compliance",
     hrefLabel: "Each test, its date and its laboratory",
   },
   {
@@ -126,7 +126,7 @@ export const milestones: readonly Milestone[] = [
     detail:
       "K243371. The X-1 APD Cycler and the Automated PD Set DS-1 found substantially equivalent. Held by Byonyks.",
     verification: "public-record",
-    href: "/innovation/the-x1-cycler#compliance",
+    href: "/products/the-x1-cycler#compliance",
     hrefLabel: "The record, and how to check it",
   },
   {
@@ -139,22 +139,25 @@ export const milestones: readonly Milestone[] = [
 ];
 
 /**
- * The five executives, and why there are none on this site yet.
+ * The Akshar Byonyks team, and what is still missing from it.
  *
- * Open Question 1.4 — "still fully open", and a launch gate in both the spec
- * (§14.4) and the risk table, which puts it plainly: "Investor-first with no
- * named team is not credible." The five names, their bios and their portraits
- * are on this project's do-not-fabricate list, so the page states the gap
- * rather than filling it with stock portraits or role titles nobody holds.
+ * Open Question 1.4, MUCH NARROWER SINCE 1 SEP 2026 but not closed. Three
+ * Akshar Byonyks people are published where there was one, so the spec §14.4
+ * risk this recorded — "Investor-first with no named team is not credible" —
+ * no longer describes the page. What is still outstanding is smaller and
+ * per-record: two of the three have no job title and no photograph, both on
+ * this project's do-not-fabricate list, so the page states each gap where the
+ * fact would be rather than filling it with a stock portrait or a role title
+ * nobody holds.
  *
  * The nine advisory nephrologists are a different matter and are already
  * surfaced, by name and credential, as ByoTalks speakers — spec F-5's
  * compensating route, working as intended.
  */
 export const leadershipStatus = {
-  note: "Akshar Byonyks executives pending",
+  note: "Titles and photographs pending",
   label:
-    "Dr. Vishnu Patel is published. The rest of the Akshar Byonyks executive team — names, biographies and portraits — has not been provided to this project. The other fourteen people on the leadership page are Byonyks' executives, who built the device.",
+    "Three Akshar Byonyks people are published. Two of them have no job title and no photograph yet — both were requested from the client on 1 September 2026, and the page marks each gap rather than guessing. Senthil Kumar's card is Byonyks', and says so.",
   meanwhile:
     "The nephrologists who advise Byonyks do appear on this site, by name and credential, as the speakers in ByoTalks.",
 } as const;

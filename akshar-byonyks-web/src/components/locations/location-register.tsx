@@ -26,7 +26,7 @@ import type { Location } from "@/lib/locations";
 // opens with no JavaScript, it is keyboard- and screen-reader-operable with no
 // ARIA of our own, and it survives a failed client bundle. Every fact stays in
 // the document whether or not the card is open, so a reader without JS, a
-// crawler, and Ctrl+F all still find the Bengaluru address.
+// crawler, and Ctrl+F all still find the Itasca address.
 //
 // AND NO MAP, WHICH IS NOT A STYLISTIC CHOICE. deviations.md §5 records the
 // site reversing on exactly this: depicting India's national boundary is a
@@ -35,25 +35,25 @@ import type { Location } from "@/lib/locations";
 // own site. Its condition for ever shipping one — "someone must supply a
 // boundary-correct official outline and have it reviewed" — has not been met.
 //
-// THE PICTURES ARE THE BUILDINGS THEMSELVES, and all five come from Byonyks'
+// THE PICTURES ARE THE BUILDINGS THEMSELVES, and all three come from Byonyks'
 // own published pages rather than from stock. A stock city photograph beside a
 // street address is a picture of a place the reader will take for a picture of
 // the premises, and on a page whose entire argument is which company holds
 // which building that is the one image class guaranteed to mislead. The Itasca
 // frame carries the numerals 550, which corroborate its own address.
 //
-// PHOTOGRAPH OR PLAN, NEVER CONFLATED. The three operating sites have
-// photographs; the two announced sites have architectural drawings, because
+// PHOTOGRAPH OR PLAN, NEVER CONFLATED. The operating head office has a
+// photograph; the two announced sites have architectural drawings, because
 // they are not built. `Location.image.kind` carries which, the caption is
 // generated from that field, and a module-load contract in `locations.ts`
 // refuses the wrong pairing — CLAUDE.md's "never caption a render as a
 // photograph" enforced rather than remembered.
 //
-// ONE CARD HAS NO PICTURE, AND IT IS OURS. Byonyks publishes no photograph of
-// the Bengaluru office — not on /contact, not on /about-us, nothing on the
-// open web. The frame is held open and marked rather than filled with a
-// Bengaluru cityscape, the same decision the address inside makes about its
-// own missing line.
+// ONE CARD HAS NO PICTURE, AND IT IS OURS. Nothing of the Akshar Byonyks India
+// office has been published — no photograph, and since 1 Sep 2026 no address
+// either. The frame is held open and marked rather than filled with a generic
+// Indian cityscape, which is the same decision the card's own "coming soon"
+// makes about the address.
 
 function LocationCard({ location }: { location: Location }) {
   const isIndia = location.country === "India";
@@ -161,7 +161,9 @@ function LocationCard({ location }: { location: Location }) {
 
         {/* The role moved up to the closed face when the registers merged, so
             what is left for this line is the one fact the face has no room
-            for. Only Punjab publishes a year. */}
+            for. No remaining site publishes a founding year, so this renders
+            for none of them today — kept because the field is on the type and
+            a future row may carry one. */}
         {location.established ? (
           <p className="mt-3 font-mono text-xs tracking-wide text-muted-foreground uppercase">
             Operating since {location.established}

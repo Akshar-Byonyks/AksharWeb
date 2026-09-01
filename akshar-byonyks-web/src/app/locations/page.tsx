@@ -11,12 +11,13 @@ import {
 import { LocationRegister } from "@/components/locations/location-register";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { CtaBand } from "@/components/sections/cta-band";
+import { defaultOg } from "@/lib/seo";
 import { byIndiaFirst, LOCATIONS_RETRIEVED } from "@/lib/locations";
 
 const path = "/locations";
 
 const description =
-  "Where Akshar Byonyks and Byonyks operate: the India office in Bengaluru, the group's head office, manufacturing and research sites, and the two India facilities that have been announced but not opened.";
+  "Where Akshar Byonyks and Byonyks operate: the Akshar Byonyks India office, Byonyks' head office, and the two India facilities that have been announced but not opened.";
 
 export const metadata: Metadata = {
   title: "Locations",
@@ -27,6 +28,7 @@ export const metadata: Metadata = {
     description,
     url: path,
     type: "website",
+    images: defaultOg,
   },
   twitter: { card: "summary" },
 };
@@ -37,18 +39,20 @@ export const metadata: Metadata = {
 //
 // NO `Organization` STRUCTURED DATA WITH AN ADDRESS, and that is deliberate.
 // `/about-us` already refuses one for the stated reason that "a placeholder in
-// structured data is a placeholder a crawler will publish". The India address
-// below is real but incomplete — one line is missing from the source — and
-// `PostalAddress` has no way to say "a line is missing" that a crawler would
-// respect. The visible page can hold a gap open; a schema field cannot. So the
-// page ships with breadcrumbs only, and the machine-readable address waits for
-// the missing line the same way the visible one does.
+// structured data is a placeholder a crawler will publish". There is now no
+// India address at all to publish, and `PostalAddress` has no way to say
+// "coming soon" that a crawler would respect — it would either be omitted or
+// filled with the licensor's US address, and the second of those is the exact
+// company-blurring this page exists to prevent. So the page ships with
+// breadcrumbs only, and the machine-readable address waits for the real one.
 //
-// THE PAKISTAN SITES ARE NAMED HERE ON THE CLIENT'S EXPLICIT INSTRUCTION,
-// 31 Aug 2026, reversing the audit direction that spec F-1 and §9.8 are built
-// around ("Lahore removed per the audit"). deviations.md §9 records who
-// decided and what it overrides. The alternative offered and declined was to
-// carry the facilities without naming the country.
+// THREE SITES CAME OFF THIS PAGE ON 1 SEP 2026 — Bengaluru, Punjab and Lahore
+// — on the client's instruction. The two Pakistan rows had been added on 31
+// Aug against the standing audit direction, so their removal restores spec
+// F-1 rather than departing from it; the Bengaluru row was this company's own,
+// and what replaced it is an India office with its address marked "coming
+// soon" rather than nothing at all. `src/lib/locations.ts` carries the full
+// reasoning and deviations.md §9 records both turns.
 export default function LocationsPage() {
   return (
     <>
@@ -67,8 +71,8 @@ export default function LocationsPage() {
             <GridBlock
               rail={
                 <RailNote label="On this page">
-                  Three in India and three elsewhere; four operating, two
-                  announced. Every card says which company holds it.
+                  Three in India and one in the United States; two operating,
+                  two announced. Every card says which company holds it.
                 </RailNote>
               }
             >
@@ -76,7 +80,7 @@ export default function LocationsPage() {
                 id="locations-heading"
                 className="text-4xl font-bold tracking-tight text-balance text-ink sm:text-5xl"
               >
-                Six sites, two companies
+                Four sites, two companies
               </h1>
               <p className="mt-6 text-lg text-ink">
                 Akshar Byonyks is the India licensee for the X-1 cycler. Byonyks
@@ -86,9 +90,10 @@ export default function LocationsPage() {
                 one map and letting the reader assume.
               </p>
               <p className="mt-4 text-lg text-muted-foreground">
-                One of the sites below is ours. The rest are Byonyks&rsquo;, and
-                are listed because the device this company brings to India is
-                designed, built and researched at them.{" "}
+                One of the sites below is ours, and its address is still coming.
+                The rest are Byonyks&rsquo;, and are listed because the device
+                this company brings to India is designed at one of them and
+                announced for the other two.{" "}
                 <Link
                   href="/about-us"
                   className="rounded-sm text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
@@ -118,8 +123,8 @@ export default function LocationsPage() {
               the re-sort that a section heading would not. */}
           <LocationRegister
             id="sites"
-            title="All six sites, India first"
-            lead="The three India sites lead, then the rest of the group. Hyderabad and Ahmedabad are announced rather than open — neither has a published opening date, and neither is called a manufacturing site here, because that is a separate CDSCO licence route and no licence has been published for either. Every card names the company that holds the building."
+            title="All four sites, India first"
+            lead="The three India sites lead, then Byonyks' head office. The Akshar Byonyks India office is open and its address is coming soon; Hyderabad and Ahmedabad are announced rather than open — neither has a published opening date, and neither is called a manufacturing site here, because that is a separate CDSCO licence route and no licence has been published for either. Every card names the company that holds the building."
             rail={
               <ProvenanceMark
                 provenance={{
@@ -138,9 +143,8 @@ export default function LocationsPage() {
       {/* WHAT THIS PAGE CANNOT TELL YOU, stated by the page rather than left
           for a reader to notice. Every other register on this site closes the
           same way, and a locations page has more to declare than most: two of
-          the six rows are announcements, one address is incomplete, and the
-          certification behind the manufacturing row has never arrived with a
-          number on it. */}
+          the four rows are announcements, and the one row that is ours has no
+          address on it at all. */}
       <section
         aria-labelledby="locations-limits-heading"
         className="mx-auto max-w-[1280px] px-4 py-16 sm:px-6 lg:px-8 lg:py-20"
@@ -168,12 +172,14 @@ export default function LocationsPage() {
                 which is why no row is marked as being on the public record.
               </p>
               <p className="mt-4 text-base text-ink">
-                The India office address is missing a line at its source and is
-                shown with that gap held open. The manufacturing site&rsquo;s
-                ISO&nbsp;13485 certification is real and central to the X-1, but
-                its certificate number has never reached this project — the{" "}
+                The Akshar Byonyks India office has no published address, so the
+                card says that rather than naming a city. The ISO&nbsp;13485
+                certification the X-1 is built under is real and central to the
+                device, but its certificate number has never reached this
+                project, and the facility behind it is no longer named on this
+                page — the{" "}
                 <Link
-                  href="/innovation/the-x1-cycler"
+                  href="/products/the-x1-cycler"
                   className="rounded-sm text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 >
                   quality and compliance record
@@ -195,8 +201,12 @@ export default function LocationsPage() {
         </ScrollReveal>
       </section>
 
+      {/* No `leadIn`: this band follows a section on the plain `background`,
+          which is what `SilhouetteEdge` already draws against by default. It
+          carried `leadIn="Locations"` until 1 Sep 2026 — the prop is a
+          className forwarded to the edge, so that string was emitting a class
+          that matches nothing. Harmless in effect, wrong in fact. */}
       <CtaBand
-        leadIn="Locations"
         heading="Looking for the right office?"
         body="Tell us who you are and what you need, and we route it to the right person rather than the nearest address."
       />

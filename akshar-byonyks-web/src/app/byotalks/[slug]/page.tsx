@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { VideoFacade } from "@/components/byotalks/video-facade";
 import { CtaBand } from "@/components/sections/cta-band";
+import { defaultOg } from "@/lib/seo";
 import { byotalksSessions, getSession, isoDuration } from "@/lib/byotalks";
 import { notMedicalAdvice } from "@/lib/claims";
 import { siteUrl } from "@/lib/site-config";
@@ -43,6 +44,7 @@ export async function generateMetadata({
       description,
       url: path,
       type: "article",
+      images: defaultOg,
     },
     twitter: { card: "summary" },
   };

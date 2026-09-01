@@ -9,13 +9,13 @@ export type NavLink = {
   children?: NavLink[];
 };
 
-// Spec 8.2 specifies five items plus a persistent CTA. **Five ship**, as of
-// 31 Aug 2026, but not the five the spec names.
+// Spec 8.2 specifies five items plus a persistent CTA. **Six ship**, as of
+// 1 Sep 2026, and not the five the spec names.
 //
 // "Manufacturing" was retired on the client's decision, 29 Aug 2026, after a
 // measurement found eleven of that page's nineteen facts already stated
 // elsewhere, and its label promising a factory the page opened by saying does
-// not exist. Its compliance record now lives on /innovation/the-x1-cycler as
+// not exist. Its compliance record now lives on /products/the-x1-cycler as
 // "Quality and compliance", and /manufacturing redirects there.
 //
 // "Locations" took the fifth slot on 31 Aug 2026, also the client's call —
@@ -25,14 +25,37 @@ export type NavLink = {
 // naming which of the two companies holds it. It sits beside About Us because
 // it is company information, not product. Both recorded in deviations.md.
 //
-// Children per item mirror the sitemap in spec 8.3 and drive the desktop
-// mega-menu.
+// "PRODUCTS" TOOK THE SIXTH ON 1 SEP 2026, on the client's instruction: "move
+// X1 cycler page to a new main tab called products, add in x2 and x3 coming".
+// The X-1 page moved wholesale from /innovation/the-x1-cycler to
+// /products/the-x1-cycler and the old path redirects permanently.
+//
+// IT SITS FIRST, AHEAD OF INNOVATION, and that is the substantive half of the
+// change rather than a tidy-up. Innovation is an argument — how the therapy
+// works, why India, what is coming. Products is the thing you can buy, and a
+// visitor who arrives knowing they want the cycler should not have to guess
+// that a device lives under a word that describes a point of view. The
+// mega-menu's three children are the same three the spec's sitemap gives
+// /innovation, minus the device.
 export const primaryNav: NavLink[] = [
+  {
+    label: "Products",
+    href: "/products",
+    children: [
+      { label: "The X-1 Cycler", href: "/products/the-x1-cycler" },
+      // NOT A ROUTE, AND DELIBERATELY SO. Byonyks publishes one paragraph
+      // about the X-2 and X-3 and ends it "More details coming soon." A page
+      // per device built on a paragraph would be a page that says nothing;
+      // the hub carries them as a section, and this is an anchor into it. If
+      // Byonyks publishes specifications, they get pages and this becomes two
+      // links.
+      { label: "X-2 and X-3", href: "/products#x2-x3" },
+    ],
+  },
   {
     label: "Innovation",
     href: "/innovation",
     children: [
-      { label: "The X-1 Cycler", href: "/innovation/the-x1-cycler" },
       { label: "How It Works", href: "/innovation/how-it-works" },
       { label: "The India Market", href: "/innovation/market" },
     ],
@@ -61,10 +84,17 @@ export const contactCta: NavLink = { label: "Contact us", href: "/contact" };
 // Spec 8.1 rule 4: the footer is not a sitemap. Max 4 columns, 6 links per
 // column (spec 7.2) — curated, not exhaustive.
 export const footerColumns: { heading: string; links: NavLink[] }[] = [
+  // ONE COLUMN FOR BOTH SECTIONS, not the two the header now has. The footer
+  // grid is `sm:grid-cols-4` and spec 8.1 rule 4 caps it at four columns; a
+  // fifth would wrap to a second row and leave one orphan under four. The
+  // footer is explicitly not a sitemap, so the two devices lead a column that
+  // also carries the three Innovation pages, and the header keeps the two
+  // sections apart where a visitor is actually navigating.
   {
-    heading: "Innovation",
+    heading: "Products and innovation",
     links: [
-      { label: "The X-1 Cycler", href: "/innovation/the-x1-cycler" },
+      { label: "The X-1 Cycler", href: "/products/the-x1-cycler" },
+      { label: "X-2 and X-3", href: "/products#x2-x3" },
       { label: "How It Works", href: "/innovation/how-it-works" },
       { label: "The India Market", href: "/innovation/market" },
       { label: "ByoTalks", href: "/byotalks" },

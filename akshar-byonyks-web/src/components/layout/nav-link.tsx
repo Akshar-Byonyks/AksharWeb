@@ -33,7 +33,7 @@ export function NavLink({
   const pathname = usePathname();
 
   // A section parent counts as current for its children: /innovation is the
-  // active trail when you are on /innovation/the-x1-cycler. Exact match alone
+  // active trail when you are on /products/the-x1-cycler. Exact match alone
   // would leave the header blank on every inner page, which is precisely the
   // case the critique flagged.
   const isActive =

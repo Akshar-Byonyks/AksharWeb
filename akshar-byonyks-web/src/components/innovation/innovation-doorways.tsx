@@ -168,7 +168,7 @@ function MarketMark() {
 
 const built: { href: string; title: string; body: string; mark: ReactNode }[] = [
   {
-    href: "/innovation/the-x1-cycler",
+    href: "/products/the-x1-cycler",
     title: "The X-1 cycler",
     body: "The device itself: what it does, its specification, and its regulatory position in the US and in India — including the rows that are not yet published.",
     mark: <CyclerMark />,

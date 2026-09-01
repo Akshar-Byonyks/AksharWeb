@@ -145,7 +145,7 @@ export function AccessGeometryHero() {
                 size="lg"
                 className="h-auto min-h-11 shrink min-w-0 bg-accent-gold px-6 py-2.5 text-base whitespace-normal text-ink hover:bg-accent-gold/85"
               >
-                <Link href="/innovation/the-x1-cycler">See how it works</Link>
+                <Link href="/products/the-x1-cycler">See how it works</Link>
               </Button>
               <Button
                 asChild

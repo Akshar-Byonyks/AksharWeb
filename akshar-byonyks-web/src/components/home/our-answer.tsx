@@ -45,7 +45,7 @@ export function OurAnswer() {
             licensed to bring it to India.
           </p>
           <Link
-            href="/innovation/the-x1-cycler"
+            href="/products/the-x1-cycler"
             className="mt-5 inline-flex items-center gap-1.5 rounded-sm py-1 text-sm font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
             See the full specification

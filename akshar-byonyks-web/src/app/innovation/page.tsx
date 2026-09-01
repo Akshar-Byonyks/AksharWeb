@@ -5,6 +5,7 @@ import { InnovationDoorways } from "@/components/innovation/innovation-doorways"
 import { InnovationHero } from "@/components/innovation/innovation-hero";
 import { InnovationIndiaContext } from "@/components/innovation/innovation-india-context";
 import { CtaBand } from "@/components/sections/cta-band";
+import { defaultOg } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-config";
 
 const path = "/innovation";
@@ -24,6 +25,7 @@ export const metadata: Metadata = {
     description,
     url: path,
     type: "website",
+    images: defaultOg,
   },
   twitter: { card: "summary" },
 };
@@ -40,11 +42,11 @@ const jsonLd = {
   description,
   url: `${siteUrl}${path}`,
   hasPart: [
-    {
-      "@type": "WebPage",
-      name: "The X-1 automated peritoneal dialysis cycler",
-      url: `${siteUrl}/innovation/the-x1-cycler`,
-    },
+    // The X-1 is NOT listed here any more. It moved to /products on 1 Sep 2026
+    // and `hasPart` describes containment, not relatedness — a hub claiming a
+    // page in another section as its own part is the same defect as a
+    // breadcrumb naming a section the URL does not contain. The visible
+    // doorway to it stays; the structured data follows the route.
     {
       "@type": "WebPage",
       name: "How peritoneal dialysis works",

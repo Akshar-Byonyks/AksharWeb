@@ -8,6 +8,7 @@ import { TheGap } from "@/components/market/the-gap";
 import { TimingAndLicensing } from "@/components/market/timing-and-licensing";
 import { CtaBand } from "@/components/sections/cta-band";
 import { KeepReading } from "@/components/sections/keep-reading";
+import { defaultOg } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-config";
 
 const path = "/innovation/market";
@@ -33,6 +34,7 @@ export const metadata: Metadata = {
     description,
     url: path,
     type: "article",
+    images: defaultOg,
   },
   twitter: { card: "summary" },
 };
@@ -174,7 +176,7 @@ pendings where a real authority has not yet been read.
             body: "The therapy this whole argument rests on, explained in plain language — what the peritoneum does and what one exchange is.",
           },
           {
-            href: "/innovation/the-x1-cycler",
+            href: "/products/the-x1-cycler",
             title: "The X-1 cycler",
             body: "The machine that runs those exchanges overnight — what is confirmed about it, and what has not been published yet.",
           },

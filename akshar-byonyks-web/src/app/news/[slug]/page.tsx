@@ -5,6 +5,7 @@ import { ArrowLeft, ExternalLink } from "lucide-react";
 
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { CtaBand } from "@/components/sections/cta-band";
+import { defaultOg } from "@/lib/seo";
 import { licensingStatement } from "@/lib/claims";
 import { getNewsArticle, newsArticles } from "@/lib/news-data";
 import { siteUrl } from "@/lib/site-config";
@@ -54,6 +55,7 @@ export async function generateMetadata({
       description: article.excerpt,
       url: path,
       type: "article",
+      images: defaultOg,
       publishedTime: article.published,
     },
     twitter: { card: "summary" },

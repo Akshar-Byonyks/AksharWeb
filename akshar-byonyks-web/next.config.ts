@@ -17,7 +17,20 @@ const nextConfig: NextConfig = {
         // have it written down, so it keeps resolving — to the section that
         // absorbed its content, not to a generic page.
         source: "/manufacturing",
-        destination: "/innovation/the-x1-cycler#compliance",
+        destination: "/products/the-x1-cycler#compliance",
+        permanent: true,
+      },
+      {
+        // The X-1 page moved out of /innovation into the new /products
+        // section on 1 Sep 2026, on the client's instruction. This path has
+        // been the device's URL for the whole build, it is where the
+        // /manufacturing redirect above used to land, and it was linked from
+        // Home, the Innovation hub, both Innovation children, About Us,
+        // ByoTalks and Locations. A permanent redirect keeps every one of
+        // those working, along with any link already sent to a partner, and
+        // passes the ranking rather than starting the new path from nothing.
+        source: "/innovation/the-x1-cycler",
+        destination: "/products/the-x1-cycler",
         permanent: true,
       },
     ];

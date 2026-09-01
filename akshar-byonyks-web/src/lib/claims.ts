@@ -69,7 +69,36 @@ export const usRegulatoryStatement =
  * confirmed, the precise position replaces this sentence, here only.
  */
 export const indiaRegulatoryStatement =
-  "A US clearance does not authorise sale in India. The X-1's Indian regulatory position is being established under the Medical Device Rules 2017, and Akshar Byonyks will state that position here precisely once it is confirmed.";
+  "A US clearance does not authorise sale in India. The X-1's Indian licensing is in progress under the Medical Device Rules 2017, and Akshar Byonyks will state the confirmed position here precisely once it is granted.";
+
+/**
+ * THE INDIA LICENSING STATUS AS A STATUS, not only as a sentence.
+ *
+ * Client instruction, 1 Sep 2026: "X1 cycler licensing in India should show as
+ * in progress along with the date". Before this the India panel carried a
+ * paragraph and an amber "Confirmation pending" note, which reads as *stalled*
+ * — a gap nobody is working on. "In progress, as of a date" is a different
+ * claim and a truer one: work is under way, and the reader can see how fresh
+ * that statement is.
+ *
+ * `asOf` IS THE DATE THIS STATUS WAS LAST CONFIRMED BY THE CLIENT, and the
+ * page labels it in exactly those words. It is deliberately NOT presented as a
+ * filing or submission date, because no such date has been supplied to this
+ * project and a date printed next to "licensing" will be read as the day
+ * something was lodged with CDSCO. If the client meant the application date,
+ * it goes here and the label on `x1-regulatory.tsx` changes with it — one
+ * edit, one place, and the two cannot drift.
+ *
+ * WHAT MUST NOT HAPPEN: this becoming "approved", "cleared" or "licensed" in
+ * India without the licence number and the route beside it. Rule 2 above is
+ * the whole reason this file exists, and "in progress" is the strongest thing
+ * that can be said today.
+ */
+export const indiaLicensing = {
+  status: "In progress",
+  asOf: "1 September 2026",
+  framework: "Medical Device Rules 2017",
+} as const;
 
 /** Rule 3, and the licensing relationship, at the gated wording only. */
 export const licensingStatement =

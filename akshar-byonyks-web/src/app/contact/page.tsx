@@ -5,9 +5,10 @@ import { PendingNote } from "@/components/common/pending-note";
 import { ContactForm } from "@/components/contact/contact-form";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { SilhouetteEdge } from "@/components/layout/silhouette-edge";
+import { defaultOg } from "@/lib/seo";
 import { enquiryFromParam } from "@/lib/contact";
 import { siteContact } from "@/lib/site-config";
-import { Mail, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 
 const path = "/contact";
 
@@ -23,6 +24,7 @@ export const metadata: Metadata = {
     description,
     url: path,
     type: "website",
+    images: defaultOg,
   },
   twitter: { card: "summary" },
 };
@@ -61,8 +63,9 @@ FORM: two columns from lg — the form takes the wider share, a narrow column
 carries the real contact details and what happens next.
 FINISH: 16px inputs that never drop to 14px, persistent visible labels, an
 error summary that takes focus, consent unchecked and explained before it is
-asked. Nothing invented: no office address, and the phone stays marked as the
-placeholder it is.
+asked. Nothing invented: the India office reads "coming soon" because there is
+no address to print, and the phone — real and staffed since 1 Sep 2026 — says
+which country it rings in.
 `}</DirectionContract>
 
       <section aria-labelledby="contact-heading" className="bg-ink">
@@ -139,26 +142,53 @@ placeholder it is.
                   </span>
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-ink">Phone</p>
-                    <p className="text-sm text-muted-foreground">{siteContact.phone}</p>
+                    {/* DIALLABLE, NOT JUST PRINTED. This was a `<p>` for as
+                        long as the number was a placeholder — there was
+                        nothing to ring. It is a real staffed line now, and
+                        this audience reads it on a phone. */}
+                    <a
+                      className="rounded-sm text-sm text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                      href={`tel:${siteContact.phoneTel}`}
+                    >
+                      {siteContact.phone}
+                    </a>
+                    {/* A +1 NUMBER ON AN INDIA-FACING SITE. Said out loud
+                        rather than left for the reader to discover from their
+                        call log: an unmarked country code costs a patient
+                        money and costs this company the enquiry. */}
+                    <p className="mt-0.5 text-xs text-muted-foreground">
+                      {siteContact.phoneRegion} — an international call from
+                      India.
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-accent text-primary">
+                    <MapPin className="size-4.5" aria-hidden="true" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-ink">
+                      India office
+                    </p>
+                    {/* "Coming soon" IS THE CLIENT'S OWN WORDING (1 Sep 2026),
+                        replacing a pending note that said the address was
+                        unconfirmed. It is a row on the list now rather than a
+                        marker under it, because a reader scanning for an
+                        address should find the answer where they look for it
+                        — and the answer is that there is not one yet. */}
+                    <p className="text-sm text-muted-foreground">Coming soon</p>
                   </div>
                 </li>
               </ul>
 
-              {/* Two genuine gaps, marked rather than invented — the same
-                  treatment the X-1 specification table uses. Spec §14.4 bars
-                  shipping a placeholder contact detail at launch, so these are
-                  launch-gate items, not decoration. */}
-              {siteContact.phoneIsPlaceholder ? (
-                <PendingNote
-                  className="mt-4"
-                  note="Number pending"
-                  label="The published phone number is a placeholder. A real, staffed line is required before launch."
-                />
-              ) : null}
+              {/* One genuine gap, marked rather than invented — the same
+                  treatment the X-1 specification table uses. The phone is no
+                  longer among them: a real, staffed line replaced the
+                  placeholder on 1 Sep 2026, closing that §14.4 launch gate. */}
               <PendingNote
-                className="mt-3"
+                className="mt-4"
                 note="Address pending"
-                label="The India registered office address is not yet confirmed, so none is published here."
+                label="The India registered office address is not yet confirmed, so none is published here. Enquiries reach the same people by email and phone in the meantime."
               />
 
               <div className="mt-8 border-t border-line pt-6">

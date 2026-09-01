@@ -11,7 +11,7 @@ import { milestones } from "@/lib/about";
 //
 // WHAT IT DOES NOT REPRINT. The spec's list is nine entries and four of them
 // are the test houses — FiLab, HTW, SGS, TÜV SÜD. Those are now rows in the
-// compliance register on `/innovation/the-x1-cycler/`, with their dates, their
+// compliance register on `/products/the-x1-cycler/`, with their dates, their
 // laboratories and the certificate numbers that are still missing. Restating
 // them here would be the duplication that retired `/manufacturing/` on 29 Aug
 // 2026, reintroduced the same day on a different page.

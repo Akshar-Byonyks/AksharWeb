@@ -4,6 +4,7 @@ import { PendingNote } from "@/components/common/pending-note";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { fda510k } from "@/lib/compliance";
 import {
+  indiaLicensing,
   indiaRegulatoryStatement,
   licensingStatement,
   manufacturingStatement,
@@ -104,10 +105,41 @@ export function X1Regulatory() {
               <p className="mt-2 text-sm text-muted-foreground">
                 {indiaRegulatoryStatement}
               </p>
+              {/* THE STATUS, SET LIKE THE K-NUMBER OPPOSITE. Client
+                  instruction, 1 Sep 2026: the India licensing should show as
+                  in progress, with the date.
+
+                  It mirrors the US panel's premarket-notification block
+                  deliberately — same plate, same mono label, same weight — so
+                  the two jurisdictions read as two answers to one question
+                  rather than as one finished card beside one unfinished one.
+                  What differs is the word in the slot: a K-number on the left,
+                  a status on the right, because that is genuinely all there is
+                  on this side.
+
+                  Plum, not amber. Amber is the provenance scale's "not
+                  established", and it was what this panel used to carry —
+                  which read as stalled. Work under way is not a gap, and plum
+                  is already this card's institutional accent. */}
+              <div className="mt-4 rounded-lg border border-line bg-surface-2 px-4 py-3">
+                <p className="font-mono text-xs tracking-wide text-muted-foreground">
+                  Licensing under the {indiaLicensing.framework}
+                </p>
+                <p className="mt-1 text-lg font-semibold text-plum">
+                  {indiaLicensing.status}
+                </p>
+                {/* "Status as of", not a bare date. A date printed beside the
+                    word "licensing" is read as the day something was filed
+                    with CDSCO, and no filing date has been supplied to this
+                    project. This says what the date actually is. */}
+                <p className="mt-1 font-mono text-xs tracking-wide text-muted-foreground">
+                  Status as of {indiaLicensing.asOf}
+                </p>
+              </div>
               <PendingNote
                 className="mt-4"
-                note="Confirmation pending"
-                label="CDSCO authorised agent, device risk classification, and the import licence route under the Medical Device Rules 2017."
+                note="Not yet confirmed"
+                label="The CDSCO authorised agent, the device risk classification and the import licence route are not settled. Until they are, nothing on this site should be read as saying the X-1 is approved for sale in India."
               />
             </div>
           </div>

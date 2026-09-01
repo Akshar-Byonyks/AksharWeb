@@ -16,7 +16,7 @@ import { siteContact } from "@/lib/site-config";
 // footer are one shaped landmass, not two stacked rectangles (deviations.md
 // entry 2).
 //
-// Parameterized 24 Aug 2026, when `/innovation/the-x1-cycler/` became the
+// Parameterized 24 Aug 2026, when `/products/the-x1-cycler/` became the
 // second page to close with it. Copy defaults to Home's, so Home is
 // unchanged; `leadIn` exists because the silhouette is drawn against the
 // section above it, which is `bg-background` on Home and `bg-surface-2` on
@@ -54,13 +54,13 @@ export function CtaBand({
 
           <div className="flex flex-wrap items-center gap-4">
             <a
-              href={`tel:${siteContact.phone.replace(/\s/g, "")}`}
+              // E.164 STRAIGHT FROM THE CONFIG, not a regex over the display
+              // form. The display form now carries parentheses and a hyphen,
+              // and `.replace(/\s/g, "")` leaves both in place — it produced
+              // `tel:+1(321)527-9725`, which some dialers refuse outright.
+              href={`tel:${siteContact.phoneTel}`}
               className="inline-flex min-w-0 items-center gap-2 rounded-sm text-white/90 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              aria-label={
-                siteContact.phoneIsPlaceholder
-                  ? "Phone number placeholder, to be confirmed"
-                  : `Call ${siteContact.phone}`
-              }
+              aria-label={`Call ${siteContact.phone}, ${siteContact.phoneRegion}`}
             >
               <Phone className="size-4" aria-hidden="true" />
               <span>{siteContact.phone}</span>

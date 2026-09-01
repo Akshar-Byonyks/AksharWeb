@@ -5,7 +5,7 @@ import { ProvenanceMark } from "@/components/common/provenance";
 import { DocumentGrid, GridBlock } from "@/components/layout/document-grid";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { leadershipStatus } from "@/lib/about";
-import { byonyksExecutives } from "@/lib/leadership";
+import { aksharExecutives, byonyksExecutives } from "@/lib/leadership";
 
 // The team, on the About page.
 //
@@ -41,12 +41,17 @@ export function LeadershipPending() {
             >
               The people
             </h2>
+            {/* Rewritten 1 Sep 2026, when the roster went from fifteen to
+                four. It used to lead with one Akshar Byonyks name and then
+                fourteen of the licensor's; it now leads with three of ours.
+                The counts are read from the data rather than written out, so
+                this sentence cannot go stale the way the last one did. */}
             <p className="mt-4 text-lg text-muted-foreground">
-              Dr. Vishnu Patel, Vice President, for Akshar Byonyks, and{" "}
-              {byonyksExecutives.length} executives at Byonyks — the engineers,
-              clinicians and regulatory staff who took the X-1 through to
-              clearance. Each is listed with the company they work for and with
-              their biography as it was given to us.
+              {aksharExecutives.length} people at Akshar Byonyks, and{" "}
+              {byonyksExecutives.length === 1 ? "one colleague" : `${byonyksExecutives.length} colleagues`}{" "}
+              at Byonyks, the company that designs and manufactures the cycler.
+              Each is listed with the company they work for and with their
+              biography as it was given to us.
             </p>
             <p className="mt-6">
               <Link

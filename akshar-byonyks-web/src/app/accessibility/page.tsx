@@ -9,6 +9,7 @@ import {
   MailLink,
   type LegalSectionRef,
 } from "@/components/legal/legal-document";
+import { defaultOg } from "@/lib/seo";
 import { byotalksSessions } from "@/lib/byotalks";
 
 const path = "/accessibility";
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
     description,
     url: path,
     type: "website",
+    images: defaultOg,
   },
   twitter: { card: "summary" },
 };

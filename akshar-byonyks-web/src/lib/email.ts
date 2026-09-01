@@ -33,8 +33,11 @@ export async function deliverEnquiry(input: ContactInput): Promise<DeliveryResul
     `Name: ${input.name}`,
     input.organisation ? `Organisation: ${input.organisation}` : null,
     `Email: ${input.email}`,
-    input.phone ? `Phone: ${input.phone}` : null,
-    input.city ? `City: ${input.city}` : null,
+    // Unconditional since 1 Sep 2026: both are required fields now, so the
+    // guard would only ever hide a validation bug from the person reading
+    // the email.
+    `Phone: ${input.phone}`,
+    `City: ${input.city}`,
     "",
     input.message,
   ]

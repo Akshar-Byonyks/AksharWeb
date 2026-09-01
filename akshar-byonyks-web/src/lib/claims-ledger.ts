@@ -1,5 +1,6 @@
 import type { Provenance, ProvenanceStatus } from "@/components/common/provenance";
 import { byotalksSessions } from "@/lib/byotalks";
+import { indiaLicensing } from "@/lib/claims";
 import { companyStated, publicRecord } from "@/lib/compliance";
 import { locations } from "@/lib/locations";
 import {
@@ -55,7 +56,7 @@ export type LedgerEntry = {
 // Derived: the X-1 compliance record.
 // ---------------------------------------------------------------------------
 
-const X1 = { label: "The X-1 cycler", href: "/innovation/the-x1-cycler" };
+const X1 = { label: "The X-1 cycler", href: "/products/the-x1-cycler" };
 const HOME = { label: "Home", href: "/" };
 const ABOUT = { label: "About us", href: "/about-us" };
 const MARKET = { label: "The India market", href: "/innovation/market" };
@@ -179,7 +180,7 @@ const gaps: readonly LedgerEntry[] = [
     id: "pending-cdsco",
     claim: "The X-1's Indian regulatory position",
     detail:
-      "A United States clearance is not an Indian authorisation. Which CDSCO licence route applies under the Medical Device Rules 2017, who holds it, and the import licence position are all unconfirmed. Until they are, nothing on this site should be read as saying the device is approved for sale in India.",
+      `A United States clearance is not an Indian authorisation. Licensing under the ${indiaLicensing.framework} is in progress as of ${indiaLicensing.asOf}, which is a statement about work under way and not about an outcome: which CDSCO licence route applies, who holds it, and the import licence position are all still unconfirmed. Until they are, nothing on this site should be read as saying the device is approved for sale in India.`,
     provenance: {
       status: "pending",
       missing: "CDSCO authorised-agent status and the licence route are unconfirmed.",
@@ -210,24 +211,21 @@ const gaps: readonly LedgerEntry[] = [
   },
   {
     id: "pending-address",
-    claim: "The India registered office address",
+    claim: "The India office address",
     detail:
-      "Required on the privacy policy and the terms of use, and required before this site goes live. No placeholder is published. This is not the Bengaluru office address now shown on /locations: that one is Byonyks' published account of where the India office is, while a registered office is a corporate-registry fact nobody has supplied.",
-    provenance: { status: "pending", missing: "Registered office not yet confirmed." },
+      "Required on the privacy policy and the terms of use, and required before this site goes live. No placeholder is published, and since 1 Sep 2026 there is no published office address of any kind: the Bengaluru row was removed from /locations on the client's instruction and its replacement states the address as coming soon. Enquiries reach the same people by email and by phone in the meantime.",
+    provenance: { status: "pending", missing: "No India office address published." },
     appearsOn: [
       CONTACT,
+      LOCATIONS,
       { label: "Privacy policy", href: "/privacy-policy" },
       { label: "Terms of use", href: "/terms-of-use" },
     ],
   },
-  {
-    id: "pending-phone",
-    claim: "A staffed telephone number",
-    detail:
-      "The number published in the contact band is a placeholder. A real, staffed line is required before launch.",
-    provenance: { status: "pending", missing: "No staffed line yet." },
-    appearsOn: [CONTACT],
-  },
+  // `pending-phone` was removed on 1 Sep 2026. The number published in the
+  // contact band was a placeholder for the life of this project; the client
+  // supplied a real, staffed line that day, so the gap it recorded is closed
+  // rather than restated. See `src/lib/site-config.ts`.
   {
     id: "pending-grievance-officer",
     claim: "The named Grievance Officer",
@@ -249,10 +247,13 @@ const gaps: readonly LedgerEntry[] = [
   },
   {
     id: "pending-executives",
-    claim: "The rest of the Akshar Byonyks executive team",
+    claim: "Job titles and photographs for two Akshar Byonyks executives",
     detail:
-      "One Akshar Byonyks executive is published. The remaining names, biographies and portraits have not been provided. The fourteen other people on the leadership page are Byonyks' executives, and each card says which company that person works for.",
-    provenance: { status: "pending", missing: "Names and biographies not yet supplied." },
+      "Three Akshar Byonyks people are published on the leadership page. Two of them — Dr. Ronak C. Shah and Sahil — arrived with a biography but no job title and no photograph, so their cards say \u201CTitle to be confirmed\u201D and \u201CPhotograph pending\u201D rather than carrying a title or a face this project invented. The fourth person on that page is Byonyks', and each card says which company that person works for.",
+    provenance: {
+      status: "pending",
+      missing: "Two job titles and two photographs not yet supplied.",
+    },
     appearsOn: [LEADERSHIP, ABOUT],
   },
   {
@@ -314,22 +315,19 @@ const gaps: readonly LedgerEntry[] = [
     // itself about what is missing.
     appearsOn: [MARKET, LOCATIONS],
   },
-  {
-    id: "pending-india-address-line",
-    claim: "One line of the India office address",
-    detail:
-      "Byonyks publishes the Bengaluru office as “43, Residency Road, , Bangalore, Karnataka 560025”. The doubled comma is a dropped line, so the address is shown on /locations with that gap held open rather than closed up into a plausible-looking three-line address.",
-    provenance: {
-      status: "pending",
-      missing: "A line of the street address is missing at the source.",
-    },
-    appearsOn: [LOCATIONS],
-  },
+  // `pending-india-address-line` was removed on 1 Sep 2026. It recorded that
+  // Byonyks published the Bengaluru office with a dropped line in the middle
+  // of the street address. That row is no longer on /locations, so the gap it
+  // described no longer exists — what replaces it is the broader
+  // `pending-address` above, which now covers the India office as well as the
+  // registered office. One entry per missing fact, which is this file's rule.
 ];
 
-// Derived from `locations.ts`, per this file's own rule: six premises, each
-// one Byonyks' published account of itself and none checked against a
-// corporate register, so the whole block lands on `stated`.
+// Derived from `locations.ts`, per this file's own rule: four premises. Three
+// are Byonyks' published account of itself, none checked against a corporate
+// register, so they land on `stated`; the fourth is the Akshar Byonyks India
+// office, which carries `pending` because nothing about its address has been
+// published. Each row's own `provenance` decides, not this comment.
 //
 // The gaps those rows carry are deliberately NOT mapped into entries here.
 // Three of the four already exist above or in `fromCompliance` — the hubs'
@@ -338,18 +336,24 @@ const gaps: readonly LedgerEntry[] = [
 // credential — and the fourth is `pending-india-address-line` directly above.
 // Deriving them a second time would put two rows on `/what-we-know` for one
 // missing fact.
-const fromLocations: readonly LedgerEntry[] = locations.map(
-  (site): LedgerEntry => ({
+const fromLocations: readonly LedgerEntry[] = locations.map((site): LedgerEntry => {
+  // "India, India" is what the naive template produced once the Bengaluru row
+  // was replaced by a site that names only its country. A ledger row that
+  // reads like a bug is a ledger nobody trusts on the rows that matter.
+  const where =
+    site.place === site.country ? site.country : `${site.place}, ${site.country}`;
+
+  return {
     id: `location-${site.id}`,
     claim:
       site.status === "planned"
-        ? `${site.entity} has announced a facility at ${site.place}, ${site.country}`
-        : `${site.entity} operates from ${site.place}, ${site.country}`,
+        ? `${site.entity} has announced a facility at ${where}`
+        : `${site.entity} operates from ${where}`,
     detail: site.detail,
     provenance: site.provenance,
     appearsOn: [LOCATIONS],
-  }),
-);
+  };
+});
 
 export const ledger: readonly LedgerEntry[] = [
   ...fromCompliance,

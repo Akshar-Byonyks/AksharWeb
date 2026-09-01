@@ -7,6 +7,7 @@ import { DirectionContract } from "@/components/common/direction-contract";
 import { ProvenanceMark } from "@/components/common/provenance";
 import { HindiShell } from "@/components/hindi/hindi-shell";
 import { DocumentGrid, GridBlock } from "@/components/layout/document-grid";
+import { defaultOg } from "@/lib/seo";
 import { fda510k } from "@/lib/compliance";
 import { siteContact, siteUrl } from "@/lib/site-config";
 
@@ -28,6 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: path,
       type: "website",
+      images: defaultOg,
       locale: "hi_IN",
     },
     twitter: { card: "summary" },

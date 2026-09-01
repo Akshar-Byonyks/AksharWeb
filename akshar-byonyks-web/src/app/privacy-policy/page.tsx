@@ -9,6 +9,7 @@ import {
   MailLink,
   type LegalSectionRef,
 } from "@/components/legal/legal-document";
+import { defaultOg } from "@/lib/seo";
 import { enquiryTypes } from "@/lib/contact";
 
 const path = "/privacy-policy";
@@ -20,7 +21,13 @@ export const metadata: Metadata = {
   title: "Privacy Policy",
   description,
   alternates: { canonical: path, languages: { "en-IN": path } },
-  openGraph: { title: "Privacy Policy | Akshar Byonyks", description, url: path, type: "website" },
+  openGraph: {
+    title: "Privacy Policy | Akshar Byonyks",
+    description,
+    url: path,
+    type: "website",
+    images: defaultOg,
+  },
   twitter: { card: "summary" },
 };
 

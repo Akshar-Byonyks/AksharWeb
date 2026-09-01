@@ -66,24 +66,51 @@ const COLLAPSE_SCROLL_THRESHOLD = 80;
 /** Just past the reopening spring, after which the capsule stops clipping. */
 const CLIP_FAILSAFE_MS = 1500;
 
-// THE LOGO SLOT. Null until the PNG lands, 31 Aug 2026 — the bar reserves its
-// space either way so nothing reflows when it arrives.
+// THE LOGO SLOT, FILLED 1 SEP 2026. The client supplied the Akshar Byonyks
+// lockup; this slot was built on 31 Aug reserving its space so that nothing
+// would reflow on the day it arrived, and nothing did.
 //
-// TO SHIP THE LOGO: drop the file at `public/images/logo.png`, record its
-// provenance in `public/images/README.md` (CLAUDE.md gate 2, no exceptions),
-// and set this to its real intrinsic dimensions:
+// IT IS THE EMBLEM, NOT THE LOCKUP, and that is forced by the artwork rather
+// than chosen. The supplied file stacks a globe, the AB monogram, the script
+// wordmark, "INTERNATIONAL LLC" and a two-line tagline into a near-square
+// 1628×1258. Scaled to the 28px this bar reserves, the whole lockup would be
+// 36px wide with the tagline set at under 2px — unreadable, and an insult to
+// the artwork. The emblem (globe, gold ring, monogram) is cropped out of it
+// and carries the mark on its own, which is what a compact nav bar is for.
 //
-//   const LOGO: LogoAsset | null = {
-//     src: "/images/logo.png", width: 132, height: 28, alt: "Akshar Byonyks",
-//   };
+// `alt` carries the company name rather than being empty: this is the only
+// home control in the bar, and it replaced a link that read "Home", so the
+// image IS the link's accessible name. An empty alt here would leave a
+// keyboard or screen-reader user with an unlabelled link.
 //
-// `alt` carries the company name, so the link keeps an accessible name once
-// the image replaces the word "Home" the slot shows until then.
+// Provenance is in `public/images/README.md`, per CLAUDE.md gate 2, including
+// the crop box this file was cut with.
 type LogoAsset = { src: string; width: number; height: number; alt: string };
-const LOGO: LogoAsset | null = null;
+const LOGO: LogoAsset | null = {
+  src: "/images/brand/akshar-byonyks-emblem.png",
+  // Intrinsic dimensions of the file on disk, not the rendered size — the
+  // rendered height is `LOGO_SLOT_HEIGHT` and the width follows from the
+  // ratio. next/image needs the true intrinsics to reserve layout correctly.
+  width: 360,
+  height: 247,
+  alt: "Akshar Byonyks",
+};
 
-/** Reserved height of the logo slot; the placeholder matches it exactly. */
-const LOGO_SLOT_HEIGHT = 28;
+/**
+ * Reserved height of the logo slot; the placeholder matches it exactly.
+ *
+ * RAISED FROM 28 TO 34 ON 1 SEP 2026, when the real emblem went in and was
+ * measured on screen rather than imagined. 28 was chosen while the slot held
+ * the word "Home", where it was simply a line of text; the emblem is a globe
+ * with a monogram over it and at 28px the continents, the gold ring and the AB
+ * all collapsed into a blue smudge. At 34 the mark reads.
+ *
+ * 34 is also close to the ceiling: the capsule is 48px tall while clipped, so
+ * this plus the row's padding is what the bar can hold without the logo
+ * touching its edges. It must stay a constant whatever its value — the width
+ * animates and the height must not, or the collapse springs vertically.
+ */
+const LOGO_SLOT_HEIGHT = 34;
 
 const containerVariants: Variants = {
   expanded: {
@@ -273,7 +300,7 @@ export function AnimatedNav({ items = primaryNav }: { items?: NavItem[] }) {
   }, [pathname]);
 
   // The same section-parent rule `NavLink` uses: /innovation is the active
-  // trail while you are on /innovation/the-x1-cycler. Two different answers to
+  // trail while you are on /products/the-x1-cycler. Two different answers to
   // "where am I" in one header would be worse than either.
   const isActive = (href: string) =>
     pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));

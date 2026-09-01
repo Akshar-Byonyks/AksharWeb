@@ -4,12 +4,14 @@ import { notFound } from "next/navigation";
 // lucide dropped its brand icons, so this is the generic external-link mark
 // rather than a LinkedIn logo. A wordmark we do not have the right to redraw
 // is not worth a dependency.
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft, Clock, ExternalLink } from "lucide-react";
 
 import { ExecutivePortrait } from "@/components/about/executive-portrait";
 import { AccentRail } from "@/components/common/accent-rail";
+import { PendingChip } from "@/components/common/pending-note";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { CtaBand } from "@/components/sections/cta-band";
+import { defaultOg } from "@/lib/seo";
 import { executives, getExecutive } from "@/lib/leadership";
 import { siteUrl } from "@/lib/site-config";
 
@@ -34,10 +36,18 @@ export async function generateMetadata({
   if (!executive) return {};
 
   const path = `/about-us/leadership/${executive.slug}`;
-  const description = `${executive.name}, ${executive.role} at ${executive.organisation}.`;
+  // TWO SHAPES, BECAUSE `role` IS OPTIONAL SINCE 1 SEP 2026. Interpolating an
+  // absent title would ship "Sahil, undefined at Akshar Byonyks." as a meta
+  // description and as a browser tab. The company is the fact that survives
+  // when the title is missing, so it carries the sentence on its own.
+  const description = executive.role
+    ? `${executive.name}, ${executive.role} at ${executive.organisation}.`
+    : `${executive.name}, ${executive.organisation}.`;
 
   return {
-    title: `${executive.name} — ${executive.role}`,
+    title: executive.role
+      ? `${executive.name} — ${executive.role}`
+      : executive.name,
     description,
     alternates: { canonical: path, languages: { "en-IN": path } },
     openGraph: {
@@ -45,6 +55,7 @@ export async function generateMetadata({
       description,
       url: path,
       type: "profile",
+      images: defaultOg,
     },
     twitter: { card: "summary" },
   };
@@ -73,7 +84,10 @@ export default async function ExecutivePage({
     mainEntity: {
       "@type": "Person",
       name: executive.name,
-      jobTitle: executive.role,
+      // Omitted rather than guessed, on the same principle as `image` below:
+      // a crawler that is told a job title will republish it, and nobody has
+      // supplied one for two of these four people.
+      ...(executive.role ? { jobTitle: executive.role } : {}),
       // Omitted rather than pointed at a placeholder: structured data that
       // promises an image of a person should resolve to one.
       ...(executive.portrait
@@ -121,7 +135,18 @@ export default async function ExecutivePage({
                   </span>
                 ) : null}
               </h1>
-              <p className="mt-4 text-xl text-white/75">{executive.role}</p>
+              {/* The title, or a statement that there isn't one. Same
+                  grammar as the portrait frame's "Photograph pending" — the
+                  dark-tone pending amber and a clock, saying the gap out loud
+                  rather than leaving a blank line where a role should be. */}
+              {executive.role ? (
+                <p className="mt-4 text-xl text-white/75">{executive.role}</p>
+              ) : (
+                <p className="mt-4 flex items-center gap-1.5 font-mono text-sm tracking-wide text-pending-on-ink">
+                  <Clock className="size-3.5 shrink-0" aria-hidden="true" />
+                  Title to be confirmed
+                </p>
+              )}
               {/* Plum on ink, matching the roster card this page was opened
                   from. The one line on a profile that a reader is most likely
                   to complete wrongly — "an executive, on the Akshar Byonyks
@@ -199,6 +224,44 @@ export default async function ExecutivePage({
                 {carriedNoun} supplied by {executive.suppliedBy}, carried here
                 word for word. Received {executive.retrieved}.
               </p>
+            ) : null}
+
+            {/* WHAT THIS PERSON DOES FOR INDIA — a separate block below the
+                biography and its attribution line, never spliced into the
+                prose above. The biography is somebody else's text carried word
+                for word, and appending a sentence inside it would break the
+                promise the attribution line just made about it.
+
+                Gold, because it means "home / India" sitewide and this is the
+                one block on the page that is about India specifically. The
+                rail is not the only carrier: the heading says India too.
+
+                Client instruction, 1 Sep 2026. Senthil Kumar's is asked for
+                and has not arrived, so his renders as the pending state — on
+                an India-market roster, "what does he do here" is a question
+                worth publishing unanswered rather than answering with a
+                sentence nobody supplied. */}
+            {executive.indiaNote || executive.indiaNotePending ? (
+              <AccentRail accent="gold" className="mt-10">
+                <h2 className="text-lg font-semibold text-ink">
+                  On India
+                </h2>
+                {executive.indiaNote ? (
+                  <p className="mt-3 text-lg text-foreground">
+                    {executive.indiaNote}
+                  </p>
+                ) : (
+                  <p className="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-base text-muted-foreground">
+                    <PendingChip label="Pending" />
+                    <span>
+                      {executive.name}&rsquo;s role in the India programme has
+                      not been supplied, and the biography above &mdash; his
+                      own, as published by {executive.organisation} &mdash;
+                      does not describe one.
+                    </span>
+                  </p>
+                )}
+              </AccentRail>
             ) : null}
 
             <p className="mt-10">

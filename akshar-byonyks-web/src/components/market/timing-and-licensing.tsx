@@ -1,6 +1,7 @@
 import { PendingNote } from "@/components/common/pending-note";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import {
+  indiaLicensing,
   indiaRegulatoryStatement,
   licensingStatement,
   manufacturingStatement,
@@ -41,7 +42,17 @@ const facts = [
   { heading: "Cleared", body: usRegulatoryStatement },
   { heading: "Manufactured", body: manufacturingStatement },
   { heading: "Licensed", body: licensingStatement },
-  { heading: "Not yet saleable in India", body: indiaRegulatoryStatement },
+  // The heading changed on 1 Sep 2026 with the client's "show as in progress"
+  // instruction. "Not yet saleable in India" was accurate and told an investor
+  // only what cannot happen; "Licensing in progress in India" is the same fact
+  // read forward, and the sentence under it still says plainly that a US
+  // clearance does not authorise sale here. The date rides in the heading
+  // rather than a fifth column, because this band is four sentences of status
+  // and a fifth would make it a table.
+  {
+    heading: `Licensing in progress in India, as of ${indiaLicensing.asOf}`,
+    body: indiaRegulatoryStatement,
+  },
 ];
 
 export function TimingAndLicensing() {

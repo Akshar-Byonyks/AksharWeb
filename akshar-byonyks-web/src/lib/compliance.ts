@@ -14,7 +14,7 @@
 // footnote at the bottom of it.
 //
 // THE 510(k) NUMBER WAS FOUND, 29 AUG 2026. It had been a `PendingNote` on
-// `/innovation/the-x1-cycler/` since that page was built, on the grounds that
+// `/products/the-x1-cycler/` since that page was built, on the grounds that
 // nobody had supplied it. Nobody had to: 510(k) decisions are published, and
 // the FDA's own openFDA API returns exactly one record for this applicant.
 // Every field in `fda510k` below is copied from that record — device name,

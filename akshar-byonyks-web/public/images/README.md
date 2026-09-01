@@ -410,15 +410,172 @@ still verbal.
 - **Edits:** cropped to 4:3 on the densest region of each drawing (Hyderabad left 180 / w 1440; Ahmedabad left 250, top 60 / 1360×1020), flattened onto white, resized 1200px, JPEG q88. Both were test-rendered at their true display width of 220px and checked for legibility before use — the fine wireframe was the one at risk and it survives.
 - **Used on:** `/locations`.
 
-### Bengaluru — no image, deliberately
+### The India office — no image, deliberately
 
-There is no photograph of the India office. byonyks.com's `/contact/` lists the
+There is no photograph of the India office. byonyks.com's `/contact/` listed an
 address with no picture, `/about-us/` carries only portraits and placeholder
 department blocks, and a web search returned only unrelated co-working
-operators on Residency Road. The row therefore ships with its image slot held
-open and marked "No photograph published", exactly as the address one line
-below holds its own missing line open.
+operators. The row therefore ships with its image slot held open and marked
+"No photograph published".
 
-**This is the row to fix first.** It is the only Akshar Byonyks premises on the
-page, and it is the only one without a picture. One photograph of the office
-front would close it.
+**Updated 1 Sep 2026.** The Bengaluru row was removed on the client's
+instruction and replaced by an India office row that names no city, because
+none has been published to replace it. So this row now has neither a picture
+nor an address, and states both.
+
+**This is still the row to fix first.** It is the only Akshar Byonyks premises
+on the page. One photograph of the office front, and the address, would close
+it.
+
+---
+
+## 1 September 2026 — the client-instruction pass
+
+### products/x2-x3-teaser.png
+
+- **Source:** `https://byonyks.com/wp-content/uploads/2025/06/ChatGPT-Image-Jun-12-2025-05_08_31-PM-1024x683.png`, fetched 1 Sep 2026 from byonyks.com's `/products/` page, where it sits under the heading "Byonyks X2 & X3 Devices".
+- **What it is:** two objects of different sizes under grey dust sheets on a deep blue ground, the smaller marked X2 and the larger X3. **Neither device is visible.** It is a picture of something being withheld.
+- **It is AI-generated, and the filename says so.** `ChatGPT-Image-Jun-12-2025` is Byonyks' own naming, not an inference. It is therefore not a photograph, and not a product render either — it is a teaser illustration, and `Product.image.kind` on this record is `"teaser illustration"` so the visible caption is generated from that field rather than typed. The caption reads "Byonyks · teaser illustration. Neither device has been shown."
+- **Why it is usable despite being generated:** because it depicts nothing. The objection to a generated image on a medical device site is that it invents a thing and presents it as real; this one is a covered shape, and the honest content of the picture ("we are not showing you these yet") is exactly the honest content of the section it sits in. An AI render of a *device* would not have been used.
+- **The alt text describes dust sheets, not devices.** Writing "the X-2 and X-3 devices" into the alt attribute would put a claim in the accessibility layer that the picture itself refuses to make, and a screen-reader user would come away believing they had been shown two machines.
+- **Why it is fine to use:** same basis as `x1-apd-cycler.png` and `x1-in-home.jpg` — Akshar Byonyks is Byonyks USA's licensed India partner, and this is the manufacturer's own public marketing asset for its own announcement.
+- **Edits:** none. Downloaded and served as fetched, at the 1024×683 size byonyks.com serves.
+- **Used on:** `/products`, the "X-2 and X-3" section.
+
+### Thirteen leadership portraits removed
+
+`ahmed-muzmmal.jpg`, `andrew-king-md.jpg`, `annie-usman.jpg`, `doug-wilkerson.jpg`, `eric-flachbart.jpg`, `farrukh-usman.jpg`, `frank-rudolph-2.jpg`, `hassan-abrar.png`, `mary-hoffman.png`, `michael-wollowitz.jpg`, `nauman-tarif-md.png`, `rod-kenley.jpg`, `salahuddin-khan.jpg`.
+
+Deleted 1 Sep 2026, with the leadership records they belonged to, on the
+client's instruction to remove every Byonyks leadership card except Senthil
+Kumar's. Recoverable from git history if a record ever returns.
+
+**Deleted rather than left unreferenced, on purpose.** These are photographs of
+thirteen named individuals, taken from another company's website, for which the
+written permission spec F-6 requires has never existed — only a verbal one.
+Leaving them served from this origin with nothing pointing at them would have
+kept the entire rights exposure while removing the only justification for it.
+The launch gate is now one photograph (`senthil-kumar.jpg`) rather than
+fourteen.
+
+`lahore-research.jpg` and `punjab-manufacturing.jpg` went the same day for the
+same reason: the client removed the Lahore and Punjab rows from `/locations`,
+so the pictures of those two buildings have nothing to illustrate.
+
+### Rejected on inspection — the India dialysis photography search
+
+The client asked for "more stock images of Indians getting hemodialysis, etc.
+to show catering towards Indian market". **Nothing shipped from this pass**, and
+the reason is worth recording in full, because it is a gap somebody has to
+close rather than one this project chose to leave.
+
+- **Pexels and Unsplash could not be searched.** Both are the sources CLAUDE.md
+  names first for rights-cleared stock, and both returned `403` / `Authorization
+  required` to unauthenticated automated requests from this environment. A
+  Pexels or Unsplash API key would have removed this obstacle entirely, and is
+  the cheapest way to unblock the request.
+- **Openverse, filtered to commercial-use and to CC0/public-domain,** was
+  searched across `dialysis`, `hemodialysis`, `dialysis patient`, `dialysis
+  india`, `india hospital ward`, `india nurse`, `india doctor patient` and
+  `india rural health worker`. It returned 114 CC0/PDM images for `dialysis`
+  and **two** for `dialysis india`.
+- **"New Dialysis Centre: Kankhal"** (Flickr, Belur Math Howrah, Public Domain
+  Mark, five images) was the only genuinely India-specific dialysis set found,
+  and every frame was downloaded and looked at. **Rejected on sight.** One is
+  the inauguration ceremony of the Ramakrishna Mission's centre at Kankhal — a
+  monk at a lamp, a dozen identifiable attendees, religious imagery and a named
+  organisation's event. Another is a scan of a Hindi newspaper clipping, which
+  is the newspaper's copyright regardless of who uploaded it. Publishing either
+  under this masthead would imply that a named religious institution and a
+  dozen identifiable people are affiliated with this company, which is the same
+  objection that disqualified Pexels 36035002 in the 28 Aug pass.
+- **The rest of the Openverse pool** is Wellcome Collection historical archive
+  material (Lady Hardinge Medical College, 1900s leper hospitals), US political
+  photocalls, and Flickr `by-sa` images of identifiable patients in hospital
+  beds. None of it is modern, none of it is rights-clean for this use, and the
+  patient images run straight into the Drugs and Magic Remedies (Objectionable
+  Advertisements) Act 1954 caution this file already applies strictly enough to
+  have patched a bystander's reflection out of a monitor.
+
+**What would actually close this.** In order of value: (1) photography shot in
+India for Akshar Byonyks, which is the only thing that solves it permanently
+and also fixes the two standing India-specificity flags on `x1-in-home.jpg` and
+`clinicians-in-discussion.jpg`; (2) a Pexels or Unsplash API key, so the two
+sanctioned libraries can be searched properly; (3) Byonyks' own India-market
+asset library, if one exists.
+
+**What must not be done to close it.** Ship a photograph of an identifiable
+patient receiving treatment, or a generic South-Asian stock frame that could
+have been taken anywhere. CLAUDE.md is explicit that "a photograph that could
+be anywhere is worth less here than no photograph", and the DMR Act makes the
+first of those a legal question rather than a design one.
+
+---
+
+## 1 September 2026 — the client's own files
+
+Three files supplied directly by the client, late on the same day as the
+instruction pass above. All three replace things that had shipped hours earlier
+as declared gaps: two `portraitPending` frames and a `LOGO: null` slot.
+
+**Nothing here needed a licence check.** These are the client's own assets about
+the client's own company and people — the first images on this site in that
+category since Dr. Patel's portrait. They carry none of the Byonyks-rights
+question that governs everything in the section above.
+
+### leadership/ronak-shah.jpg
+
+- **Source:** supplied by the client as `Ronak Headshot.png`, 1231×1277, 1 Sep 2026.
+- **What it is:** a studio headshot of Dr. Ronak C. Shah in a navy suit, white shirt and blue tie against a plain white background.
+- **Edits:** resized to 900×1125 with a `cover` fit anchored **north**, flattened onto white, JPEG q88 (mozjpeg). That is the same normalisation the eleven original transcribed portraits had. **No retouching, no backdrop replacement, no reframing beyond the crop** — the original is near-square (0.964) and the site's frame is 4:5, so the crop is spent on the left and right margins, which on a centred headshot is margin only.
+- **Why north-anchored:** the grid renders portraits with `object-top`, so the crop and the frame agree about where the head is. A centred crop on a portrait takes the top of the head off — the reason that rule exists is recorded on `ExecutivePortrait`.
+
+### leadership/sahil.jpg
+
+- **Source:** supplied by the client as `Sahil Heeadshot.jpg`, 2656×3984, 1 Sep 2026.
+- **What it is:** a headshot of Sahil in a tan sweater over an open-collared white shirt, with an out-of-focus city skyline behind him.
+- **Edits:** identical treatment — 900×1125, `cover` anchored north, q88. The crop does real work on this one: the original is a three-quarter-length shot at 0.667, so north-anchoring keeps the head where the frame expects it and spends the crop on the bottom of the frame rather than the top of his head.
+- **The backdrop is a skyline, not a studio ground,** and that is a §9.5 note rather than a defect to fix here. Spec §9.5 asks for "same backdrop, crop and lighting" across the set; all four portraits now share a crop and none of them shares a backdrop — brown studio, white, white, skyline. **The only honest fix is a single shoot.** Editing a real person's photograph to swap the background behind them was tried once on this project, on Dr. Patel's portrait, and the client reversed it the same day (29 Aug 2026).
+
+### brand/ — three assets, all cut from one supplied file
+
+- **Source:** supplied by the client as `Akshar Byonyks Logo.png`, 1628×1258, opaque white background, no alpha, 1 Sep 2026.
+- **What it is:** the full Akshar Byonyks International LLC lockup — a rendered globe with India picked out in gold, a gold orbital ring, the AB monogram with a kidney forming the B's counter, the script wordmark, "INTERNATIONAL LLC", and the two-line tagline "Transforming Renal Care Through Breakthrough Peritoneal Dialysis Innovation".
+- **Ink bounding box measured, not eyeballed:** x 260–1371, y 60–1190 against a pure-white field, which is what every crop below is derived from.
+
+**THE LOCKUP CANNOT BE USED WHOLE IN A NAV BAR, and that is a fact about the
+artwork.** It stacks five elements into a near-square. At the 34px the nav
+reserves it would be 44px wide with the tagline set at under 2px. So it is cut
+into two assets by use, rather than scaled until it is a smudge.
+
+#### brand/akshar-byonyks-emblem.png — the nav mark
+
+- **Crop:** `extract` left 270, top 50, w 1095, h 700 from the source, then `trim` at threshold 12 → 1003×689. That box is the globe, the gold ring and the monogram, and stops above the script wordmark.
+- **Output:** 360×247 PNG with a palette (`palette: true, quality: 92`). Palette rather than full colour because this is a photographic render the nav loads on **every page** — full-colour PNG cost 290KB for the same pixels, palette costs 51KB.
+- **Sized for 3×:** rendered at 34px tall, so 360px wide covers the densest screen with room to spare.
+- **Used on:** the site nav (`animated-nav.tsx`), where it is the home link. Its `alt` carries the company name, because it replaced a link that read "Home" and is the link's only accessible name.
+
+#### src/app/opengraph-image.jpg — the default share card
+
+- **Crop:** the full lockup, trimmed of its white margin, fitted `inside` 1000×520 and then `contain`ed onto a 1200×630 white canvas. 94KB, q90 mozjpeg. `opengraph-image.alt.txt` sits beside it with the alt string.
+- **Contained, never cropped to fill.** 1200×630 is 1.9:1 and the trimmed lockup is roughly square; cropping it to fill would cut either the globe off the top or the tagline off the bottom.
+- **It lives in `src/app/`, not `public/`,** so Next's file convention serves and fingerprints it, and Home picks it up with no metadata at all.
+- **Every other route reaches it through `defaultOg` in `src/lib/seo.ts`, and that indirection is load-bearing.** Next merges route metadata shallowly per top-level key: a page exporting any `openGraph` object replaces the parent's wholesale. Declaring the image on the root layout reached exactly one route (Home), and so did the file convention on its own — both measured, both fixed by the pages importing one constant. That file carries the full reasoning.
+- **Used on:** all twenty routes. The two product pages pass their own device imagery instead and should. Before this, eighteen routes shared to WhatsApp and LinkedIn as a bare title over a blank rectangle. `twitter:image` is derived from it automatically.
+
+#### src/app/icon.png and src/app/apple-icon.png — the favicon
+
+- **Crop:** the same trimmed emblem, `contain`ed on white and extended with a 32px margin, at 512×512 and 180×180. Palette PNG, 77KB and 12KB.
+- **The margin is deliberate.** A favicon whose artwork bleeds to its own edges reads as a crop of something larger rather than as a mark.
+- These use Next.js's file convention, so they are picked up automatically and no `icons` entry in `metadata` is needed. The pre-existing `src/app/favicon.ico` is left in place as the legacy fallback.
+
+**WHY THE LOGO IS NOT IN THE FOOTER.** The footer is `bg-ink`. The supplied file
+has an opaque white background and no alpha, so it would sit there as a white
+rectangle. Knocking the white out is not the easy fix it sounds like: the
+artwork's own highlights are white — the keyline around the AB monogram, the
+silver continents — so a threshold-based knockout punches holes through the
+middle of the mark, and the globe's soft drop shadow survives as a grey smudge
+on dark. A border-connected flood fill would preserve the interior whites and
+still leave the shadow. **The right fix is a transparent-background or
+reversed-out version from whoever made the logo**, which is one request, so the
+footer waits for it rather than shipping a damaged mark.

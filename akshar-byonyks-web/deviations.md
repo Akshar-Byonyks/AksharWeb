@@ -1493,3 +1493,133 @@ F-1's substantive warning is unaffected and still holds: **no Pakistani facility
 - **The India row is the visually weakest, and that is the facts rather than the design.** Two of the three India cards are line drawings because those buildings do not exist, and the third has no photograph at all — so the row the page is built to emphasise is the one with a placeholder and two wireframes, sitting above three rich photographs of foreign premises. Nothing here can fix that honestly. **One photograph of the Bengaluru office would.**
 - **Native `<details>`/`<summary>`, following `clinical-layer.tsx`.** CLAUDE.md prefers the native element over a shadcn primitive over a hand-rolled control, and native wins outright here: it opens with no JavaScript, it is keyboard- and screen-reader-operable with no ARIA of our own, and it survives a failed client bundle — which matters on a page carrying the only India address the site publishes. **Every fact stays in the document whether or not a card is open**, verified with all six closed: the Bengaluru address, the Lahore phone number and the CDSCO note are all still in the DOM, so a reader without JS, a crawler and Ctrl+F all find them.
 - **The closed face carries place, country and entity — never just a pretty picture.** Which company holds which building is this page's whole argument, so it cannot be a thing you have to open a card to learn. Gold marks the three India cards as a 1px left edge, which is `AccentRail`'s grammar applied to a card border since a card cannot carry the rail component itself; 1px exactly, because the craft floor bans a coloured left border above that weight as the most recognisable tell of generated UI. The country is written out on every card, so the edge is never the only carrier.
+
+---
+
+## 22. The client-instruction pass (1 Sep 2026)
+
+Twelve instructions in one message. Nine are done, three are blocked on material only the client has. This section records the reasoning on the ones where following the instruction literally would have created a problem, and states plainly what is outstanding.
+
+### `/products`, and the X-1 page leaving `/innovation`
+
+> "Move X1 cycler page to a new main tab called products, add in x2 and x3 coming and add in image from byonyks site"
+
+`/innovation/the-x1-cycler` became `/products/the-x1-cycler`, `/products` was built as the section hub, and **Products sits first in the primary nav, ahead of Innovation.** That ordering is the substantive part rather than a tidy-up: Innovation is an argument — how the therapy works, why India — and Products is the thing you can buy. A visitor who arrives knowing they want the cycler should not have to guess that a device lives under a word describing a point of view. The nav goes from five items to six.
+
+**Every old link keeps working.** `/innovation/the-x1-cycler` was the device's URL for the whole build, is where the `/manufacturing` redirect landed, and was linked from Home, the Innovation hub, both Innovation children, About Us, ByoTalks and Locations. It now 308s permanently to the new path, so anything already sent to a partner resolves and the ranking passes. Twenty-one source files were updated to the new path; the breadcrumb on the device page reads "Products", because a trail that names a section the URL does not contain is worse than no trail.
+
+**The Innovation hub's `hasPart` no longer lists the X-1.** `hasPart` describes containment, not relatedness — a hub claiming a page in another section as its own part is the structured-data version of a wrong breadcrumb. The visible doorway to it stays.
+
+**The footer merged Products into the Innovation column rather than growing a fifth.** The grid is `sm:grid-cols-4` and spec 8.1 rule 4 caps it at four; a fifth column wraps to a second row and leaves one orphan under four. The footer is explicitly not a sitemap, so one column headed "Products and innovation" leads with the two devices, and the header keeps the sections apart where a visitor is actually navigating.
+
+### The X-2 and X-3 are a section, not two pages
+
+Byonyks publishes **one paragraph** about them and closes it "More details coming soon." No specification, no date, no price, no clinical data, no regulatory position in any jurisdiction. Two pages built on one paragraph would be several screens of padding, and everything added to fill them would be invented — so they are a section on the hub with an anchor from the nav, and a module-load contract in `src/lib/products.ts` **throws if an announced device is ever given a page.** If Byonyks publishes specifications, that rule is deleted in the same commit that adds the pages, deliberately, rather than discovered as a red build.
+
+**Byonyks' paragraph is quoted, never restated.** It says the two devices "will truly revolutionize peritoneal dialysis and disrupt the market". Set as body copy under this masthead that is Akshar Byonyks forecasting a market disruption for devices nobody has seen; it ships as a blockquote with Byonyks named, the source linked and the retrieval date printed, which is the same contract the migrated news articles and the transcribed biographies answer to.
+
+**The teaser image is Byonyks' own and shows nothing, which is why it is usable.** Two draped shapes labelled X2 and X3 — a picture of a thing being withheld rather than a picture of a device. It is also AI-generated, and Byonyks' own filename says so (`ChatGPT-Image-Jun-12-2025`). That is stated in `public/images/README.md` and the visible caption reads "Byonyks · teaser illustration. Neither device has been shown." **The alt text describes dust sheets, not devices** — writing "the X-2 and X-3 devices" into the accessibility layer would tell a screen-reader user they had been shown two machines. An AI render *of a device* would not have been used at all.
+
+### India licensing shows as in progress, with a date
+
+> "X1 cycler licensing in India should show as in progress along with the date"
+
+The India panel on the device page previously carried a paragraph and an amber "Confirmation pending" note, which reads as *stalled* — a gap nobody is working on. It now carries a status plate mirroring the US panel's premarket-notification plate: **"In progress", under "Licensing under the Medical Device Rules 2017", over "Status as of 1 September 2026".** Same plate, same mono label, same weight, so the two jurisdictions read as two answers to one question rather than as one finished card beside one unfinished one. Plum, not amber: amber is the provenance scale's "not established", and work under way is not a gap.
+
+**The date is labelled "Status as of", and that wording is load-bearing.** No filing or submission date has been supplied to this project, and a bare date printed beside the word "licensing" is read as the day something was lodged with CDSCO. If the client meant the application date, it replaces `indiaLicensing.asOf` in `src/lib/claims.ts` and the label on `x1-regulatory.tsx` changes with it — one edit, one place.
+
+The "not yet confirmed" note stays underneath, because the authorised agent, the risk classification and the import licence route genuinely are not settled. Nothing here may become "approved" or "licensed" without the licence number and the route beside it.
+
+### The roster: fifteen people to four
+
+> "Senthil Kumar stays but add a blurb on India part, but get rid of all Byonyks leadership cards and only add new ones for Akshar Byonyks specifically"
+
+Thirteen transcribed Byonyks records removed; Dr. Ronak C. Shah and Sahil added for Akshar Byonyks; Senthil Kumar kept and still labelled Byonyks, because that is where he works. **All three of the §10 launch-gate problems are closed or shrunk by the removal itself:** the four biographies naming Lahore or Pakistan against spec F-1 are gone, the portrait-rights gate is now one photograph rather than fourteen — Senthil Kumar's, the only one still taken from byonyks.com — and a consistent portrait set is something a single shoot can deliver.
+
+**The thirteen portrait files were deleted, not left unreferenced.** They are photographs of named individuals taken from another company's website, for which the written permission spec F-6 requires has never existed. Leaving them served from this origin with nothing pointing at them would have kept the whole rights exposure and removed the only justification for it. Recoverable from git.
+
+**A new module-load contract asserts the roster is majority ours.** For two days it was fourteen of the licensor's people to one of this company's, and a reader counting faces under this masthead completes that into "Akshar Byonyks' leadership" — which is exactly what spec §3.1's first non-negotiable exists to stop. The per-card `organisation` label is still the defence; this is the shape that stops the defence from having to work that hard.
+
+**`Executive.role` became optional**, because two people arrived with a biography and no job title, and a leadership page is the last place to invent one for a named individual. The card and the profile print "Title to be confirmed" in the same pending grammar the portrait frame used one line above until the photographs arrived later that day; the page metadata drops the title from its description rather than shipping "Sahil, undefined at Akshar Byonyks"; and the JSON-LD omits `jobTitle` rather than asserting a guess to a crawler. "Nephrologist" was available from Dr. Shah's first sentence and is deliberately not used — it is what he is, not what he does for this company, and the role line on a leadership card is read as the second.
+
+**One thing here can mislead a reader, and it is written down rather than left in the data.** Dr. Shah's supplied biography is *about Byonyks* — "This belief led to the creation of Byonyks", then four paragraphs of Byonyks' mission, closing on "Byonyks' goal". His card says Akshar Byonyks, on the client's instruction. Both are followed: the label is what the client asked for, and the text is carried exactly as given, because silently rewriting a real person's account of his own career to name a different company is not a thing this project does. A reader who opens that profile therefore meets an Akshar Byonyks label above a Byonyks biography. **Either his title clarifies it or the biography needs a line about his Akshar Byonyks role — the client's call, and their words either way.**
+
+**`Executive.indiaNote` was added for "the India part", and Senthil Kumar's is pending.** It is a separate field rather than an edit to `bio` because `bio` is somebody else's text carried word for word and appending a sentence would break the promise the attribution line makes about it. It renders under an "On India" heading on a gold rail, below the biography and its attribution. No blurb was supplied, so his renders as the pending state — his transcribed biography runs 35 years through Viisage, PeakPoint and Oasis and mentions India nowhere, and on a roster of four for an India-market company "what does he do here" is a question worth publishing unanswered rather than answering with a sentence nobody wrote.
+
+### `/locations`: three sites removed, and §21 partly reversed
+
+> "Get rid of Bengaluru, Punjab, and Lahore locations"
+
+Punjab and Lahore going **restores the standing audit direction that §21 above reversed for one day.** Spec F-1 and §9.8 are built around "Lahore removed per the audit"; §21 records the client overriding that on 31 Aug, and this records them reverting it on 1 Sep. Manufacturing attributes to Byonyks and never to a country again, which is where F-1 always wanted it.
+
+**Bengaluru was replaced rather than deleted, and that is a judgement worth challenging if the client disagrees.** It was the only Akshar Byonyks row and the only one with a street address. Deleting it outright leaves an Akshar Byonyks locations page on which this company holds no premises at all and every remaining row belongs to the licensor — a page that answers "where is Byonyks" under this masthead and never answers "where are you". So the city and the address are gone, and an India office row remains that **names no city**, with its role reading "Address coming soon" — the client's own wording for it on `/contact` the same day. A module-load contract now throws if the last Akshar Byonyks row is ever removed, so that decision has to be made deliberately.
+
+Six sites became four; the hero, the register lead, the rail note and the "what this page does not say" section were all rewritten to the new counts. The `/what-we-know` ledger entry `pending-india-address-line` was retired with the row whose gap it described, and `pending-address` widened to cover the India office as well as the registered office — one entry per missing fact, which is that file's own rule.
+
+### Contact: a real phone, a required phone, and an address that is coming
+
+> "Phone number should be Vishnu Uncle phone number: +1 (321) 527-9725" / "Indian address should be coming soon" / "Make phone number and city required in contact us form"
+
+**The phone placeholder is gone**, which closes Open Questions 1.1's phone half and the §14.4 launch gate that barred shipping a placeholder contact detail. `pending-phone` was removed from the ledger rather than restated.
+
+**It is a United States number on an India-facing site, and the page says so.** `siteContact.phoneRegion` prints "United States line — an international call from India" beneath it. An unmarked country code costs a patient money and costs this company the enquiry. The number is also now a `tel:` link on `/contact`, which it could not be while it was a placeholder, and `phoneTel` carries the E.164 form as its own field — the old `.replace(/\s/g, "")` derivation produced `tel:+1(321)527-9725` from the new display form, which some dialers refuse.
+
+**Phone and city are required in `contactSchema`**, which both the client form and the Route Handler parse against, so the rule cannot be enforced in one and forgotten in the other. The format stays deliberately permissive — a six-character floor and a length cap, no pattern. This site serves India and the diaspora, and a strict pattern rejects more real numbers than it catches bad ones. Both fields are now unconditional in the enquiry email, where the old `input.phone ? ... : null` guard would only ever hide a validation bug from the person reading it.
+
+**"Coming soon" is a row on the contact panel, not a note under it.** A reader scanning for an address should find the answer where they look for it, and the answer is that there is not one yet.
+
+### The curtain's wordmark is a script now — and it is an approximation
+
+> "Change font on loading animation to Byonyks logo font"
+
+**Nobody supplied the font file or named the family**, and both marks carry custom swashes, so the face cannot be identified from artwork with certainty.
+
+**It was chosen twice in one day, and the second time against the right logo — which is the lesson worth keeping.** The first pass had only the *Byonyks* mark from byonyks.com, a heavy near-monoline brush script, and Pacifico matched it well after six candidates were rendered against it and looked at. Hours later the client supplied the **Akshar Byonyks** lockup, and its wordmark turned out to be a completely different face: high-contrast, sharply slanted, pointed terminals, a swashed `A` and an open-bowled `B`. Pacifico is monoline, round and casual; beside the real artwork it was obviously wrong.
+
+The fix was to crop the wordmark out of the supplied logo, render the candidates directly underneath it, and compare letter by letter. **Yellowtail** ships: its `A` swash, `k` loop, `y` descender, `B` bowl and thick/thin contrast all map onto the real mark, where Lobster Two is heavier and more compressed, Playball lighter and more upright, and Pacifico shares none of its structure. The real mark is bolder than Yellowtail has a weight for — on an outline that draws itself and then floods, letterform structure carries the resemblance and stroke weight does not, which was verified by screenshotting the curtain rather than assumed.
+
+**The generalisable rule, now in CLAUDE.md: compare a typeface against the artwork, not against a description of it.** The first choice was made carefully and was still wrong, because it was careful about the wrong logo.
+
+This is a **deliberate, recorded exception to spec Section 6's one-family rule**, scoped to a single element. Nothing else on the site may use it.
+
+**The metrics are measured, not estimated — and they were re-measured when the face changed**, which is the reason they are props on `StrokeText` rather than constants inside it. The component computes its viewBox from three per-em numbers that describe exactly one face: Noto Sans 700 runs 0.569em advance, 1.066em ascent, 0.295em descent; Pacifico 0.507 / 1.305 / 0.453; Yellowtail 0.403 / 0.969 / 0.305. Carry the wrong set and the wordmark is either clipped at the descenders or sitting in a box a third too wide and scaled down to fit it. Each is read with `getBBox()` and `getComputedTextLength()` on the real string at 128px in Chromium with the webfont loaded, then rounded outwards in `SPLASH_FONT_METRICS`. **Letter-spacing is zero and must stay zero** — the component's −2px default pulls a connected script's joins apart. The three numbers travel with the family from one constant, so changing the face without the box is not possible by accident, and the note there says how to re-measure when the real file arrives.
+
+`display: "swap"`, not `"block"`: a block period would hold the wordmark invisible for up to three seconds, which on a slow connection is an empty ink curtain for the whole of `SPLASH_MAX_MS`. Both ceilings are untouched.
+
+### The logo and the two headshots arrived the same day
+
+The client supplied `Akshar Byonyks Logo.png`, `Ronak Headshot.png` and `Sahil Heeadshot.jpg` hours after the pass above shipped. All three filled gaps that had deliberately been left visible rather than hidden — two `portraitPending` frames and a `LOGO: null` slot that had been reserving its exact space since 31 Aug so that nothing would reflow on the day it was filled. Nothing did.
+
+**The portraits took the same normalisation as the rest of the set** — 900×1125, `cover` anchored north, q88 — and nothing else. No retouching, no backdrop replacement. Spec §9.5's "same backdrop, crop and lighting" is now down to backdrop alone: brown studio, white, white, city skyline. Only a single shoot fixes that honestly; editing a real person's photograph to change what is behind them was tried once here and the client reversed it the same day (§13).
+
+**The logo is cut into two assets by use, because the lockup cannot be scaled down.** It stacks a globe, a monogram, a script wordmark, an entity line and a two-line tagline into a near-square; at the 34px the nav reserves, the whole thing would be 44px wide with the tagline under 2px. So the **emblem** — globe, ring, monogram — goes in the nav, and the **full lockup** becomes the site's default Open Graph card, where 1200×630 gives the tagline room to be read. The favicon is the emblem with a deliberate margin, via Next's `icon.png` file convention.
+
+The nav's reserved slot height went from 28px to 34px in the process, and that was measured rather than guessed: at 28 the continents, the ring and the monogram collapsed into a blue smudge. 34 is near the ceiling — the capsule is 48px while clipped.
+
+**The default share card is the quiet win, and it took three attempts to actually ship.** Eighteen routes had no `openGraph.images` and shared to WhatsApp and LinkedIn as a bare title over a blank rectangle; on this audience WhatsApp is the share channel that matters and it is exactly the one that renders a card.
+
+What did not work, both verified by curling the built pages rather than assumed:
+
+1. **`openGraph.images` on the root layout.** Next merges metadata shallowly per top-level key — a page exporting any `openGraph` object replaces the parent's wholesale — so the twenty routes that set `{ title, description, url, type }` and no `images` inherited nothing. Exactly one route emitted an `og:image`: Home, the only one with no `openGraph` of its own.
+2. **The `src/app/opengraph-image.jpg` file convention.** Next folds a file-based image into any layer that has not set `openGraph.images` itself (`mergeStaticMetadata` in the Next source). That resolves correctly at the root layer and is then overwritten by the same shallow replace when the page's `openGraph` lands on top. Identical result: Home only.
+
+What works is `defaultOg` in `src/lib/seo.ts`, imported by each page and passed as its own `images`. One constant, one alt string, twenty call sites — instead of twenty pasted literals that drift. The file convention is kept as well: it costs nothing, it is what serves Home, and it is the right answer if a future route forgets the import. `twitter:image` is derived automatically.
+
+**The logo is not in the footer, and that is a deliberate stop.** The footer is `bg-ink`; the supplied file is opaque white with no alpha. Knocking the white out is not the easy fix it sounds like — the artwork's own highlights are white (the keyline around the monogram, the silver continents), so a threshold knockout punches holes through the mark, and the globe's drop shadow survives as a grey smudge on dark. **One request for a transparent or reversed-out version closes it**, and until then the footer waits rather than carrying a damaged mark.
+
+### Two things are still blocked on the client
+
+| Instruction | What is needed |
+|---|---|
+| "Add in featured highlights and from the experts from email in news" | The email. Both scaffolds are built and render as designed empty states; nothing can go in them that was not supplied, and inventing news items or expert commentary is the one thing a page like this must never do. The instruction document itself was checked for it and contains only the instruction list. |
+| "Sitewide, add in more stock images of Indians getting hemodialysis" | Photography, or a Pexels/Unsplash API key. |
+
+And two smaller ones, both one line each: **job titles for Dr. Shah and Sahil**, whose cards now carry a photograph and a name and read "Title to be confirmed" underneath — which makes the gap more visible than it was, not less — and **Senthil Kumar's India note**.
+
+**The imagery one is worth reading in full in `public/images/README.md`.** Pexels and Unsplash — the two sources CLAUDE.md names first — both returned `403`/`Authorization required` to unauthenticated requests from this environment. Openverse was searched across eight queries filtered to commercial-use and CC0/public-domain; the only genuinely India-specific dialysis set it returned was an album from the Ramakrishna Mission's centre at Kankhal, and every frame was downloaded and looked at. **Rejected on sight:** one is an inauguration ceremony with a monk, religious imagery and a dozen identifiable attendees; another is a scan of a Hindi newspaper clipping, which is the newspaper's copyright regardless of who uploaded it. Publishing either would imply that a named religious institution and a dozen identifiable people are affiliated with this company — the same objection that disqualified Pexels 36035002 in the 28 Aug pass. The rest of that pool is Wellcome Collection historical archive material, US political photocalls, and `by-sa` images of identifiable patients in hospital beds, which run straight into the Drugs and Magic Remedies Act caution this repo applies strictly enough to have patched a bystander's reflection out of a monitor.
+
+**Nothing shipped rather than something generic.** CLAUDE.md: "a photograph that could be anywhere is worth less here than no photograph."
+
+### One unrelated bug fixed in passing
+
+`/locations` called `<CtaBand leadIn="Locations" />`. `leadIn` is a className forwarded to `SilhouetteEdge`, so that string emitted a class matching nothing. Harmless in effect, wrong in fact, and removed — the band follows a section on the plain `background`, which is what the edge already draws against.

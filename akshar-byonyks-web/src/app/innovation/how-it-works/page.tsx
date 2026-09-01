@@ -9,6 +9,7 @@ import { PdBasics } from "@/components/innovation/pd-basics";
 import { PdBenefits } from "@/components/innovation/pd-benefits";
 import { CtaBand } from "@/components/sections/cta-band";
 import { KeepReading } from "@/components/sections/keep-reading";
+import { defaultOg } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-config";
 
 const path = "/innovation/how-it-works";
@@ -37,6 +38,7 @@ export const metadata: Metadata = {
     description,
     url: path,
     type: "article",
+    images: defaultOg,
   },
   twitter: { card: "summary" },
 };
@@ -120,7 +122,7 @@ than asserted.
       <KeepReading
         items={[
           {
-            href: "/innovation/the-x1-cycler",
+            href: "/products/the-x1-cycler",
             title: "The X-1 cycler",
             body: "The machine that runs these exchanges overnight — what it does, what is confirmed about it, and what is not yet published.",
           },

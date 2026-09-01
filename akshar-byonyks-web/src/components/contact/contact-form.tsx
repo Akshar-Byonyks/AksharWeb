@@ -292,12 +292,19 @@ export function ContactForm({ initialEnquiry }: { initialEnquiry?: EnquiryType }
           fieldId={fieldId}
           error={errors.email?.message}
         />
+        {/* Phone and City became required on 1 Sep 2026, on client
+            instruction. `required` here only draws the asterisk and sets
+            `aria-required`; the rule itself lives in `contactSchema`, which
+            the Route Handler parses against as well — so the two cannot
+            disagree the way a hand-marked form and a server check do. */}
         <TextField
           name="phone"
           label="Phone"
+          required
           type="tel"
           inputMode="tel"
           autoComplete="tel"
+          description="Include your country code if you are outside India."
           form={form}
           fieldId={fieldId}
           error={errors.phone?.message}
@@ -305,6 +312,7 @@ export function ContactForm({ initialEnquiry }: { initialEnquiry?: EnquiryType }
         <TextField
           name="city"
           label="City"
+          required
           autoComplete="address-level2"
           form={form}
           fieldId={fieldId}

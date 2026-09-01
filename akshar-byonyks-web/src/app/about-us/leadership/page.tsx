@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Clock } from "lucide-react";
 
 import { ExecutivePortrait } from "@/components/about/executive-portrait";
 import { AccentRail } from "@/components/common/accent-rail";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { CtaBand } from "@/components/sections/cta-band";
-import { executives, type Executive } from "@/lib/leadership";
+import {
+  aksharExecutives,
+  byonyksExecutives,
+  executives,
+  type Executive,
+} from "@/lib/leadership";
+import { defaultOg } from "@/lib/seo";
 import { licensingStatement } from "@/lib/claims";
 import { siteUrl } from "@/lib/site-config";
 
@@ -24,20 +31,24 @@ export const metadata: Metadata = {
     description,
     url: path,
     type: "website",
+    images: defaultOg,
   },
   twitter: { card: "summary" },
 };
 
 // §9.5 `/about-us/leadership/` and, at `[slug]`, a page each.
 //
+// FOUR PEOPLE SINCE 1 SEP 2026, down from fifteen, on client instruction:
+// every Byonyks card removed except Senthil Kumar's, and Dr. Ronak C. Shah and
+// Sahil added for Akshar Byonyks. `src/lib/leadership.ts` records what went,
+// what that closed, and the three things still needed from the client — two
+// job titles, two photographs, and Senthil Kumar's India note.
+//
 // ONE LIST, ON CLIENT INSTRUCTION, 29 Aug 2026: "Dont make Akshar Byonyks and
 // Byonyks 2 seperate lists. Should be one in the same." An earlier build split
-// the roster into two labelled sections; that is gone. Byonyks' fourteen were
-// transcribed from byonyks.com, Dr. Vishnu Patel was supplied by the client,
-// and provenance is on every record — see `src/lib/leadership.ts`, which also
-// carries what still needs a decision before launch (four biographies name a
-// location spec F-1 keeps off this site, portrait rights are unconfirmed, and
-// portrait treatment is not consistent in the way §9.5 asks for).
+// the roster into two labelled sections; that is gone. Provenance is on every
+// record — Senthil Kumar's is transcribed from byonyks.com, the other three
+// were supplied by the client.
 //
 // PLUM ON THE COMPANY LABEL, 30 Aug 2026. Plum means "institutional / formal"
 // sitewide, and the `organisation` line is the most literally institutional
@@ -56,21 +67,21 @@ export const metadata: Metadata = {
 // WITH THE HEADINGS GONE, THE PER-CARD COMPANY LABEL IS THE WHOLE DEFENCE.
 // Spec §3.1's first non-negotiable is that the two companies are never
 // blurred, and the failure mode for a page like this is not a false sentence —
-// it is fifteen faces under one masthead that a reader completes for
+// it is a grid of faces under one masthead that a reader completes for
 // themselves. So every card prints its `organisation` under the role, the
-// intro says the list spans both companies, and each profile repeats it. Do
-// not remove that label to tidy the cards up.
+// intro counts the two companies separately, and each profile repeats it. Do
+// not remove that label to tidy the cards up. It matters at four records as
+// much as it did at fifteen — arguably more, since the one Byonyks person now
+// sits among three of ours rather than the reverse.
 //
 // WHO IS STILL MISSING IS NO LONGER SAID ON THIS PAGE (30 Aug 2026, client
 // instruction). A "The rest of the Akshar Byonyks team" section used to sit
 // below the grid with a pending note; it is gone.
 //
-// Open Question 1.4 is still open, and the site still publishes that fact —
-// `/what-we-know/` carries it as `pending-executives` and names this page in
-// its "Appears on" list. What this page keeps is the defence that matters
-// most: the per-card `organisation` label, plus an intro that says the list
-// spans both companies. Those are what stop a reader completing "fifteen
-// executives" into "Akshar Byonyks' leadership", and they are not optional.
+// The gaps this page does still publish are per-record and sit where the fact
+// would be: "Photograph pending" in two frames and "Title to be confirmed"
+// under two names. `/what-we-know/` carries the roster-level gap as
+// `pending-executives` and names this page in its "Appears on" list.
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
@@ -119,9 +130,21 @@ function ExecutiveCard({
               </span>
             ) : null}
           </h3>
-          <p className="mt-1 text-base text-muted-foreground">
-            {executive.role}
-          </p>
+          {/* The title, or a statement that there isn't one. `role` became
+              optional on 1 Sep 2026 when two people arrived with a biography
+              and no title; the card says so in the same pending grammar the
+              portrait frame uses one line above, rather than closing the gap
+              up and letting the company label move into the title's slot. */}
+          {executive.role ? (
+            <p className="mt-1 text-base text-muted-foreground">
+              {executive.role}
+            </p>
+          ) : (
+            <p className="mt-1 flex items-center gap-1.5 font-mono text-xs tracking-wide text-pending">
+              <Clock className="size-3 shrink-0" aria-hidden="true" />
+              Title to be confirmed
+            </p>
+          )}
           {/* The company, on every card, always — even inside a section that
               is already headed with it. The heading scrolls away; the card
               gets screenshotted, shared and read on its own. */}
@@ -177,10 +200,11 @@ export default function LeadershipPage() {
             The leadership team
           </h2>
           <p className="mt-4 max-w-3xl text-lg text-muted-foreground">
-            {executives.length} people across Akshar Byonyks and Byonyks. Each
-            card names the company that person works for, and each profile is
-            their own biography, carried word for word, with a note of where it
-            came from.
+            {aksharExecutives.length} at Akshar Byonyks and{" "}
+            {byonyksExecutives.length} at Byonyks, the company that designs and
+            manufactures the cycler. Each card names the company that person
+            works for, and each profile is their own biography, carried word for
+            word, with a note of where it came from.
           </p>
 
           <ul className="mt-12 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">

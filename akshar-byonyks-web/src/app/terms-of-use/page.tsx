@@ -9,6 +9,7 @@ import {
   MailLink,
   type LegalSectionRef,
 } from "@/components/legal/legal-document";
+import { defaultOg } from "@/lib/seo";
 import { fdaClearance, licensingStatement } from "@/lib/claims";
 
 const path = "/terms-of-use";
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
     description,
     url: path,
     type: "website",
+    images: defaultOg,
   },
   twitter: { card: "summary" },
 };

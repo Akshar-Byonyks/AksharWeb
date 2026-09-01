@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans } from "next/font/google";
+import { Noto_Sans, Yellowtail } from "next/font/google";
 import "./globals.css";
 
 import { SiteFooter } from "@/components/layout/footer";
@@ -15,6 +15,51 @@ const notoSans = Noto_Sans({
   weight: ["400", "600", "700"],
 });
 
+// THE WORDMARK FACE, AND THE ONLY PLACE ON THIS SITE THAT IS NOT NOTO SANS.
+// Client instruction, 1 Sep 2026: "change font on loading animation to Byonyks
+// logo font". Spec Section 6 says one family, so this is a deliberate,
+// recorded exception scoped to a single element — the opening curtain's
+// wordmark — and nothing else may use it.
+//
+// YELLOWTAIL IS AN APPROXIMATION, NOT THE LOGO FACE, and that has to be said
+// plainly. Nobody has supplied the font file or named the family, and both
+// marks carry custom swashes, so the face cannot be identified from artwork
+// with certainty.
+//
+// IT WAS CHOSEN TWICE, AND THE SECOND TIME AGAINST THE RIGHT LOGO. The first
+// pass had only the *Byonyks* mark from byonyks.com — a heavy, near-monoline
+// brush script — and Pacifico matched it well. When the client supplied the
+// **Akshar Byonyks** lockup, its wordmark turned out to be a different face
+// entirely: high-contrast, sharply slanted, with pointed terminals, a swashed
+// A and an open-bowled B. Pacifico is monoline, round and casual, and beside
+// the real artwork it was plainly wrong. Candidates were re-rendered directly
+// underneath a crop of the supplied logo and compared letter by letter;
+// Yellowtail's A swash, k loop, y descender, B bowl and thick/thin contrast
+// all map onto it, where Lobster Two is heavier and more compressed, Playball
+// is lighter and more upright, and Pacifico shares none of its structure.
+//
+// The real mark is bolder than Yellowtail. Yellowtail has one weight, and on
+// an outline that draws itself and floods, letterform structure carries the
+// resemblance and stroke weight does not — verified by screenshotting the
+// curtain rather than assumed.
+//
+// WHEN THE REAL FILE ARRIVES, this declaration and `SPLASH_FONT_METRICS` in
+// `src/lib/splash.ts` are the two things that change. The metrics are measured
+// from the face, not guessed, so they must be re-measured with it — the note
+// there says how.
+//
+// `swap`, not `block`. A `block` display would hold the wordmark invisible for
+// up to three seconds, which on a slow connection is an empty ink curtain for
+// the whole of `SPLASH_MAX_MS` — worse than the fallback flash it prevents.
+// next/font preloads the file and generates a metric-matched fallback, so the
+// common case is that the face is there before the first paint.
+const wordmarkFont = Yellowtail({
+  variable: "--font-wordmark",
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
+
 // metadataBase makes every per-page `alternates.canonical` and Open Graph URL
 // resolve absolute, which spec §11.2 requires on every page. The title
 // template gives child routes "<page> | Akshar Byonyks" without each one
@@ -26,6 +71,36 @@ export const metadata: Metadata = {
     template: "%s | Akshar Byonyks",
   },
   description: "Site under development.",
+  // THE DEFAULT SHARE CARD IS `src/app/opengraph-image.jpg`, NOT A FIELD HERE,
+  // and that is the whole trick. Added 1 Sep 2026 with the supplied logo.
+  //
+  // Putting `openGraph.images` on this object does NOT reach the other routes.
+  // Next merges metadata shallowly per top-level key: a page that exports any
+  // `openGraph` object at all replaces this one wholesale, so twenty routes
+  // that set `openGraph: { title, description, url, type }` and no `images`
+  // inherit nothing. Measured, not assumed — with the images declared here,
+  // exactly one route emitted an `og:image` and it was Home.
+  //
+  // The file convention merges by a different rule. Next folds a file-based
+  // `opengraph-image` into a layer's metadata whenever that layer has not set
+  // `openGraph.images` itself, which is true of every route on this site
+  // except the three that carry their own product imagery — and those three
+  // still win, which is what should happen.
+  //
+  // So the card now reaches the eighteen routes that had no image at all, and
+  // until today shared to WhatsApp and LinkedIn as a bare title over a blank
+  // rectangle. On this audience WhatsApp is the share channel that matters and
+  // it is exactly the one that renders a card. `opengraph-image.alt.txt`
+  // beside the file carries its alt text.
+  //
+  // It is the FULL lockup there, not the nav's emblem: a share card has
+  // 1200×630 to play with, so the wordmark, the entity name and the tagline
+  // are all legible. Contained on white rather than cropped to fill — cropping
+  // this artwork to a 1.9:1 frame would cut either the globe or the tagline.
+  openGraph: {
+    siteName: "Akshar Byonyks",
+    locale: "en_IN",
+  },
 };
 
 export default function RootLayout({
@@ -34,7 +109,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-IN" className={notoSans.variable}>
+    <html lang="en-IN" className={`${notoSans.variable} ${wordmarkFont.variable}`}>
       <body className="flex min-h-screen flex-col antialiased">
         {/* ARMS THE OPENING CURTAIN, AND IS THE ONLY THING THAT DOES.
             `site-splash.tsx` never second-guesses this, so the rule about who

@@ -7,6 +7,7 @@ import { OriginStory } from "@/components/about/origin-story";
 import { DirectionContract } from "@/components/common/direction-contract";
 import { CtaBand } from "@/components/sections/cta-band";
 import { KeepReading } from "@/components/sections/keep-reading";
+import { defaultOg } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-config";
 
 const path = "/about-us";
@@ -26,6 +27,7 @@ export const metadata: Metadata = {
     description,
     url: path,
     type: "website",
+    images: defaultOg,
   },
   twitter: { card: "summary" },
 };
@@ -122,7 +124,7 @@ a founder or an address this project does not have.
             body: "The case for home dialysis here, in sourced and dated figures — the distances, the out-of-pocket burden, and how little of India's dialysis happens at home.",
           },
           {
-            href: "/innovation/the-x1-cycler",
+            href: "/products/the-x1-cycler",
             title: "The X-1 cycler",
             body: "The device itself: what is confirmed about the specification, its regulatory position in two jurisdictions, and the compliance record behind it.",
           },

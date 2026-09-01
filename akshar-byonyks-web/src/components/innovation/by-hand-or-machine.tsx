@@ -225,7 +225,7 @@ export function ByHandOrMachine() {
                   before each fill.
                 </p>
                 <Link
-                  href="/innovation/the-x1-cycler"
+                  href="/products/the-x1-cycler"
                   className="mt-4 inline-flex items-center gap-1.5 rounded-sm py-1 text-base font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 >
                   See the X-1 cycler

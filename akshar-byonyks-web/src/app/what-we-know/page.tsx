@@ -18,6 +18,7 @@ import {
   ledgerOrder,
   ledger,
 } from "@/lib/claims-ledger";
+import { defaultOg } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-config";
 
 const path = "/what-we-know";
@@ -34,6 +35,7 @@ export const metadata: Metadata = {
     description,
     url: path,
     type: "website",
+    images: defaultOg,
   },
   twitter: { card: "summary" },
 };

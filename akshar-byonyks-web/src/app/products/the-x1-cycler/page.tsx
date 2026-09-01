@@ -12,7 +12,7 @@ import { KeepReading } from "@/components/sections/keep-reading";
 import { deviceName } from "@/lib/claims";
 import { siteUrl } from "@/lib/site-config";
 
-const path = "/innovation/the-x1-cycler";
+const path = "/products/the-x1-cycler";
 
 const description =
   "Byonyks' automated peritoneal dialysis cycler: needle-free, warmed dialysate, battery backup. FDA 510(k) cleared May 2025 and licensed to Akshar Byonyks for India.";
@@ -71,7 +71,7 @@ const jsonLd = {
   },
 };
 
-// §9.2 `/innovation/the-x1-cycler/` — the device page, and the site's content
+// §9.2 `/products/the-x1-cycler/` — the device page, and the site's content
 // template. Section order: what it is (hero), what it does (features), what is
 // confirmed (specification), where it stands legally (regulatory), what a
 // clinician can ask for (IFU), where to go next (siblings), how to get in

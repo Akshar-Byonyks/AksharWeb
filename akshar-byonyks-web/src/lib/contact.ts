@@ -94,21 +94,36 @@ export const contactSchema = z.object({
   email: z
     .email("Check the email address — we could not read that one.")
     .max(254),
-  // Deliberately permissive: this site serves India and the diaspora, and a
-  // strict pattern rejects more real numbers than it catches bad ones. The
-  // field is optional, so a wrong guess costs a reply channel, not a message.
+  // REQUIRED SINCE 1 SEP 2026, on client instruction. Both were optional; the
+  // people answering this inbox need a number to ring and a city to route by,
+  // and an optional field on a contact form is a field most people skip.
+  //
+  // STILL DELIBERATELY PERMISSIVE ON FORMAT. This site serves India and the
+  // diaspora, and a strict pattern rejects more real numbers than it catches
+  // bad ones — +91 landlines with STD codes, ten-digit mobiles written with or
+  // without the country code, and diaspora numbers from a dozen dialling
+  // plans. So the rule is "there is something here that could be a phone
+  // number", not "it matches a regex somebody wrote for one country".
+  //
+  // The floor is six characters because the shortest real number this form
+  // will ever see is longer than that, and because a one-character phone field
+  // passing validation is the failure that makes a required field pointless.
+  //
+  // THE `error` ARGUMENT COVERS THE ABSENT CASE. The browser form always sends
+  // a string, so `min()` is what a visitor meets; a request that omits the key
+  // entirely — the Route Handler parses the same schema against raw JSON —
+  // otherwise fell through to Zod's own "expected string, received undefined",
+  // which is not a sentence this site shows anybody.
   phone: z
-    .string()
+    .string({ error: "We need a phone number we can reach you on." })
     .trim()
-    .max(32, "Please keep the phone number under 32 characters.")
-    .optional()
-    .or(z.literal("")),
+    .min(6, "We need a phone number we can reach you on.")
+    .max(32, "Please keep the phone number under 32 characters."),
   city: z
-    .string()
+    .string({ error: "Tell us which city you are writing from." })
     .trim()
-    .max(80, "Please keep the city under 80 characters.")
-    .optional()
-    .or(z.literal("")),
+    .min(1, "Tell us which city you are writing from.")
+    .max(80, "Please keep the city under 80 characters."),
   message: z
     .string()
     .trim()

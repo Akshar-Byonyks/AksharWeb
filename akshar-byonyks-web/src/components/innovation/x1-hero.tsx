@@ -42,10 +42,11 @@ export function X1Hero() {
         <Breadcrumbs
           tone="dark"
           items={[
-            // Linked since 27 Aug 2026: the hub this crumb had been rendering
-            // as plain text now exists, so the trail resolves and the
-            // `BreadcrumbList` carries its `item` for this position.
-            { name: "Innovation", href: "/innovation" },
+            // "Products" since 1 Sep 2026, when the page moved out of
+            // /innovation. The crumb follows the URL, always — a trail that
+            // names a section the path does not contain is worse than no
+            // trail, because it is confidently wrong about where you are.
+            { name: "Products", href: "/products" },
             { name: "The X-1 cycler" },
           ]}
         />
