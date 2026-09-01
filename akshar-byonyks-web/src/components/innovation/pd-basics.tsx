@@ -1,5 +1,4 @@
 import { ClinicalLayer } from "@/components/innovation/clinical-layer";
-import { PendingNote } from "@/components/common/pending-note";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 
 // The gap this page exists to close: the site showed what the device is (the
@@ -74,22 +73,6 @@ export function PdBasics() {
                 the individual membrane rather than from a standard schedule.
               </p>
             </ClinicalLayer>
-
-            {/* Spec §9.2 names this page "Nephrologist review required." That
-                review has not happened, so the page says so rather than
-                implying clinical sign-off it does not have. Same instinct as
-                the X-1 specification table's empty rows: a visible gap is
-                worth more than a confident-looking blank.
-
-                This note governs every clinical layer on the page, not just
-                the one above it, which is why it sits here — under the first
-                one a reader will open — rather than being repeated three
-                times or buried in the footer. */}
-            <PendingNote
-              className="mt-6"
-              note="Pending nephrologist review"
-              label="The clinical layers on this page describe standard peritoneal dialysis physiology and are awaiting review by a nephrologist before launch."
-            />
           </div>
         </ScrollReveal>
       </div>

@@ -94,7 +94,34 @@ export function X1SpecTable() {
             unfinished section rather than a deliberately narrow measure. */}
         <ScrollReveal>
           <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-16">
-            <div>
+            {/* THE FRAMING RIDES THE TABLE DOWN. This is a thirteen-row table
+                and the heading that says what the rows mean — "rows marked
+                pending are genuinely unpublished" — used to scroll away from
+                the pending rows it explains. Sticky keeps it beside them for
+                the length of the section.
+
+                It works because a grid item's containing block is its grid
+                area, and this area is as tall as the table beside it. So the
+                heading pins on the way down and releases on its own when the
+                area ends, without measuring anything: it never escapes into
+                the next section.
+
+                `lg:self-start` is load-bearing, not decoration. A grid item
+                stretches to its row by default, which leaves a sticky item no
+                room to travel inside its own box — it would simply never
+                move. `items-start` on the container already does this today;
+                the explicit class is here so that removing it cannot quietly
+                turn the effect off.
+
+                `top-24` clears the sticky nav, whose host measures 72px, with
+                24px to spare. The two full-viewport stages on Home pin at
+                `top-16` because they are centred artwork that can tuck under
+                the bar; a heading cannot.
+
+                Not sticky below `lg`: the columns stack there, so the framing
+                sits above the table rather than beside it, and pinning it
+                would park a heading on top of the rows it introduces. */}
+            <div className="lg:sticky lg:top-24 lg:self-start">
               <h2
                 id="x1-spec-heading"
                 className="text-3xl font-bold text-ink sm:text-4xl"

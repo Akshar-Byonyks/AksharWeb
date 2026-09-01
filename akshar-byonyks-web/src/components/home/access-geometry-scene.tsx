@@ -43,20 +43,6 @@ import { cn } from "@/lib/utils";
 // glass/blur effects, and a bg-white/[0.06] or bg-accent-gold/10 wash over
 // the moving Silk background behind these cards is exactly that. Border +
 // content sitting directly on Silk instead.
-// Per-word displacement for the clinic title, in px and degrees. A fixed table
-// rather than anything generated: this component server-renders, so a random
-// value would differ on the client and tear on hydration. Five entries, which
-// is coprime with neither of the two titles' word counts by accident — it just
-// has to be long enough that a four-word line does not fall into a visible
-// repeat.
-const CLINIC_JITTER = [
-  { y: -5, r: -2.2 },
-  { y: 6, r: 1.6 },
-  { y: -3, r: 2.4 },
-  { y: 5, r: -1.5 },
-  { y: -6, r: 1.9 },
-];
-
 function SceneCard({
   tone,
   eyebrow,
@@ -106,47 +92,24 @@ function SceneCard({
             `text-xl font-semibold` they were the fourth thing the eye reached,
             after the eyebrow, the image and the card's own edge.
 
-            CHAOS AND ORDER ARE SET, NOT COLOURED. The obvious move is tinting
-            the two titles apart, and it is unavailable twice over: the Accent
-            Ration Rule keeps every accent off text at this size, and the
-            Wayfinding Rule has already spent gold on "home / India" as the
-            card's identity. So the contrast is carried by arrangement, which
-            also survives monochrome and never makes colour the sole carrier of
-            the distinction — the words themselves already say which is which. */}
-        {tone === "clinic" ? (
-          <p className="text-2xl font-bold tracking-tight text-balance text-white sm:text-3xl lg:text-4xl">
-            {/* Every word knocked off the line it should be on. Displacement
-                and rotation are per-word and FIXED, never generated — this
-                renders on the server, and a random offset would hydrate to a
-                different value and tear.
+            CHAOS AND ORDER ARE NOT SET IN THE TYPE AT ALL. Two earlier
+            attempts are worth recording so neither is tried again. Tinting the
+            titles apart is unavailable twice over: the Accent Ration Rule keeps
+            every accent off text at this size, and the Wayfinding Rule has
+            already spent gold on "home / India" as the card's identity. And
+            knocking each word of the clinic title off its baseline — a fixed
+            per-word translate and rotate, which shipped here for five days —
+            was removed on request (31 Aug 2026). It made the one title on the
+            card that has to be read hardest to read, on a page whose audience
+            skews older with diabetes-related visual impairment.
 
-                Kept deliberately small: ±6px and under 2.5deg. This audience
-                skews older with diabetes-related visual impairment, so the
-                word has to stay a word. Baselines stay horizontal and the
-                spaces between words are real text nodes, so the line still
-                wraps normally and a screen reader still reads one sentence. */}
-            {title.split(" ").map((word, i) => {
-              const jitter = CLINIC_JITTER[i % CLINIC_JITTER.length];
-              return (
-                <span key={`${word}-${i}`}>
-                  {i > 0 ? " " : null}
-                  <span
-                    className="inline-block"
-                    style={{
-                      transform: `translateY(${jitter.y}px) rotate(${jitter.r}deg)`,
-                    }}
-                  >
-                    {word}
-                  </span>
-                </span>
-              );
-            })}
-          </p>
-        ) : (
-          <p className="text-2xl font-bold tracking-tight text-balance text-white sm:text-3xl lg:text-4xl">
-            {title}
-          </p>
-        )}
+            What is left is the honest carrier: the words themselves say which
+            is which, the eyebrow says when, and the gold rule below marks the
+            home card. All three survive monochrome, and none of them asks the
+            reader to decode a typographic gesture. */}
+        <p className="text-2xl font-bold tracking-tight text-balance text-white sm:text-3xl lg:text-4xl">
+          {title}
+        </p>
 
         {/* Order, stated once: a 1px gold rule under the home title and
             nothing under the clinic one. This is `AccentRail`'s grammar and

@@ -300,51 +300,46 @@ table,
    viewBox, which is why these values are viewBox coordinates and not CSS px.
    --------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: no-preference) {
-  /* Dialysate arriving. The rect's resting position IS the level the panel's
-     label describes, so the keyframe travels from empty to zero offset and
-     `both` holds it there — no snap back to a different pose at the end. */
-  @keyframes pd-fill {
+  /* THE WATER LINE MOVES; THE WATER DOES NOT. One keyframe drives both the
+     fill and the drain, because they are the same event in opposite
+     directions: a level leaving one depth for another.
+
+     The fluid rect's bottom edge sits on the bottom of the drawing and the
+     transform origin below sits on that same line, so scaling the rect
+     vertically moves its top edge and pins everything else. Every panel's
+     authored pose is the level it comes to rest at, so this travels *to*
+     scale 1 and `both` holds it there — the finished drawing is what the
+     server sends, and the animation is a departure from it.
+
+     `--pd-from` is set per panel in exchange-cycle.tsx and derived from the
+     levels stated there. No depth is restated in this file: change a level in
+     the component and this follows on its own.
+
+     Replaces `pd-fill` and `pd-drain`, which translated the whole rect. That
+     is a body of water sliding rather than a level changing, and past a small
+     offset the slab's own lower edge lifted clear of the cavity floor and
+     showed itself. */
+  @keyframes pd-level {
     from {
-      transform: translateY(34px);
+      transform: scaleY(var(--pd-from, 1));
     }
     to {
-      transform: translateY(0);
+      transform: scaleY(1);
     }
   }
 
-  /* Dialysate leaving. Starts full — where the fill panel just finished, one
-     column to the left — and falls to the drain panel's resting level. */
-  @keyframes pd-drain {
-    from {
-      transform: translateY(-70px);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
+  /* Drops travelling down the catheter. One pass that ends at the resting
+     state rather than a loop that ends dark and pops back — so the pose the
+     animation finishes in is the pose the server already sent.
 
-  /* Flow along the catheter. One pass that ends at the resting state rather
-     than a loop that ends dark and pops back. */
-  @keyframes pd-flow-down {
+     Replaced `pd-flow-down`, which drove two chevrons in the same position and
+     had no other user. */
+  @keyframes pd-drip {
     from {
       opacity: 0;
-      transform: translateY(-10px);
+      transform: translateY(-14px);
     }
-    60% {
-      opacity: 1;
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes pd-flow-up {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    60% {
+    55% {
       opacity: 1;
     }
     to {
@@ -389,24 +384,45 @@ table,
     }
   }
 
+  [data-pd-cycle="playing"] .pd-fluid-fill,
+  [data-pd-cycle="playing"] .pd-fluid-drain {
+    /* `view-box` rather than the `border-box` default, so the origin below is
+       read in the coordinates the rect is drawn in. 150px is the bottom of the
+       drawing (ART_H) and the rect's own bottom edge — the two have to stay
+       the same number, or the scale stops pivoting on the floor. */
+    transform-box: view-box;
+    transform-origin: 0 150px;
+  }
+
+  /* Both levels get the same even curve, and neither keeps the expo-out this
+     used to carry. A fill and a drain are the same slow, steady, gravity-fed
+     movement of a water line in opposite directions, and an expo-out spends
+     85% of its travel in the first quarter and then creeps — which reads as a
+     level jumping and settling rather than one moving. easeInOutSine spends
+     its time in the middle of the travel, where the surface is actually
+     crossing the cavity.
+
+     Drain is the longer of the two: it is the last thing to happen in the row
+     and has nothing after it to make room for. The whole sequence — fill,
+     transfer, drain — lands at about 3.4 seconds. */
   [data-pd-cycle="playing"] .pd-fluid-fill {
-    animation: pd-fill 1100ms cubic-bezier(0.16, 1, 0.3, 1) 250ms both;
+    animation: pd-level 1000ms cubic-bezier(0.37, 0, 0.63, 1) 250ms both;
   }
   [data-pd-cycle="playing"] .pd-fluid-drain {
-    animation: pd-drain 1100ms cubic-bezier(0.16, 1, 0.3, 1) 1950ms both;
+    animation: pd-level 1200ms cubic-bezier(0.37, 0, 0.63, 1) 2200ms both;
   }
-  [data-pd-cycle="playing"] .pd-flow-down {
-    animation: pd-flow-down 1100ms cubic-bezier(0.16, 1, 0.3, 1) 250ms;
-  }
-  [data-pd-cycle="playing"] .pd-flow-up {
-    animation: pd-flow-up 1100ms cubic-bezier(0.16, 1, 0.3, 1) 1950ms;
+  /* No delay here: each drop carries its own, staggered inline, so the three
+     fall in sequence rather than together. 700ms, so the last of them lands as
+     the fill above finishes rather than after it. */
+  [data-pd-cycle="playing"] .pd-drip {
+    animation: pd-drip 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
   [data-pd-cycle="playing"] .pd-transfer {
     /* `view-box` rather than the `border-box` default, so the origin below is
        read in the same coordinates the arrows are drawn in. */
     transform-box: view-box;
     transform-origin: 80px 82px;
-    animation: pd-transfer 900ms cubic-bezier(0.16, 1, 0.3, 1) 1150ms both;
+    animation: pd-transfer 750ms cubic-bezier(0.16, 1, 0.3, 1) 1350ms both;
   }
 
   [data-pd-cycle="playing"] .pd-mark {

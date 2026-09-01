@@ -55,7 +55,11 @@ export function TheNight() {
   return (
     <section
       aria-labelledby="the-night-heading"
-      className="text-white"
+      // pb-20/lg:pb-28 mirrors the heading block's own pt-20/lg:pt-28 above.
+      // The closing note used to carry the bottom of this section and was
+      // removed on 31 Aug 2026; without a replacement the figure would have
+      // ended flush against the white section below it.
+      className="pb-20 text-white lg:pb-28"
       style={
         {
           "--night-ground":
@@ -88,13 +92,6 @@ export function TheNight() {
           has to be free of the wrapper's own vertical rhythm. */}
       <TwoPaths />
 
-      <div className="mx-auto max-w-[1280px] px-4 pt-10 pb-20 sm:px-6 lg:px-8 lg:pb-28">
-        <p className="max-w-2xl text-sm text-white/60">
-          An illustration of how the two routes differ in practice, not a
-          clinical schedule. Therapy and its frequency are set by your
-          nephrologist.
-        </p>
-      </div>
     </section>
   );
 }

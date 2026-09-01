@@ -1,5 +1,4 @@
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
-import { notMedicalAdvice } from "@/lib/claims";
 
 // Spec §9.2, the four named features: fluid warming to body temperature,
 // battery backup, needle-free operation, intuitive interface. Those four and
@@ -81,9 +80,6 @@ export function X1Features() {
           </dl>
         </div>
 
-        <p className="mt-12 max-w-2xl text-sm text-muted-foreground">
-          {notMedicalAdvice}
-        </p>
       </div>
     </section>
   );

@@ -198,12 +198,11 @@ export function X1Compliance() {
           <h3 className="mt-16 text-sm font-semibold tracking-wide text-ink uppercase">
             Stated by Byonyks
           </h3>
-          <p className="mt-2 max-w-2xl text-base text-muted-foreground">
-            True as attributions, and attributed here rather than restated as
-            Akshar Byonyks&rsquo; own. None of these has reached this project
-            with its certificate number, and each row says which number is
-            missing rather than the register implying it is complete.
-          </p>
+          {/* No lead paragraph under this heading, unlike the register above
+              it — removed on request, 31 Aug 2026. The heading itself is what
+              has to stay: it is the only thing separating these credentials
+              from the independently verifiable ones above, and each row still
+              names the certificate number it is missing. */}
 
           <ul className="mt-6 divide-y divide-line border-y border-line">
             {companyStated.map((credential) => {
