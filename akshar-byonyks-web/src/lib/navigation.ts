@@ -9,14 +9,24 @@ export type NavLink = {
   children?: NavLink[];
 };
 
-// Spec 8.2 specifies five items plus a persistent CTA. **Four ship**, as of
-// 29 Aug 2026: "Manufacturing" was retired on the client's decision after a
+// Spec 8.2 specifies five items plus a persistent CTA. **Five ship**, as of
+// 31 Aug 2026, but not the five the spec names.
+//
+// "Manufacturing" was retired on the client's decision, 29 Aug 2026, after a
 // measurement found eleven of that page's nineteen facts already stated
 // elsewhere, and its label promising a factory the page opened by saying does
 // not exist. Its compliance record now lives on /innovation/the-x1-cycler as
-// "Quality and compliance", and /manufacturing redirects there. Recorded in
-// deviations.md. Children per item mirror the sitemap in spec 8.3 and drive
-// the desktop mega-menu.
+// "Quality and compliance", and /manufacturing redirects there.
+//
+// "Locations" took the fifth slot on 31 Aug 2026, also the client's call —
+// both the page and its top-level placement. It is deliberately NOT the
+// retired page under a softer name: that one promised a factory and had none
+// to show, while this one is a register of premises that exist, each row
+// naming which of the two companies holds it. It sits beside About Us because
+// it is company information, not product. Both recorded in deviations.md.
+//
+// Children per item mirror the sitemap in spec 8.3 and drive the desktop
+// mega-menu.
 export const primaryNav: NavLink[] = [
   {
     label: "Innovation",
@@ -42,6 +52,7 @@ export const primaryNav: NavLink[] = [
       { label: "Careers", href: "/about-us/careers" },
     ],
   },
+  { label: "Locations", href: "/locations" },
   { label: "News", href: "/news" },
 ];
 
@@ -84,6 +95,12 @@ export const footerColumns: { heading: string; links: NavLink[] }[] = [
   },
   {
     heading: "Contact",
-    links: [{ label: "Contact us", href: "/contact" }],
+    // Locations lands here rather than in Company, which already holds the
+    // column limit of six. It belongs beside "Contact us" anyway: a reader
+    // hunting a footer for an address is looking under this heading.
+    links: [
+      { label: "Contact us", href: "/contact" },
+      { label: "Locations", href: "/locations" },
+    ],
   },
 ];

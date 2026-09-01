@@ -353,3 +353,72 @@ a lossless format, which is why they are large. Re-encoding them to JPEG at
 their original dimensions — no crop, no backdrop change — would recover most of
 that without touching anything the client asked to keep. Left as-is deliberately:
 the instruction was the original files.
+
+---
+
+## Added 1 September 2026 — the `/locations` register
+
+Requested by name ("each location should have an image preview"), with the
+follow-up direction to "find images of the offices using the web or on
+byonyks.com" rather than use stock. All five come from Byonyks' own published
+pages. Six locations ship; five have an image and the sixth is recorded below
+as deliberately empty.
+
+**Why not stock city photography.** It was offered and declined, and declining
+was right. A Bengaluru skyline sitting beside "43, Residency Road" is a picture
+of a city that a reader will take for a picture of the premises — and on a page
+whose entire argument is which company holds which building, that is the one
+image class guaranteed to mislead. Every frame here is the actual building or
+the actual plan.
+
+**Licence position, all five.** Byonyks' own marketing material, used by its
+licensed India partner to show the group's premises. This is the same basis
+recorded for `x1-apd-cycler.png`: the manufacturer's own public asset, not a
+third party's. Flag with the trade mark permission item at §14.4 — the written
+permission covering the Byonyks name and marks covers these too, and it is
+still verbal.
+
+### itasca-head-office.jpg
+
+- **Source:** `https://byonyks.com/wp-content/uploads/2025/09/1.png` ("Our Innovation Hubs", labelled Byonyks Headquarters), fetched 31 Aug 2026.
+- **What it is:** a photograph of the brick office building at Itasca, Illinois. The numerals **550** are mounted on both visible faces, which corroborates the published address `550 E. Devon Avenue, Unit 140` — the picture and the address check each other.
+- **Edits:** cropped from 1080×1350 to a 4:3 landscape (top 230, height 810), resized to 1200px, re-encoded JPEG q82. No content added or removed.
+- **Used on:** `/locations`.
+
+### punjab-manufacturing.jpg
+
+- **Source:** `https://byonyks.com/wp-content/uploads/2025/09/2-1-819x1024.png` (labelled Byonyks Manufacturing Unit), fetched 31 Aug 2026.
+- **What it is:** the entrance to the manufacturing building, BYONYKS in mounted metal letters on a blue panel.
+- **Edits, and the important one:** the source has an **SGS "ISO 13485 System Certification" badge composited into its top-right corner**. That badge is a graphic overlay, not part of the photograph, and it asserts a credential this project has never received a certificate number for — `compliance.ts` carries ISO 13485 as *stated*, not *record*. Shipping it would put an unverifiable certification on the page as an image, where the provenance system cannot reach it. The crop (top 330, height 614) removes it entirely; the badge is not painted over, it is simply outside the frame. Then resized to 1200px, JPEG q82.
+- **Checked:** no people, no legible number plates, no faces at any rendered size.
+- **Used on:** `/locations`.
+
+### lahore-research.jpg
+
+- **Source:** `https://byonyks.com/wp-content/uploads/2025/09/3-1-819x1024.png` (labelled Byonyks R&D Facility), fetched 31 Aug 2026.
+- **What it is:** the glass-fronted commercial building carrying "Byonyks — Bloodless Dialysis" signage, consistent with the published DHA Phase 3 address.
+- **Edits:** same SGS badge in the same corner, removed the same way — cropped top 300, height 614, resized 1200px, JPEG q82.
+- **Checked:** parked cars are in frame; no faces and no legible plates at any rendered size.
+- **Used on:** `/locations`.
+
+### hyderabad-plan.jpg and ahmedabad-plan.jpg
+
+- **Sources:** `https://byonyks.com/wp-content/uploads/2025/09/Hyderabad-Factory-1.png` and `https://byonyks.com/wp-content/uploads/2025/09/Gujrat-Factory-2.png`, fetched 31 Aug 2026.
+- **What they are — and this is the whole point:** **architectural drawings, not photographs.** Hyderabad is an isometric cutaway of a facility interior; Ahmedabad is a wireframe of an industrial shed. Neither building exists. byonyks.com files both under "Coming soon!".
+- **How the site keeps that straight:** `Location.image.kind` is `"plan drawing"` for both, the visible caption is generated from that field, and a module-load contract in `locations.ts` throws if an announced site is ever given a photograph or an operating one a drawing. CLAUDE.md's "never caption a render as a photograph" is enforced rather than remembered.
+- **Ahmedabad naming:** the file is named for the city the client audit specifies; the source file is named "Gujrat", a state. The row says so.
+- **Edits:** cropped to 4:3 on the densest region of each drawing (Hyderabad left 180 / w 1440; Ahmedabad left 250, top 60 / 1360×1020), flattened onto white, resized 1200px, JPEG q88. Both were test-rendered at their true display width of 220px and checked for legibility before use — the fine wireframe was the one at risk and it survives.
+- **Used on:** `/locations`.
+
+### Bengaluru — no image, deliberately
+
+There is no photograph of the India office. byonyks.com's `/contact/` lists the
+address with no picture, `/about-us/` carries only portraits and placeholder
+department blocks, and a web search returned only unrelated co-working
+operators on Residency Road. The row therefore ships with its image slot held
+open and marked "No photograph published", exactly as the address one line
+below holds its own missing line open.
+
+**This is the row to fix first.** It is the only Akshar Byonyks premises on the
+page, and it is the only one without a picture. One photograph of the office
+front would close it.

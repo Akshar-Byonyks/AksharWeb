@@ -1,6 +1,7 @@
 import type { Provenance, ProvenanceStatus } from "@/components/common/provenance";
 import { byotalksSessions } from "@/lib/byotalks";
 import { companyStated, publicRecord } from "@/lib/compliance";
+import { locations } from "@/lib/locations";
 import {
   accessFigures,
   costFigures,
@@ -62,6 +63,7 @@ const HOW = { label: "How it works", href: "/innovation/how-it-works" };
 const TALKS = { label: "ByoTalks", href: "/byotalks" };
 const CONTACT = { label: "Contact", href: "/contact" };
 const CAREERS = { label: "Careers", href: "/about-us/careers" };
+const LOCATIONS = { label: "Locations", href: "/locations" };
 const LEADERSHIP = { label: "Leadership", href: "/about-us/leadership" };
 
 const fromCompliance: readonly LedgerEntry[] = [
@@ -210,7 +212,7 @@ const gaps: readonly LedgerEntry[] = [
     id: "pending-address",
     claim: "The India registered office address",
     detail:
-      "Required on the privacy policy and the terms of use, and required before this site goes live. No placeholder is published.",
+      "Required on the privacy policy and the terms of use, and required before this site goes live. No placeholder is published. This is not the Bengaluru office address now shown on /locations: that one is Byonyks' published account of where the India office is, while a registered office is a corporate-registry fact nobody has supplied.",
     provenance: { status: "pending", missing: "Registered office not yet confirmed." },
     appearsOn: [
       CONTACT,
@@ -306,13 +308,53 @@ const gaps: readonly LedgerEntry[] = [
     detail:
       "Hyderabad and Ahmedabad are described as under construction with no confirmed completion date. Akshar Byonyks does not manufacture the X-1 and this site does not describe it as the manufacturer.",
     provenance: { status: "pending", missing: "No confirmed completion dates." },
-    appearsOn: [MARKET],
+    // /locations puts the same two sites in front of a reader as rows of their
+    // own (31 Aug 2026). Extending this entry rather than writing a second one:
+    // a ledger with two entries for one gap is a ledger that can disagree with
+    // itself about what is missing.
+    appearsOn: [MARKET, LOCATIONS],
+  },
+  {
+    id: "pending-india-address-line",
+    claim: "One line of the India office address",
+    detail:
+      "Byonyks publishes the Bengaluru office as “43, Residency Road, , Bangalore, Karnataka 560025”. The doubled comma is a dropped line, so the address is shown on /locations with that gap held open rather than closed up into a plausible-looking three-line address.",
+    provenance: {
+      status: "pending",
+      missing: "A line of the street address is missing at the source.",
+    },
+    appearsOn: [LOCATIONS],
   },
 ];
+
+// Derived from `locations.ts`, per this file's own rule: six premises, each
+// one Byonyks' published account of itself and none checked against a
+// corporate register, so the whole block lands on `stated`.
+//
+// The gaps those rows carry are deliberately NOT mapped into entries here.
+// Three of the four already exist above or in `fromCompliance` — the hubs'
+// dates as `pending-india-hubs`, the CDSCO licence route as
+// `pending-cdsco-route`, the ISO 13485 certificate number as a compliance
+// credential — and the fourth is `pending-india-address-line` directly above.
+// Deriving them a second time would put two rows on `/what-we-know` for one
+// missing fact.
+const fromLocations: readonly LedgerEntry[] = locations.map(
+  (site): LedgerEntry => ({
+    id: `location-${site.id}`,
+    claim:
+      site.status === "planned"
+        ? `${site.entity} has announced a facility at ${site.place}, ${site.country}`
+        : `${site.entity} operates from ${site.place}, ${site.country}`,
+    detail: site.detail,
+    provenance: site.provenance,
+    appearsOn: [LOCATIONS],
+  }),
+);
 
 export const ledger: readonly LedgerEntry[] = [
   ...fromCompliance,
   ...fromFigures,
+  ...fromLocations,
   ...gaps,
 ];
 
