@@ -129,6 +129,19 @@ function StatusSection({ status }: { status: ProvenanceStatus }) {
                       ) : null}
                       <Link
                         href={page.href}
+                        // The ledger's one Hindi label — "हिन्दी", pointing at
+                        // /hi — was the only Devanagari on this site rendered
+                        // without a `lang`. Two things followed from that, and
+                        // the small one is the reason it was noticed: WCAG
+                        // 3.1.2 wants the language of the part marked, so a
+                        // screen reader does not read Devanagari with an
+                        // English voice; and since 2 Sep 2026 the Devanagari
+                        // font is scoped to `[lang|="hi"]`, so an unmarked one
+                        // inherits "Noto Sans" and pulls 97 KB of webfont onto
+                        // this page for six characters. Derived from the entry
+                        // rather than hardcoded, so a second Hindi route added
+                        // to the ledger is covered by the same line.
+                        lang={page.href.startsWith("/hi") ? "hi" : undefined}
                         className="rounded-sm py-0.5 font-semibold text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                       >
                         {page.label}

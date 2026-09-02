@@ -8,10 +8,28 @@ import { siteUrl } from "@/lib/site-config";
 import { SPLASH_ARM_ID, SPLASH_FAILSAFE_MS, SPLASH_PATH } from "@/lib/splash";
 
 // Spec Section 6: Noto Sans for both display and text roles — one family,
-// self-hosted, Devanagari subset included from day one for the Hindi roadmap.
+// self-hosted.
+//
+// DEVANAGARI IS NOT IN THIS DECLARATION ANY MORE (2 Sep 2026, measured). It
+// was, from day one, "for the Hindi roadmap". The roadmap arrived as two
+// routes out of twenty-one — and the subset was still being fetched on all
+// of them, because next/font preloads every subset it is given.
+//
+// The numbers, taken against the production build on a 1.6 Mbps / 4x-CPU
+// mobile profile: 97 KB of Devanagari on every route, against 35 KB of Latin.
+// Outside `/hi` the only Devanagari on this entire site is the nav's
+// "हिन्दी" link — five characters, pulling nearly three times the weight of
+// every Latin glyph the site uses. It was also arriving late enough to
+// reflow the page: the single 0.091 layout shift measured on `/products` was
+// the font swapping in at 4.3s.
+//
+// The subset now loads inside `/hi` only, declared in that route's own
+// layout. The nav link falls back to the reader's own Devanagari face —
+// Android, iOS, Windows and macOS all ship one, and `globals.css` names them
+// explicitly rather than trusting the generic fallback.
 const notoSans = Noto_Sans({
   variable: "--font-sans",
-  subsets: ["latin", "devanagari"],
+  subsets: ["latin"],
   weight: ["400", "600", "700"],
 });
 

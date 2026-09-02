@@ -58,9 +58,14 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  /* "Rupee Local" is declared further down and covers exactly one character,
+     U+20B9. It leads the stack because FAMILY order is the only thing that
+     reliably beats next/font here — see the note on the @font-face. It cannot
+     affect anything else: a face with a one-character `unicode-range` is
+     simply not consulted for any other character. */
+  --font-sans: "Rupee Local", var(--font-sans);
   --font-mono: ui-monospace, SFMono-Regular, monospace;
-  --font-heading: var(--font-sans);
+  --font-heading: "Rupee Local", var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -244,9 +249,91 @@ select {
       face and the language, not a universal ratio" the type system already
       applies between display and body.
    --------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   THE RUPEE SIGN, AND THE 164 KB IT USED TO COST (2 Sep 2026, measured).
+
+   `subsets: ["latin"]` tells next/font which subset to PRELOAD. It still
+   emits an @font-face for every subset Google publishes — latin-ext,
+   cyrillic, greek, vietnamese — each with its own `unicode-range`, each
+   fetched the instant one character in its range is painted.
+
+   ₹ (U+20B9) is in latin-ext. The site renders it exactly once, in
+   `market-data.ts` as "₹2,838", and that one glyph was pulling a 164 KB
+   webfont onto `/innovation/market` and `/what-we-know` — the two pages an
+   investor reads first, and the largest payload on the site. On an India
+   site the symbol is not negotiable and the copy is not ours to change, so
+   the fetch is what has to go.
+
+   This declares one more face for the SAME family, covering ONLY U+20B9, and
+   sourced from fonts already on the machine. `local()` resolves without a
+   network request, so the rupee renders from Segoe UI, Roboto or SF — all of
+   which have carried it since 2010 — and latin-ext is never asked for. If
+   none of the named faces exist the browser falls through to next/font's own
+   latin-ext face, which is the behaviour that shipped before this, so the
+   worst case is the status quo.
+
+   IT IS ITS OWN FAMILY, NOT ANOTHER FACE OF "Noto Sans", and that took two
+   measured attempts. Declared as a second "Noto Sans" face it lost: where two
+   faces of one family cover the same character the LAST declaration wins, and
+   next/font appends its stylesheet after this one, so latin-ext kept winning
+   and kept downloading. Family order in `font-family` is resolved before any
+   of that, so leading the stack with a family that covers only U+20B9 is the
+   version that holds regardless of how the sheets are ordered. It leads the
+   stack in the `@theme` block above.
+   --------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Rupee Local";
+  font-style: normal;
+  font-weight: 100 900;
+  src:
+    local("Segoe UI"), local("Nirmala UI"), local("Roboto"),
+    local("Helvetica Neue"), local("Arial Unicode MS"), local("Arial"),
+    local("DejaVu Sans");
+  unicode-range: U+20B9;
+}
+
 [lang|="hi"],
 [lang|="hi"] * {
   letter-spacing: normal;
+
+  /* THE DEVANAGARI STACK, NAMED RATHER THAN LEFT TO A GENERIC (2 Sep 2026).
+
+     `--font-devanagari` is declared by `/hi/layout.tsx` and exists only
+     inside that subtree, because loading 97 KB of Devanagari on all
+     twenty-one routes to serve two of them was measurably the site's largest
+     per-page payload — `layout.tsx` carries the numbers.
+
+     So this stack has to do real work outside `/hi`, where the variable
+     resolves to nothing and the nav's "हिन्दी" link is the one thing that
+     needs it. The named faces are the system Devanagari on each platform —
+     Android and ChromeOS, Windows, macOS and iOS, then common Linux
+     packages — listed explicitly instead of trusting `sans-serif`, which on
+     several of them resolves to a Latin face and renders Devanagari as tofu.
+     On `/hi` the variable is present and wins from the front, so the rest of
+     the stack is never consulted.
+
+     `var(--font-sans)` IS DELIBERATELY ABSENT FROM THIS LIST, and leaving it
+     in defeated the whole change. Both next/font instances declare the same
+     family name — "Noto Sans" — and differ only by `unicode-range`, so the
+     browser resolves a Devanagari character against whichever @font-face
+     covers it the moment that family is named. Scoping the CSS variable to
+     `/hi` does nothing about that: Next hoists both instances' @font-face
+     rules into one shared stylesheet. Naming the family at all on an English
+     route is what pulled the 97 KB down, and measurably still did after the
+     variable was scoped.
+
+     THE `var()` CARRIES ITS OWN FALLBACK, and it is not decoration. Outside
+     `/hi` the custom property is undefined, and a bare `var(--undefined)`
+     makes the WHOLE declaration invalid at computed-value time — font-family
+     is inherited, so the element silently falls back to the body's "Noto
+     Sans" and every name after it in this list is discarded. That is not a
+     theory: it is what shipped for one build, and the 97 KB kept downloading
+     because the link had quietly inherited the family it was written to
+     avoid. Measured, then fixed. */
+  font-family:
+    var(--font-devanagari, "Noto Sans Devanagari"), "Nirmala UI",
+    "Kohinoor Devanagari", "Devanagari Sangam MN", "Mangal",
+    "Lohit Devanagari", "Samyak Devanagari", sans-serif;
 }
 
 [lang|="hi"] p,

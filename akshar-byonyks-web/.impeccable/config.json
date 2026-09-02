@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font",
+        "value": "rupee local",
+        "createdAt": "2026-09-02T17:34:42.349Z",
+        "reason": "Not a typeface: a one-codepoint @font-face (unicode-range U+20B9) aliased onto local() system fonts, so the rupee sign does not pull a 164KB latin-ext webfont. Adds no new type design; measured 2 Sep 2026."
+      }
+    ]
+  }
+}

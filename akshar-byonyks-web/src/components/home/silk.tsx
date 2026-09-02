@@ -7,6 +7,7 @@ import {
   useLayoutEffect,
   useMemo,
   useRef,
+  useState,
 } from "react";
 import { Color, type Mesh, type ShaderMaterial } from "three";
 
@@ -180,13 +181,51 @@ export default function Silk({
     uniforms.uRotation.value = rotation;
   }, [speed, scale, noiseIntensity, color, rotation, uniforms]);
 
+  // THE SHADER STOPS WHEN NOBODY IS LOOKING AT IT (2 Sep 2026, measured).
+  //
+  // `frameloop="always"` is the port's default and it means exactly that: the
+  // fragment shader ran every frame for as long as Home stayed open, including
+  // the entire scroll through the night figure, the audience cards and the
+  // news band, with the canvas hundreds of pixels above the viewport. On a
+  // throttled profile the hero was accounting for 3,576ms of long tasks.
+  //
+  // Starts `true` so the first frame always renders: `onFirstFrame` is what
+  // releases the opening curtain, and a canvas that begins paused would hold
+  // it to its 3s ceiling. The 200px margin restarts the loop just before the
+  // wash scrolls back into view, so it is never caught mid-blank.
+  const hostRef = useRef<HTMLDivElement>(null);
+  const [onScreen, setOnScreen] = useState(true);
+
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([entry]) => setOnScreen(entry.isIntersecting),
+      { rootMargin: "200px" },
+    );
+    io.observe(host);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <Canvas dpr={[1, 2]} frameloop="always">
-      <SilkPlane
-        ref={meshRef}
-        uniforms={uniforms}
-        onFirstFrame={onFirstFrame}
-      />
-    </Canvas>
+    <div ref={hostRef} className="h-full w-full">
+      {/* DPR IS CAPPED AT 1.5, NOT 2, and fragment cost scales with the
+          square of it. This is an out-of-focus gradient wash with no edge
+          anywhere in it, so the resolution a third device-pixel-ratio step
+          buys is spent on detail the shader does not contain.
+
+          Checked by rendering the hero on a 412px / 3x profile and looking:
+          the wash is smooth at 1.5, with no banding and nothing to alias.
+          Deliberately NOT checked by diffing the two renders — the shader is
+          animated, so two runs land on different frames and the difference
+          that comes back is the animation, not the resolution. */}
+      <Canvas dpr={[1, 1.5]} frameloop={onScreen ? "always" : "never"}>
+        <SilkPlane
+          ref={meshRef}
+          uniforms={uniforms}
+          onFirstFrame={onFirstFrame}
+        />
+      </Canvas>
+    </div>
   );
 }
