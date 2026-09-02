@@ -650,6 +650,12 @@ predecessor.
 
 **The contour list is now flat and ordered, and each contour carries its own optional `transform`.** It replaced two named halves with a shared group transform, because the flourish belongs to "Akshar" positionally but needs the artwork's transform — sorting one list left-to-right is what keeps the draw reading as writing across all three sources.
 
+### 2 September 2026 — counters
+
+The wordmark is drawn as one <path> per contour so each can animate on its own delay, and the two FILL layers (the knockout mask and the flood) are regrouped by transform into three paths instead. **A counter only exists if the fill sees its inner and outer contours in the same path** — the non-zero winding rule has nothing to cancel against otherwise, and every counter paints as a solid blob. That shipped for a day; the client spotted it.
+
+Do not switch these to `fill-rule="evenodd"`. Pacifico's letters overlap, and evenodd punches a hole at every join between them. Both sources wind for non-zero: opentype emits TrueType contours, and potrace's nesting was confirmed by rendering the trace as a single path.
+
 ### What it replaced, and what that saved
 
 `Yellowtail` left `src/app/layout.tsx` in the same change. **It had been loading

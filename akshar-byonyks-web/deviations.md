@@ -1703,3 +1703,19 @@ The module used to export two named halves with a shared transform each. The flo
 It is typed explicitly rather than `as const`, because under `as const` the array becomes a tuple of literal types and the contours with no `transform` key make that property unreadable off the union. Caught by `tsc`, not at runtime.
 
 `SPLASH_MIN_MS` followed the contour count from 19 to 21 without anyone touching it — 2.00s now, still well under the 3s ceiling — which is the whole reason it was made a derivation rather than a constant.
+
+### The counters had been filled in for a day
+
+> "The lower case a in Akshar and lowercase o in Byonyks should have some lines in the middle to fill in the letter before the white fill. A smaller outline of the letter itself if that makes sense."
+
+It makes sense, and it was not a request for a new effect. **The counters were missing** — the 'o' in "Byonyks" was rendering as a solid oval rather than a ring, and so were the 'a', the A's bowl and the k's loop. The client described the symptom precisely from the outside.
+
+**A counter is not a shape; it is the absence of one.** It exists because the non-zero winding rule cancels an inner contour against the outer contour it sits inside. That cancellation can only happen if the fill sees both contours in the same `<path>`. When the wordmark became outlines on 1 Sep, every contour was given its own `<path>` so it could carry its own `--i` and animate on its own delay — and with nothing to cancel against, each counter painted as another solid blob.
+
+The fix keeps the draw layer exactly as it was, because that layer genuinely needs one element per contour, and regroups only the two FILL layers — the mask and the flood — by transform. Three paths, one per coordinate system, each holding every contour that belongs to it. Fill is order-independent within a path, so the grouping does not disturb the left-to-right draw order.
+
+**`fill-rule="evenodd"` would have been the wrong reach**, and it is worth saying so because it is the reflex fix for a filled counter. Pacifico's letters overlap — it is why the knockout mask exists at all — and evenodd would punch a hole at every join between letters. Non-zero is correct here, and both sources wind for it: opentype emits TrueType contours, and potrace's nesting was confirmed by rendering the trace as a single path before any of this was split up.
+
+**The draw phase gets the effect the client actually described for free.** With the counter no longer painted into the mask, the stroke around it is no longer knocked out, so each counter now draws its own smaller outline inside the letter — the "smaller outline of the letter itself" — and then opens to the ink ground when the flood lands.
+
+Verified by cropping the 'o' and the 'a' at 4x in both phases, before and after.

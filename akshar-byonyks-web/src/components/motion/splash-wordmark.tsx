@@ -73,6 +73,36 @@ export function SplashWordmark({
   // origin carry no transform; the flourish on the A and the Byonyks half do,
   // because nothing rewrites path coordinates — see `splash-wordmark.ts`.
 
+  // COUNTERS ONLY EXIST IF THE FILL SEES ALL THE CONTOURS AT ONCE, and getting
+  // that wrong is not subtle: it fills them in. A counter — the hole in an 'a',
+  // an 'o', the A's bowl, the k's loop — is not a shape, it is the absence of
+  // one, produced by the non-zero winding rule cancelling an inner contour
+  // against the outer contour it sits inside. Split them into one <path> each
+  // and there is nothing to cancel against, so every counter paints as another
+  // solid blob. That shipped for a day: the 'o' in "Byonyks" was an oval, not a
+  // ring.
+  //
+  // The DRAW layer genuinely needs one element per contour, because each one
+  // carries its own `--i` and animates on its own delay. So only the two FILL
+  // layers are regrouped, by transform — three paths, one per coordinate
+  // system, each holding every contour that belongs to it. Fill is
+  // order-independent within a path, so this can group across the draw order
+  // without disturbing it.
+  //
+  // Both sources wind the non-zero way: opentype emits TrueType contours, and
+  // potrace's nesting was checked by rendering the trace as a single path
+  // before any of this was split up. Do not reach for `fill-rule="evenodd"` —
+  // Pacifico's letters OVERLAP, and evenodd would punch a hole at every join.
+  const fillGroups = new Map<string, string[]>();
+  for (const { d, transform } of contours) {
+    const key = transform ?? "";
+    fillGroups.set(key, [...(fillGroups.get(key) ?? []), d]);
+  }
+  const fills = [...fillGroups].map(([transform, ds]) => ({
+    transform: transform || undefined,
+    d: ds.join(" "),
+  }));
+
   return (
     <span
       role="img"
@@ -124,7 +154,7 @@ export function SplashWordmark({
               fill="white"
             />
             <g fill="black">
-              {contours.map(({ d, transform }, i) => (
+              {fills.map(({ d, transform }, i) => (
                 <path key={`m-${i}`} d={d} transform={transform} />
               ))}
             </g>
@@ -162,7 +192,7 @@ export function SplashWordmark({
             rendered and never animated. Measured once; the note is on
             `StrokeText`. */}
         <g className="stroke-text-fill" style={{ fill: fillColor }}>
-          {contours.map(({ d, transform }, i) => (
+          {fills.map(({ d, transform }, i) => (
             <path key={`f-${i}`} d={d} transform={transform} />
           ))}
         </g>
