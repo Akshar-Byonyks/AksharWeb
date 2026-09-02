@@ -579,3 +579,66 @@ on dark. A border-connected flood fill would preserve the interior whites and
 still leave the shadow. **The right fix is a transparent-background or
 reversed-out version from whoever made the logo**, which is one request, so the
 footer waits for it rather than shipping a damaged mark.
+
+---
+
+## 1 September 2026 — the curtain's wordmark becomes artwork
+
+The opening curtain no longer sets type. It draws outlines, generated once and
+committed as `src/lib/splash-wordmark.ts`. **No image file ships for this** —
+the mark exists only as path data — but its provenance belongs here with
+everything else the site draws from someone's artwork.
+
+### Where the Byonyks half comes from
+
+- **Source:** `https://byonyks.com/wp-content/uploads/2026/06/Byonyks-Logo-Transparent-BG-scaled.png`, fetched 1 Sep 2026. 2560×834 PNG, RGBA, genuine alpha.
+- **What it is:** Byonyks' own wordmark — a rounded brush script, with a bespoke B carrying a flame flourish above it and a tail that sweeps left and underneath the whole word.
+- **Rights:** Byonyks' mark, used on the site of its Indian licensee, and it sits in exactly the same category as the Byonyks photographs and press text already used here. **It is the one asset on this page that puts another company's registered wordmark on an Akshar Byonyks surface, which is a brand decision rather than a technical one** — the client asked for it directly, in writing, on 1 Sep 2026.
+
+### Why it had to be traced
+
+**No font can produce this mark, and that is the whole reason the curtain
+changed.** The B is drawn, not set: nothing in any typeface carries that
+flourish or that tail. The previous curtain approximated the letterforms with
+Yellowtail; asked whether it could look like the real thing, the honest answer
+was only by using the real thing.
+
+The curtain's animation draws its wordmark as a stroke and then floods it, and
+**a raster cannot be stroked** — so the mark had to become outlines to take
+part in an animation the client had already approved.
+
+### The trace, and how to redo it
+
+Run offline, in a scratch directory, with `potrace` and `sharp`. Nothing below
+is a project dependency and nothing runs at build time.
+
+1. **Flatten the alpha, not the colour.** The artwork is one flat blue on transparency, so the colour channels carry no edge. `sharp(src).ensureAlpha().extractChannel("alpha").negate()` gives black ink on white ground, which is what a tracer wants.
+2. **`potrace.trace`** at `threshold: 128, turdSize: 2, optCurve: true, optTolerance: 0.2, alphaMax: 1`. Output: 10 contours, visually indistinguishable from the source at 2400px wide — compared side by side before it was accepted.
+3. **Coordinates are rounded to one decimal** and the contours split on their moveto, then **ordered by leftmost point** so the draw reads as writing rather than as the whole mark surfacing at once.
+
+**The trace is the union outline, and that matters more than it sounds.**
+potrace follows the boundary of the ink, so where the B's tail runs beneath
+"yonyks" the contour goes around the merged silhouette rather than through it.
+That is precisely the shape the knockout mask added earlier the same day has to
+synthesise for live text — so this half arrives already clean.
+
+### The "Akshar" half
+
+Pacifico, converted to outlines with `opentype.js` and committed as path data.
+
+- **Licence:** SIL Open Font License 1.1. Converting glyphs to outlines inside a design is use, not redistribution of the font.
+- **Why Pacifico and not Yellowtail.** Yellowtail was chosen against the *Akshar Byonyks* lockup, which is a high-contrast, sharply slanted script. Beside Byonyks' rounded brush mark it is plainly the wrong weight and the wrong axis. The three pairings were rendered on the real ink ground and compared; Pacifico matches the artwork's roundness, weight and terminals, which is also what the 31 Aug note predicted before the lockup arrived and changed the target.
+- **Sized by measurement.** Pacifico's x-height was read off a rendered `a` (473/1000em) and the face set at 723 so its x-height equals the artwork's own measured 342 units. Both halves sit on the artwork's measured baseline, y=650. The gap is 190 units, chosen by rendering 60 and 190 and looking at how much air the B's tail needs under the "r".
+
+**Nothing rewrites path coordinates.** "Akshar" is generated at its final
+origin by opentype and the artwork is placed with an SVG `transform`. The first
+attempt shifted numbers with a regex and produced a viewBox three times too
+tall, because a regex mis-pairs operands the moment a negative number abuts its
+predecessor.
+
+### What it replaced, and what that saved
+
+`Yellowtail` left `src/app/layout.tsx` in the same change. **It had been loading
+on all twenty-one routes to serve one decoration on one of them.** The curtain
+now needs no webfont at all, renders identically on the server and in the first
+paint, and can no longer show a fallback face and then jump.

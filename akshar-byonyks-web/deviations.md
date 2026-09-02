@@ -1606,6 +1606,30 @@ The one real consequence: **the settled wordmark's gold keyline is twice as heav
 
 Verified: zero hydration errors and zero console errors on Home with the mask's `useId` crossing the server/client boundary; the `mask` reference resolves in the DOM; reduced motion still arrives fully drawn and flooded; no clipping at 1440, 390 or 320.
 
+### And then the wordmark stopped being type at all
+
+The client sent the Byonyks mark itself and asked whether the curtain's "Byonyks" could look like it.
+
+**It could not, with any font, and that is a fact about the artwork rather than a limit of the search.** The B is drawn: a flame flourish rising above it, and a tail that sweeps left and runs underneath the whole word. No typeface contains that glyph. Every version of this wordmark up to here — Noto Sans, then Pacifico, then Yellowtail — had been answering "which face is closest", and the honest answer to "can it look like this" was: only by using this.
+
+So the curtain now draws **outlines**. Byonyks' own published logo, traced from the transparent PNG they serve, beside "Akshar" in Pacifico converted to paths, both in one coordinate system in `src/lib/splash-wordmark.ts`. The trace settings, the licence position and the regeneration recipe are in `public/images/README.md`.
+
+**Three things fell out of it that are worth more than the request.**
+
+**The curtain loads no webfont.** `Yellowtail` was declared in `layout.tsx` on all twenty-one routes to serve one decoration on one of them; it left in the same change, and with it the spec Section 6 exception it had been granted a few hours earlier. Nothing on this site is outside Noto Sans again.
+
+**There is nothing left to keep in sync.** `SPLASH_FONT_METRICS` paired a family with three per-em numbers because `StrokeText` computes a viewBox from them, and swapping one without the other clips the glyphs. That hazard is gone: outlines carry their own box.
+
+**The first paint is the final paint.** With `display: swap` the curtain could render cursive-default letterforms and then jump when the real face arrived. The geometry is now identical on the server, in the first paint and on every frame after — which is the same property §3 of `stroke-text.tsx` gave up runtime measurement to get.
+
+**The trace is already the union outline.** potrace follows the boundary of the ink, so where the B's tail runs beneath "yonyks" the contour goes round the merged silhouette rather than through it — exactly the shape the knockout mask added hours earlier has to synthesise for live text. Byonyks' half needs no mask. Pacifico's letters overlap, so "Akshar" does, and both halves are masked so the lockup reads as one mark.
+
+**Two measurements, not two judgements.** Pacifico's x-height was read off a rendered `a` and the face sized so its x-height equals the artwork's own measured 342 units, both on the artwork's measured baseline of y=650. And `strokeWidth` went 7 → 44, which is again not a weight change: the viewBox is 5148 units wide where the old one was 814, so a unit is worth a fifth of what it was. Measured in the browser, the drawn line is 4.38 CSS px against the 4.4 the text version had.
+
+**`SPLASH_MIN_MS` now takes the max of two endings,** which the note there had already predicted would be needed "if the stagger or the wordmark ever grows enough to invert" the order. It did: nineteen contours against fourteen characters puts the last stroke at 1.92s, past the flood's 1.9s. It is derived from the contour count rather than a constant, so regenerating the wordmark cannot silently re-invert it.
+
+**Two things for the client to decide, neither of which is ours.** This puts **Byonyks' registered wordmark on an Akshar Byonyks surface** — asked for directly, and a brand call rather than a technical one. And it makes the curtain disagree with the company's own lockup, which sets *both* words in a single high-contrast script; the supplied `Akshar Byonyks Logo.png` is the alternative source if they would rather the opening matched their own logo than Byonyks'. Tracing that instead is the same recipe pointed at a different file — but it needs the original at full resolution, not the 1200×630 share card, which is all this repo holds.
+
 ### The logo and the two headshots arrived the same day
 
 The client supplied `Akshar Byonyks Logo.png`, `Ronak Headshot.png` and `Sahil Heeadshot.jpg` hours after the pass above shipped. All three filled gaps that had deliberately been left visible rather than hidden — two `portraitPending` frames and a `LOGO: null` slot that had been reserving its exact space since 31 Aug so that nothing would reflow on the day it was filled. Nothing did.

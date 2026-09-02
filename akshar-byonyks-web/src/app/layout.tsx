@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans, Yellowtail } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 
 import { SiteFooter } from "@/components/layout/footer";
@@ -15,50 +15,34 @@ const notoSans = Noto_Sans({
   weight: ["400", "600", "700"],
 });
 
-// THE WORDMARK FACE, AND THE ONLY PLACE ON THIS SITE THAT IS NOT NOTO SANS.
-// Client instruction, 1 Sep 2026: "change font on loading animation to Byonyks
-// logo font". Spec Section 6 says one family, so this is a deliberate,
-// recorded exception scoped to a single element — the opening curtain's
-// wordmark — and nothing else may use it.
+// THE CURTAIN NO LONGER LOADS A FACE, AND NOTHING ON THIS SITE IS NOW OUTSIDE
+// NOTO SANS (1 Sep 2026, later the same day).
 //
-// YELLOWTAIL IS AN APPROXIMATION, NOT THE LOGO FACE, and that has to be said
-// plainly. Nobody has supplied the font file or named the family, and both
-// marks carry custom swashes, so the face cannot be identified from artwork
-// with certainty.
+// A `Yellowtail` declaration stood here for a few hours, as a recorded
+// exception to spec Section 6, so the opening curtain could answer the client
+// instruction "change font on loading animation to Byonyks logo font". It has
+// been removed, and the exception with it.
 //
-// IT WAS CHOSEN TWICE, AND THE SECOND TIME AGAINST THE RIGHT LOGO. The first
-// pass had only the *Byonyks* mark from byonyks.com — a heavy, near-monoline
-// brush script — and Pacifico matched it well. When the client supplied the
-// **Akshar Byonyks** lockup, its wordmark turned out to be a different face
-// entirely: high-contrast, sharply slanted, with pointed terminals, a swashed
-// A and an open-bowled B. Pacifico is monoline, round and casual, and beside
-// the real artwork it was plainly wrong. Candidates were re-rendered directly
-// underneath a crop of the supplied logo and compared letter by letter;
-// Yellowtail's A swash, k loop, y descender, B bowl and thick/thin contrast
-// all map onto it, where Lobster Two is heavier and more compressed, Playball
-// is lighter and more upright, and Pacifico shares none of its structure.
+// WHAT CHANGED. The client sent the actual Byonyks mark and asked whether the
+// curtain could look like it. It cannot, with any font: that B is bespoke
+// lettering — a flame flourish above it, and a tail that sweeps under the
+// whole word — and no typeface contains it. Approximating it was the entire
+// premise of the Yellowtail declaration, and the premise was wrong.
 //
-// The real mark is bolder than Yellowtail. Yellowtail has one weight, and on
-// an outline that draws itself and floods, letterform structure carries the
-// resemblance and stroke weight does not — verified by screenshotting the
-// curtain rather than assumed.
+// So the wordmark became artwork instead: Byonyks' own published logo, traced,
+// beside "Akshar" in Pacifico converted to outlines, both in one coordinate
+// system in `src/lib/splash-wordmark.ts`. Outlines need no font at the point
+// of use, so **a webfont that was loaded on all twenty-one routes to serve one
+// decoration on one of them is gone.**
 //
-// WHEN THE REAL FILE ARRIVES, this declaration and `SPLASH_FONT_METRICS` in
-// `src/lib/splash.ts` are the two things that change. The metrics are measured
-// from the face, not guessed, so they must be re-measured with it — the note
-// there says how.
+// It also closes the failure mode this declaration had to carry: with `swap`,
+// the first paint could show cursive-default letterforms and then jump when
+// the face arrived. The curtain now renders identically on the server, in the
+// first paint and on every frame after.
 //
-// `swap`, not `block`. A `block` display would hold the wordmark invisible for
-// up to three seconds, which on a slow connection is an empty ink curtain for
-// the whole of `SPLASH_MAX_MS` — worse than the fallback flash it prevents.
-// next/font preloads the file and generates a metric-matched fallback, so the
-// common case is that the face is there before the first paint.
-const wordmarkFont = Yellowtail({
-  variable: "--font-wordmark",
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
+// IF THE REAL LOGO FONT IS EVER SUPPLIED, it does not come back here. It would
+// change how `splash-wordmark.ts` is generated, and that recipe lives in
+// `public/images/README.md`.
 
 // metadataBase makes every per-page `alternates.canonical` and Open Graph URL
 // resolve absolute, which spec §11.2 requires on every page. The title
@@ -109,7 +93,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-IN" className={`${notoSans.variable} ${wordmarkFont.variable}`}>
+    <html lang="en-IN" className={notoSans.variable}>
       <body className="flex min-h-screen flex-col antialiased">
         {/* ARMS THE OPENING CURTAIN, AND IS THE ONLY THING THAT DOES.
             `site-splash.tsx` never second-guesses this, so the rule about who

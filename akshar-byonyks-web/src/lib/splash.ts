@@ -1,3 +1,5 @@
+import { splashWordmark } from "@/lib/splash-wordmark";
+
 // The opening curtain's timing contract and its one cross-tree signal.
 //
 // WHY A MODULE-LEVEL BUS AND NOT REACT CONTEXT. The two ends of this signal
@@ -67,65 +69,63 @@ export const SPLASH_FILL_DURATION_S = 0.6;
 export const SPLASH_STAGGER_S = 0.04;
 
 /**
- * THE WORDMARK'S FACE AND ITS BOX, kept together because they are one fact.
+ * THE WORDMARK NO LONGER HAS A FACE, AND THAT IS THE POINT (1 Sep 2026).
  *
- * The curtain set "Akshar Byonyks" in Noto Sans 700 until 1 Sep 2026, when the
- * client asked for the logo's face instead. `layout.tsx` carries why Yellowtail
- * stands in for a face nobody has supplied, and why it is recorded as an
- * approximation rather than presented as the real thing. **It was chosen twice
- * that day** — first against the Byonyks mark, then re-chosen against the
- * Akshar Byonyks lockup when the client supplied it, which turned out to use a
- * completely different script. The metrics below were re-measured with it.
+ * `SPLASH_FONT_METRICS` used to live here: a family plus the three per-em
+ * numbers `StrokeText` needs to compute a viewBox around live text. It is gone
+ * because the curtain no longer sets type. The client asked for its "Byonyks"
+ * to look like the real Byonyks mark, and no font can do that — the B is
+ * bespoke lettering with a flourish and a tail that sweeps under the word — so
+ * the wordmark is now outlines, in `src/lib/splash-wordmark.ts`, with its box
+ * baked into the data.
  *
- * THE THREE NUMBERS ARE MEASURED, NOT ESTIMATED. `getBBox()` and
- * `getComputedTextLength()` on "Akshar Byonyks" set in Yellowtail at 128px,
- * with letter-spacing at zero, in Chromium with the webfont loaded: 0.403em of
- * mean advance per character, 0.969em of ascent and 0.305em of descent. Each is
- * rounded outwards below, exactly as the Noto Sans defaults in
- * `stroke-text.tsx` are, so the box stays a superset of the glyphs — an
- * overflowing swash is clipped by the SVG viewport, while a box a few per cent
- * too large costs only scale.
+ * Three things went with it, all improvements:
  *
- * THESE NUMBERS ARE NOTHING LIKE THE SANS DEFAULTS, which is the whole reason
- * they are props rather than constants: Yellowtail's mean advance is 0.403em
- * against Noto Sans 700's 0.569em, so a script wordmark set in the sans box
- * sits in a frame a third too wide and shrinks to fit it.
+ *   - **No webfont in the curtain.** Yellowtail was loaded on every page to
+ *     serve one decoration on one route, and left `layout.tsx` in the same
+ *     change. The opening can no longer be altered by a font failing to load.
+ *   - **No metrics to keep in sync.** The pairing of family and box was a
+ *     standing hazard — swap one without the other and the glyphs clip. There
+ *     is nothing left to pair.
+ *   - **No fallback frame.** A `swap` face meant the first paint could show
+ *     cursive-default letterforms and then jump. Outlines are the same on the
+ *     server, in the first paint and on every frame after.
  *
- * LETTER-SPACING IS ZERO AND MUST STAY ZERO. Yellowtail is a connected script.
- * The component's -2px default pulls the joins apart and turns a signature into
- * fourteen separate letters.
- *
- * IF THE REAL LOGO FONT ARRIVES: re-measure with it rather than reusing these.
- * Set the string at 128px in an <svg><text>, wait on `document.fonts.ready`,
- * then read `getBBox()` — ascent is `-y / 128`, descent is `(y + height) / 128`
- * and the advance is `getComputedTextLength() / 128 / characterCount`.
+ * If the real logo font is ever supplied, it does not come back here: it would
+ * change how `splash-wordmark.ts` is GENERATED, and that recipe is in
+ * `public/images/README.md`.
  */
-export const SPLASH_FONT_METRICS = {
-  family: "var(--font-wordmark), cursive",
-  advanceEm: 0.44,
-  ascentEm: 1.02,
-  descentEm: 0.35,
-  letterSpacing: 0,
-} as const;
 
 /**
  * Floor. Below this the wordmark is a flicker rather than a moment, and a
- * curtain that flashes reads as a bug — but it now also guarantees the flood
+ * curtain that flashes reads as a bug — but it also guarantees the animation
  * has landed, so it is DERIVED rather than chosen. Change the timings above
  * and this follows them.
  *
- * The flood is what finishes last: it ends at draw + delay + duration = 1.9s,
- * while the staggered draw's final character lands at
- * `stagger * (chars - 1) + draw` = 1.72s for the fourteen in "Akshar Byonyks".
- * If the stagger or the wordmark ever grows enough to invert that, this needs
- * to take the max of the two rather than the flood alone.
+ * IT NOW TAKES THE MAX OF TWO ENDINGS, which the previous note said would be
+ * needed "if the stagger or the wordmark ever grows enough to invert" the
+ * order — and moving to outlines did exactly that. The flood ends at
+ * draw + delay + duration = 1.9s. The staggered draw ends at
+ * `stagger * (contours - 1) + draw`, and the lockup has NINETEEN contours
+ * where the old string had fourteen characters, so that is now 1.92s and the
+ * draw finishes last. Taking the flood alone would have dismissed the curtain
+ * on the final contour mid-stroke.
+ *
+ * Derived from the contour count rather than a constant, so re-generating the
+ * wordmark with a different pairing cannot silently re-invert it.
  *
  * Well under `SPLASH_MAX_MS`, which is the ceiling and is not to be raised —
  * on a slow load that ceiling still wins and the curtain still lifts mid-draw,
  * because failing open beats finishing the animation.
  */
+const SPLASH_CONTOURS =
+  splashWordmark.akshar.length + splashWordmark.byonyks.length;
+
 export const SPLASH_MIN_MS = Math.round(
-  (SPLASH_DRAW_S + SPLASH_FILL_DELAY_S + SPLASH_FILL_DURATION_S) * 1000,
+  Math.max(
+    SPLASH_DRAW_S + SPLASH_FILL_DELAY_S + SPLASH_FILL_DURATION_S,
+    SPLASH_STAGGER_S * (SPLASH_CONTOURS - 1) + SPLASH_DRAW_S,
+  ) * 1000,
 );
 
 /** Reduced motion draws nothing, so there is nothing to wait for beyond

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { StrokeText } from "@/components/motion/stroke-text";
+import { SplashWordmark } from "@/components/motion/splash-wordmark";
 import { cn } from "@/lib/utils";
 import {
   onSilkReady,
@@ -11,7 +11,6 @@ import {
   SPLASH_FADE_MS,
   SPLASH_FILL_DELAY_S,
   SPLASH_FILL_DURATION_S,
-  SPLASH_FONT_METRICS,
   SPLASH_MAX_MS,
   SPLASH_MIN_MS,
   SPLASH_MIN_MS_REDUCED,
@@ -217,46 +216,27 @@ export function SiteSplash() {
             accent on large display type, which at this size it comfortably is.
             Nothing here carries meaning by colour — the wordmark's text is on
             the wrapper's `aria-label`. */}
-        <StrokeText
+        <SplashWordmark
           className="text-white"
-          text="Akshar Byonyks"
           strokeColor="var(--color-accent-gold)"
           fillColor="currentColor"
-          // THE BYONYKS LOGO'S FACE, on client instruction (1 Sep 2026), and
-          // the only element on this site that is not Noto Sans. The family
-          // and the three metrics travel together from `splash.ts` — the
-          // viewBox is computed from them, and a script's box is nothing like
-          // a sans's, so changing one without the others clips the glyphs.
-          fontFamily={SPLASH_FONT_METRICS.family}
-          advanceEm={SPLASH_FONT_METRICS.advanceEm}
-          ascentEm={SPLASH_FONT_METRICS.ascentEm}
-          descentEm={SPLASH_FONT_METRICS.descentEm}
-          // Zero, not the component's -2px default. Yellowtail is a connected
-          // script and negative tracking pulls its joins apart.
-          letterSpacing={SPLASH_FONT_METRICS.letterSpacing}
-          fontSize={128}
-          // 400 is the only weight Yellowtail ships. The real mark is bolder;
-          // on an outline that draws and floods, letterform structure carries
-          // the resemblance and stroke weight does not.
-          fontWeight={400}
-          // STROKE WIDTH IS IN USER UNITS, NOT PIXELS, and that is the one
-          // number the original component gets wrong once its SVG is scaled.
-          // `strokeWidth` is measured against the 128-unit font inside the
-          // viewBox; the viewBox is then fitted to the container, so at this
-          // size every user unit lands at roughly 0.7 CSS px. The original's
-          // 1.4 default renders as a sub-pixel hairline that disappears on a
-          // dark ground — measured at 0.87 CSS px before this was raised.
+          // OUTLINES, NOT TYPE, since 1 Sep 2026. The client asked for the
+          // curtain's "Byonyks" to look like the real Byonyks mark; no font
+          // contains that B, so the wordmark is now artwork — Pacifico
+          // outlines for "Akshar" beside Byonyks' own traced logo, both in one
+          // coordinate system in `src/lib/splash-wordmark.ts`. Yellowtail left
+          // `layout.tsx` in the same change, so no webfont loads for this.
           //
-          // DOUBLED FROM 3.5 ON 1 SEP 2026, and it is not a weight change.
-          // `StrokeText` now masks the stroke to the OUTSIDE of the letterform
-          // union, so a centred stroke shows only its outer half and 3.5 drew
-          // at half the weight it used to. 7 puts the visible band back to the
-          // 3.5 that was measured here. The two numbers move together: halve
-          // this and the drawn line halves with it.
-          strokeWidth={7}
+          // STROKE WIDTH IS IN USER UNITS, NOT PIXELS, against a viewBox whose
+          // x-height is 342 — roughly 5.6x the 128-unit box the old text
+          // version used, which is why this number is not the 7 that one
+          // carried. Half of it is what you see: the inner half is masked
+          // away, exactly as on `StrokeText`, so this draws at 22 units and
+          // leaves the same weight of gold keyline once the flood lands.
+          strokeWidth={44}
           // From `splash.ts`, not chosen here: `SPLASH_MIN_MS` is derived from
-          // these same four numbers so the curtain cannot lift before the
-          // flood lands. Retuning the animation means editing them there.
+          // these four numbers AND the lockup's contour count, so the curtain
+          // cannot lift before the last stroke finishes. Retune them there.
           drawDuration={SPLASH_DRAW_S}
           fillDelay={SPLASH_FILL_DELAY_S}
           fillDuration={SPLASH_FILL_DURATION_S}
