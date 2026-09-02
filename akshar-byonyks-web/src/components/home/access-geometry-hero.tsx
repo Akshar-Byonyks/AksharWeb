@@ -129,17 +129,31 @@ export function AccessGeometryHero() {
               the cards into whatever space the headline left over and made the
               stack read as an undersized afterthought rather than its own
               moment — reported directly as "does not fit proportionally." */}
-          <div className="mx-auto w-full max-w-[1280px] px-4 pt-24 pb-16 sm:px-6 lg:px-8">
-            <h1 className="max-w-2xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+          <div className="mx-auto w-full max-w-[1280px] px-4 pt-28 pb-20 sm:px-6 lg:px-8 lg:pt-32 lg:pb-24">
+            {/* LEADING, SET EXPLICITLY (2 Sep 2026). Tailwind pairs both
+                `text-5xl` and `text-6xl` with a line-height of 1, so this
+                four-line headline was 60px type on 60px lines — the descenders
+                in "brings" and "dialysis" ran into the caps beneath them, and
+                the block read as a wall. Reported as "very close together".
+
+                1.1 rather than the 1.2 body ratio: display type wants tighter
+                leading than text, and this headline still has to hold together
+                as one object over the silk. The mobile step is a touch looser
+                because it wraps to five lines at 36px, where the same ratio
+                buys less optical air. */}
+            <h1 className="max-w-2xl text-4xl leading-[1.15] font-bold tracking-tight sm:text-5xl lg:text-6xl lg:leading-[1.1]">
               Akshar Byonyks brings Byonyks&rsquo; FDA-cleared home dialysis
               technology to India.
             </h1>
-            <p className="mt-5 max-w-xl text-lg text-white/75">
+            {/* The gap has to beat the paragraph's OWN 28px line gap, or the
+                lede reads as a fifth line of the headline rather than as the
+                block beneath it. mt-5 (20px) lost that comparison. */}
+            <p className="mt-8 max-w-xl text-lg text-white/75 lg:mt-10">
               Licensed from Byonyks USA and cleared by the US FDA under
               510(k) in May 2025, the X-1 automated peritoneal dialysis
               cycler is arriving for India&rsquo;s dialysis patients.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-10 flex flex-wrap items-center gap-4 lg:mt-12">
               <Button
                 asChild
                 size="lg"

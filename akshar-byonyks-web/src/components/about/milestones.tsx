@@ -32,7 +32,7 @@ import { milestones } from "@/lib/about";
 // light, per the Full-Bleed Rule's meaning test.
 const tierLabel: Record<string, string> = {
   "public-record": "On the FDA's public record",
-  "company-stated": "Stated by Byonyks",
+  "company-stated": "Company statement",
   pending: "Not yet stated",
 };
 

@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils";
 //
 //   plum    "institutional / formal"   -> on the public record
 //   teal    "clinical evidence"        -> published source
-//   primary the site's own workhorse   -> stated by Byonyks
+//   primary the site's own workhorse   -> company statement
 //   pending "not yet established"      -> not yet established
 //
 // Gold stays out. Gold means "home / India", and the discipline of NOT
@@ -57,8 +57,15 @@ export type Provenance =
     }
   | {
       status: "stated";
-      /** Whose assertion this is. Never "Akshar Byonyks" for a Byonyks fact. */
-      statedBy: string;
+      /**
+       * Whose assertion this is, where naming them adds something. OPTIONAL
+       * since 2 Sep 2026: the client holds Byonyks' permission for its
+       * material and asked for the Byonyks attributions to come off, so the
+       * Byonyks-sourced entries now omit it and the mark renders the status
+       * alone. `origin-story.tsx` still sets it, and that is why this field
+       * survives rather than being deleted.
+       */
+      statedBy?: string;
       /** The date on the credential, where the credential carries one. */
       asOf?: string;
     }
@@ -81,7 +88,7 @@ export const provenanceMeta: Record<
     label: "On the public record",
     short: "Public record",
     meaning:
-      "Held in a public register anyone can open and check without asking us or Byonyks — the FDA's 510(k) database, a government scheme document, a court or corporate filing.",
+      "Held in a public register anyone can open and check without asking us — the FDA's 510(k) database, a government scheme document, a court or corporate filing.",
     light: "text-plum",
     dark: "text-plum-on-ink",
   },
@@ -89,15 +96,15 @@ export const provenanceMeta: Record<
     label: "Published source",
     short: "Published",
     meaning:
-      "Published research, a journal article or a dated public report by someone other than Byonyks or Akshar Byonyks. Named and dated so you can weigh it.",
+      "Published research, a journal article or a dated public report by someone independent of this company. Named and dated so you can weigh it.",
     light: "text-teal",
     dark: "text-teal-on-ink",
   },
   stated: {
-    label: "Stated by Byonyks",
+    label: "Company statement",
     short: "Stated",
     meaning:
-      "Byonyks' own account of its device, testing or operations. True as an attribution and marked as one. It is not independently verifiable from here, and this site does not restate it in its own voice.",
+      "The company's own account of its device, testing or operations. It is not independently verifiable from here, and the specific numbers that would make it checkable are listed as pending where they are missing.",
     light: "text-primary",
     dark: "text-primary-on-ink",
   },
@@ -163,7 +170,7 @@ function ProvenanceBody({
         </p>
       ) : null}
 
-      {provenance.status === "stated" ? (
+      {provenance.status === "stated" && provenance.statedBy ? (
         <p className={cn("mt-1.5 text-xs leading-5", muted)}>
           {provenance.statedBy}
         </p>

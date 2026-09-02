@@ -196,7 +196,7 @@ export function X1Compliance() {
             a reader meets one register language across the site. */}
         <ScrollReveal>
           <h3 className="mt-16 text-sm font-semibold tracking-wide text-ink uppercase">
-            Stated by Byonyks
+            Company statements
           </h3>
           {/* No lead paragraph under this heading, unlike the register above
               it — removed on request, 31 Aug 2026. The heading itself is what
@@ -226,11 +226,17 @@ export function X1Compliance() {
                     </p>
                     <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
                       <ProvenanceChip status="stated" />
-                      <p className="text-sm text-muted-foreground">
-                        {verification.kind === "company-stated"
-                          ? verification.recordedIn
-                          : verification.register}
-                      </p>
+                      {/* The register name is still shown for an independently
+                          verifiable credential. A company-stated one no longer
+                          carries "Byonyks, byonyks.com" beside it (2 Sep 2026,
+                          client instruction): the source citation came off with
+                          the rest of them, and what a reader needs here — which
+                          number is missing — is the PendingChip below. */}
+                      {verification.kind !== "company-stated" ? (
+                        <p className="text-sm text-muted-foreground">
+                          {verification.register}
+                        </p>
+                      ) : null}
                       {/* PendingChip stays. It answers a different question —
                           not "how is this known" but "which specific number is
                           missing" — and the scale's own `pending` status is for

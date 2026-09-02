@@ -551,7 +551,8 @@ into two assets by use, rather than scaled until it is a smudge.
 #### brand/akshar-byonyks-emblem.png — the nav mark
 
 - **Crop:** `extract` left 270, top 50, w 1095, h 700 from the source, then `trim` at threshold 12 → 1003×689. That box is the globe, the gold ring and the monogram, and stops above the script wordmark.
-- **Output:** 360×247 PNG with a palette (`palette: true, quality: 92`). Palette rather than full colour because this is a photographic render the nav loads on **every page** — full-colour PNG cost 290KB for the same pixels, palette costs 51KB.
+- **Output:** 360×247 RGBA PNG, 42KB. It was a 51KB palette PNG until 2 Sep 2026, when the white background was knocked out (below); **the transparent version is the SMALLER of the two**, because 30% of the frame became one flat value and deflate does the rest. The earlier note here — that full colour cost 290KB against palette's 51KB, so palette was the only affordable option on an asset the nav loads on every page — was measured on the opaque file and is no longer the operative tradeoff.
+- **The white background was knocked out on 2 Sep 2026** and the recipe is below. Nothing else about the crop changed: same 360×247, same pixels, same intrinsic dimensions in `animated-nav.tsx`.
 - **Sized for 3×:** rendered at 34px tall, so 360px wide covers the densest screen with room to spare.
 - **Used on:** the site nav (`animated-nav.tsx`), where it is the home link. Its `alt` carries the company name, because it replaced a link that read "Home" and is the link's only accessible name.
 
@@ -569,16 +570,52 @@ into two assets by use, rather than scaled until it is a smudge.
 - **The margin is deliberate.** A favicon whose artwork bleeds to its own edges reads as a crop of something larger rather than as a mark.
 - These use Next.js's file convention, so they are picked up automatically and no `icons` entry in `metadata` is needed. The pre-existing `src/app/favicon.ico` is left in place as the legacy fallback.
 
-**WHY THE LOGO IS NOT IN THE FOOTER.** The footer is `bg-ink`. The supplied file
-has an opaque white background and no alpha, so it would sit there as a white
-rectangle. Knocking the white out is not the easy fix it sounds like: the
-artwork's own highlights are white — the keyline around the AB monogram, the
-silver continents — so a threshold-based knockout punches holes through the
-middle of the mark, and the globe's soft drop shadow survives as a grey smudge
-on dark. A border-connected flood fill would preserve the interior whites and
-still leave the shadow. **The right fix is a transparent-background or
-reversed-out version from whoever made the logo**, which is one request, so the
-footer waits for it rather than shipping a damaged mark.
+**THE WHITE BACKGROUND, KNOCKED OUT — 2 Sep 2026.** Reported directly: over an
+ink section you could see the white box around the mark. You could; the nav
+capsule is `bg-background/80` over the ink hero, and an opaque white rectangle
+on a translucent light capsule reads as a brighter panel sitting proud of it.
+
+**THERE WAS NOTHING TO CROP, and that is worth stating because "crop it" is the
+natural first thought.** Measured: the opaque bounding box of this file is
+x 0–359, y 0–246 — the artwork bleeds to all four edges, the gold ring reaching
+left and right and the globe reaching the top. The white was not a margin
+around a rectangular mark; it was the paper *between* the arms of a
+non-rectangular one. No rectangle removes it.
+
+The block that stood here said a knockout could not be done safely. Half of
+that was right and the recipe below is what the other half needed.
+
+- **A threshold knockout does destroy the mark**, exactly as claimed: the
+  continents are silver, the keyline around the AB monogram is white, and the
+  gold ring carries white speculars. All of them are as bright as the paper.
+- **A border-connected flood fill is the fix**, also as claimed — an enclosed
+  highlight is never reached from outside — **but a single flood fill is not
+  enough, and that took a measurement to find.** A flood loose enough to catch
+  the antialiased edge (min channel ≥ 222) squeezes THROUGH the bright specular
+  on the globe's upper-right rim and speckles holes across northern Asia. At
+  ≥ 232 it does not: the filled region's topmost pixel inside the globe moves
+  from y=22 to y=88, and y=88 down is the counter of the "A" and the bowls of
+  the "B", which are real paper holes and must stay open.
+- **So connectivity and edge-grading are decoupled.** The flood runs at min
+  channel ≥ 240, too strict to squeeze any rim. Its region is then dilated 2px,
+  and alpha is graded by whiteness *inside the dilation only* (fully out at
+  ≥ 246, fully opaque at ≤ 220, ramped between). A bounded dilation from a
+  leak-free seed cannot reach the middle of the globe. Fringe pixels are
+  un-premultiplied against the white they were composited over, or every edge
+  stays milky and the mark wears a halo on ink.
+- **The predicted grey drop shadow did not materialise on this crop.** It was a
+  fair prediction and it is why the bottom band was inspected on ink at 3×
+  before shipping rather than after. There is no smudge: the globe's underside
+  is its own dark blue and it meets ink cleanly.
+- **Verified on four grounds** — white, `--color-surface-2`, mid grey and
+  `--color-ink` — plus the live nav over the ink hero, before and after.
+
+Result: 29.9% of the frame is fully transparent, 849 px carry a graded edge,
+and no pixel of the artwork was lost. **The footer is no longer blocked on a
+supplied transparent version** — it can carry the mark whenever that is wanted.
+A reversed-out version from the logo's author would still be better for dark
+grounds specifically, because this one keeps the highlights that were drawn for
+white paper, but nothing is waiting on it.
 
 ---
 

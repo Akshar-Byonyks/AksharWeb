@@ -156,7 +156,7 @@ Navy and a WCAG-AA blue carry the system's weight; four rationed accent roles ca
 |---|---|---|---|
 | **On the public record** | A register anyone can open — the FDA 510(k) database, a government scheme document, a filing | `plum` `#6b3a5c` | `#c096b1` |
 | **Published source** | Research or a dated public report by someone other than Byonyks or Akshar Byonyks | `teal` `#0e7c72` | `#4fb3a8` |
-| **Stated by Byonyks** | Byonyks' own account, true as an attribution and marked as one | `primary` `#0d5d8d` | `#6faed6` |
+| **Company statement** | The company's own account; not independently verifiable from here, with the missing number named by a `pending` chip beside it. Renamed from "Stated by Byonyks" on 2 Sep 2026, when the client asked for the Byonyks citations and attributions to come off — see CLAUDE.md | `primary` `#0d5d8d` | `#6faed6` |
 | **Not yet established** | Nobody has given us this yet, or nobody has confirmed it | `pending` `#9c6410` | `#d99a3a` |
 
 The three on-ink values were chosen so all four land within **6.6–7.0:1 on `--color-ink`** and read as one tonal family with the pre-existing `pending-on-ink`, rather than four unrelated tints.

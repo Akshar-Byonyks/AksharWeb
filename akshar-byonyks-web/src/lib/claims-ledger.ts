@@ -103,7 +103,6 @@ const fromCompliance: readonly LedgerEntry[] = [
       detail: credential.detail,
       provenance: {
         status: "stated",
-        statedBy: v.recordedIn,
         ...(credential.date ? { asOf: credential.date } : {}),
       },
       appearsOn: credential.title === "Therapies delivered" ? [X1, HOME] : [X1],

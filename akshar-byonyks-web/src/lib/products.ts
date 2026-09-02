@@ -28,7 +28,15 @@ import type { Provenance } from "@/components/common/provenance";
 // disruption for a device that does not exist yet is a claim nobody here can
 // stand behind.
 
-/** One pass, one date. */
+/**
+ * One pass, one date.
+ *
+ * NO LONGER RENDERED (2 Sep 2026). The client holds Byonyks' permission for
+ * this material and asked for the source citations to come off the site, so
+ * the /products "Source" note and the quotation's footer are gone. Both
+ * constants are KEPT as the internal record of what was pulled and when — the
+ * page no longer says it, but the project should still know it.
+ */
 export const PRODUCTS_RETRIEVED = "1 September 2026";
 
 export const PRODUCTS_SOURCE = "https://byonyks.com/products/";
@@ -102,8 +110,6 @@ export const products: readonly Product[] = [
     status: "announced",
     provenance: {
       status: "stated",
-      statedBy: "Byonyks",
-      asOf: PRODUCTS_RETRIEVED,
     },
     image: {
       src: "/images/products/x2-x3-teaser.png",

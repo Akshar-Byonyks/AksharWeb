@@ -39,7 +39,12 @@ import type { Provenance } from "@/components/common/provenance";
 // published fact — and for the India office there is none — the gap is a
 // field, a visible marker and a sentence, never a plausible guess.
 
-/** Retrieved together, in one pass, so one date covers the set. */
+/**
+ * Retrieved together, in one pass, so one date covers the set.
+ *
+ * NO LONGER RENDERED (2 Sep 2026) — see `PRODUCTS_RETRIEVED`. Kept as the
+ * internal record of when these addresses were pulled.
+ */
 export const LOCATIONS_RETRIEVED = "31 August 2026";
 const BYONYKS = "Byonyks";
 
@@ -135,8 +140,6 @@ export const locations: readonly Location[] = [
     address: ["550 E. Devon Avenue, Unit 140", "Itasca, IL 60143"],
     provenance: {
       status: "stated",
-      statedBy: BYONYKS,
-      asOf: LOCATIONS_RETRIEVED,
     },
     image: {
       src: "/images/locations/itasca-head-office.jpg",
@@ -160,8 +163,6 @@ export const locations: readonly Location[] = [
     status: "planned",
     provenance: {
       status: "stated",
-      statedBy: BYONYKS,
-      asOf: LOCATIONS_RETRIEVED,
     },
     gap: "No opening date, no operating entity and no CDSCO manufacturing licence has been published for this site.",
     image: {
@@ -185,8 +186,6 @@ export const locations: readonly Location[] = [
     status: "planned",
     provenance: {
       status: "stated",
-      statedBy: BYONYKS,
-      asOf: LOCATIONS_RETRIEVED,
     },
     gap: "The city is the client audit's correction of a published “Gujarat”. No opening date, operating entity or CDSCO manufacturing licence has been published.",
     image: {

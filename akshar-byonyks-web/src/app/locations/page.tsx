@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { ProvenanceMark } from "@/components/common/provenance";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import {
   DocumentGrid,
@@ -12,7 +11,7 @@ import { LocationRegister } from "@/components/locations/location-register";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { CtaBand } from "@/components/sections/cta-band";
 import { defaultOg } from "@/lib/seo";
-import { byIndiaFirst, LOCATIONS_RETRIEVED } from "@/lib/locations";
+import { byIndiaFirst } from "@/lib/locations";
 
 const path = "/locations";
 
@@ -125,16 +124,6 @@ export default function LocationsPage() {
             id="sites"
             title="All four sites, India first"
             lead="The three India sites lead, then Byonyks' head office. The Akshar Byonyks India office is open and its address is coming soon; Hyderabad and Ahmedabad are announced rather than open — neither has a published opening date, and neither is called a manufacturing site here, because that is a separate CDSCO licence route and no licence has been published for either. Every card names the company that holds the building."
-            rail={
-              <ProvenanceMark
-                provenance={{
-                  status: "stated",
-                  statedBy: "Byonyks",
-                  asOf: LOCATIONS_RETRIEVED,
-                }}
-                label="Stated by Byonyks"
-              />
-            }
             items={byIndiaFirst}
           />
         </div>
@@ -152,12 +141,6 @@ export default function LocationsPage() {
         <ScrollReveal>
           <DocumentGrid>
             <GridBlock
-              rail={
-                <RailNote label="Method">
-                  Retrieved from Byonyks&rsquo; own published pages on{" "}
-                  {LOCATIONS_RETRIEVED}. Nothing on this page is inferred.
-                </RailNote>
-              }
             >
               <h2
                 id="locations-limits-heading"

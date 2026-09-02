@@ -7,21 +7,11 @@ import { DirectionContract } from "@/components/common/direction-contract";
 import { PendingNote } from "@/components/common/pending-note";
 import { ProvenanceMark } from "@/components/common/provenance";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
-import {
-  DocumentGrid,
-  GridBlock,
-  RailNote,
-} from "@/components/layout/document-grid";
+import { DocumentGrid, GridBlock } from "@/components/layout/document-grid";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { CtaBand } from "@/components/sections/cta-band";
 import { licensingStatement } from "@/lib/claims";
-import {
-  getProduct,
-  PRODUCTS_RETRIEVED,
-  PRODUCTS_SOURCE,
-  x2x3ComingSoon,
-  x2x3Statement,
-} from "@/lib/products";
+import { getProduct, x2x3ComingSoon, x2x3Statement } from "@/lib/products";
 import { siteUrl } from "@/lib/site-config";
 
 const path = "/products";
@@ -212,14 +202,7 @@ describes dust sheets, because that is what is in the frame.
         <div className="mx-auto max-w-[1280px] px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <ScrollReveal>
             <DocumentGrid>
-              <GridBlock
-                rail={
-                  <RailNote label="Source">
-                    Byonyks, byonyks.com/products, retrieved{" "}
-                    {PRODUCTS_RETRIEVED}. Quoted, not restated.
-                  </RailNote>
-                }
-              >
+              <GridBlock>
                 <p className="font-mono text-xs tracking-wide text-muted-foreground uppercase">
                   Announced
                 </p>
@@ -254,15 +237,7 @@ describes dust sheets, because that is what is in the frame.
                 </figure>
               </GridBlock>
 
-              <GridBlock
-                className="mt-12"
-                rail={
-                  <ProvenanceMark
-                    provenance={x2x3.provenance}
-                    label="Stated by Byonyks"
-                  />
-                }
-              >
+              <GridBlock className="mt-12">
                 <h3 className="text-lg font-semibold text-ink">
                   What Byonyks says about them
                 </h3>
@@ -277,17 +252,6 @@ describes dust sheets, because that is what is in the frame.
                   <p className="mt-3 text-base text-muted-foreground">
                     {x2x3ComingSoon}
                   </p>
-                  <footer className="mt-4 text-sm text-muted-foreground">
-                    &mdash; Byonyks,{" "}
-                    <a
-                      href={PRODUCTS_SOURCE}
-                      className="rounded-sm text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                      rel="noreferrer"
-                    >
-                      byonyks.com/products
-                    </a>
-                    , retrieved {PRODUCTS_RETRIEVED}
-                  </footer>
                 </blockquote>
 
                 <PendingNote
