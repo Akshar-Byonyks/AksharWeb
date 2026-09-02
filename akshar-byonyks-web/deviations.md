@@ -1586,6 +1586,26 @@ This is a **deliberate, recorded exception to spec Section 6's one-family rule**
 
 `display: "swap"`, not `"block"`: a block period would hold the wordmark invisible for up to three seconds, which on a slow connection is an empty ink curtain for the whole of `SPLASH_MAX_MS`. Both ceilings are untouched.
 
+### The script had to be knocked out before it could be drawn
+
+Reported by the client on the reload screen: "before the letters get white fill, you can see a lot of lines in the fill of letters from the font". Correct, and it was a consequence of the face change above rather than anything new.
+
+**`StrokeText`'s draw layer is `fill: none`, so every glyph's outline is painted in full — including the parts of it that fall inside the letters either side.** On Noto Sans that costs nothing, because adjacent letters do not touch. Yellowtail is a joined script whose letters deliberately overlap, so the same code drew the wordmark as a thicket: entry and exit strokes crossing straight through the bodies of their neighbours, worst at the `sh` and `ks` joins and under the descenders of "Byonyks". Screenshotted mid-draw before and after.
+
+**Only the drawing was ever wrong.** The white flood covers every interior line, so the finished wordmark had always been clean — the defect lived entirely in the ~1.9s before the flood lands, which is also exactly the part of the animation the curtain exists to show.
+
+The fix is a luminance mask of *everything, minus the glyphs*, applied to the stroke layer, which clips it to the outside of the letterform union — the silhouette a reader expects an outlined script to have. Three things made this the right shape rather than a heavier hand:
+
+- **It is background-agnostic.** The obvious alternative — filling each glyph with the curtain's ink so later letters cover earlier outlines — does not work in one `<text>` element, because SVG paints the whole element's fill and then the whole element's stroke, so every crossing survives. Splitting the string into one `<text>` per character would fix the paint order and would need a per-character advance measurement, which §3 of the component removed on purpose after it made the wordmark jump 21px mid-draw.
+- **Nothing in the mask is animated,** so the `<defs>` trap recorded on the flood — elements inside `<defs>` are never rendered, so the browser never runs their CSS animations — does not apply here.
+- **`black` and `white` inside a mask are the alpha channel, not paint.** The no-hardcoded-hex rule has nothing to bite on; the component still names no colour.
+
+**`strokeWidth` went 3.5 → 7, and that is not a weight change.** A centred stroke shows only its outer half once the interior is masked, so 3.5 drew at half the weight that had been measured and chosen. 7 puts the visible band back where it was. The two numbers now move together, and the prop's doc says so, because the next person to tune this will otherwise halve the line without meaning to.
+
+The one real consequence: **the settled wordmark's gold keyline is twice as heavy as it was**, since that ring is also the outer half of the stroke. It reads as a two-colour logo lockup rather than a hairline, which is arguably better on the mark this is standing in for — but it is a visible change to a frame the client has already approved, and it can go back to a hairline by halving both numbers together.
+
+Verified: zero hydration errors and zero console errors on Home with the mask's `useId` crossing the server/client boundary; the `mask` reference resolves in the DOM; reduced motion still arrives fully drawn and flooded; no clipping at 1440, 390 or 320.
+
 ### The logo and the two headshots arrived the same day
 
 The client supplied `Akshar Byonyks Logo.png`, `Ronak Headshot.png` and `Sahil Heeadshot.jpg` hours after the pass above shipped. All three filled gaps that had deliberately been left visible rather than hidden — two `portraitPending` frames and a `LOGO: null` slot that had been reserving its exact space since 31 Aug so that nothing would reflow on the day it was filled. Nothing did.

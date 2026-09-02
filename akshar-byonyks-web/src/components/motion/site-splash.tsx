@@ -246,7 +246,14 @@ export function SiteSplash() {
           // size every user unit lands at roughly 0.7 CSS px. The original's
           // 1.4 default renders as a sub-pixel hairline that disappears on a
           // dark ground — measured at 0.87 CSS px before this was raised.
-          strokeWidth={3.5}
+          //
+          // DOUBLED FROM 3.5 ON 1 SEP 2026, and it is not a weight change.
+          // `StrokeText` now masks the stroke to the OUTSIDE of the letterform
+          // union, so a centred stroke shows only its outer half and 3.5 drew
+          // at half the weight it used to. 7 puts the visible band back to the
+          // 3.5 that was measured here. The two numbers move together: halve
+          // this and the drawn line halves with it.
+          strokeWidth={7}
           // From `splash.ts`, not chosen here: `SPLASH_MIN_MS` is derived from
           // these same four numbers so the curtain cannot lift before the
           // flood lands. Retuning the animation means editing them there.

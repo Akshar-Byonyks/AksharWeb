@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useId, useMemo } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -92,6 +92,15 @@ export type StrokeTextProps = {
    */
   strokeColor: string;
   fillColor: string;
+  /**
+   * User units against `fontSize`, not pixels — the viewBox is then fitted to
+   * the container.
+   *
+   * HALF OF THIS IS WHAT YOU SEE. The stroke is centred on the glyph outline
+   * and the inner half is masked away (see the knockout in the markup below),
+   * so the visible band is `strokeWidth / 2`. Pass double whatever weight the
+   * drawn line should have.
+   */
   strokeWidth?: number;
   /** Seconds. */
   drawDuration?: number;
@@ -163,6 +172,11 @@ export function StrokeText({
 }: StrokeTextProps) {
   const characters = useMemo(() => Array.from(text), [text]);
 
+  // React 19's `useId` returns «r0»-style ids. They are legal XML names and
+  // resolve fine in `url(#…)`, but they are stripped to word characters here
+  // anyway so the value stays copy-pasteable into devtools.
+  const maskId = `stroke-text-${useId().replace(/[^\w-]/g, "")}`;
+
   // The dash length has to exceed the longest single glyph outline or the
   // stroke reappears at the far end mid-draw. The original's `fontSize * 7`
   // is empirical and holds for Latin at any weight; kept as-is.
@@ -181,12 +195,11 @@ export function StrokeText({
   const contentWidth =
     characters.length * fontSize * advanceEm +
     Math.max(0, characters.length - 1) * letterSpacing;
-  const viewBox = [
-    -pad,
-    -(fontSize * ascentEm + pad),
-    contentWidth + pad * 2,
-    fontSize * (ascentEm + descentEm) + pad * 2,
-  ].join(" ");
+  const boxX = -pad;
+  const boxY = -(fontSize * ascentEm + pad);
+  const boxWidth = contentWidth + pad * 2;
+  const boxHeight = fontSize * (ascentEm + descentEm) + pad * 2;
+  const viewBox = [boxX, boxY, boxWidth, boxHeight].join(" ");
 
   // ANCHORED FROM THE MIDDLE, NOT THE START. The box above is a superset of
   // the text, so the leftover slack has to go somewhere; anchoring at x=0
@@ -226,6 +239,62 @@ export function StrokeText({
         viewBox={viewBox}
         preserveAspectRatio="xMidYMid meet"
       >
+        {/* THE INTERIOR KNOCKOUT, and the reason a connected script needs one.
+            Added 1 Sep 2026.
+
+            The stroke layer below is `fill: none`, so every glyph's OUTLINE is
+            painted in full — including the parts of it that fall inside a
+            neighbouring glyph. On a sans that costs nothing, because adjacent
+            letters do not touch. On Yellowtail, which is a joined script whose
+            letters deliberately overlap, it meant the wordmark drew on as a
+            thicket: entry and exit strokes crossing straight through the
+            bodies of the letters either side of them, most visibly at the
+            "ks" join and under the descenders of "Byonyks". Screenshotted
+            mid-draw before and after.
+
+            The white flood then covered all of it, so the FINISHED wordmark
+            was always clean and only the ~1.9s of drawing was wrong. That is
+            also why this is a mask and not a change of stroke width: the
+            visible gold ring in the end state is the outer half of the stroke
+            either way, so the final frame is pixel-identical to before.
+
+            A luminance mask of "everything, minus the glyphs" clips the stroke
+            to the outside of the letterform union, which is the silhouette a
+            reader expects an outlined script to have. `black` and `white` here
+            are the mask's own luminance channel — the alpha it composites
+            with — not paint, so the no-hex rule this file observes elsewhere
+            has nothing to bite on. Nothing in the mask is animated, so the
+            `<defs>` caveat noted on the flood below does not apply. */}
+        <defs>
+          <mask
+            id={maskId}
+            maskUnits="userSpaceOnUse"
+            x={boxX}
+            y={boxY}
+            width={boxWidth}
+            height={boxHeight}
+          >
+            <rect
+              x={boxX}
+              y={boxY}
+              width={boxWidth}
+              height={boxHeight}
+              fill="white"
+            />
+            <text
+              x={anchorX}
+              y="0"
+              textAnchor="middle"
+              className="select-none"
+              style={{ ...fontStyle, fill: "black", stroke: "none" }}
+            >
+              {characters.map((char, i) => (
+                <tspan key={`m-${i}`}>{char}</tspan>
+              ))}
+            </text>
+          </mask>
+        </defs>
+
         {/* COLOUR GOES THROUGH `style`, NOT THROUGH `stroke`/`fill`
             ATTRIBUTES. `var()` is a CSS value function: it resolves in a CSS
             declaration and is meaningless inside an XML presentation
@@ -242,6 +311,7 @@ export function StrokeText({
           strokeWidth={strokeWidth}
           strokeLinejoin="round"
           strokeLinecap="round"
+          mask={`url(#${maskId})`}
           className="select-none"
           style={{ ...fontStyle, fill: "none", stroke: strokeColor }}
         >
