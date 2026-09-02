@@ -233,7 +233,7 @@ export function SiteSplash() {
           // carried. Half of it is what you see: the inner half is masked
           // away, exactly as on `StrokeText`, so this draws at 22 units and
           // leaves the same weight of gold keyline once the flood lands.
-          strokeWidth={44}
+          strokeWidth={41}
           // From `splash.ts`, not chosen here: `SPLASH_MIN_MS` is derived from
           // these four numbers AND the lockup's contour count, so the curtain
           // cannot lift before the last stroke finishes. Retune them there.

@@ -636,6 +636,20 @@ attempt shifted numbers with a regex and produced a viewBox three times too
 tall, because a regex mis-pairs operands the moment a negative number abuts its
 predecessor.
 
+### 2 September 2026 — the A takes the B's flourish
+
+> "The A in Akshar should have similar word art to the B in Byonyks. Additionally, the letters for Akshar feel a little too chunky and need to be a bit smaller."
+
+**It is the same artwork, not a lookalike.** Contour 0 of the trace is the flame; contour 2 is the wedge that closes its underside. Both are lifted from the Byonyks logo and placed on the A. They were identified by rendering all ten contours in separate colours and looking — the recipe is worth keeping, because nothing about the path data says which contour is which.
+
+**This composes a mark that exists in neither company's logo,** and that is a brand decision rather than a technical one. It was asked for directly and in writing. Flagged here rather than buried, because it is the first time this project has assembled brand artwork rather than reproduced or declared it.
+
+**The placement is measured, not invented.** Against the B, the flourish is 70.2% of the letter's width and inset 20.7% from its left; the A gets the same two ratios. The one number chosen by eye is how deep the flourish dips onto the shoulder — 6× the artwork's own 17-unit dip. At 1× it floated above the A instead of belonging to it; 1×, 3× and 6× were rendered and compared, and the two flourishes were then cropped at equal zoom and set side by side to confirm they read as one piece of lettering.
+
+**"Akshar" dropped to 0.85 of the artwork's x-height** on the second half of the instruction, from parity. Smaller type also carries a proportionally lighter stroke, which is what "chunky" was describing. `strokeWidth` went 44 → 41 to hold the drawn line at the same weight, because the viewBox narrowed from 5148 to 4797 units when "Akshar" shrank — measured in the browser at 4.38 CSS px, the same figure the previous two versions were tuned to.
+
+**The contour list is now flat and ordered, and each contour carries its own optional `transform`.** It replaced two named halves with a shared group transform, because the flourish belongs to "Akshar" positionally but needs the artwork's transform — sorting one list left-to-right is what keeps the draw reading as writing across all three sources.
+
 ### What it replaced, and what that saved
 
 `Yellowtail` left `src/app/layout.tsx` in the same change. **It had been loading

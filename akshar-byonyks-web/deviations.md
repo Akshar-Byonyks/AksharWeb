@@ -1667,3 +1667,39 @@ And two smaller ones, both one line each: **job titles for Dr. Shah and Sahil**,
 ### One unrelated bug fixed in passing
 
 `/locations` called `<CtaBand leadIn="Locations" />`. `leadIn` is a className forwarded to `SilhouetteEdge`, so that string emitted a class matching nothing. Harmless in effect, wrong in fact, and removed — the band follows a section on the plain `background`, which is what the edge already draws against.
+
+## 23. The A takes the B's flourish (2 Sep 2026)
+
+> "The A in Akshar should have similar word art to the B in Byonyks. Additionally, the letters for Akshar feel a little too chunky and need to be a bit smaller."
+
+Both halves done, and the first one crosses a line this project has not crossed before, so it is recorded rather than mentioned.
+
+### It is the same artwork, not a lookalike
+
+The flourish on the A is the flame contour and the wedge that closes its underside, lifted straight out of the traced Byonyks logo. Nothing was drawn to resemble it. They were identified by rendering all ten contours of the trace in separate colours and looking, because path data says nothing about which contour is which — that colour map is the reason the extraction took one pass instead of several.
+
+### What it means, stated plainly
+
+**This assembles a mark that exists in neither company's logo.** Akshar Byonyks' own lockup sets both words in one high-contrast script with no flourish on either; Byonyks' mark has the flourish only on its B. A lockup with the flourish on both is new, and this project made it.
+
+That is a departure worth naming because §22 spent most of its length refusing to invent things — job titles, an India blurb, news items, a photograph of an office. **The distinction is that those would have asserted facts about the world, and this asserts nothing.** It is a decoration on a company's own name, asked for directly and in writing by the client, on artwork the client's licensor owns. It is still a brand decision rather than a technical one, and it is the client's to keep or reverse.
+
+### The placement is measured; one number is not
+
+Against the B, the flourish is **70.2% of the letter's width** and inset **20.7% from its left**. The A gets the same two ratios, so the pairing is the artwork's own proportion rather than a guess.
+
+The number that is a judgement is how deep the flourish dips onto the shoulder. The artwork dips 17 units into the B; at 1× on the A it read as floating above the letter rather than belonging to it, because Pacifico's A has a rounded shoulder where the B has a flat one. 1×, 3× and 6× were rendered and compared, 6× taken, and the two flourishes then cropped at equal zoom and set side by side to confirm they read as one piece of lettering.
+
+### "Chunky" was two things, and both were adjusted
+
+"Akshar" went from parity with the artwork's x-height to **0.85** of it. Smaller type also carries a proportionally lighter stroke, which is most of what "chunky" was describing.
+
+`strokeWidth` went 44 → 41, which is again not a weight change: shrinking "Akshar" narrowed the viewBox from 5148 to 4797 units, so a unit is worth more than it was. Measured in the browser at **4.38 CSS px** — the same figure the two previous versions of this wordmark were tuned to, so the drawn line has held its weight across three rebuilds of what is being drawn.
+
+### One structural change fell out of it
+
+The module used to export two named halves with a shared transform each. The flourish broke that: it belongs to "Akshar" positionally but needs the artwork's coordinates. So the export is now **one flat list in draw order, each contour carrying its own optional `transform`** — which is also simpler, and is what keeps the draw reading as writing across all three sources.
+
+It is typed explicitly rather than `as const`, because under `as const` the array becomes a tuple of literal types and the contours with no `transform` key make that property unreadable off the union. Caught by `tsc`, not at runtime.
+
+`SPLASH_MIN_MS` followed the contour count from 19 to 21 without anyone touching it — 2.00s now, still well under the 3s ceiling — which is the whole reason it was made a derivation rather than a constant.

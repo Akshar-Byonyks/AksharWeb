@@ -118,8 +118,7 @@ export const SPLASH_STAGGER_S = 0.04;
  * on a slow load that ceiling still wins and the curtain still lifts mid-draw,
  * because failing open beats finishing the animation.
  */
-const SPLASH_CONTOURS =
-  splashWordmark.akshar.length + splashWordmark.byonyks.length;
+const SPLASH_CONTOURS = splashWordmark.contours.length;
 
 export const SPLASH_MIN_MS = Math.round(
   Math.max(

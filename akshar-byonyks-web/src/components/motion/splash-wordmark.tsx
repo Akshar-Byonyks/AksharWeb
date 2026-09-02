@@ -56,7 +56,7 @@ export type SplashWordmarkProps = {
 export function SplashWordmark({
   strokeColor,
   fillColor,
-  strokeWidth = 44,
+  strokeWidth = 41,
   drawDuration,
   fillDelay,
   fillDuration,
@@ -65,24 +65,13 @@ export function SplashWordmark({
 }: SplashWordmarkProps) {
   const maskId = `splash-wordmark-${useId().replace(/[^\w-]/g, "")}`;
 
-  const { viewBox, byonyksTransform, akshar, byonyks, label } = splashWordmark;
+  const { viewBox, contours, label } = splashWordmark;
   const [boxX, boxY, boxWidth, boxHeight] = viewBox.split(" ").map(Number);
 
-  // One flat list so the stagger index runs continuously across the lockup:
-  // "Akshar" left to right, then "Byonyks" left to right. The Byonyks half
-  // carries a transform because its contours are still in the artwork's own
-  // coordinates — see the note in `splash-wordmark.ts` about why nothing
-  // rewrites path data.
-  const halves = [
-    { contours: akshar, transform: undefined as string | undefined },
-    { contours: byonyks, transform: byonyksTransform },
-  ];
-
-  let index = 0;
-  const groups = halves.map((half) => ({
-    transform: half.transform,
-    contours: half.contours.map((d) => ({ d, i: index++ })),
-  }));
+  // The list arrives in draw order, left to right across the whole lockup, so
+  // the array index IS the stagger index. Contours that are already at their
+  // origin carry no transform; the flourish on the A and the Byonyks half do,
+  // because nothing rewrites path coordinates — see `splash-wordmark.ts`.
 
   return (
     <span
@@ -112,9 +101,10 @@ export function SplashWordmark({
             full even where it falls inside a neighbour. Byonyks' half does not
             need this — potrace followed the boundary of the ink, so its
             contours are already the union outline — but PACIFICO'S LETTERS
-            OVERLAP, and without the mask "Akshar" draws with its joins cutting
-            through the letters either side. Masking both halves keeps one
-            treatment across a lockup that has to read as one mark.
+            OVERLAP, and so does the flourish that sits on the A. Without the
+            mask "Akshar" draws with its joins cutting through the letters
+            either side, and the flourish draws a seam across the A's shoulder
+            instead of merging into it.
 
             `black`/`white` here are the mask's luminance channel, not paint. */}
         <defs>
@@ -133,13 +123,11 @@ export function SplashWordmark({
               height={boxHeight}
               fill="white"
             />
-            {groups.map((group, g) => (
-              <g key={`m-${g}`} transform={group.transform} fill="black">
-                {group.contours.map(({ d, i }) => (
-                  <path key={`m-${i}`} d={d} />
-                ))}
-              </g>
-            ))}
+            <g fill="black">
+              {contours.map(({ d, transform }, i) => (
+                <path key={`m-${i}`} d={d} transform={transform} />
+              ))}
+            </g>
           </mask>
         </defs>
 
@@ -148,27 +136,24 @@ export function SplashWordmark({
             inside an SVG presentation attribute — the same rule recorded on
             `StrokeText`, and the reason tokens can be passed here at all. */}
         <g mask={`url(#${maskId})`}>
-          {groups.map((group, g) => (
-            <g key={`s-${g}`} transform={group.transform}>
-              {group.contours.map(({ d, i }) => (
-                <path
-                  key={`s-${i}`}
-                  d={d}
-                  pathLength={1}
-                  className="stroke-text-char"
-                  strokeWidth={strokeWidth}
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                  style={
-                    {
-                      fill: "none",
-                      stroke: strokeColor,
-                      "--i": i,
-                    } as React.CSSProperties
-                  }
-                />
-              ))}
-            </g>
+          {contours.map(({ d, transform }, i) => (
+            <path
+              key={`s-${i}`}
+              d={d}
+              transform={transform}
+              pathLength={1}
+              className="stroke-text-char"
+              strokeWidth={strokeWidth}
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              style={
+                {
+                  fill: "none",
+                  stroke: strokeColor,
+                  "--i": i,
+                } as React.CSSProperties
+              }
+            />
           ))}
         </g>
 
@@ -176,13 +161,9 @@ export function SplashWordmark({
             never a rect inside `<clipPath>`, which is in `<defs>` and so never
             rendered and never animated. Measured once; the note is on
             `StrokeText`. */}
-        <g className="stroke-text-fill">
-          {groups.map((group, g) => (
-            <g key={`f-${g}`} transform={group.transform} style={{ fill: fillColor }}>
-              {group.contours.map(({ d, i }) => (
-                <path key={`f-${i}`} d={d} />
-              ))}
-            </g>
+        <g className="stroke-text-fill" style={{ fill: fillColor }}>
+          {contours.map(({ d, transform }, i) => (
+            <path key={`f-${i}`} d={d} transform={transform} />
           ))}
         </g>
       </svg>
