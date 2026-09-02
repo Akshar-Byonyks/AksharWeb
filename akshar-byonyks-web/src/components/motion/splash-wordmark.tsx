@@ -76,30 +76,38 @@ export function SplashWordmark({
   // COUNTERS ONLY EXIST IF THE FILL SEES ALL THE CONTOURS AT ONCE, and getting
   // that wrong is not subtle: it fills them in. A counter — the hole in an 'a',
   // an 'o', the A's bowl, the k's loop — is not a shape, it is the absence of
-  // one, produced by the non-zero winding rule cancelling an inner contour
-  // against the outer contour it sits inside. Split them into one <path> each
-  // and there is nothing to cancel against, so every counter paints as another
-  // solid blob. That shipped for a day: the 'o' in "Byonyks" was an oval, not a
-  // ring.
+  // one, produced by a fill rule resolving an inner contour against the outer
+  // contour it sits inside. Split them into one <path> each and there is
+  // nothing to resolve against, so every counter paints as another solid blob.
+  // That shipped for a day: the 'o' in "Byonyks" was an oval, not a ring.
   //
   // The DRAW layer genuinely needs one element per contour, because each one
   // carries its own `--i` and animates on its own delay. So only the two FILL
-  // layers are regrouped, by transform — three paths, one per coordinate
-  // system, each holding every contour that belongs to it. Fill is
-  // order-independent within a path, so this can group across the draw order
-  // without disturbing it.
+  // layers are regrouped — one path per (transform, fill rule) pair, each
+  // holding every contour that belongs to it. Fill is order-independent within
+  // a path, so this can group across the draw order without disturbing it.
   //
-  // Both sources wind the non-zero way: opentype emits TrueType contours, and
-  // potrace's nesting was checked by rendering the trace as a single path
-  // before any of this was split up. Do not reach for `fill-rule="evenodd"` —
-  // Pacifico's letters OVERLAP, and evenodd would punch a hole at every join.
-  const fillGroups = new Map<string, string[]>();
-  for (const { d, transform } of contours) {
-    const key = transform ?? "";
-    fillGroups.set(key, [...(fillGroups.get(key) ?? []), d]);
+  // THE TWO SOURCES DISAGREE ABOUT THE FILL RULE, AND BOTH ARE RIGHT, which is
+  // why grouping is by rule as well as by transform. potrace writes
+  // `fill-rule="evenodd"` and relies on it — it traces the boundary of the ink,
+  // so its contours never overlap each other and nesting alone decides what is
+  // a hole. opentype emits TrueType contours, wound for non-zero, and
+  // Pacifico's letters OVERLAP, so evenodd there would punch a hole at every
+  // join between letters.
+  //
+  // Assuming one rule for both is exactly how the first fix went out half
+  // working: non-zero opened the 'a', the A's bowl and the k's loop, and left
+  // the 'o' a solid oval because potrace had not wound it for that rule.
+  const fillGroups = new Map<string, { transform?: string; fillRule?: "evenodd"; ds: string[] }>();
+  for (const { d, transform, fillRule } of contours) {
+    const key = `${transform ?? ""}|${fillRule ?? ""}`;
+    const group = fillGroups.get(key) ?? { transform, fillRule, ds: [] };
+    group.ds.push(d);
+    fillGroups.set(key, group);
   }
-  const fills = [...fillGroups].map(([transform, ds]) => ({
-    transform: transform || undefined,
+  const fills = [...fillGroups.values()].map(({ transform, fillRule, ds }) => ({
+    transform,
+    fillRule,
     d: ds.join(" "),
   }));
 
@@ -154,8 +162,8 @@ export function SplashWordmark({
               fill="white"
             />
             <g fill="black">
-              {fills.map(({ d, transform }, i) => (
-                <path key={`m-${i}`} d={d} transform={transform} />
+              {fills.map(({ d, transform, fillRule }, i) => (
+                <path key={`m-${i}`} d={d} transform={transform} fillRule={fillRule} />
               ))}
             </g>
           </mask>
@@ -192,8 +200,8 @@ export function SplashWordmark({
             rendered and never animated. Measured once; the note is on
             `StrokeText`. */}
         <g className="stroke-text-fill" style={{ fill: fillColor }}>
-          {fills.map(({ d, transform }, i) => (
-            <path key={`f-${i}`} d={d} transform={transform} />
+          {fills.map(({ d, transform, fillRule }, i) => (
+            <path key={`f-${i}`} d={d} transform={transform} fillRule={fillRule} />
           ))}
         </g>
       </svg>

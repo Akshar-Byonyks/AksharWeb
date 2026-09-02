@@ -1714,7 +1714,13 @@ It makes sense, and it was not a request for a new effect. **The counters were m
 
 The fix keeps the draw layer exactly as it was, because that layer genuinely needs one element per contour, and regroups only the two FILL layers — the mask and the flood — by transform. Three paths, one per coordinate system, each holding every contour that belongs to it. Fill is order-independent within a path, so the grouping does not disturb the left-to-right draw order.
 
-**`fill-rule="evenodd"` would have been the wrong reach**, and it is worth saying so because it is the reflex fix for a filled counter. Pacifico's letters overlap — it is why the knockout mask exists at all — and evenodd would punch a hole at every join between letters. Non-zero is correct here, and both sources wind for it: opentype emits TrueType contours, and potrace's nesting was confirmed by rendering the trace as a single path before any of this was split up.
+**That fix was half right, and the client caught the half that was not.** It opened the 'a', the A's bowl and the k's loop, and left the 'o' in "Byonyks" a solid oval — reported as "the a is fixed, the o still is not", which is exactly what it was.
+
+**The two sources disagree about the fill rule, and both are right.** The first pass assumed non-zero for everything. opentype emits TrueType contours, which are wound for non-zero, so "Akshar" was fine. **potrace writes `fill-rule="evenodd"` on its output and relies on it** — it traces the boundary of the ink, so its contours never overlap each other and nesting alone decides what is a hole, which means direction is not something it has to get right. Under non-zero its 'o' counter did not cancel.
+
+The mistake was assuming this could be checked once and applied to both. It was checked once — the trace WAS rendered as a single path and the counter WAS there — but that render kept potrace's own `fill-rule="evenodd"` attribute, so what it proved was that potrace is self-consistent, not that non-zero would work.
+
+So the fill rule now travels per contour, from its source, and the fill layers group by rule as well as by transform. **Applying evenodd to everything would fail the other way**: Pacifico's letters overlap — it is why the knockout mask exists at all — and evenodd punches a hole at every join between them.
 
 **The draw phase gets the effect the client actually described for free.** With the counter no longer painted into the mask, the stroke around it is no longer knocked out, so each counter now draws its own smaller outline inside the letter — the "smaller outline of the letter itself" — and then opens to the ink ground when the flood lands.
 

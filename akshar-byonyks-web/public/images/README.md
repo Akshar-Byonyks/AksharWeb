@@ -654,7 +654,9 @@ predecessor.
 
 The wordmark is drawn as one <path> per contour so each can animate on its own delay, and the two FILL layers (the knockout mask and the flood) are regrouped by transform into three paths instead. **A counter only exists if the fill sees its inner and outer contours in the same path** — the non-zero winding rule has nothing to cancel against otherwise, and every counter paints as a solid blob. That shipped for a day; the client spotted it.
 
-Do not switch these to `fill-rule="evenodd"`. Pacifico's letters overlap, and evenodd punches a hole at every join between them. Both sources wind for non-zero: opentype emits TrueType contours, and potrace's nesting was confirmed by rendering the trace as a single path.
+**The fill rule is per source, and the two sources disagree.** opentype emits TrueType contours wound for non-zero; potrace writes `fill-rule="evenodd"` and relies on it, because it traces the boundary of the ink, so its contours never overlap and nesting alone decides what is a hole. Each contour therefore carries its own rule and the fill layers group by rule as well as by transform.
+
+Neither rule works for both. Non-zero on the traced half leaves the 'o' a solid oval; evenodd on "Akshar" punches a hole at every join between overlapping letters. A first pass assumed non-zero throughout, which fixed the 'a' and not the 'o' — and the check that appeared to justify it (rendering the trace as a single path, counter present) had kept potrace's own evenodd attribute, so it proved only that potrace is self-consistent.
 
 ### What it replaced, and what that saved
 
