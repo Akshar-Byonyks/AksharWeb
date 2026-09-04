@@ -6,6 +6,7 @@ import { useForm, type UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, CheckCircle2, ChevronDown, Loader2 } from "lucide-react";
 
+import { TurnstileWidget } from "@/components/contact/turnstile-widget";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -38,6 +39,23 @@ import type { ContactResponse } from "@/app/api/contact/route";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
+// THE SITE KEY IS A BUILD-TIME VALUE, not a runtime one, and that is the whole
+// deployment story for this feature.
+//
+// `NEXT_PUBLIC_*` is substituted into the bundle by the compiler, so this
+// constant is a literal string by the time the browser sees it. On Cloudflare
+// that means the site key belongs in the **build** variables, while
+// TURNSTILE_SECRET_KEY belongs in the Worker's runtime secrets — the two go in
+// different places for different reasons, and setting the secret alone is the
+// misconfiguration `verifyTurnstile` now refuses to act on.
+//
+// Unset, this is `undefined`, no widget renders, no token is sent, and
+// `verifyTurnstile` reports itself unconfigured and waves the submission
+// through. That is the behaviour the form has always had and it stays intact:
+// adding Turnstile must not be able to break the enquiry path for a site that
+// has not configured it.
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
 const fieldOrder = [
   "enquiryType",
   "name",
@@ -69,6 +87,11 @@ export function ContactForm({ initialEnquiry }: { initialEnquiry?: EnquiryType }
   const [sentAs, setSentAs] = useState<EnquiryType | null>(null);
   const summaryRef = useRef<HTMLDivElement>(null);
   const successRef = useRef<HTMLDivElement>(null);
+  // Held here rather than in the form state: it is not something the visitor
+  // fills in, it must not appear in the error summary, and `contactSchema`
+  // marks it optional precisely so an unconfigured deployment still validates.
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileReset, setTurnstileReset] = useState(0);
   // Bumped whenever a submit attempt produces errors. Focus has to move in an
   // effect rather than a callback: the summary does not exist in the DOM until
   // React commits the render that adds it, so a requestAnimationFrame fired
@@ -122,9 +145,23 @@ export function ContactForm({ initialEnquiry }: { initialEnquiry?: EnquiryType }
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          ...values,
+          // Omitted entirely rather than sent as null when there is no
+          // challenge: the field is `z.string().optional()`, and a null would
+          // fail that parse and surface as a validation error on a field the
+          // visitor cannot see or fix.
+          ...(turnstileToken ? { turnstileToken } : {}),
+        }),
       });
       const data = (await res.json()) as ContactResponse;
+
+      // Every completed round trip spends the token, whatever the outcome, so
+      // the widget is re-armed here rather than only on the failure paths. A
+      // second enquiry sent from the same page with a spent token comes back
+      // 403 and reads to the sender as "the site thinks I am a bot".
+      setTurnstileToken(null);
+      setTurnstileReset((n) => n + 1);
 
       if (data.ok) {
         setSentAs(values.enquiryType);
@@ -387,6 +424,27 @@ export function ContactForm({ initialEnquiry }: { initialEnquiry?: EnquiryType }
             .
           </p>
         </div>
+      ) : null}
+
+      {/* Below the consent checkbox and above the button, which is where a
+          challenge belongs: after everything the visitor has to decide, and
+          in front of the action it gates.
+
+          THE BUTTON IS NOT DISABLED WHILE THE TOKEN IS PENDING, deliberately.
+          A managed challenge usually resolves in under a second without any
+          interaction, so gating the button would buy almost nothing — and on
+          the occasion Turnstile fails to load or errors out, it would leave a
+          patient or a clinician staring at a dead Send button with no
+          explanation and no way through. Letting the submit go and having the
+          server judge it keeps the failure legible: a real block returns the
+          "could not confirm that submission came from a person" message with
+          the direct email address underneath it. */}
+      {TURNSTILE_SITE_KEY ? (
+        <TurnstileWidget
+          siteKey={TURNSTILE_SITE_KEY}
+          onToken={setTurnstileToken}
+          resetSignal={turnstileReset}
+        />
       ) : null}
 
       <Button
