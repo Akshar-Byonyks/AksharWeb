@@ -2,6 +2,33 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
   "name": "akshar-byonyks-web",
+
+  // THE PUBLIC ADDRESSES, declared here rather than clicked into the
+  // dashboard (4 Sep 2026, when the domain went live on Cloudflare).
+  //
+  // `custom_domain: true` is not the same thing as a route. A route matches
+  // requests against a hostname that must already resolve somewhere; a custom
+  // domain CREATES the DNS record and provisions the certificate, which is
+  // what a Worker needs, because a Worker has no origin IP for an A record to
+  // point at. That is also why the Namecheap parking records had to be
+  // deleted first: this cannot claim a hostname another record already holds.
+  //
+  // IN CONFIG RATHER THAN IN THE UI so the site's addresses are reviewable in
+  // the diff and reproducible on a rebuild. A domain attached by hand exists
+  // only in one account's dashboard and is invisible to anyone reading this
+  // repository to find out where the site actually lives.
+  //
+  // BOTH HOSTNAMES SERVE THE SAME WORKER, and www is not redirected. Every
+  // page sets an absolute canonical from `metadataBase` in `app/layout.tsx`,
+  // which is `siteUrl` — the apex — so a page served at www still tells search
+  // engines the apex is the real one and the two are consolidated. A 301 would
+  // need its own proxied placeholder record for www to hang off, to do a job
+  // the canonicals already do correctly.
+  "routes": [
+    { "pattern": "aksharbyonyks.com", "custom_domain": true },
+    { "pattern": "www.aksharbyonyks.com", "custom_domain": true }
+  ],
+
   "compatibility_date": "2026-08-15",
   "compatibility_flags": [
     "nodejs_compat",
