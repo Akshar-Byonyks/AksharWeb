@@ -8,7 +8,6 @@ import { VideoFacade } from "@/components/byotalks/video-facade";
 import { CtaBand } from "@/components/sections/cta-band";
 import { defaultOg } from "@/lib/seo";
 import { byotalksSessions, getSession, isoDuration } from "@/lib/byotalks";
-import { notMedicalAdvice } from "@/lib/claims";
 import { siteUrl } from "@/lib/site-config";
 
 // Spec §9.3: each session gets "a session page with video and speaker
@@ -36,7 +35,7 @@ export async function generateMetadata({
   const description = `${session.summary} A ByoTalks session with ${session.speaker}, ${session.credentials[0]}.`;
 
   return {
-    title: `${session.title} — ${session.speaker}`,
+    title: `${session.title}, ${session.speaker}`,
     description,
     alternates: { canonical: path, languages: { "en-IN": path } },
     openGraph: {
@@ -170,9 +169,11 @@ export default async function ByoTalksSessionPage({
                 What this session covers
               </h3>
               <p className="mt-4 text-lg text-foreground">{session.summary}</p>
-              <p className="mt-6 border-t border-line pt-5 text-sm text-muted-foreground">
-                {notMedicalAdvice}
-              </p>
+              {/* `notMedicalAdvice` sat here under a hairline rule and came out
+                  on client instruction (3 Sep 2026). The constant is untouched
+                  in `lib/claims.ts` and still renders on
+                  /innovation/how-it-works and in AskYourNephrologist, so the
+                  line exists on the site — just not on a session page. */}
             </div>
 
             <p className="mt-10">
@@ -190,7 +191,7 @@ export default async function ByoTalksSessionPage({
 
       <CtaBand
         heading="Talk to us about a PD programme"
-        body="Clinician, hospital, distributor or patient enquiry — we route it to the right person."
+        body="Clinician, hospital, distributor or patient enquiry. We route it to the right person."
       />
     </>
   );

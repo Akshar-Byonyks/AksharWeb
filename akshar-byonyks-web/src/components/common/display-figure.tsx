@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 //
 // WHY THIS EXISTS. The sitewide critique of 30 Aug 2026 found that this site
 // is at its best when it sets a number enormous and lets it carry the section:
-// `510(k)`, `K243371`, `≈two thirds`, `₹2,838`, `2.2 lakh`, `≈175,000`. That
+// `510(k)`, `K243371`, `≈ two thirds`, `₹2,838`, `2.2 lakh`, `≈ 175,000`. That
 // is not a coincidence. PRODUCT.md's Priority-1 and Priority-3 audiences
 // "read fast and distrust marketing language", and a figure at display size
 // with its source on the same row is the one move that reads as evidence

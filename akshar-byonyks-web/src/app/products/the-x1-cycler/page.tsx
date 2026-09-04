@@ -133,12 +133,12 @@ regulatory sentence imported from src/lib/claims.ts rather than written here.
             {
               href: "/innovation/how-it-works",
               title: "How peritoneal dialysis works",
-              body: "The therapy this device automates, in plain language — the peritoneum, the three steps of an exchange, and a technical layer at each step.",
+              body: "The therapy this device automates, in plain language: the peritoneum, the three steps of an exchange, and a technical layer at each step.",
             },
             {
               href: "/innovation/market",
               title: "The India market",
-              body: "Why this device matters more here than in the market that cleared it — in sourced, dated figures, with the gaps still showing.",
+              body: "Why this device matters more here than in the market that cleared it, in sourced, dated figures, with the gaps still showing.",
             },
           ]}
         />

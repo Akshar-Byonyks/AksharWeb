@@ -46,7 +46,7 @@ export async function generateMetadata({
 
   return {
     title: executive.role
-      ? `${executive.name} — ${executive.role}`
+      ? `${executive.name}, ${executive.role}`
       : executive.name,
     description,
     alternates: { canonical: path, languages: { "en-IN": path } },
@@ -207,17 +207,7 @@ export default async function ExecutivePage({
             {executive.sourceUrl ? (
               <p className="mt-8 border-t border-line pt-5 text-sm text-muted-foreground">
                 {carriedNoun} as published by {executive.organisation}, carried
-                here word for word.{" "}
-                <a
-                  href={executive.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-sm text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                >
-                  Source
-                  <span className="sr-only"> (opens in a new tab)</span>
-                </a>
-                , retrieved {executive.retrieved}.
+                here word for word. Retrieved {executive.retrieved}.
               </p>
             ) : executive.suppliedBy ? (
               <p className="mt-8 border-t border-line pt-5 text-sm text-muted-foreground">
@@ -255,8 +245,8 @@ export default async function ExecutivePage({
                     <PendingChip label="Pending" />
                     <span>
                       {executive.name}&rsquo;s role in the India programme has
-                      not been supplied, and the biography above &mdash; his
-                      own, as published by {executive.organisation} &mdash;
+                      not been supplied, and the biography above (his
+                      own, as published by {executive.organisation})
                       does not describe one.
                     </span>
                   </p>
@@ -279,7 +269,7 @@ export default async function ExecutivePage({
 
       <CtaBand
         heading="Talk to Akshar Byonyks"
-        body="Patient, clinician, investor, or distributor enquiry — we route it to the right person."
+        body="Patient, clinician, investor, or distributor enquiry. We route it to the right person."
       />
     </>
   );

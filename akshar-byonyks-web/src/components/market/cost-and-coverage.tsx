@@ -42,8 +42,8 @@ function CatastropheLadder() {
         What changes the number is the schedule, not the price
       </h3>
       <p className="mt-4 max-w-2xl text-base text-foreground">
-        Researchers counted how often paying for haemodialysis pushed a
-        household past what it could absorb — defined as spending{" "}
+        Researchers counted how often paying for hemodialysis pushed a
+        household past what it could absorb, defined as spending{" "}
         {plainThreshold}. The cost of one session never changed. Only how many
         of them a week the therapy required.
       </p>
@@ -111,7 +111,7 @@ export function CostAndCoverage() {
               What it costs the household
             </h2>
             <p className="mt-6 text-lg text-muted-foreground">
-              The best public costing of haemodialysis in an Indian public
+              The best public costing of hemodialysis in an Indian public
               hospital is 2015&ndash;16 fieldwork. It is used because it is the
               best there is, and it is labelled everywhere it appears so nobody
               mistakes it for current.
@@ -141,8 +141,8 @@ export function CostAndCoverage() {
                 <p className="mt-4 text-base text-foreground">
                   The Pradhan Mantri National Dialysis Programme was rolled out
                   on 7 April 2016 to provide free dialysis through district
-                  hospitals. It was designed with two components from the start
-                  &mdash; haemodialysis services and peritoneal dialysis
+                  hospitals. It was designed with two components from the start:
+                  hemodialysis services and peritoneal dialysis
                   services.
                   <Cite source="pmndp" />
                 </p>
@@ -152,7 +152,7 @@ export function CostAndCoverage() {
                   system would have to be persuaded to recognise. It is already
                   named in the programme. A published cost-effectiveness
                   analysis has since found starting patients on peritoneal
-                  dialysis rather than haemodialysis to be cost-saving in India.
+                  dialysis rather than hemodialysis to be cost-saving in India.
                   <Cite source="pd-first" />
                 </p>
               </div>
@@ -166,15 +166,15 @@ export function CostAndCoverage() {
                 <p className="mt-4 text-base text-muted-foreground">
                   Ayushman Bharat PM-JAY reimburses dialysis through its health
                   benefit package, and state schemes reimburse it separately
-                  again. The package codes and rates &mdash; including those for
-                  peritoneal dialysis &mdash; are the numbers a payer will
+                  again. The package codes and rates, including those for
+                  peritoneal dialysis, are the numbers a payer will
                   actually want, and this page will not carry them until they
                   come from the National Health Authority&rsquo;s own published
                   package master.
                 </p>
                 <PendingNote
                   className="mt-5"
-                  label="PM-JAY and state scheme reimbursement rates for haemodialysis and peritoneal dialysis"
+                  label="PM-JAY and state scheme reimbursement rates for hemodialysis and peritoneal dialysis"
                   note="Rates pending verification against the NHA package master"
                 />
               </div>

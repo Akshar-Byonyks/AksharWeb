@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-import { ProvenanceMark } from "@/components/common/provenance";
 import { DocumentGrid, GridBlock } from "@/components/layout/document-grid";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { leadershipStatus } from "@/lib/about";
@@ -24,17 +23,18 @@ export function LeadershipPending() {
     <section aria-labelledby="leadership-heading" className="bg-surface-2">
       <DocumentGrid className="py-20">
         <ScrollReveal>
-          {/* The gap moves into the margin, 30 Aug 2026. It used to be a dashed
-              PendingNote card sitting under the prose; as a provenance mark it
-              says the same thing in the same amber, beside the paragraph it
-              qualifies, in the register every other page now uses. */}
-          <GridBlock
-            rail={
-              <ProvenanceMark
-                provenance={{ status: "pending", missing: leadershipStatus.label }}
-              />
-            }
-          >
+          {/* A PENDING PROVENANCE MARK SAT IN THIS RAIL and came out on client
+              instruction (3 Sep 2026). It carried `leadershipStatus.label`:
+              that three Akshar Byonyks people are published, that two have no
+              job title and no photograph, that both were requested on
+              1 September 2026, and that Senthil Kumar's card is Byonyks'.
+
+              The gaps themselves are unchanged — the cards still have no
+              titles and no photographs. The page simply no longer says so, so
+              a reader now meets an incomplete roster with nothing explaining
+              why. `leadershipStatus.label` is kept in `lib/about.ts` and is
+              no longer rendered anywhere; see the note there. */}
+          <GridBlock>
             <h2
               id="leadership-heading"
               className="text-3xl font-bold tracking-tight text-balance text-ink sm:text-4xl"

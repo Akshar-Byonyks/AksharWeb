@@ -1,4 +1,3 @@
-import { AccentRail } from "@/components/common/accent-rail";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ScrimmedImage } from "@/components/common/scrimmed-image";
 import { byotalksSessions, distinctSpeakers } from "@/lib/byotalks";
@@ -47,28 +46,32 @@ export function ByoTalksHero() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-white/75">
             {sessionCount} recorded sessions with {speakerCount} clinicians on
-            the practical questions of peritoneal dialysis &mdash; catheter
+            the practical questions of peritoneal dialysis: catheter
             insertion and its complications, prescription, adequacy,
             peritonitis, and what a home programme has to provide around the
             patient.
           </p>
-          {/* The first accent on an ink ground anywhere on this site, and it
-              is here because the on-ink tints only existed as of 30 Aug 2026
-              (`--color-teal-on-ink`, 6.72:1 on ink). Until then a dark hero
-              could carry white or gold and nothing else.
+          {/* A TEAL RAIL SAT HERE, and came out on client instruction (3 Sep
+              2026). It read "Clinician to clinician. These are not product
+              presentations, and nothing in them is a recommendation about an
+              individual's treatment."
 
-              BELOW the heading, never above it. A coloured label stacked over
-              an h1 is a kicker, which DESIGN.md rejects outright — the same
-              reasoning that puts the provenance mark under a block on mobile
-              rather than over it. This sentence is an annotation on what the
-              page is, so it reads as one. */}
-          <AccentRail accent="teal" tone="dark" className="mt-6 max-w-2xl">
-            <p className="text-base text-white/60">
-              Clinician to clinician. These are not product presentations, and
-              nothing in them is a recommendation about an individual&rsquo;s
-              treatment.
-            </p>
-          </AccentRail>
+              Two things left with it, both worth knowing before anything is
+              rebuilt in this slot:
+
+              It was the ONLY line on /byotalks saying nothing in these
+              sessions is a recommendation about an individual's treatment.
+              Nothing else on the page says it now.
+
+              And it was the site's first accent on an ink ground — the reason
+              `--color-teal-on-ink` (6.72:1) was added on 30 Aug 2026. Teal is
+              still on this page, carrying the same "clinical evidence" meaning
+              on the session cards and in the speaker register, so the wayfinding
+              code survives; it is only the hero that is back to white and gold.
+
+              If a line ever returns to this slot it goes BELOW the h1, never
+              above it — a coloured label stacked over a heading is a kicker,
+              which DESIGN.md rejects outright. */}
         </div>
       </div>
     </section>

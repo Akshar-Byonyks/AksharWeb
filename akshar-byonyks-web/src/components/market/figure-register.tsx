@@ -34,6 +34,19 @@ import { type Figure, getSource, type SourceId } from "@/lib/market-data";
  * Opens in a new tab — the one place this project overrides that choice for
  * the reader. A citation is checked *against* the page it supports, and
  * replacing the page with a journal ends the reading it was serving.
+ *
+ * RENDERS REGISTERS ONLY, since 3 Sep 2026 (client instruction: take the
+ * visible sourcing off the site and keep the record elsewhere). A `research`
+ * source now returns nothing here and lives in SOURCES.md instead.
+ *
+ * WHY THIS COMPONENT RATHER THAN ITS ELEVEN CALL SITES. Every figure on the
+ * market page still passes its source in, `market-data.ts` still refuses to
+ * hold a figure without one, and `getSource` still throws for an unregistered
+ * id. So the data path is untouched and the invariant spec §7.2 exists to
+ * protect ("cannot render without a source") still holds — what changed is
+ * only whether the citation is painted. Had the call sites been edited
+ * instead, the next figure added to this page would have shipped with no
+ * source at all and nothing would have caught it.
  */
 export function Cite({
   source,
@@ -47,7 +60,10 @@ export function Cite({
    */
   onInk?: boolean;
 }) {
-  const { shortName, url } = getSource(source);
+  const { shortName, url, kind } = getSource(source);
+  // The one exception the client kept: an official register behind a claim
+  // about a regulated device. See the `kind` note in `market-data.ts`.
+  if (kind !== "register") return null;
   return (
     <>
       <span aria-hidden="true"> · </span>

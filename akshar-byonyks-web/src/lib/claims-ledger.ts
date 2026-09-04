@@ -122,7 +122,7 @@ const figureEntry = (
   const source = getSource(figure.source);
   return {
     id: `figure-${figure.source}-${index}`,
-    claim: `${figure.value} — ${figure.label}`,
+    claim: `${figure.value}: ${figure.label}`,
     detail: figure.detail,
     provenance: {
       status: "published",
@@ -212,11 +212,14 @@ const gaps: readonly LedgerEntry[] = [
     id: "pending-address",
     claim: "The India office address",
     detail:
-      "Required on the privacy policy and the terms of use, and required before this site goes live. No placeholder is published, and since 1 Sep 2026 there is no published office address of any kind: the Bengaluru row was removed from /locations on the client's instruction and its replacement states the address as coming soon. Enquiries reach the same people by email and by phone in the meantime.",
+      "Required on the privacy policy and the terms of use, and required before this site goes live. No placeholder is published, and since 1 Sep 2026 there is no published office address of any kind: the Bengaluru row was removed from /locations on the client's instruction, its replacement stated the address as coming soon, and on 2 Sep that replacement was removed too. The office is now named only on the Contact page. Enquiries reach the same people by email and by phone in the meantime.",
     provenance: { status: "pending", missing: "No India office address published." },
+    // LOCATIONS came off this list on 2 Sep 2026 with the India office row
+    // itself. `appearsOn` is where a reader is sent to see the claim, and the
+    // gap is no longer visible on that page — it is stated in prose there, but
+    // the row that carried it is gone.
     appearsOn: [
       CONTACT,
-      LOCATIONS,
       { label: "Privacy policy", href: "/privacy-policy" },
       { label: "Terms of use", href: "/terms-of-use" },
     ],
@@ -248,7 +251,7 @@ const gaps: readonly LedgerEntry[] = [
     id: "pending-executives",
     claim: "Job titles and photographs for two Akshar Byonyks executives",
     detail:
-      "Three Akshar Byonyks people are published on the leadership page. Two of them — Dr. Ronak C. Shah and Sahil — arrived with a biography but no job title and no photograph, so their cards say \u201CTitle to be confirmed\u201D and \u201CPhotograph pending\u201D rather than carrying a title or a face this project invented. The fourth person on that page is Byonyks', and each card says which company that person works for.",
+      "Three Akshar Byonyks people are published on the leadership page. Two of them, Dr. Ronak C. Shah and Sahil, arrived with a biography but no job title and no photograph, so their cards say \u201CTitle to be confirmed\u201D and \u201CPhotograph pending\u201D rather than carrying a title or a face this project invented. The fourth person on that page is Byonyks', and each card says which company that person works for.",
     provenance: {
       status: "pending",
       missing: "Two job titles and two photographs not yet supplied.",
@@ -322,11 +325,13 @@ const gaps: readonly LedgerEntry[] = [
   // registered office. One entry per missing fact, which is this file's rule.
 ];
 
-// Derived from `locations.ts`, per this file's own rule: four premises. Three
-// are Byonyks' published account of itself, none checked against a corporate
-// register, so they land on `stated`; the fourth is the Akshar Byonyks India
-// office, which carries `pending` because nothing about its address has been
-// published. Each row's own `provenance` decides, not this comment.
+// Derived from `locations.ts`, per this file's own rule: three premises, all
+// of them Byonyks' published account of itself and none checked against a
+// corporate register, so all three land on `stated`. The fourth row — the
+// Akshar Byonyks India office, which carried `pending` because nothing about
+// its address had been published — was removed on 2 Sep 2026 on the client's
+// instruction; the gap it recorded survives as `pending-address` above. Each
+// row's own `provenance` decides, not this comment.
 //
 // The gaps those rows carry are deliberately NOT mapped into entries here.
 // Three of the four already exist above or in `fromCompliance` — the hubs'

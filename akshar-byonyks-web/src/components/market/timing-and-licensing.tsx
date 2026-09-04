@@ -79,7 +79,7 @@ export function TimingAndLicensing() {
               </h2>
               <p className="mt-3 text-base text-muted-foreground">
                 Whether the thing being proposed can be done, by this company,
-                from where it stands today &mdash; including the part that
+                from where it stands today, including the part that
                 cannot be done yet.
               </p>
             </div>

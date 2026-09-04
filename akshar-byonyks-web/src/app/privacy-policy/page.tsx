@@ -56,7 +56,7 @@ const collected = [
   { field: "Email address", why: "So we can reply." },
   { field: "Enquiry type", why: "So your message reaches the right person." },
   { field: "Message", why: "It is what you asked us." },
-  { field: "Organisation, phone, city", why: "Optional. Only if you choose to give them." },
+  { field: "Organization, phone, city", why: "Optional. Only if you choose to give them." },
 ];
 
 const rights = [
@@ -187,7 +187,7 @@ as not yet answerable.
           <p>
             We use Cloudflare Web Analytics, which counts visits without cookies
             and without building a profile of you. This site sets no advertising
-            or tracking cookies — see the{" "}
+            or tracking cookies. See the{" "}
             <InternalLink href="/cookie-policy">cookie policy</InternalLink>.
           </p>
         </LegalSection>

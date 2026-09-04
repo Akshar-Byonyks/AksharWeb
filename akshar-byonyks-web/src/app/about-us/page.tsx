@@ -121,7 +121,7 @@ a founder or an address this project does not have.
           {
             href: "/innovation/market",
             title: "The India market",
-            body: "The case for home dialysis here, in sourced and dated figures — the distances, the out-of-pocket burden, and how little of India's dialysis happens at home.",
+            body: "The case for home dialysis here, in sourced and dated figures: the distances, the out-of-pocket burden, and how little of India's dialysis happens at home.",
           },
           {
             href: "/products/the-x1-cycler",
@@ -132,7 +132,7 @@ a founder or an address this project does not have.
       />
       <CtaBand
         heading="Talk to Akshar Byonyks"
-        body="Patient, clinician, investor, or distributor enquiry — we route it to the right person."
+        body="Patient, clinician, investor, or distributor enquiry. We route it to the right person."
       />
     </>
   );

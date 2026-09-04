@@ -170,13 +170,13 @@ const built: { href: string; title: string; body: string; mark: ReactNode }[] = 
   {
     href: "/products/the-x1-cycler",
     title: "The X-1 cycler",
-    body: "The device itself: what it does, its specification, and its regulatory position in the US and in India — including the rows that are not yet published.",
+    body: "The device itself: what it does, its specification, and its regulatory position in the US and in India, including the rows that are not yet published.",
     mark: <CyclerMark />,
   },
   {
     href: "/innovation/how-it-works",
     title: "How peritoneal dialysis works",
-    body: "The therapy in plain language — the peritoneum, the three steps of an exchange, and the difference between doing them by hand and by cycler. With a technical layer at each step.",
+    body: "The therapy in plain language: the peritoneum, the three steps of an exchange, and the difference between doing them by hand and by cycler. With a technical layer at each step.",
     mark: <TherapyMark />,
   },
   {

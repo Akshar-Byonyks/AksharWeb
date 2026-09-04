@@ -84,7 +84,7 @@ if a reader opened their own developer tools to check it.
 
       <LegalPage
         title="Cookie policy"
-        standfirst="This site sets no cookies of its own — so there is no banner to dismiss. Here is exactly what does and does not happen in your browser."
+        standfirst="This site sets no cookies of its own, so there is no banner to dismiss. Here is exactly what does and does not happen in your browser."
         lastUpdated={lastUpdated}
         sections={sections}
       >
@@ -98,8 +98,8 @@ if a reader opened their own developer tools to check it.
           </p>
           <p>
             Two things reach outside this site, and both are described below: a
-            stylesheet and script for the video placeholders, and — only if you
-            press play — YouTube.
+            stylesheet and script for the video placeholders, and (only if you
+            press play) YouTube.
           </p>
         </LegalSection>
 
@@ -156,7 +156,7 @@ if a reader opened their own developer tools to check it.
               Until you press play, nothing is requested from YouTube or Google
               at all
             </strong>{" "}
-            — the player you see beforehand is a still image and a button, not
+            . The player you see beforehand is a still image and a button, not
             an embedded video.
           </p>
           <p>
@@ -187,7 +187,7 @@ if a reader opened their own developer tools to check it.
             Because we set none, there is nothing here for you to switch off.
             You can still block or delete cookies for any site in your
             browser&rsquo;s settings, and doing so will not stop this site
-            working — none of it depends on storage in your browser.
+            working. None of it depends on storage in your browser.
           </p>
           <p>
             If you would rather no third-party request happened at all, do not

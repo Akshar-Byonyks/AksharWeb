@@ -2,11 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
-import {
-  DocumentGrid,
-  GridBlock,
-  RailNote,
-} from "@/components/layout/document-grid";
+import { DocumentGrid, GridBlock } from "@/components/layout/document-grid";
 import { LocationRegister } from "@/components/locations/location-register";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { CtaBand } from "@/components/sections/cta-band";
@@ -16,7 +12,7 @@ import { byIndiaFirst } from "@/lib/locations";
 const path = "/locations";
 
 const description =
-  "Where Akshar Byonyks and Byonyks operate: the Akshar Byonyks India office, Byonyks' head office, and the two India facilities that have been announced but not opened.";
+  "Where the group operates: Byonyks' head office in the United States, and the two India facilities it has announced but not opened. No Akshar Byonyks India address has been published. The Contact page is where to reach the office.";
 
 export const metadata: Metadata = {
   title: "Locations",
@@ -46,12 +42,17 @@ export const metadata: Metadata = {
 // breadcrumbs only, and the machine-readable address waits for the real one.
 //
 // THREE SITES CAME OFF THIS PAGE ON 1 SEP 2026 — Bengaluru, Punjab and Lahore
-// — on the client's instruction. The two Pakistan rows had been added on 31
-// Aug against the standing audit direction, so their removal restores spec
-// F-1 rather than departing from it; the Bengaluru row was this company's own,
-// and what replaced it is an India office with its address marked "coming
-// soon" rather than nothing at all. `src/lib/locations.ts` carries the full
-// reasoning and deviations.md §9 records both turns.
+// — on the client's instruction, and THE INDIA OFFICE THAT REPLACED BENGALURU
+// CAME OFF ON 2 SEP, also on instruction. The two Pakistan rows had been added
+// on 31 Aug against the standing audit direction, so their removal restores
+// spec F-1 rather than departing from it.
+//
+// The consequence of the second removal is worth stating here as well as in
+// the data: **every row on this page is now a Byonyks site**, so the page is
+// the group's premises register and no longer answers "where are you" under
+// this company's masthead. /contact is the only place that still says the
+// India office exists. `src/lib/locations.ts` carries the full reasoning and
+// deviations.md §9 records the turns.
 export default function LocationsPage() {
   return (
     <>
@@ -67,14 +68,13 @@ export default function LocationsPage() {
       >
         <ScrollReveal>
           <DocumentGrid>
-            <GridBlock
-              rail={
-                <RailNote label="On this page">
-                  Three in India and one in the United States; two operating,
-                  two announced. Every card says which company holds it.
-                </RailNote>
-              }
-            >
+            {/* An "On this page" rail note sat here — "Three in India and one
+                in the United States; two operating, two announced. Every card
+                says which company holds it." — and came out on client
+                instruction (3 Sep 2026). The counts it gave are still true of
+                the cards below; they are just no longer summarised before the
+                reader reaches them. */}
+            <GridBlock>
               <h1
                 id="locations-heading"
                 className="text-4xl font-bold tracking-tight text-balance text-ink sm:text-5xl"
@@ -113,17 +113,16 @@ export default function LocationsPage() {
           {/* ONE REGISTER, NOT TWO. The split into "Operating today" and
               "Announced, not open" sorted the page by the distinction a reader
               cares about second, and buried the one they care about first: on
-              an India-market site, the India office sat third in the first
-              group and the two India sites in a separate group further down.
-              Sorting India to the front puts all three in the top row of the
-              three-column grid, so the emphasis is the layout rather than a
-              badge stuck on top of it. The operating/announced distinction did
+              an India-market site, the two India sites sat in a group further
+              down the page. Sorting India to the front puts them in the first
+              two cells of the three-column grid, so the emphasis is the layout
+              rather than a badge stuck on top of it. The operating/announced distinction did
               not go away — it moved onto each card's face, where it survives
               the re-sort that a section heading would not. */}
           <LocationRegister
             id="sites"
-            title="All four sites, India first"
-            lead="The three India sites lead, then Byonyks' head office. The Akshar Byonyks India office is open and its address is coming soon; Hyderabad and Ahmedabad are announced rather than open — neither has a published opening date, and neither is called a manufacturing site here, because that is a separate CDSCO licence route and no licence has been published for either. Every card names the company that holds the building."
+            title="All three sites, India first"
+            lead="The two India sites lead, then Byonyks' head office. Hyderabad and Ahmedabad are announced rather than open. Neither has a published opening date, and neither is called a manufacturing site here, because that is a separate CDSCO licence route and no licence has been published for either. Every card names the company that holds the building."
             items={byIndiaFirst}
           />
         </div>
@@ -132,16 +131,17 @@ export default function LocationsPage() {
       {/* WHAT THIS PAGE CANNOT TELL YOU, stated by the page rather than left
           for a reader to notice. Every other register on this site closes the
           same way, and a locations page has more to declare than most: two of
-          the four rows are announcements, and the one row that is ours has no
-          address on it at all. */}
+          the three rows are announcements, and since 2 Sep 2026 none of them
+          is ours. A reader who came here to find Akshar Byonyks has to be told
+          that in words rather than left to infer it from three cards that all
+          say Byonyks. */}
       <section
         aria-labelledby="locations-limits-heading"
         className="mx-auto max-w-[1280px] px-4 py-16 sm:px-6 lg:px-8 lg:py-20"
       >
         <ScrollReveal>
           <DocumentGrid>
-            <GridBlock
-            >
+            <GridBlock>
               <h2
                 id="locations-limits-heading"
                 className="text-2xl font-bold tracking-tight text-balance text-ink sm:text-3xl"
@@ -155,12 +155,20 @@ export default function LocationsPage() {
                 which is why no row is marked as being on the public record.
               </p>
               <p className="mt-4 text-base text-ink">
-                The Akshar Byonyks India office has no published address, so the
-                card says that rather than naming a city. The ISO&nbsp;13485
+                Every site above belongs to Byonyks. Akshar Byonyks&rsquo; own
+                India office is not listed, because no address for it has been
+                published.{" "}
+                <Link
+                  href="/contact"
+                  className="rounded-sm text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                >
+                  Contact
+                </Link>{" "}
+                is where to reach it. The ISO&nbsp;13485
                 certification the X-1 is built under is real and central to the
                 device, but its certificate number has never reached this
                 project, and the facility behind it is no longer named on this
-                page — the{" "}
+                page. The{" "}
                 <Link
                   href="/products/the-x1-cycler"
                   className="rounded-sm text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
@@ -169,16 +177,7 @@ export default function LocationsPage() {
                 </Link>{" "}
                 sets out exactly which numbers are and are not held.
               </p>
-              <p className="mt-4 text-base text-muted-foreground">
-                Everything this site can and cannot substantiate is collected in{" "}
-                <Link
-                  href="/what-we-know"
-                  className="rounded-sm text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                >
-                  What we know
-                </Link>
-                .
-              </p>
+
             </GridBlock>
           </DocumentGrid>
         </ScrollReveal>

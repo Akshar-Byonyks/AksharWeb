@@ -168,7 +168,7 @@ sentence comes from claims.ts rather than being rewritten here.
           <p>
             We try to keep this site accurate and current, and where a figure
             comes from somewhere we say where. Where we do not yet hold a fact,
-            the site says so rather than estimating — those notices are
+            the site says so rather than estimating. Those notices are
             deliberate, and they are the honest state of the page on the day you
             read it.
           </p>
@@ -246,7 +246,7 @@ sentence comes from claims.ts rather than being rewritten here.
               Nothing in these terms limits our liability where the law does not
               allow it to be limited
             </strong>{" "}
-            — including for death or personal injury caused by negligence, for
+            , including for death or personal injury caused by negligence, for
             fraud, or under any statutory right you have as a consumer that
             cannot be excluded.
           </p>

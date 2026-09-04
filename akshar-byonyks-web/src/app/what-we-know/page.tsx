@@ -29,6 +29,23 @@ const description =
 export const metadata: Metadata = {
   title: "What we know",
   description,
+  // UNLISTED, NOT DELETED (3 Sep 2026, client instruction).
+  //
+  // The site's visible sourcing came off every other page on this date. This
+  // page kept all of it and stopped being advertised instead: the nav entry is
+  // gone, and so are the two in-page links that used to walk a reader here
+  // from `/locations` and `/innovation/`.
+  //
+  // `noindex` is what makes "unlisted" true rather than merely tidy. Without
+  // it the page keeps its canonical tag and its OpenGraph card and goes on
+  // ranking for the claims it lists, which would put the ledger in front of
+  // exactly the readers it was just taken away from — a page nobody can
+  // navigate to but everybody can find is not unlisted, it is only hidden from
+  // the people already on the site.
+  //
+  // `follow` stays on: the links out of here are the FDA register, the Health
+  // Ministry and six journals, and there is no reason to withhold those.
+  robots: { index: false, follow: true },
   alternates: { canonical: path, languages: { "en-IN": path } },
   openGraph: {
     title: "What we know | Akshar Byonyks",

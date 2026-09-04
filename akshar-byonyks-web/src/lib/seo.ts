@@ -54,6 +54,6 @@ export const defaultOg: NonNullable<
     url: "/opengraph-image.jpg",
     width: 1200,
     height: 630,
-    alt: "Akshar Byonyks International LLC — Transforming renal care through breakthrough peritoneal dialysis innovation.",
+    alt: "Akshar Byonyks International LLC: transforming renal care through breakthrough peritoneal dialysis innovation.",
   },
 ];

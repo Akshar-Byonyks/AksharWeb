@@ -11,9 +11,12 @@ import { splashWordmark } from "@/lib/splash-wordmark";
 // on the site across the server/client boundary to serve a decoration on one
 // of them. A five-line event bus keeps the layout a Server Component.
 //
-// It is also honest about lifetime: this state belongs to one page load, and a
-// module singleton is exactly one page load. Nothing needs to survive a
-// navigation, because the curtain never runs twice in a session.
+// It is also honest about lifetime: this state belongs to one document, and a
+// module singleton is exactly one document. The replay bus at the foot of this
+// file rides the same singleton for the same reason, and needs it more: a logo
+// click on /products has to reach a `SiteSplash` that has not mounted yet, on
+// a route that does not exist yet, and a module is the only thing the two ends
+// of that gap share.
 
 // NO `sessionStorage` GATE ANY MORE. This carried a `SPLASH_SEEN_KEY` so the
 // curtain ran once per visit; the client asked for it on every reload
@@ -22,8 +25,12 @@ import { splashWordmark } from "@/lib/splash-wordmark";
 // curtain twice in a row, so the ceilings below are now the only thing keeping
 // it from being a repeated tax rather than an opening.
 //
-// A client-side navigation back to Home still does not replay it — the arming
-// script only runs on a real document load.
+// A client-side navigation back to Home does not replay it BY DEFAULT — the
+// arming script only runs on a real document load. The nav's logo is the one
+// exception, on client instruction (2 Sep 2026): it re-arms the curtain from
+// client code via `requestSplashReplay` below, so the mark in the bar is the
+// deliberate way back to the opening. Every other route to `/` — the footer's
+// link, a body link, the back button — still arrives without one.
 //
 // DO NOT REINSTATE A STORAGE KEY HERE WITHOUT UPDATING `/cookie-policy`.
 // That page states, as a measured fact rather than boilerplate, that after
@@ -43,6 +50,16 @@ export const SPLASH_PATH = "/";
  *  single source of truth for "the curtain is up"; removing it puts
  *  `.site-splash` back to `display: none` and releases the scroll lock. */
 export const SPLASH_ARM_ID = "ab-splash-arm";
+
+/**
+ * The rules that <style> carries. It lives here because TWO things now inject
+ * it — the inline script in `layout.tsx`, which runs before React exists, and
+ * `armSplash` below, which runs on a logo click. Two copies of this string
+ * drifting apart would produce a curtain that shows without locking the
+ * scroll, or locks the scroll without showing.
+ */
+export const SPLASH_ARM_CSS =
+  ".site-splash{display:flex}html,body{overflow:hidden}";
 
 /**
  * THE WORDMARK'S OWN TIMELINE, in seconds, passed straight to `StrokeText`.
@@ -184,4 +201,79 @@ export function onSilkReady(listener: () => void): () => void {
   }
   listeners.add(listener);
   return () => listeners.delete(listener);
+}
+
+let failsafeTimer = 0;
+
+/**
+ * PUTS THE CURTAIN UP FROM CLIENT CODE, doing by hand what the inline script
+ * in `layout.tsx` does on a document load — failsafe included, because the
+ * failsafe is not optional just because React is demonstrably alive at the
+ * moment of the click. A navigation that never arrives would otherwise leave
+ * the scroll locked with nothing scheduled to let go of it.
+ *
+ * IT APPENDS A FRESH ELEMENT RATHER THAN REUSING THE ONE IN THE HEAD, and
+ * that is deliberate rather than lazy. The stylesheet IS the curtain, so a new
+ * element is a new cycle — which gives `site-splash.tsx` an identity to check
+ * before a fade-out timer from the cycle before removes the curtain this one
+ * just raised. Exactly one is ever in the document.
+ */
+export function armSplash() {
+  if (typeof document === "undefined") return;
+
+  document.getElementById(SPLASH_ARM_ID)?.remove();
+
+  const arm = document.createElement("style");
+  arm.id = SPLASH_ARM_ID;
+  arm.textContent = SPLASH_ARM_CSS;
+  document.head.appendChild(arm);
+
+  window.clearTimeout(failsafeTimer);
+  failsafeTimer = window.setTimeout(() => arm.remove(), SPLASH_FAILSAFE_MS);
+}
+
+/**
+ * THE REPLAY REQUEST, AND WHY IT IS A FLAG RATHER THAN A CALL TO `armSplash`.
+ *
+ * A logo click on another route happens while the reader is still looking at
+ * that route. Arming there would set `html,body{overflow:hidden}` on the page
+ * they are still on, and on a route that has not been prefetched that is a
+ * frozen page with no curtain on it for as long as the navigation takes —
+ * which reads as the site hanging, not as an opening. So a cross-route click
+ * records the intent and `SiteSplash` arms itself on the way in, before the
+ * browser paints.
+ *
+ * A click made while already on Home has no navigation to wait for and no
+ * other page to freeze, so the listener path arms immediately instead.
+ *
+ * THE STAMP IS WHAT KEEPS THE FLAG FROM GOING STALE. A click that never
+ * arrives anywhere — the reader hits back, the navigation fails — must not put
+ * a curtain in front of an unrelated visit to Home ten minutes later.
+ */
+let replayRequestedAt = 0;
+const replayListeners = new Set<() => void>();
+
+export function requestSplashReplay() {
+  replayRequestedAt = Date.now();
+  for (const listener of [...replayListeners]) listener();
+}
+
+/** True at most once per request, and only if the arrival was prompt. */
+export function consumeSplashReplay() {
+  const fresh =
+    replayRequestedAt !== 0 &&
+    Date.now() - replayRequestedAt < SPLASH_FAILSAFE_MS;
+  replayRequestedAt = 0;
+  return fresh;
+}
+
+/**
+ * For a `SiteSplash` that is already mounted — a logo click made while on
+ * Home, where nothing remounts and so nothing would otherwise re-run. Unlike
+ * `onSilkReady` this set is NOT cleared after firing: it is a subscription for
+ * the life of the component, not a one-shot.
+ */
+export function onSplashReplay(listener: () => void): () => void {
+  replayListeners.add(listener);
+  return () => replayListeners.delete(listener);
 }

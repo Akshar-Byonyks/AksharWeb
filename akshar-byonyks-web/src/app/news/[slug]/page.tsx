@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { CtaBand } from "@/components/sections/cta-band";
@@ -177,33 +177,7 @@ export default async function NewsArticlePage({
 
             <p className="mt-8 border-t border-line pt-5 text-sm text-muted-foreground">
               Published by {article.publisher} on {formatDate(article.published)}
-              , carried here word for word.{" "}
-              <a
-                href={article.sourceUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block rounded-sm py-1 text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-              >
-                Source
-                <span className="sr-only"> (opens in a new tab)</span>
-              </a>
-              {article.wireUrl ? (
-                <>
-                  {" "}
-                  &middot;{" "}
-                  <a
-                    href={article.wireUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 rounded-sm py-1 text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                  >
-                    <ExternalLink className="size-3 shrink-0" aria-hidden="true" />
-                    Wire release
-                    <span className="sr-only"> (opens in a new tab)</span>
-                  </a>
-                </>
-              ) : null}
-              , retrieved {article.retrieved}.
+              , carried here word for word. Retrieved {article.retrieved}.
             </p>
 
             <p className="mt-10">
@@ -221,7 +195,7 @@ export default async function NewsArticlePage({
 
       <CtaBand
         heading="Talk to Akshar Byonyks"
-        body="Patient, clinician, investor, or distributor enquiry — we route it to the right person."
+        body="Patient, clinician, investor, or distributor enquiry. We route it to the right person."
       />
     </>
   );

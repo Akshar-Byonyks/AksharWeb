@@ -78,8 +78,8 @@ export function TheNight() {
               The cycler runs on its own while the household sleeps.
             </h2>
             <p className="mt-6 max-w-2xl text-lg text-white/75">
-              In-centre haemodialysis organises the week around the clinic
-              &mdash; roughly three trips, plus the road between them.
+              In-centre hemodialysis organizes the week around the clinic:
+              roughly three trips, plus the road between them.
               Automated peritoneal dialysis runs overnight, at home, on a
               schedule set with your nephrologist.
             </p>

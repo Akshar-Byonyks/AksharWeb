@@ -3,7 +3,6 @@ import type { CSSProperties } from "react";
 import { PERITONEAL_CAVITY } from "@/lib/figures";
 import { cn } from "@/lib/utils";
 
-import { ClinicalLayer } from "@/components/innovation/clinical-layer";
 import { InViewStage } from "@/components/innovation/in-view-stage";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 
@@ -35,23 +34,39 @@ const ART_H = 150;
 // review yet to back one — so the shape is honestly schematic and the caption
 // says so.
 
-// TWO LEVELS, NOT THREE. The cavity runs y=37 to y=128 — 91 units — and every
-// depth in this figure is one of these two, so the row reads as one body of
-// fluid arriving, resting and leaving rather than three unrelated amounts.
+// THREE LEVELS. The cavity runs y=37 to y=128 — 91 units — and every depth in
+// this figure is one of these three, so the row reads as one body of fluid
+// arriving, resting and leaving rather than three unrelated amounts.
 //
-// HIGH is the level dwell holds. LOW is a residual, not an empty cavity: a
-// drain does not empty the peritoneum, and drawing it empty would be a claim
-// this page has nothing to back.
+// HIGH is the prescribed volume, the level dwell holds. LOW is a residual, not
+// an empty cavity: a drain does not empty the peritoneum, and drawing it empty
+// would be a claim this page has nothing to back. MID is a fill part-way in.
 const HIGH = 46; // 90% of the cavity
+const MID = 73; //  60%
 const LOW = 110; // 20%
 
-// Where each panel comes to rest, which is the END of its own step. That pose
-// is what the server sends and what a reader with reduced motion or no
-// JavaScript keeps, so read across, the static row is: full, full, low.
+// EACH PANEL RESTS IN THE MIDDLE OF ITS OWN ACTION, NOT AT THE END OF IT
+// (3 Sep 2026), and that is the whole reason MID exists.
 //
-// Fixed 31 Aug 2026. Fill used to rest at 44% and drain at 57%, so the static
-// row said a drain leaves more fluid behind than a fill puts in.
-const LEVELS = { fill: HIGH, dwell: HIGH, drain: LOW } as const;
+// Resting at the end is what a static diagram of a process gets wrong: a fill
+// ENDS at the prescribed volume, which is exactly the level dwell holds, so
+// the first two panels came to rest as the same picture. Read across, the row
+// was full, full, low — the step that means "fluid arriving" drawn identically
+// to the step that means "fluid sitting still", separated only by three drops
+// five units across. The arc of the story was invisible in the one pose that
+// most readers actually keep.
+//
+// Now it is 60%, 90%, 20%: arriving, held, left behind. Fill is drawn mid-
+// arrival, which is also what makes its drops legible — the catheter tip is at
+// y=60 and the surface now rests at y=73, so for the first time there is air
+// under the tip for a drop to fall through. Before this the tip was under
+// water in the resting pose and the drops had nowhere to go.
+//
+// NOT a return to the bug fixed on 31 Aug 2026, which was fill resting at 44%
+// and drain at 57% — a static row saying a drain leaves more behind than a
+// fill puts in. The ordering that mattered then still holds now, and by a
+// wider margin: LOW is below MID is below HIGH, always.
+const LEVELS = { fill: MID, dwell: HIGH, drain: LOW } as const;
 
 type Step = keyof typeof LEVELS;
 
@@ -80,14 +95,37 @@ function startScale(step: Step) {
   return from === undefined ? undefined : depth(from) / depth(LEVELS[step]);
 }
 
-// Where the drops sit at rest: down the catheter, ending at the water line.
-// They were inside the container until the fill panel started coming to rest
-// full (31 Aug 2026) — the catheter tip is at y=60 and the finished surface is
-// at y=46, so the tip is under water and there is no air left in the container
-// to fall through. These three run from just below the connection at the top
-// down to y=42, whose lower edge meets the surface; the last of them sits in
-// the sliver of air between the cavity roof at y=37 and the water.
-const DROP_LEVELS = [16, 29, 42];
+// FLUID INSIDE A TUBE IS NOT VISIBLE, and that one observation is what fixes
+// the drops (3 Sep 2026). Every version of this figure until now drew them
+// spaced down the catheter's own shaft, with the 1.5px stroke running between
+// each pair — and rendered, that is unmistakably a string of beads threaded on
+// a wire, not fluid travelling. Widening the gaps does not help; it makes
+// fewer, larger beads. The line showing through BETWEEN the drops is the
+// entire defect, so the fix is not to respace them but to stop putting them
+// where the line is.
+//
+// So the shaft is now empty and the drops live only where fluid is actually
+// exposed: between the catheter's tip and the surface. Two of them, because
+// two reads as a sequence — one leaving, one about to land — where one reads
+// as a blemish and three crowd a 23-unit gap.
+//
+// The tip moved from y=60 to y=50 to open that gap. It stays inside the cavity
+// (the roof is at y=37) and stays under the surface during dwell, which rests
+// at y=46 — the catheter still sits in the fluid, which is the thing that
+// panel needs to be true.
+const CATHETER_TIP = 50;
+const DROP_LEVELS_FILL = [57, 68];
+
+// DRAIN HAS NO DROPS, on client instruction (3 Sep 2026). It briefly carried
+// four of them rising from the residual pool toward the catheter — the fill
+// mark mirrored, pointed at the bottom — and inverted drops read as wrong-way-
+// up drops rather than as rising ones, whatever the geometry argues.
+//
+// So the third panel is once more carried by its water level alone. That is a
+// state rather than an action, which is the trade being made here knowingly:
+// the row now shows two steps happening and one step's result. If drain ever
+// wants an action mark again it needs a shape that is not a drop — the drop is
+// spoken for, and it only ever means "falling".
 
 // A drop: a point at the top, a circle at the bottom, joined by two curves.
 // Built from the level rather than positioned by transform, because the CSS
@@ -98,6 +136,10 @@ const DROP_LEVELS = [16, 29, 42];
 // at rest — where all three are visible at once — that read as a chain of
 // beads threaded on the catheter rather than as three drops falling down it.
 // The gaps are now roughly the height of a drop.
+// One direction only. This briefly took a `dir` argument so drain could draw
+// the same shape mirrored; that came out on client instruction and the
+// parameter went with it rather than sitting unused. A drop points the way it
+// falls, and on this site it only falls.
 function dropletPath(y: number) {
   return [
     `M80 ${y - 3.5}`,
@@ -150,8 +192,16 @@ function CycleFigure({ step }: { step: Step }) {
           y={LEVELS[step]}
           width={ART_W}
           height={ART_H - LEVELS[step]}
+          // white/35, NOT /15 (3 Sep 2026). Measured off the rendered page,
+          // /15 composites to rgb(39, 60, 99) on ink — 1.54:1, against WCAG
+          // 1.4.11's 3:1 floor for a graphic you need in order to understand
+          // the content. It was the faintest mark in the figure while every
+          // other one cleared 4.3:1, and it is the mark that carries the
+          // meaning: the whole three-panel story is the LEVEL of this shape.
+          // /35 measures 3.19:1. The cavity outline went up with it — see the
+          // note there for why the two had to move together.
           className={cn(
-            "fill-white/15",
+            "fill-white/35",
             step === "fill" && "pd-fluid-fill",
             step === "drain" && "pd-fluid-drain",
           )}
@@ -171,9 +221,16 @@ function CycleFigure({ step }: { step: Step }) {
           literally. `vectorEffect` is not inherited, so it is set per element
           rather than once on the group. */}
       <g strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        {/* white/65, raised from /45 with the dialysate (3 Sep 2026). It
+            already cleared 1.4.11 on its own at 4.29:1, so this is not a
+            contrast fix — it is a SEPARATION one. The wall's job below the
+            water line is to be distinguishable from the fluid it contains, and
+            /45 against a /15 fill was a 30-point gap that became a 10-point
+            gap the moment the fill went to /35. The two are a pair; move one
+            and the other follows. */}
         <path
           d={PERITONEAL_CAVITY}
-          className="stroke-white/45"
+          className="stroke-white/65"
           vectorEffect="non-scaling-stroke"
         />
 
@@ -181,7 +238,7 @@ function CycleFigure({ step }: { step: Step }) {
             the cycler attaches. Present in all three steps: it is not removed
             between exchanges, which is itself worth showing. */}
         <path
-          d="M80 8V60"
+          d={`M80 8V${CATHETER_TIP}`}
           className="stroke-white/70"
           vectorEffect="non-scaling-stroke"
         />
@@ -208,19 +265,21 @@ function CycleFigure({ step }: { step: Step }) {
             reads as falling in the static pose — which is what a reader without
             JavaScript, or with reduced motion, actually gets. */}
         {step === "fill"
-          ? DROP_LEVELS.map((y, i) => (
+          ? DROP_LEVELS_FILL.map((y, i) => (
               <path
                 key={y}
                 d={dropletPath(y)}
                 className="pd-drip fill-white/80"
                 // Staggered inside the fill window (starts at 250ms, runs
                 // 1000ms), so the drops arrive while the level is rising
-                // rather than after it has settled. The last one lands as the
-                // surface reaches the level it rests at.
-                style={{ animationDelay: `${250 + i * 150}ms` }}
+                // rather than after it has settled. 250ms apart, which with a
+                // 700ms fall puts the second one landing at 1200ms — just as
+                // the surface reaches the level it rests at.
+                style={{ animationDelay: `${250 + i * 250}ms` }}
               />
             ))
           : null}
+
 
 
         {/* Dwell: transfer across the membrane, drawn as four arrows pointing
@@ -250,7 +309,7 @@ const steps: { step: Step; title: string; body: string }[] = [
   {
     step: "fill",
     title: "Fill",
-    body: "Sterile dialysate runs down the catheter into the space around the organs. It flows in under gravity or from the cycler — it is not injected.",
+    body: "Sterile dialysate runs down the catheter into the space around the organs. It flows in under gravity or from the cycler. It is not injected.",
   },
   {
     step: "dwell",
@@ -282,8 +341,8 @@ export function ExchangeCycle() {
             </h2>
             <p className="mt-6 text-lg text-white/75">
               A peritoneal dialysis treatment is made of exchanges, and an
-              exchange is always the same three steps. Everything else &mdash;
-              how many, how long, how much fluid &mdash; is the part your
+              exchange is always the same three steps. Everything else
+              (how many, how long, how much fluid) is the part your
               nephrologist sets.
             </p>
           </div>
@@ -340,13 +399,20 @@ export function ExchangeCycle() {
           {/* The legend. DESIGN.md, Two Paths: "before shipping a bespoke
               diagram, check that a reader who has never seen it can name what
               a mark means." Every mark above is named here. */}
-          <p className="text-sm text-white/60">
-            Schematic, not an anatomical illustration. The outline is the
-            peritoneal cavity, the vertical line is the catheter, and the shaded
-            area is dialysate. In step 2 the arrows show waste and extra fluid
-            crossing the membrane into the fluid; they mark direction only, not
-            quantity.
-          </p>
+          {/* THE FIGURE'S LEGEND WAS HERE, and came out on client instruction
+              (3 Sep 2026). It named every mark — that the drawing is a
+              schematic rather than an anatomical illustration, that the outline
+              is the peritoneal cavity, the line the catheter, the shaded area
+              dialysate whose level is not a measured volume, the drops fluid
+              running in, the arrows a direction and not a quantity.
+
+              None of that is said anywhere else now, so the drawing above is
+              unlabelled: DESIGN.md's rule for a bespoke diagram — that a reader
+              who has never seen it can name what a mark means — is no longer
+              met on this page, and the disclaimer that the cavity outline is
+              not anatomy has gone with it. Recorded here rather than argued,
+              but do not re-derive it as an oversight: it was removed on
+              purpose. */}
           <p className="text-base text-white/75">
             Fill volumes, dwell times and the number of exchanges in a night are
             not the same for everyone. They are set by your nephrologist and
@@ -354,24 +420,18 @@ export function ExchangeCycle() {
           </p>
         </div>
 
-        {/* Constrained to the prose measure so the disclosure does not read as
-            a fourth column of the figure above. */}
-        <div className="mt-8 max-w-3xl">
-          <ClinicalLayer summary="Why the fluid removes water as well as solute">
-            <p>
-              Diffusion moves solute down the plasma-to-dialysate concentration
-              gradient. Water follows separately, by osmosis: the dialysate
-              carries an osmotic agent at a concentration higher than plasma,
-              and the resulting gradient drives ultrafiltration across the
-              membrane for as long as the gradient holds.
-            </p>
-            <p className="mt-3">
-              Because that gradient dissipates during the dwell, the
-              relationship between dwell length and net ultrafiltration is not
-              linear, and a longer dwell does not mean more fluid removed.
-            </p>
-          </ClinicalLayer>
-        </div>
+        {/* THE CLINICAL LAYER FOR THIS SECTION — "Why the fluid removes water
+            as well as solute", on diffusion, osmosis and why a longer dwell
+            does not mean more fluid removed — was removed on client
+            instruction (3 Sep 2026).
+
+            The page's premise is unchanged and is stated in its own direction
+            contract: it "lets the clinician open a second layer at each step
+            rather than being written a second page." That is now true of two
+            steps rather than three — `PdBasics` and `ByHandOrMachine` still
+            carry theirs, and the exchange, which is the one step with a
+            mechanism a clinician would want, no longer does. `ClinicalLayer`
+            itself is untouched and still used by both. */}
       </div>
     </section>
   );

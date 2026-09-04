@@ -106,7 +106,7 @@ export function ModalityMix() {
             <p className="mt-6 text-lg text-muted-foreground">
               Peritoneal dialysis has been available in India for decades and is
               named in the national programme. Fewer than one dialysis patient
-              in twenty is on it &mdash; which is a finding about how the
+              in twenty is on it, which is a finding about how the
               country&rsquo;s dialysis capacity was built, not about whether the
               therapy works.
             </p>
@@ -132,7 +132,7 @@ export function ModalityMix() {
               Guatemala is not a large or wealthy health system. It is the
               comparison because it shows that a country&rsquo;s peritoneal
               dialysis share is set by how its dialysis programme was
-              organised, not by how much money it has.
+              organized, not by how much money it has.
             </p>
 
             <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -180,7 +180,7 @@ export function ModalityMix() {
               <p>
                 A later estimate puts India&rsquo;s peritoneal dialysis
                 population lower still, at {PD_RECENT_ESTIMATE.value} in{" "}
-                {PD_RECENT_ESTIMATE.asOf} &mdash; a different author on a
+                {PD_RECENT_ESTIMATE.asOf}, a different author on a
                 different method, so the direction is not something this site
                 will assert.
                 <Cite source={PD_RECENT_ESTIMATE.source} />

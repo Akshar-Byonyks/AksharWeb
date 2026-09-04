@@ -14,7 +14,7 @@ export const enquiryTypes = [
     label: "Patient or caregiver",
     subject: "Patient",
     acknowledgement:
-      "We will reply with plain-language information about home peritoneal dialysis. We cannot give medical advice — decisions about your treatment stay with your nephrologist.",
+      "We will reply with plain-language information about home peritoneal dialysis. We cannot give medical advice. Decisions about your treatment stay with your nephrologist.",
   },
   {
     value: "clinician",
@@ -92,7 +92,7 @@ export const contactSchema = z.object({
     .optional()
     .or(z.literal("")),
   email: z
-    .email("Check the email address — we could not read that one.")
+    .email("Check the email address. We could not read that one.")
     .max(254),
   // REQUIRED SINCE 1 SEP 2026, on client instruction. Both were optional; the
   // people answering this inbox need a number to ring and a city to route by,
@@ -127,7 +127,7 @@ export const contactSchema = z.object({
   message: z
     .string()
     .trim()
-    .min(10, "Tell us a little more — at least a sentence.")
+    .min(10, "Tell us a little more, at least a sentence.")
     .max(5000, "Please keep the message under 5,000 characters."),
   consent: z.literal(true, {
     message: "We need your consent before we can use these details to reply.",

@@ -55,6 +55,28 @@ export type Source = {
    * abbreviation only an academic would resolve.
    */
   readonly shortName: string;
+  /**
+   * WHAT KIND OF SOURCE THIS IS - added 3 Sep 2026, when the client asked
+   * for the site's citations to come off the pages while the record was
+   * kept.
+   *
+   * The two kinds were always different in nature and the site was treating
+   * them alike. A register is an official body's own published document: a
+   * reader following it is checking a fact about a regulated device against
+   * the authority that holds it. A research source supports an estimate -
+   * market size, cost, modality share - where the citation is scholarly
+   * courtesy rather than the thing that makes the statement true.
+   *
+   * Only registers are rendered now. Cite reads this field and nothing
+   * else, which is why the decision lives here beside the sources rather
+   * than as a list of ids inside a component: adding a source forces the
+   * author to say which kind it is, and the renderer cannot be wrong about
+   * one it has not seen.
+   *
+   * NOTHING IS DELETED. Both kinds stay in this file in full, and both are
+   * written into SOURCES.md by scripts/generate-sources.mjs on every build.
+   */
+  readonly kind: "register" | "research";
   /** The full citation. Retained for structured data and for review. */
   readonly citation: string;
   /** Who stands behind it — the half a sceptical reader checks first. */
@@ -79,9 +101,31 @@ export type Source = {
  * prevent. Inline attribution satisfies both and is *less* visually heavy than
  * a superscript pointing at a list, which was the actual complaint.
  */
+// THE APPROX SIGN CARRIES A NO-BREAK SPACE (3 Sep 2026). Every "≈" in this
+// file is followed by U+00A0, not by a plain space and not by nothing.
+//
+// Nothing: "≈175,000" set the sign hard against the 1 at 60px, which is where
+// these values actually render — it read as one glyph rather than as a
+// qualifier on a number.
+//
+// A plain space: correct width, wrong behaviour. It is a break opportunity, so
+// a narrow column could leave the "≈" alone at the end of a line with its
+// figure on the next one — a number that says "approximately" on one line and
+// gives the value on another has lost the qualifier for anyone skimming.
+//
+// U+202F, the narrow no-break space, was measured and rejected: in Noto Sans
+// at display size it renders at effectively zero width, so it is
+// indistinguishable from no space at all.
+//
+// The word-valued figures ("≈ two thirds", "≈ a quarter") carry it too. They sit
+// in the same registers as the numeric ones — one of them is the largest
+// figure on the page — and spacing only the numerals would read as a defect in
+// the ones left out.
+
 export const marketSources = [
   {
     id: "pmndp",
+    kind: "register",
     shortName: "Health Ministry, Government of India",
     citation:
       "Pradhan Mantri National Dialysis Programme: programme guidelines and national portal.",
@@ -92,6 +136,7 @@ export const marketSources = [
   },
   {
     id: "gkha-india",
+    kind: "research",
     shortName: "Kidney360, 2020",
     citation:
       "Bharati J, Jha V. “Global Dialysis Perspective: India.” Kidney360 1(10):1143–1147.",
@@ -102,6 +147,7 @@ export const marketSources = [
   },
   {
     id: "hd-cost",
+    kind: "research",
     shortName: "Clinical Kidney Journal, 2018",
     citation:
       "Kaur G, Prinja S, Ramachandran R, Malhotra P, Gupta KL, Jha V. “Cost of hemodialysis in a public sector tertiary hospital of India.” Clinical Kidney Journal 11(5):726–733.",
@@ -112,6 +158,7 @@ export const marketSources = [
   },
   {
     id: "pd-first",
+    kind: "research",
     shortName: "Clinical Kidney Journal, 2022",
     citation:
       "Gupta D, Jyani G, Ramachandran R, et al. “Peritoneal dialysis–first initiative in India: a cost-effectiveness analysis.” Clinical Kidney Journal 15(1):128–135.",
@@ -122,6 +169,7 @@ export const marketSources = [
   },
   {
     id: "ijn-pd",
+    kind: "research",
     shortName: "Indian Journal of Nephrology, 2024",
     citation:
       "Natarajan H. “Peritoneal Dialysis in the Comfort of Home — Regain Your Independence.” Indian Journal of Nephrology 34(2):103–104.",
@@ -132,6 +180,7 @@ export const marketSources = [
   },
   {
     id: "gkha-guatemala",
+    kind: "research",
     shortName: "Kidney360, 2020",
     citation:
       "García P, Sánchez-Polo V. “Global Dialysis Perspective: Guatemala.” Kidney360 1(11):1300–1305.",
@@ -206,7 +255,7 @@ export const scaleFigures: readonly Figure[] = [
     asOf: "Stated in the 2016 programme guidelines, carried on the current portal",
   },
   {
-    value: "≈175,000",
+    value: "≈ 175,000",
     label: "People actually on chronic dialysis",
     detail:
       "Everyone on dialysis in the country, against the yearly arrivals above.",
@@ -214,7 +263,7 @@ export const scaleFigures: readonly Figure[] = [
     asOf: "2018 estimate",
   },
   {
-    value: "≈two thirds",
+    value: "≈ two thirds",
     label: "Share of people with kidney failure who died without dialysis",
     detail:
       "The difference between those two numbers is not a waiting list. This is what it is.",
@@ -237,7 +286,7 @@ export const scaleFigures: readonly Figure[] = [
 // primary and confirms it, move the citation — do not add it on the strength
 // of a footnote nobody has opened.
 //
-// CUT: the Aarogyasri retention figure ("53% still on haemodialysis after six
+// CUT: the Aarogyasri retention figure ("53% still on hemodialysis after six
 // months"). It made the same point as the dropout figure below it and made it
 // backwards — a reader had to invert 53% to see the loss, having just read two
 // figures that state their quantity directly.
@@ -250,8 +299,8 @@ export const scaleFigures: readonly Figure[] = [
  * one failure this page cannot survive.
  */
 export const TRAVEL_OVER_50KM: Figure = {
-  value: "≈60%",
-  label: "Travel more than 50 km to reach haemodialysis",
+  value: "≈ 60%",
+  label: "Travel more than 50 km to reach hemodialysis",
   detail:
     "Not once. Three times a week, indefinitely, usually with someone accompanying them.",
   source: "gkha-india",
@@ -260,7 +309,7 @@ export const TRAVEL_OVER_50KM: Figure = {
 
 /** Restated in prose. See the note on TRAVEL_OVER_50KM. */
 export const LIVE_OVER_100KM: Figure = {
-  value: "≈a quarter",
+  value: "≈ a quarter",
   label: "Live more than 100 km from the facility",
   detail:
     "At this distance the journey, not the therapy, sets the shape of the week.",
@@ -365,14 +414,14 @@ export const catastropheLadder = {
 // ---------------------------------------------------------------------------
 export const modalityFigures: readonly Figure[] = [
   {
-    value: "≈175,000",
-    label: "On haemodialysis in India",
+    value: "≈ 175,000",
+    label: "On hemodialysis in India",
     detail: "",
     source: "pd-first",
     asOf: "2018",
   },
   {
-    value: "≈8,500",
+    value: "≈ 8,500",
     label: "On peritoneal dialysis in India",
     detail: "Fewer than one in twenty people on dialysis.",
     source: "pd-first",
@@ -382,7 +431,7 @@ export const modalityFigures: readonly Figure[] = [
 
 /** Subordinated, not deleted. Rendered as a footnote under the comparison. */
 export const PD_RECENT_ESTIMATE: Figure = {
-  value: "≈6,500",
+  value: "≈ 6,500",
   label: "A later estimate of the same count",
   detail:
     "Lower than the 2018 figure, from a different author on a different method. The direction is not something this site will assert.",
@@ -395,7 +444,7 @@ export const GUATEMALA_PD_SHARE: Figure = {
   value: "45%",
   label: "Share of dialysis patients on peritoneal dialysis in Guatemala",
   detail:
-    "Among 9,245 people on dialysis — one of the highest shares in Latin America, in a country with a fraction of India’s health budget.",
+    "Among 9,245 people on dialysis, one of the highest shares in Latin America, in a country with a fraction of India’s health budget.",
   source: "gkha-guatemala",
   asOf: "2019",
 };

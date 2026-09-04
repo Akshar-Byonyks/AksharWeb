@@ -31,7 +31,7 @@ export async function deliverEnquiry(input: ContactInput): Promise<DeliveryResul
   const body = [
     `Enquiry type: ${type.label}`,
     `Name: ${input.name}`,
-    input.organisation ? `Organisation: ${input.organisation}` : null,
+    input.organisation ? `Organization: ${input.organisation}` : null,
     `Email: ${input.email}`,
     // Unconditional since 1 Sep 2026: both are required fields now, so the
     // guard would only ever hide a validation bug from the person reading

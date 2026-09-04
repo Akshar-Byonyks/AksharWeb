@@ -34,7 +34,7 @@ const questions = [
   },
   {
     q: "Is it the same machine the FDA cleared?",
-    a: `Yes — and a clearance does not travel. It is the device cleared under 510(k) ${fdaClearance.kNumber}, held by Byonyks. That clearance authorises marketing in the United States. India's position is separate, is being established under the Medical Device Rules 2017, and will be stated here precisely once it is confirmed.`,
+    a: `Yes, and a clearance does not travel. It is the device cleared under 510(k) ${fdaClearance.kNumber}, held by Byonyks. That clearance authorises marketing in the United States. India's position is separate, is being established under the Medical Device Rules 2017, and will be stated here precisely once it is confirmed.`,
   },
   {
     q: "Is this an Indian company?",

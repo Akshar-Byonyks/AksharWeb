@@ -40,11 +40,11 @@ const benefits = [
   },
   {
     title: "Supports residual kidney function",
-    body: "Home peritoneal dialysis is associated with preserving residual renal function for longer than in-centre haemodialysis.",
+    body: "Home peritoneal dialysis is associated with preserving residual renal function for longer than in-centre hemodialysis.",
   },
   {
     title: "Clears acid and toxins",
-    body: "Each cycle removes acid and toxins that build up in the dialysate — the same job healthy kidneys do continuously.",
+    body: "Each cycle removes acid and toxins that build up in the dialysate, the same job healthy kidneys do continuously.",
   },
 ];
 

@@ -171,7 +171,7 @@ function DeviceFrames() {
           </div>
           <FrameCaption
             title="The device"
-            body="Byonyks USA's official product render, at its own resolution — a render, not a photograph."
+            body="Byonyks USA's official product render, at its own resolution. A render, not a photograph."
           />
         </div>
 

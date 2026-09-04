@@ -5,7 +5,12 @@ import "./globals.css";
 import { SiteFooter } from "@/components/layout/footer";
 import { AnimatedNav } from "@/components/ui/animated-nav";
 import { siteUrl } from "@/lib/site-config";
-import { SPLASH_ARM_ID, SPLASH_FAILSAFE_MS, SPLASH_PATH } from "@/lib/splash";
+import {
+  SPLASH_ARM_CSS,
+  SPLASH_ARM_ID,
+  SPLASH_FAILSAFE_MS,
+  SPLASH_PATH,
+} from "@/lib/splash";
 
 // Spec Section 6: Noto Sans for both display and text roles — one family,
 // self-hosted.
@@ -154,7 +159,9 @@ export default function RootLayout({
               SPLASH_PATH,
             )})return;var s=document.createElement("style");s.id=${JSON.stringify(
               SPLASH_ARM_ID,
-            )};s.textContent=".site-splash{display:flex}html,body{overflow:hidden}";document.head.appendChild(s);setTimeout(function(){s.remove()},${SPLASH_FAILSAFE_MS})}catch(e){}})()`,
+            )};s.textContent=${JSON.stringify(
+              SPLASH_ARM_CSS,
+            )};document.head.appendChild(s);setTimeout(function(){s.remove()},${SPLASH_FAILSAFE_MS})}catch(e){}})()`,
           }}
         />
         <a

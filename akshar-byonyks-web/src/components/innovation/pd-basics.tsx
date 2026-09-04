@@ -41,7 +41,7 @@ export function PdBasics() {
                 <strong className="font-semibold text-ink">peritoneum</strong>{" "}
                 is the thin membrane that lines the abdominal cavity and covers
                 the organs inside it. It is full of small blood vessels, and it
-                lets some things pass through it &mdash; which is what makes it
+                lets some things pass through it, which is what makes it
                 usable as a filter.
               </p>
               <p>

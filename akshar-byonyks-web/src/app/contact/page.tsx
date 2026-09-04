@@ -157,7 +157,7 @@ which country it rings in.
                         call log: an unmarked country code costs a patient
                         money and costs this company the enquiry. */}
                     <p className="mt-0.5 text-xs text-muted-foreground">
-                      {siteContact.phoneRegion} — an international call from
+                      {siteContact.phoneRegion}, an international call from
                       India.
                     </p>
                   </div>

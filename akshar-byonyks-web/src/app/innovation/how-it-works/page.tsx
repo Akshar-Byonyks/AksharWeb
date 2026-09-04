@@ -15,7 +15,7 @@ import { siteUrl } from "@/lib/site-config";
 const path = "/innovation/how-it-works";
 
 const description =
-  "Peritoneal dialysis explained in plain language: what the peritoneum does, the three steps of an exchange, and the difference between doing them by hand and by cycler — with a technical layer for clinicians.";
+  "Peritoneal dialysis explained in plain language: what the peritoneum does, the three steps of an exchange, and the difference between doing them by hand and by cycler, with a technical layer for clinicians.";
 
 // Spec §11.5 names this page and `/innovation/market/` as the two that carry
 // the SEO load a dedicated patient pillar used to carry, and §11.6 targets it
@@ -59,7 +59,7 @@ const jsonLd = {
     name: "Peritoneal dialysis",
     alternateName: "PD",
     description:
-      "A form of dialysis that filters blood inside the body, using the peritoneum — the membrane lining the abdominal cavity — as the filter. Sterile dialysate is run into the cavity through a catheter, left to dwell while waste and excess fluid cross into it, and then drained.",
+      "A form of dialysis that filters blood inside the body, using the peritoneum (the membrane lining the abdominal cavity) as the filter. Sterile dialysate is run into the cavity through a catheter, left to dwell while waste and excess fluid cross into it, and then drained.",
   },
 };
 
@@ -124,7 +124,7 @@ than asserted.
           {
             href: "/products/the-x1-cycler",
             title: "The X-1 cycler",
-            body: "The machine that runs these exchanges overnight — what it does, what is confirmed about it, and what is not yet published.",
+            body: "The machine that runs these exchanges overnight: what it does, what is confirmed about it, and what is not yet published.",
           },
           {
             href: "/innovation",

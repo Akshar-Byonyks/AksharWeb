@@ -122,7 +122,7 @@ timeline we cannot keep or a person who does not exist.
         <LegalSection id="who-this-is-for" title="Who this page is for">
           <p>
             Anyone who has contacted us through this website and is unhappy with
-            how we have handled their personal data — what we collected, what we
+            how we have handled their personal data: what we collected, what we
             did with it, how long we kept it, or how we answered a request to
             see, correct or delete it.
           </p>
@@ -136,7 +136,7 @@ timeline we cannot keep or a person who does not exist.
         <LegalSection id="officer" title="The Grievance Officer">
           <p>
             The DPDP Act requires us to publish the name and contact details of
-            a Grievance Officer — a specific accountable person, not a
+            a Grievance Officer: a specific accountable person, not a
             department.
           </p>
           <PendingNote
@@ -236,8 +236,8 @@ timeline we cannot keep or a person who does not exist.
           title="Complaints that are not about data"
         >
           <p>
-            If your complaint is about something else — the device, information
-            on this site, or how someone from Akshar Byonyks dealt with you —
+            If your complaint is about something else (the device, information
+            on this site, or how someone from Akshar Byonyks dealt with you),
             send it to the same address and say what it concerns. It will be
             routed to the right person.
           </p>

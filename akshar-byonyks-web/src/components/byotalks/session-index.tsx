@@ -47,9 +47,44 @@ export function SessionIndex() {
             >
               The sessions
             </h2>
+            {/* WHAT BYOTALKS IS, rewritten 3 Sep 2026 on client instruction.
+                Every clause is checked against `byotalks.ts` rather than
+                written to sound right:
+
+                "Byonyks' own" — the recordings are on Byonyks USA's channel,
+                @Byonyks-Official. Attributed to Byonyks and not to Akshar
+                Byonyks, which is spec §3.1's first non-negotiable.
+
+                "long-form" — the sessions run between roughly one and two
+                hours; `durationSeconds` carries the real figures.
+
+                "nephrologists and nursing leads" — NOT "nephrologists". Five
+                of the six speakers are physicians, and the sixth is Joanna Lee
+                Neumann, RN, CNN, a Senior Director of Clinical Services. The
+                hero says "clinicians" for the same reason; a sentence here
+                calling them all nephrologists would misdescribe her.
+
+                "several of them" — four of the six carry "Byonyks Scientific
+                Advisory Board". Deliberately not a number: it stays true if a
+                session is added, which the sentence it replaces did not.
+
+                THE COUNT IS GONE, and that is a fix rather than a trim. This
+                paragraph opened "Eight recorded conversations" — a hardcoded
+                figure directly under a hero that computes the same number from
+                the data precisely so a ninth session cannot leave a stale one.
+                The listing below is the count.
+
+                What also left: "Nothing loads from the video host until you
+                press play." The facade is unchanged and still does exactly
+                that; the claim now lives only on /accessibility, which states
+                it in full. */}
             <p className="mt-4 text-lg text-muted-foreground">
-              Eight recorded conversations, published on Byonyks&rsquo; channel.
-              Nothing loads from the video host until you press play.
+              ByoTalks is Byonyks&rsquo; own video series: long-form recorded
+              sessions in which the clinicians who do this work (
+              nephrologists and nursing leads, several of them on Byonyks&rsquo;
+              Scientific Advisory Board) talk through peritoneal dialysis
+              in practice. Each has a page here with the full recording and the
+              speaker&rsquo;s credentials.
             </p>
           </div>
         </ScrollReveal>

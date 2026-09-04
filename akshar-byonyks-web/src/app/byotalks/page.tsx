@@ -102,9 +102,10 @@ not replace "Former President of the ISPD" set where it can be read.
 STORY: what these sessions are, the eight of them with who gave each, and the
 speakers gathered so the advisory-board names read as a group rather than as
 scattered bylines.
-FIRST VIEWPORT: ink over clinicians mid-conversation; the breadcrumb; counts
-computed from the data rather than typed; and the line that these are
-clinician-to-clinician, not product presentations.
+FIRST VIEWPORT: ink over clinicians mid-conversation; the breadcrumb; and
+counts computed from the data rather than typed. The line naming these
+clinician-to-clinician rather than product presentations was removed on
+client instruction, 3 Sep 2026.
 FORM: statement hero over a scrimmed photograph, a two-column preview grid
 with runtimes, a generated speaker grid, and a facade player that loads
 nothing from the host until it is asked to.
@@ -125,18 +126,18 @@ misspelled speaker name the old site carried corrected where it is written.
           {
             href: "/innovation/how-it-works",
             title: "How peritoneal dialysis works",
-            body: "The therapy these sessions discuss, in plain language — with a technical layer at each step for clinicians.",
+            body: "The therapy these sessions discuss, in plain language, with a technical layer at each step for clinicians.",
           },
           {
             href: "/products/the-x1-cycler",
             title: "The X-1 cycler",
-            body: "The device Akshar Byonyks is licensed to bring to India — specification, regulatory position, and what is not yet published.",
+            body: "The device Akshar Byonyks is licensed to bring to India: specification, regulatory position, and what is not yet published.",
           },
         ]}
       />
       <CtaBand
         heading="Talk to us about a PD programme"
-        body="Clinician, hospital, distributor or patient enquiry — we route it to the right person."
+        body="Clinician, hospital, distributor or patient enquiry. We route it to the right person."
       />
     </>
   );

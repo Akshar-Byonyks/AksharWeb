@@ -130,7 +130,7 @@ export function X1SpecTable() {
               </h2>
               <p className="mt-4 text-lg text-muted-foreground">
                 What is confirmed, and what is not. Rows marked pending are
-                genuinely unpublished — they are left empty rather than
+                genuinely unpublished. They are left empty rather than
                 estimated.
               </p>
             </div>

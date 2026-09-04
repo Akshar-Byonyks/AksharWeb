@@ -1,7 +1,6 @@
 import { ExternalLink } from "lucide-react";
 
 import { PendingChip } from "@/components/common/pending-note";
-import { ProvenanceChip } from "@/components/common/provenance";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { companyStated, fda510k, publicRecord } from "@/lib/compliance";
 
@@ -126,7 +125,6 @@ export function X1Compliance() {
                     <p className="mt-1 font-mono text-4xl font-bold tracking-tight text-plum sm:text-5xl">
                       {credential.reference}
                     </p>
-                    <ProvenanceChip status="record" className="mt-3" />
                     <p className="mt-3 text-lg font-semibold text-ink">
                       {credential.title}
                     </p>
@@ -206,7 +204,6 @@ export function X1Compliance() {
 
           <ul className="mt-6 divide-y divide-line border-y border-line">
             {companyStated.map((credential) => {
-              const { verification } = credential;
               return (
                 <li
                   key={credential.title}
@@ -224,29 +221,30 @@ export function X1Compliance() {
                     <p className="mt-1 text-base text-foreground">
                       {credential.detail}
                     </p>
-                    <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-                      <ProvenanceChip status="stated" />
-                      {/* The register name is still shown for an independently
-                          verifiable credential. A company-stated one no longer
-                          carries "Byonyks, byonyks.com" beside it (2 Sep 2026,
-                          client instruction): the source citation came off with
-                          the rest of them, and what a reader needs here — which
-                          number is missing — is the PendingChip below. */}
-                      {verification.kind !== "company-stated" ? (
-                        <p className="text-sm text-muted-foreground">
-                          {verification.register}
-                        </p>
-                      ) : null}
-                      {/* PendingChip stays. It answers a different question —
-                          not "how is this known" but "which specific number is
-                          missing" — and the scale's own `pending` status is for
-                          a claim with no basis at all, which is not this. */}
-                      {credential.referencePending ? (
+                    {/* PendingChip stays, and it is the only thing left in
+                        this row's footer. It answers a different question from
+                        the provenance scale — not "how is this known" but
+                        "which specific number is missing" — so it survived the
+                        3 Sep 2026 removal that took the status chip out.
+
+                        The register-name branch that used to sit beside it
+                        went at the same time, as dead code rather than as an
+                        edit: every credential in `companyStated` is
+                        `company-stated` by construction, so the condition
+                        could never be true here. It was live once, before the
+                        two registers were split into separate loops.
+
+                        The wrapper is now conditional too. Rendering an empty
+                        flex row for the credentials with nothing pending left
+                        a 12px band of nothing under them, which reads as a
+                        missing element rather than as spacing. */}
+                    {credential.referencePending ? (
+                      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
                         <PendingChip
                           label={`${credential.referencePending} pending`}
                         />
-                      ) : null}
-                    </div>
+                      </div>
+                    ) : null}
                   </div>
                 </li>
               );

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-import { ProvenanceMark } from "@/components/common/provenance";
 import { DocumentGrid, GridBlock } from "@/components/layout/document-grid";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { founderStory } from "@/lib/about";
@@ -81,18 +80,11 @@ export function OriginStory() {
               attribution belongs. The rail carries where it was published and
               when it was checked — the part a sceptical reader is actually
               verifying. */}
-          <GridBlock
-            className="mt-12"
-            rail={
-              <ProvenanceMark
-                provenance={{
-                  status: "stated",
-                  statedBy: `Published on ${founderStory.source}`,
-                  asOf: `Retrieved ${founderStory.retrieved}`,
-                }}
-              />
-            }
-          >
+          {/* The rail came off 3 Sep 2026. The attribution did not: the
+              figcaption below still names the speaker and his role, which
+              is where a quotation's attribution belongs and is the half
+              this block cannot be published without. */}
+          <GridBlock className="mt-12">
             <figure>
               <blockquote className="text-xl text-balance text-ink sm:text-2xl sm:leading-relaxed">
                 <p>{founderStory.quote}</p>
@@ -112,21 +104,7 @@ export function OriginStory() {
               than a section of its own. It is one idea — the founder's reason
               scales — and splitting it in two would have produced two thin
               sections saying half a thing each. */}
-          <GridBlock
-            className="mt-16 border-t border-line pt-10"
-            rail={
-              <ProvenanceMark
-                provenance={{
-                  status: "published",
-                  source: {
-                    label: "Kidney360, 2020",
-                    url: "https://doi.org/10.34067/KID.0003982020",
-                  },
-                  asOf: "2010 data, reported 2020",
-                }}
-              />
-            }
-          >
+          <GridBlock className="mt-16 border-t border-line pt-10">
             <h3 className="text-2xl font-bold tracking-tight text-balance text-ink">
               And why an Indian company exists to bring it here
             </h3>
@@ -136,7 +114,7 @@ export function OriginStory() {
               States the trip is an inconvenience, and across most of India it
               is the reason people do not receive dialysis at all. About two
               thirds of people with kidney failure in India died without ever
-              receiving it — 2010 data, reported 2020.
+              receiving it (2010 data, reported 2020).
             </p>
             <p className="mt-4 text-lg text-foreground">
               Akshar Byonyks exists to close the distance between a device that

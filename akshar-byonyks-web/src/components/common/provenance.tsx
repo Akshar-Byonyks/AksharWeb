@@ -88,7 +88,7 @@ export const provenanceMeta: Record<
     label: "On the public record",
     short: "Public record",
     meaning:
-      "Held in a public register anyone can open and check without asking us — the FDA's 510(k) database, a government scheme document, a court or corporate filing.",
+      "Held in a public register anyone can open and check without asking us: the FDA's 510(k) database, a government scheme document, a court or corporate filing.",
     light: "text-plum",
     dark: "text-plum-on-ink",
   },
@@ -265,6 +265,66 @@ export function ProvenanceMark({
         <ProvenanceBody provenance={provenance} tone={tone} label={label} />
       </div>
     </div>
+  );
+}
+
+// THE REGISTER LINK — what is left in the margin after 3 Sep 2026.
+//
+// The client asked for the site's visible sourcing to come off and be kept
+// elsewhere. `ProvenanceMark` above is now used on `/what-we-know/` alone; the
+// pages that used to carry it keep only this, and only where the source is a
+// public register behind a claim about a regulated device.
+//
+// The distinction is the reason this is not simply a deletion. "Cleared under
+// FDA 510(k) K243371" with a link to the register is a statement a reader can
+// check against the authority that issued it. The same sentence with the link
+// removed is an unverifiable marketing claim about a medical device, which is
+// a different kind of thing to publish. The research citations carried no such
+// weight and came off in full.
+//
+// So what goes is the apparatus — the mono status word, the retrieval date,
+// the coloured rule — and what stays is the one part that does work: a named
+// register a reader can open.
+export function RegisterLink({
+  source,
+  tone = "light",
+  className,
+}: {
+  source: { label: string; url: string };
+  tone?: "light" | "dark";
+  className?: string;
+}) {
+  return (
+    // `lang="en"` for the same reason `ProvenanceBody` sets it: a register's
+    // proper name stays in English on the Hindi track, and without this a
+    // screen reader pronounces "FDA 510(k) Premarket Notification database"
+    // with Hindi rules. WCAG 3.1.2.
+    <p
+      className={cn(
+        "text-xs leading-5",
+        tone === "dark" ? "text-white/70" : "text-muted-foreground",
+        className,
+      )}
+      lang="en"
+    >
+      <a
+        href={source.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={cn(
+          // py-1 takes the 20px line box to 28px, clearing WCAG 2.2 SC 2.5.8's
+          // 24px floor — the same allowance ProvenanceBody's link carries, and
+          // for the same reason: this link stands alone in the margin rather
+          // than inside a sentence, so the inline exception does not apply.
+          "inline-flex items-start gap-1 rounded-sm py-1 underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+          tone === "dark" ? "hover:text-white" : "hover:text-ink",
+        )}
+      >
+        <span className="min-w-0">{source.label}</span>
+        <ExternalLink className="mt-0.5 size-3 shrink-0" aria-hidden="true" />
+        <span className="sr-only"> (opens in a new tab)</span>
+      </a>
+    </p>
   );
 }
 

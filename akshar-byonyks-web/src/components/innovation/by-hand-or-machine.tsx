@@ -208,7 +208,7 @@ export function ByHandOrMachine() {
 
             <p className="mt-6 max-w-2xl text-sm text-muted-foreground">
               Illustrative. How many exchanges a person does, and when, is a
-              prescription set by their nephrologist &mdash; not a property of
+              prescription set by their nephrologist, not a property of
               either route.
             </p>
 
@@ -240,7 +240,7 @@ export function ByHandOrMachine() {
                   CAPD and APD, and the prescription within either, follows
                   from membrane transport characteristics, residual kidney
                   function, target clearance and ultrafiltration, and the
-                  patient&rsquo;s own circumstances — not from the equipment
+                  patient&rsquo;s own circumstances, not from the equipment
                   available.
                 </p>
               </ClinicalLayer>

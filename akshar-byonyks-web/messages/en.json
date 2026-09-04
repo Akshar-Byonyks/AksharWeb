@@ -1,5 +1,5 @@
 {
-  "_readme": "The English source for the Hindi track. Only the strings the /hi pages render live here; the other nineteen routes are authored directly in their components and are not translated. Keys must stay identical in hi.json — the module-load check in src/i18n/messages.ts throws if they drift.",
+  "_readme": "The English source for the Hindi track. Only the strings the /hi pages render live here; the other nineteen routes are authored directly in their components and are not translated. Keys must stay identical in hi.json. The module-load check in src/i18n/messages.ts throws if they drift.",
 
   "notice": {
     "label": "Translation awaiting review",
@@ -32,7 +32,7 @@
     "therapyBody": "Peritoneal dialysis does it inside the body, using the lining of your own abdomen as the filter. A soft tube is placed through the abdominal wall in a short operation and stays there. Clean fluid runs in, waste and extra fluid pass into it from the blood vessels in the lining, and the used fluid is drained away. No blood leaves the body, and there are no needles in an exchange.",
     "therapyLink": "How the therapy works, step by step",
     "whyHomeHeading": "Why this matters at home",
-    "whyHome": "In-centre haemodialysis organises the week around a facility — roughly three trips, plus the road between them. Automated peritoneal dialysis does not shorten that journey. It removes it: the therapy runs overnight, at home, on a schedule set with your nephrologist.",
+    "whyHome": "In-centre hemodialysis organizes the week around a facility: roughly three trips, plus the road between them. Automated peritoneal dialysis does not shorten that journey. It removes it: the therapy runs overnight, at home, on a schedule set with your nephrologist.",
     "contactHeading": "How to reach us",
     "contactBody": "You can write to us in Hindi or in English. A person reads every message, and we will reply in the language you wrote in.",
     "contactEmailLabel": "Email",
@@ -44,10 +44,10 @@
     "title": "How peritoneal dialysis works",
     "standfirst": "The therapy in everyday language: what the peritoneum is, what one exchange involves, and the difference between doing it by hand and by machine.",
     "peritoneumHeading": "Your own body does the filtering",
-    "peritoneum": "The peritoneum is the thin membrane that lines the inside of your abdomen and covers the organs inside it. It is full of small blood vessels, and it lets some things pass through it — which is what makes it usable as a filter.",
+    "peritoneum": "The peritoneum is the thin membrane that lines the inside of your abdomen and covers the organs inside it. It is full of small blood vessels, and it lets some things pass through it, which is what makes it usable as a filter.",
     "catheter": "A soft tube called a catheter is placed through the abdominal wall in a short operation, and stays there. A sterile fluid called dialysate runs in through it.",
     "exchangeHeading": "One exchange, three steps",
-    "exchangeLead": "A treatment is made of exchanges, and an exchange is always the same three steps. Everything else — how many, how long, how much fluid — is the part your nephrologist sets.",
+    "exchangeLead": "A treatment is made of exchanges, and an exchange is always the same three steps. Everything else (how many, how long, how much fluid) is the part your nephrologist sets.",
     "fillTitle": "Fill",
     "fill": "Sterile dialysate runs down the catheter into the space around your organs. It flows in under gravity or from the cycler. It is not injected.",
     "dwellTitle": "Dwell",
@@ -65,7 +65,7 @@
     "questionsLead": "Whether this therapy suits a particular person is a clinical decision, and it is not one this page can make. These are the questions the decision usually turns on.",
     "q1": "Given my medical history, am I a candidate for peritoneal dialysis at all?",
     "q2": "Would exchanges by hand through the day, or by a cycler overnight, suit my situation better?",
-    "q3": "What would my prescription look like — how many exchanges, and how long would each one dwell?",
+    "q3": "What would my prescription look like: how many exchanges, and how long would each one dwell?",
     "q4": "What does having the catheter placed involve, and how long before it can be used?",
     "q5": "What signs of infection should we watch for, and who do we call at night?",
     "q6": "What training would my family and I get, and who supports us after it?",

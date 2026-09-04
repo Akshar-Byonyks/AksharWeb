@@ -107,9 +107,11 @@ export const footerColumns: { heading: string; links: NavLink[] }[] = [
       { label: "Leadership", href: "/about-us/leadership" },
       { label: "Careers", href: "/about-us/careers" },
       { label: "News", href: "/news" },
-      // The ledger. In Company rather than Legal: it is not a policy, it is
-      // this company's account of what it can and cannot substantiate.
-      { label: "What We Know", href: "/what-we-know" },
+      // THE LEDGER IS NO LONGER LISTED (3 Sep 2026, client instruction).
+      // /what-we-know still exists and still renders every claim with its
+      // source - it is simply not advertised, and carries robots noindex.
+      // It is the URL to hand a regulator or a journalist who asks, rather
+      // than a destination the site walks a reader to.
       { label: "हिन्दी", href: "/hi", lang: "hi" },
     ],
   },

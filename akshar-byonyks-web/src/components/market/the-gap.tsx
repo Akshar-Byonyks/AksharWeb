@@ -148,7 +148,7 @@ function WeekGeometry() {
     <figure className="rounded-2xl border border-line bg-card p-6 sm:p-8">
       <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-12">
         <WeekRow
-          title="In-centre haemodialysis"
+          title="In-centre hemodialysis"
           note="Three days owned by a facility, plus the road there and back on each of them."
           isMarked={(index) => CENTRE_TRIP_DAYS.includes(index)}
           markClassName="bg-plum text-white"
@@ -252,7 +252,7 @@ export function TheGap() {
           <p className="mt-10 max-w-2xl border-l-2 border-line pl-5 text-base text-muted-foreground">
             The first of those is a yearly arrival and the second is a standing
             total. They are different measures on different denominators, and
-            this page does not subtract one from the other &mdash; the figure
+            this page does not subtract one from the other. The figure
             below is the one that is genuinely a proportion.
           </p>
         </ScrollReveal>
@@ -273,9 +273,9 @@ export function TheGap() {
             </h3>
             <div className="mt-6 space-y-5 text-lg text-foreground">
               <p>
-                In-centre haemodialysis organises a life around a building.
+                In-centre hemodialysis organizes a life around a building.
                 Three days a week, indefinitely, the patient travels to a
-                facility and back &mdash; and in most cases someone travels with
+                facility and back, and in most cases someone travels with
                 them, which makes it two people&rsquo;s working day, not one.
               </p>
               <p>

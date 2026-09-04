@@ -24,7 +24,7 @@ const benefits = [
   {
     icon: Activity,
     title: "Supports residual kidney function",
-    body: "Home peritoneal dialysis is associated with preserving residual renal function for longer than in-center haemodialysis.",
+    body: "Home peritoneal dialysis is associated with preserving residual renal function for longer than in-center hemodialysis.",
     accent: "teal",
   },
   {

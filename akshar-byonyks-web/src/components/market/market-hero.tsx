@@ -67,7 +67,7 @@ export function MarketHero() {
           <p className="mt-6 max-w-2xl text-lg text-white/75">
             India adds more people to kidney failure each year than its
             centre-based dialysis system treats in total. The gap is not mainly
-            a shortage of machines. It is a distance and a schedule &mdash; and
+            a shortage of machines. It is a distance and a schedule, and
             those are the two things home peritoneal dialysis changes.
           </p>
           <p className="mt-5 max-w-2xl text-base text-white/60">

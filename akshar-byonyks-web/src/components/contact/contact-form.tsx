@@ -54,7 +54,7 @@ type FieldName = (typeof fieldOrder)[number];
 const fieldLabels: Record<FieldName, string> = {
   enquiryType: "What best describes you",
   name: "Name",
-  organisation: "Organisation",
+  organisation: "Organization",
   email: "Email",
   phone: "Phone",
   city: "City",
@@ -274,7 +274,7 @@ export function ContactForm({ initialEnquiry }: { initialEnquiry?: EnquiryType }
         />
         <TextField
           name="organisation"
-          label="Organisation"
+          label="Organization"
           autoComplete="organization"
           description="Clinic, company or institution, if you are writing on behalf of one."
           form={form}

@@ -116,7 +116,7 @@ locks the most people out.
             <strong className="text-ink">
               WCAG 2.1 Level AA
             </strong>
-            . This site is built to it, and the structural checks below pass —
+            . This site is built to it, and the structural checks below pass,
             but we have not had an independent audit, so{" "}
             <strong className="text-ink">
               we do not claim to be fully conformant
@@ -155,7 +155,7 @@ locks the most people out.
                 All {captionCount} ByoTalks recordings carry automatic captions
                 from YouTube rather than human-checked ones. WCAG 2.1 asks for
                 captions that are accurate and synchronised (SC 1.2.2), and
-                automatic captions are unreliable on clinical vocabulary —
+                automatic captions are unreliable on clinical vocabulary,
                 exactly the words in these talks that matter most. The player
                 says so above each video rather than describing them simply as
                 &ldquo;captions available&rdquo;.{" "}
@@ -199,15 +199,15 @@ locks the most people out.
           <PendingNote
             className="mt-6"
             note="Independent audit pending"
-            label="An accessibility audit by someone other than the team that built the site — including testing with screen readers and by disabled users — has not been commissioned. Nothing on this page should be read as a substitute for one."
+            label="An accessibility audit by someone other than the team that built the site, including testing with screen readers and by disabled users, has not been commissioned. Nothing on this page should be read as a substitute for one."
           />
         </LegalSection>
 
         <LegalSection id="how-tested" title="How this was tested">
           <p>
-            Fourteen pages of the site — home, the innovation and market pages,
+            Fourteen pages of the site (home, the innovation and market pages,
             ByoTalks and a session page, about us, leadership and a profile,
-            news and an article, the contact form and the privacy policy — were
+            news and an article, the contact form and the privacy policy) were
             loaded at a desktop width of 1400px and a phone width of 390px, and
             checked for document language, skip link, main landmark, heading
             order, single level-1 heading, missing alt text, horizontal overflow
@@ -255,7 +255,7 @@ locks the most people out.
         <LegalSection id="tell-us" title="Tell us if something does not work">
           <p>
             If any part of this site is difficult or impossible for you to use,
-            please tell us — it is the fastest way for us to find what our own
+            please tell us. It is the fastest way for us to find what our own
             testing missed.
           </p>
           <p>

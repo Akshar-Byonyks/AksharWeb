@@ -4,8 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { DirectionContract } from "@/components/common/direction-contract";
-import { PendingNote } from "@/components/common/pending-note";
-import { ProvenanceMark } from "@/components/common/provenance";
+import { RegisterLink } from "@/components/common/provenance";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { DocumentGrid, GridBlock } from "@/components/layout/document-grid";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
@@ -135,12 +134,23 @@ describes dust sheets, because that is what is in the frame.
         <div className="mx-auto max-w-[1280px] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <ScrollReveal>
             <DocumentGrid>
+              {/* The status word and the retrieval date came off 3 Sep
+                  2026 with the rest of the site's visible provenance. The
+                  register link stayed: the claim it sits beside is an FDA
+                  clearance, and RegisterLink carries the reasoning for why
+                  those two were separated rather than removed together.
+
+                  The narrowing is not defensive typing for its own sake.
+                  `product.provenance` is the four-way union, and only the
+                  `record` arm has a URL at all — so this is the compiler
+                  refusing to render a register link for a company
+                  statement, which is exactly the confusion the scale was
+                  built to prevent. */}
               <GridBlock
                 rail={
-                  <ProvenanceMark
-                    provenance={x1.provenance}
-                    label="On the public record"
-                  />
+                  x1.provenance.status === "record" ? (
+                    <RegisterLink source={x1.provenance.source} />
+                  ) : undefined
                 }
               >
                 <p className="font-mono text-xs tracking-wide text-muted-foreground uppercase">
@@ -169,25 +179,25 @@ describes dust sheets, because that is what is in the frame.
               </GridBlock>
 
               <GridBlock wide className="mt-10">
-                {/* Byonyks' own product visualisation, captioned as a render
-                    rather than as photography — CLAUDE.md, and the same
-                    treatment it gets on the device page. No real photograph of
-                    the physical X-1 exists in this project. */}
-                <figure>
-                  <div className="overflow-hidden rounded-xl border border-line bg-surface-2 p-6 sm:p-10">
-                    <Image
-                      src={x1.image!.src}
-                      alt={x1.image!.alt}
-                      width={x1.image!.width}
-                      height={x1.image!.height}
-                      className="mx-auto h-auto w-full max-w-[820px]"
-                      sizes="(min-width: 1280px) 820px, 92vw"
-                    />
-                  </div>
-                  <figcaption className="mt-3 font-mono text-xs tracking-wide text-muted-foreground">
-                    Byonyks · product render, not a photograph
-                  </figcaption>
-                </figure>
+                {/* Byonyks' own product visualisation. It carried the caption
+                    "Byonyks · product render, not a photograph" until 3 Sep
+                    2026, when the client asked for it off this page. Worth
+                    knowing what went with it: no photograph of the physical
+                    X-1 exists in this project, and this image's alt describes
+                    a lit unit rather than a rendering, so there is now nothing
+                    on this page that tells a reader which of the two they are
+                    looking at. The device page keeps the distinction in a
+                    source comment only. */}
+                <div className="overflow-hidden rounded-xl border border-line bg-surface-2 p-6 sm:p-10">
+                  <Image
+                    src={x1.image!.src}
+                    alt={x1.image!.alt}
+                    width={x1.image!.width}
+                    height={x1.image!.height}
+                    className="mx-auto h-auto w-full max-w-[820px]"
+                    sizes="(min-width: 1280px) 820px, 92vw"
+                  />
+                </div>
               </GridBlock>
             </DocumentGrid>
           </ScrollReveal>
@@ -216,25 +226,26 @@ describes dust sheets, because that is what is in the frame.
               </GridBlock>
 
               <GridBlock wide className="mt-10">
-                <figure>
-                  <div className="relative aspect-[3/2] overflow-hidden rounded-xl border border-line">
-                    <Image
-                      src={x2x3.image!.src}
-                      alt={x2x3.image!.alt}
-                      fill
-                      className="object-cover"
-                      sizes="(min-width: 1280px) 1216px, 92vw"
-                    />
-                  </div>
-                  {/* THE CAPTION IS THE HONEST PART OF THIS IMAGE. It is not a
-                      photograph, it is not a render of either device, and
-                      Byonyks generated it — all three are said, because a
-                      reader who takes it for a product shot has been told
-                      something untrue by a picture. */}
-                  <figcaption className="mt-3 font-mono text-xs tracking-wide text-muted-foreground">
-                    Byonyks · teaser illustration. Neither device has been shown.
-                  </figcaption>
-                </figure>
+                {/* THE ALT TEXT IS NOW THE ONLY HONEST PART OF THIS IMAGE.
+                    The caption under it — "Byonyks · teaser illustration.
+                    Neither device has been shown." — came off on 3 Sep 2026 at
+                    the client's request. It said three things, and the only
+                    one still said anywhere is carried by `products.ts`'s alt:
+                    that the frame holds two covered shapes rather than two
+                    machines, ending "Neither device is visible." That alt is
+                    doing the caption's job now, so do not "improve" it into
+                    naming the devices — that would put a claim in the
+                    accessibility layer that the picture itself refuses to
+                    make, and nothing would be left. */}
+                <div className="relative aspect-[3/2] overflow-hidden rounded-xl border border-line">
+                  <Image
+                    src={x2x3.image!.src}
+                    alt={x2x3.image!.alt}
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1280px) 1216px, 92vw"
+                  />
+                </div>
               </GridBlock>
 
               <GridBlock className="mt-12">
@@ -253,12 +264,6 @@ describes dust sheets, because that is what is in the frame.
                     {x2x3ComingSoon}
                   </p>
                 </blockquote>
-
-                <PendingNote
-                  className="mt-6"
-                  note="Nothing further published"
-                  label="No specification, launch date, price, clinical data or regulatory position — in India, the United States or anywhere else — has been published for the X-2 or the X-3. Akshar Byonyks' licence covers the X-1; whether it extends to either of these has not been established."
-                />
 
                 <p className="mt-6 text-base text-muted-foreground">
                   When Byonyks publishes something a clinician can evaluate,

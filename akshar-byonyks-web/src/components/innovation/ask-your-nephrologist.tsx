@@ -24,7 +24,7 @@ import { notMedicalAdvice } from "@/lib/claims";
 const questions = [
   "Given my medical history, am I a candidate for peritoneal dialysis at all?",
   "Would exchanges by hand through the day, or a cycler overnight, suit my situation better?",
-  "What would my prescription look like — how many exchanges, and how long would each one dwell?",
+  "What would my prescription look like: how many exchanges, and how long would each one dwell?",
   "What does having the catheter placed involve, and how long before it can be used?",
   "What signs of infection should we watch for, and who do we call at night?",
   "What training would my family and I get, and who supports us after it?",

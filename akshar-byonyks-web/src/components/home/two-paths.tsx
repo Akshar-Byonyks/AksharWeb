@@ -407,7 +407,7 @@ export function TwoPaths() {
               carries its own lane tag there instead. */}
           <div className="hidden grid-cols-2 pb-1 sm:grid">
             <ColumnHeading
-              title="In-centre haemodialysis"
+              title="In-centre hemodialysis"
               detail="Treatment happens at a centre"
             />
             <ColumnHeading

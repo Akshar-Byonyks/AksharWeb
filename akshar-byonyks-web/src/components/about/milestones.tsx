@@ -21,20 +21,34 @@ import { milestones } from "@/lib/about";
 // say that independent testing happened and roughly when; the record's job is
 // to say exactly what and by whom, once.
 //
-// TWO TIERS, THE SAME TWO AS THE COMPLIANCE REGISTER. Two of these dates come
-// from the FDA's own database and the rest are Byonyks' own account of its
-// history. A timeline is the format most likely to launder the difference —
-// evenly spaced dots imply evenly weighted evidence — so the two are marked,
-// with the same vocabulary the register uses. A reader who has seen one meets
-// the same distinction here.
+// THE TWO TIERS CAME OFF 3 Sep 2026, with the rest of the site's visible
+// provenance and on the same client instruction.
+//
+// They used to be marked twice over: a filled dot for the FDA's record against
+// a hollow one for Byonyks' own account, and a label in words beside each. The
+// words went first, because they are what a reader actually reads as sourcing.
+//
+// THE MARKERS HAD TO GO WITH THEM, and this is the part worth writing down.
+// The old comment here justified the two dot shapes on the grounds that "the
+// label beside it carries the same meaning in words for anyone who cannot use
+// the shape" — which is WCAG 1.4.1 satisfied by the label, not by the dot.
+// Delete the label and the dot becomes the sole carrier of a distinction with
+// no text equivalent anywhere on the page: a worse accessibility position than
+// before the labels existed. So the two shapes collapse into one neutral
+// marker, and the timeline no longer draws a distinction it cannot state.
+//
+// PENDING IS DIFFERENT AND STAYS. `PendingChip` is not a citation — it says a
+// number has not been published yet, which is the opposite claim, and it
+// carries its own words. Its dashed marker keeps a text equivalent and so
+// keeps its shape.
+//
+// The distinction itself is not lost: `about.ts` still records `verification`
+// on every milestone, and SOURCES.md still separates the FDA record from the
+// company statements.
 //
 // Surface: background, between two tinted sections. Evidence stays in the
 // light, per the Full-Bleed Rule's meaning test.
-const tierLabel: Record<string, string> = {
-  "public-record": "On the FDA's public record",
-  "company-stated": "Company statement",
-  pending: "Not yet stated",
-};
+const PENDING_LABEL = "Not yet stated";
 
 export function Milestones() {
   return (
@@ -48,10 +62,15 @@ export function Milestones() {
             >
               How the X-1 got here
             </h2>
+            {/* The second sentence used to read "Two of these dates are on a
+                public register and the rest are Byonyks' own account, so each
+                one says which it is." It came out with the labels it was
+                describing, on 3 Sep 2026. A page that promises each entry says
+                which it is, beside entries that no longer say, is a worse
+                failure than the silence — it is the site vouching for a
+                discipline the reader can see it is not keeping. */}
             <p className="mt-4 text-lg text-muted-foreground">
-              Five years from a production line to a US clearance. Two of these
-              dates are on a public register and the rest are Byonyks&rsquo; own
-              account, so each one says which it is.
+              Five years from a production line to a US clearance.
             </p>
           </div>
         </ScrollReveal>
@@ -67,19 +86,16 @@ export function Milestones() {
                 key={milestone.title}
                 className="relative pb-10 pl-8 last:pb-0"
               >
-                {/* The marker. Filled for the public record, hollow for a
-                    company statement, dashed for what has not happened —
-                    non-text graphic, so the Accent Ration Rule allows it, and
-                    the label beside it carries the same meaning in words for
-                    anyone who cannot use the shape. */}
+                {/* One marker for everything that has happened, dashed for
+                    what has not. Non-text graphic, so the Accent Ration Rule
+                    allows it, and the only distinction it still draws is the
+                    one the PendingChip beside it also states in words. */}
                 <span
                   aria-hidden="true"
                   className={
-                    milestone.verification === "public-record"
-                      ? "absolute top-1.5 -left-[6.5px] size-3 rounded-full bg-primary"
-                      : milestone.verification === "pending"
-                        ? "absolute top-1.5 -left-[6.5px] size-3 rounded-full border border-dashed border-pending bg-background"
-                        : "absolute top-1.5 -left-[6.5px] size-3 rounded-full border border-line bg-background"
+                    milestone.verification === "pending"
+                      ? "absolute top-1.5 -left-[6.5px] size-3 rounded-full border border-dashed border-pending bg-background"
+                      : "absolute top-1.5 -left-[6.5px] size-3 rounded-full border border-line bg-background"
                   }
                 />
                 <p className="font-mono text-sm tracking-wide text-muted-foreground tabular-nums">
@@ -93,12 +109,8 @@ export function Milestones() {
                 </p>
                 <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
                   {milestone.verification === "pending" ? (
-                    <PendingChip label={tierLabel[milestone.verification]} />
-                  ) : (
-                    <p className="text-sm text-muted-foreground">
-                      {tierLabel[milestone.verification]}
-                    </p>
-                  )}
+                    <PendingChip label={PENDING_LABEL} />
+                  ) : null}
                   {milestone.href ? (
                     <Link
                       href={milestone.href}

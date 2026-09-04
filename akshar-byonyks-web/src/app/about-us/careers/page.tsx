@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 
 import { DirectionContract } from "@/components/common/direction-contract";
-import { ProvenanceMark } from "@/components/common/provenance";
 import {
   DocumentGrid,
   GridBlock,
@@ -87,7 +86,7 @@ const values = [
   {
     name: "Trust and accountability",
     icon: ShieldCheck,
-    body: "We say who cleared what, in which country, and what is still pending. This site marks its own gaps in amber rather than smoothing them over, and that is not a design flourish — it is the habit we hire for.",
+    body: "We say who cleared what, in which country, and what is still pending. This site marks its own gaps in amber rather than smoothing them over, and that is not a design flourish. It is the habit we hire for.",
   },
   {
     name: "Attention to details",
@@ -120,7 +119,7 @@ const process = [
   {
     n: "3",
     title: "We talk",
-    body: "A conversation about the work itself — the device, the regulatory position, what is hard about it. You should be interrogating us as much as we are interrogating you.",
+    body: "A conversation about the work itself: the device, the regulatory position, what is hard about it. You should be interrogating us as much as we are interrogating you.",
   },
   {
     n: "4",
@@ -178,7 +177,7 @@ headcount we do not have.
               <strong>There are no open roles yet.</strong> Akshar Byonyks is
               early, and we would rather say that than list positions we are not
               filling. If you want to work on getting dialysis to people who
-              currently get none, write to us anyway — we read it.
+              currently get none, write to us anyway. We read it.
             </p>
           </div>
         </div>
@@ -265,20 +264,14 @@ headcount we do not have.
       <section aria-labelledby="teams-heading" className="bg-background">
         <DocumentGrid className="py-20">
           <ScrollReveal>
-            {/* The gap moves into the margin, 30 Aug 2026. Same amber, same
-                words, beside the paragraph it qualifies instead of stacked
-                under it as a dashed card. */}
-            <GridBlock
-              rail={
-                <ProvenanceMark
-                  provenance={{
-                    status: "pending",
-                    missing:
-                      "What the Indian operation will be made of — which functions are hired here, which are shared with Byonyks, and in what order — is not yet settled. It will be published here when it is, rather than described in advance.",
-                  }}
-                />
-              }
-            >
+            {/* The pending mark that sat in this margin came off 3 Sep
+                2026 with the rest of the site's visible provenance.
+
+                The gap itself is not lost, and that is the point of the
+                arrangement: `claims-ledger.ts` still derives it, and
+                `scripts/generate-sources.mjs` writes it into SOURCES.md on
+                every build. What went is the rendering, not the record. */}
+            <GridBlock>
               <h2
                 id="teams-heading"
                 className="text-3xl font-bold tracking-tight text-balance text-ink sm:text-4xl"
@@ -344,7 +337,7 @@ headcount we do not have.
 
       <CtaBand
         heading="Talk to Akshar Byonyks"
-        body="Patient, clinician, investor, or distributor enquiry — we route it to the right person."
+        body="Patient, clinician, investor, or distributor enquiry. We route it to the right person."
       />
     </>
   );

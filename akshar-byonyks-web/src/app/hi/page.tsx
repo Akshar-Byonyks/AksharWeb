@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { DirectionContract } from "@/components/common/direction-contract";
-import { ProvenanceMark } from "@/components/common/provenance";
+import { RegisterLink } from "@/components/common/provenance";
 import { HindiShell } from "@/components/hindi/hindi-shell";
 import { DocumentGrid, GridBlock } from "@/components/layout/document-grid";
 import { defaultOg } from "@/lib/seo";
@@ -103,14 +103,13 @@ medical page needs to know how it was made before they read it.
 
             <GridBlock
               className="mt-14 border-t border-line pt-10"
+              // The Hindi track drops the same apparatus the English one
+              // did. The register's name stays in English inside
+              // RegisterLink, which is a WCAG 3.1.2 requirement rather
+              // than an oversight - see the lang note there.
               rail={
-                <ProvenanceMark
-                  label={t("provenance.record")}
-                  provenance={{
-                    status: "record",
-                    source: { label: fda510k.register, url: fda510k.url },
-                    retrieved: fda510k.checked,
-                  }}
+                <RegisterLink
+                  source={{ label: fda510k.register, url: fda510k.url }}
                 />
               }
             >

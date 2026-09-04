@@ -55,8 +55,8 @@ export function SpeakerRegister() {
               </h2>
               <p className="mt-4 max-w-md text-lg text-muted-foreground">
                 Several of these clinicians sit on Byonyks&rsquo; Scientific
-                Advisory Board. They appear here as what they are on this site
-                &mdash; the people who recorded the sessions.
+                Advisory Board. They appear here as what they are on this
+                site: the people who recorded the sessions.
               </p>
             </div>
           </ScrollReveal>

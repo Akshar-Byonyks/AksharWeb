@@ -214,7 +214,7 @@ export default function NewsPage() {
 
       <CtaBand
         heading="Talk to Akshar Byonyks"
-        body="Patient, clinician, investor, or distributor enquiry — we route it to the right person."
+        body="Patient, clinician, investor, or distributor enquiry. We route it to the right person."
       />
     </>
   );

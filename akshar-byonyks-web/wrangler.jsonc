@@ -19,5 +19,27 @@
   ],
   "images": {
     "binding": "IMAGES"
+  },
+
+  // CPU TIME PER REQUEST IS THE ONE PLAN-RELEVANT NUMBER THIS PROJECT CANNOT
+  // MEASURE LOCALLY, so it is recorded from the first deploy rather than
+  // discovered after a 1102.
+  //
+  // The Workers Free plan allows 10 ms of CPU per HTTP request; Paid defaults
+  // to 30 s. Exceeding the limit returns Error 1102 and logs the invocation
+  // outcome as "exceededCpu". Cloudflare's stated average across all Workers
+  // is 2.2 ms, but this worker serves prerendered pages through a full Next.js
+  // server runtime (29 MB unbundled), so the average is not a safe proxy.
+  //
+  // `invocation_logs` is what carries `cpuTime` and `wallTime`. Sampling stays
+  // at 1 (every request) — this site's request volume is nowhere near a level
+  // where log volume is a cost, and a sampled tail would hide exactly the rare
+  // spike that matters.
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "invocation_logs": true,
+      "head_sampling_rate": 1
+    }
   }
 }

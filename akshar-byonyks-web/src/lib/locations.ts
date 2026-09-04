@@ -10,13 +10,10 @@ import type { Provenance } from "@/components/common/provenance";
 // because two of the three took a load-bearing fact off this page:
 //
 //   • BENGALURU was the only Akshar Byonyks row, and the only one with a
-//     street address. It is replaced rather than deleted — see `india-office`
-//     below — because deleting it outright would leave an Akshar Byonyks
-//     locations page on which this company holds no premises at all, and every
-//     remaining row belongs to the licensor. The city and the address are
-//     gone; the fact that there is an India office is not. Its address now
-//     reads "coming soon", which is the client's own wording for it on
-//     /contact the same day.
+//     street address. It was replaced rather than deleted by an `india-office`
+//     row whose address read "coming soon" — and THAT ROW WAS ITSELF REMOVED
+//     ON 2 SEP 2026, on the client's instruction. See the note below the
+//     array for what that decides about this page.
 //   • PUNJAB was the manufacturing site, and the origin of the ISO 13485
 //     certification the X-1 is built under. That certification is still stated
 //     on the X-1 product page; what this page no longer does is name the
@@ -54,7 +51,8 @@ export type Location = {
   readonly id: string;
   /**
    * What to call the place. A city where one is published; the country where
-   * none is — see `india-office`, whose city is deliberately not named.
+   * none is. Every current row publishes a city, but the country-only case is
+   * still legal — the `india-office` row used it until 2 Sep 2026.
    */
   readonly place: string;
   /** State or province. Present where it disambiguates; see `hyderabad`. */
@@ -93,40 +91,6 @@ export type Location = {
 };
 
 export const locations: readonly Location[] = [
-  {
-    id: "india-office",
-    // NO CITY, ON PURPOSE. The Bengaluru row was removed on 1 Sep 2026 and
-    // nothing has been published to replace it, so this row names the country
-    // it can substantiate and stops. Putting a different city here would be
-    // the exact failure the rest of this file is arranged to prevent: an
-    // address nobody supplied, written down because a card looked empty.
-    // "India office" as the heading, not "India". The card sets `place` as its
-    // title and `country · entity · role` beneath, so a row whose place is its
-    // country rendered as "India" over "INDIA · AKSHAR BYONYKS · INDIA
-    // OFFICE" — a heading that looked like a placeholder above a line that
-    // said the same word twice.
-    place: "India office",
-    country: "India",
-    entity: "Akshar Byonyks",
-    // THE ROLE SLOT CARRIES THE STATUS ON THIS PAGE — the two announced sites
-    // put "Announced" here for the same reason. "Address coming soon" is the
-    // client's own wording (1 Sep 2026) and it says precisely what is coming:
-    // the address. Not "Coming soon", which on a card for an office that is
-    // already open would read as the office being the thing that has not
-    // arrived.
-    role: "Address coming soon",
-    detail:
-      "The office for the India market, and where every enquiry this site sends is read. Its address has not been published yet.",
-    status: "operating",
-    // PENDING, NOT STATED. Every other row on this page is Byonyks' own
-    // published account of itself; this one is the absence of a published
-    // account, and the scale has a status for exactly that.
-    provenance: {
-      status: "pending",
-      missing: "The India office address has not been published.",
-    },
-    gap: "The India office address is coming soon. Until it is published, enquiries reach the same people by email and by phone — see the Contact page.",
-  },
   {
     id: "itasca",
     place: "Itasca",
@@ -230,17 +194,27 @@ if (byIndiaFirst.length !== locations.length) {
 // `compliance.ts`: the rules that must not be broken are enforced where they
 // cannot be forgotten, not left to review.
 
-// AT LEAST ONE ROW MUST BE OURS. Added 1 Sep 2026, when removing the Bengaluru
-// row nearly left an Akshar Byonyks locations page listing only the licensor's
-// premises — a page that would answer "where is Byonyks" under this company's
-// masthead and never answer "where are you". If a future edit removes the
-// India office, it has to decide what this page is for rather than discover
-// the answer in production.
-if (!locations.some((l) => l.entity === "Akshar Byonyks")) {
-  throw new Error(
-    "locations: no Akshar Byonyks site remains. A locations page under this masthead that lists only the licensor's buildings does not answer the question it is asked.",
-  );
-}
+// THE "AT LEAST ONE ROW MUST BE OURS" CONTRACT IS GONE, AND ITS QUESTION HAS
+// BEEN ANSWERED (2 Sep 2026, on the client's instruction).
+//
+// That contract was added on 1 Sep to stop this page silently becoming a list
+// of the licensor's buildings, and it said a future edit removing the India
+// office "has to decide what this page is for rather than discover the answer
+// in production". The edit came the next day, so here is the decision rather
+// than a deleted guard:
+//
+// **THIS PAGE IS THE GROUP'S PREMISES REGISTER, NOT THIS COMPANY'S ADDRESS.**
+// Every row is now a Byonyks site — one operating head office in Itasca and
+// two announced India facilities — and `entity` still says so on every card,
+// which is the distinction spec F-1 cares about and the reason the field is
+// not decoration. What this page NO LONGER ANSWERS is "where are you", and
+// that is a real consequence rather than a tidy one: **/contact is now the
+// only place on this site that says an Akshar Byonyks India office exists**,
+// and it still carries it with the address marked coming soon.
+//
+// `entity` keeps "Akshar Byonyks" in its union deliberately. The day the
+// India office has a published address it belongs back on this page, and the
+// manufacturing-role guard below is still the rule that will police it.
 
 for (const l of locations) {
   if (!l.place || !l.country) {

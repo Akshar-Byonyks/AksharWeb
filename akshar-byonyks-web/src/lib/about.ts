@@ -154,10 +154,15 @@ export const milestones: readonly Milestone[] = [
  * surfaced, by name and credential, as ByoTalks speakers — spec F-5's
  * compensating route, working as intended.
  */
+// `label` IS NO LONGER RENDERED (3 Sep 2026). The provenance mark that showed
+// it beside "The people" came out on client instruction. It is kept because it
+// is still an accurate record of what is missing and who was asked for it, and
+// because the gaps it describes are still in the data — but nothing on the site
+// displays it, so do not assume editing it changes a page.
 export const leadershipStatus = {
   note: "Titles and photographs pending",
   label:
-    "Three Akshar Byonyks people are published. Two of them have no job title and no photograph yet — both were requested from the client on 1 September 2026, and the page marks each gap rather than guessing. Senthil Kumar's card is Byonyks', and says so.",
+    "Three Akshar Byonyks people are published. Two of them have no job title and no photograph yet. Both were requested from the client on 1 September 2026, and the page marks each gap rather than guessing. Senthil Kumar's card is Byonyks', and says so.",
   meanwhile:
     "The nephrologists who advise Byonyks do appear on this site, by name and credential, as the speakers in ByoTalks.",
 } as const;

@@ -1,11 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-import {
-  DocumentGrid,
-  GridBlock,
-  RailNote,
-} from "@/components/layout/document-grid";
+import { DocumentGrid, GridBlock } from "@/components/layout/document-grid";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 
 // Spec §9.2's "India context block", and the argument PRODUCT.md calls "the
@@ -33,32 +29,20 @@ export function InnovationIndiaContext() {
     <section aria-labelledby="innovation-india-heading" className="bg-surface-2">
       <DocumentGrid className="py-20">
         <ScrollReveal>
-          {/* The note on sourcing moves into the margin, 30 Aug 2026, and gains
-              the link it always wanted. It was a muted paragraph at the foot
-              of the prose explaining that this site does not state a figure it
-              cannot source — which is a statement about method, not part of
-              the argument, and belongs beside the argument rather than in it.
-              It is also the natural place to hand a sceptical reader the
-              ledger, since it is the sentence that makes them want one. */}
-          <GridBlock
-            rail={
-              <RailNote label="On sourcing">
-                <p>
-                  Nothing on this site states a figure it cannot source, and
-                  where one is still missing the slot is marked rather than
-                  filled.
-                </p>
-                <p className="mt-2">
-                  <Link
-                    href="/what-we-know"
-                    className="rounded-sm font-semibold text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                  >
-                    Every claim, and how it is known
-                  </Link>
-                </p>
-              </RailNote>
-            }
-          >
+          {/* THE NOTE ON SOURCING CAME OFF 3 Sep 2026, with the rest of the
+              site's visible provenance and on the same client instruction.
+
+              It went whole rather than losing only its link, and that was the
+              deliberate call. The note existed to say "this site does not
+              state a figure it cannot source" and then to hand the reader the
+              ledger that proved it. Once the ledger is unlisted, a note making
+              that promise with nowhere to check it is a claim about our own
+              rigour with the evidence removed — worse than saying nothing.
+
+              The promise itself still holds in the code: `market-data.ts` will
+              not hold a figure without a source and `getSource` still throws
+              for an unregistered id. It is now enforced rather than advertised. */}
+          <GridBlock>
             <h2
               id="innovation-india-heading"
               className="text-3xl font-bold tracking-tight text-balance text-ink sm:text-4xl"
@@ -68,8 +52,8 @@ export function InnovationIndiaContext() {
 
             <div className="mt-6 space-y-5 text-lg text-foreground">
               <p>
-                In-centre haemodialysis organises the week around a facility
-                &mdash; roughly three trips, plus the road between them. In
+                In-centre hemodialysis organizes the week around a facility:
+                roughly three trips, plus the road between them. In
                 much of India that road is the treatment&rsquo;s real cost:
                 travel time, working hours lost by the patient and by whoever
                 travels with them, and in many districts no facility within
@@ -78,14 +62,14 @@ export function InnovationIndiaContext() {
               <p>
                 Automated peritoneal dialysis does not shorten that trip. It
                 removes it. The therapy runs overnight, at home, on a schedule
-                set with a nephrologist &mdash; which is why the technology
+                set with a nephrologist, which is why the technology
                 matters more here than it does in the markets it was cleared
                 in.
               </p>
               <p className="text-base text-muted-foreground">
-                The sourced version of this argument &mdash; scale, cost,
+                The sourced version of this argument (scale, cost,
                 coverage and the mix of therapies actually in use, each figure
-                dated and attributed to a source you can open &mdash; is the
+                dated and attributed to a source you can open) is the
                 market page.
               </p>
             </div>

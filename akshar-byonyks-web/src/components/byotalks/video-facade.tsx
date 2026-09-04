@@ -85,20 +85,23 @@ function CaptionNote({ captions }: { captions: ByoTalksSession["captions"] }) {
     );
   }
 
-  return (
-    <div className="rounded-lg border border-dashed border-pending/40 bg-surface-2 px-4 py-3">
-      <p className="flex items-center gap-1.5 font-mono text-xs tracking-wide text-pending">
-        <Captions className="size-3 shrink-0" aria-hidden="true" />
-        <span>Captions are machine-generated</span>
-      </p>
-      <p className="mt-1 text-sm text-foreground">
-        This session plays with YouTube&rsquo;s automatic captions, which are
-        turned on by default. They have not been checked by a person, and
-        automatic transcription is unreliable on clinical terms and across
-        accents. Checked captions are being prepared.
-      </p>
-    </div>
-  );
+  // AUTO CAPTIONS NOW SAY NOTHING, on client instruction (3 Sep 2026). This
+  // branch rendered an amber pending card above the player: that the track is
+  // YouTube ASR, that no person has checked it, that automatic transcription
+  // is unreliable on clinical terms and across accents, and that checked
+  // captions were being prepared.
+  //
+  // The BEHAVIOUR is unchanged — `cc_load_policy=1` below still forces the
+  // track on by default, so a deaf or hard-of-hearing reader still gets
+  // captions. What is gone is the statement of their quality, which every
+  // session on this site currently relies on: all eight carry `captions:
+  // "auto"`, so this is the branch they all take and none of them now says
+  // anything about it.
+  //
+  // The "verified" branch above is kept and is the one worth reaching. Set a
+  // session's `captions` to "verified" in `byotalks.ts` once a person has
+  // actually checked it and the line returns for that session.
+  return null;
 }
 
 export function VideoFacade({ session }: { session: ByoTalksSession }) {
@@ -107,7 +110,7 @@ export function VideoFacade({ session }: { session: ByoTalksSession }) {
       <div className="rounded-2xl border border-dashed border-line bg-surface-2 p-8 sm:p-12">
         <PendingNote
           label={`“${session.title}” has a recording but no caption track of any kind, so it is not published here.`}
-          note="Captions pending — required before this video can ship"
+          note="Captions pending, required before this video can ship"
         />
       </div>
     );

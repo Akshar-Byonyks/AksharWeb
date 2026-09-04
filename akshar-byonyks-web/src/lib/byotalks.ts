@@ -97,10 +97,10 @@ export const byotalksSessions: readonly ByoTalksSession[] = [
     speaker: "Joanna Lee Neumann",
     credentials: [
       "RN, CNN",
-      "Senior Director, Clinical Services — Home Quality, Satellite Healthcare",
+      "Senior Director, Clinical Services, Home Quality, Satellite Healthcare",
     ],
     summary:
-      "Nursing leadership and the support structures around a patient on peritoneal dialysis — what a home programme actually has to provide for the therapy to hold.",
+      "Nursing leadership and the support structures around a patient on peritoneal dialysis: what a home programme actually has to provide for the therapy to hold.",
     videoId: "h7SYvliTvmY",
     durationSeconds: 7052,
     captions: "auto",

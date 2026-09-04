@@ -20,6 +20,7 @@ import {
   primaryNav,
   type NavLink as NavItem,
 } from "@/lib/navigation";
+import { requestSplashReplay, SPLASH_PATH } from "@/lib/splash";
 import { cn } from "@/lib/utils";
 
 // Ported and adapted, not dropped in — CLAUDE.md's standing rule for any
@@ -168,8 +169,26 @@ const itemVariants: Variants = {
   collapsed: { opacity: 0, x: -20, scale: 0.95, transition: { duration: 0.2 } },
 };
 
+// THIS BUTTON IS ITS OWN ANIMATION ROOT — see the `animate` prop where it is
+// rendered, which is what stops the nav's 0.33s of inherited stagger from
+// reaching it.
+//
+// THE EXIT IS INSTANT, AND THAT IS DELIBERATE. Rooting the button alone cut
+// the icon from a full-opacity ~800ms down to a ~130ms ghost, but a ghost is
+// still something a reader sees inside an open bar, and a duration-based fade
+// is at the mercy of the frame it lands on. Measured across twenty routes,
+// peak opacity while the bar was ALREADY past 200px ranged 0.18 to 0.86 — the
+// worst of them on the heaviest page, where a dropped frame froze the fade
+// part-way while the width spring ran on. No fade duration can be made
+// reliable here, because the two animations are racing and only one of them
+// is time-based.
+//
+// Asymmetric on purpose. Going OPEN the icon is simply gone: its job has been
+// taken over by the bar's own contents, and nothing is served by watching it
+// dissolve behind them. Coming CLOSED it still springs in after 0.15s, so it
+// arrives once the pill has actually shrunk to meet it.
 const collapsedIconVariants: Variants = {
-  expanded: { opacity: 0, scale: 0.8, transition: { duration: 0.2 } },
+  expanded: { opacity: 0, scale: 0.8, transition: { duration: 0 } },
   collapsed: {
     opacity: 1,
     scale: 1,
@@ -305,6 +324,38 @@ export function AnimatedNav({ items = primaryNav }: { items?: NavItem[] }) {
   const isActive = (href: string) =>
     pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
 
+  // THE LOGO IS THE WAY BACK TO THE OPENING, on client instruction (2 Sep
+  // 2026): clicking the mark replays the site's curtain. It is the only
+  // control that does. The footer's home link, a body link and the back button
+  // all still arrive on Home without one, which is what keeps this a
+  // deliberate act rather than a toll on ordinary navigation.
+  //
+  // MODIFIED CLICKS ARE EXCLUDED because they do not navigate this tab at all:
+  // a cmd-click opens Home in a new one and leaves this page exactly where it
+  // is, so requesting a curtain would arm one on a page nobody is leaving.
+  //
+  // The request is a flag rather than a curtain — `splash.ts` explains why the
+  // arming has to happen at the far end rather than here.
+  const handleLogoClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
+
+    // Already on Home: there is no route change to carry the reader to the top
+    // of the document, and lifting a curtain onto the middle of a page they
+    // had scrolled is a strange place to be returned to.
+    if (pathname === SPLASH_PATH) window.scrollTo({ top: 0 });
+
+    requestSplashReplay();
+  };
+
   // Focus leaving the shell entirely closes the panel; focus moving from the
   // trigger into the panel does not, because the panel is a descendant.
   const handleBlur = (event: React.FocusEvent<HTMLDivElement>) => {
@@ -318,7 +369,17 @@ export function AnimatedNav({ items = primaryNav }: { items?: NavItem[] }) {
     // itself carries `layout="position"` so it travels there instead of
     // teleporting — position only, because its width is already being animated
     // by the variants and letting layout drive size as well makes it stretch.
-    <div
+    // A <header>, not a <div>, since 2 Sep 2026. Two things were wrong with
+    // the div. It left the site with no banner landmark at all — `header.tsx`
+    // supplied one until this replaced it on 31 Aug and nothing took over the
+    // role. And `site-splash.tsx` holds the page `inert` behind the curtain by
+    // selecting `header`, `footer` and `main`'s children, so with no <header>
+    // in the document the nav was the one region NOT held back: every link in
+    // it stayed clickable and screen-reader-reachable underneath a curtain
+    // that announces itself as a loading status. Found while wiring the logo
+    // to replay that curtain, which the gap would have let a reader retrigger
+    // mid-cycle.
+    <header
       className={cn(
         "sticky top-0 z-50 flex px-4 py-3",
         isExpanded ? "justify-center" : "justify-end",
@@ -403,6 +464,7 @@ export function AnimatedNav({ items = primaryNav }: { items?: NavItem[] }) {
           >
             <Link
               href="/"
+              onClick={handleLogoClick}
               aria-current={pathname === "/" ? "page" : undefined}
               className={cn(
                 "flex items-center rounded-full px-3 py-1.5 text-sm font-medium whitespace-nowrap text-foreground transition-colors hover:bg-surface-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
@@ -542,6 +604,30 @@ export function AnimatedNav({ items = primaryNav }: { items?: NavItem[] }) {
           <motion.button
             type="button"
             variants={collapsedIconVariants}
+            // ITS OWN `animate`, AND THAT IS THE FIX (2 Sep 2026). Reported as
+            // the three-line icon staying inside the bar after scrolling up to
+            // reopen it, and that is exactly what happened.
+            //
+            // Variants propagate to every descendant motion component that
+            // inherits the parent's state, and the nav's `expanded` transition
+            // carries `delayChildren: 0.12` with `staggerChildren: 0.07`. This
+            // button is the FOURTH motion child of the nav, so framer handed it
+            // 0.12 + 3 x 0.07 = 0.33s of delay before its fade even began, and
+            // another 0.2s to run. The width spring, meanwhile, has the bar
+            // visibly wide almost at once — so for about a third of a second a
+            // full-opacity menu icon sat in the middle of an open navbar.
+            //
+            // A child that declares its own `animate` is an animation root: the
+            // parent's orchestration stops at it. The stagger then stays where
+            // it was actually wanted — on the links, which are meant to arrive
+            // one after another — and the icon leaves on its own 0.12s.
+            //
+            // `initial={false}` because this is a root now. Without it the
+            // button animates from its variant on first mount, which on a page
+            // that loads scrolled (an anchor, a restored position) would flash
+            // the menu icon over the open bar on arrival.
+            initial={false}
+            animate={isExpanded ? "expanded" : "collapsed"}
             inert={isExpanded}
             aria-expanded={isExpanded}
             aria-label="Show navigation"
@@ -552,6 +638,6 @@ export function AnimatedNav({ items = primaryNav }: { items?: NavItem[] }) {
           </motion.button>
         </motion.nav>
       </div>
-    </div>
+    </header>
   );
 }

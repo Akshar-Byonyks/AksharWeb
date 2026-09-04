@@ -1,11 +1,20 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { SplashWordmark } from "@/components/motion/splash-wordmark";
 import { cn } from "@/lib/utils";
 import {
+  armSplash,
+  consumeSplashReplay,
   onSilkReady,
+  onSplashReplay,
   SPLASH_ARM_ID,
   SPLASH_DRAW_S,
   SPLASH_FADE_MS,
@@ -72,11 +81,22 @@ import {
 // not already being downloaded. It is a cover over a load that happens
 // regardless, not an added wait.
 
+// `useLayoutEffect` on the client, `useEffect` on the server. The standard
+// shape, and here it is not merely to silence React's warning: what the effect
+// below does has to happen before a paint, and there is no paint on the
+// server. A document load arms from the head script long before any effect in
+// this component runs, so the server branch has nothing to do either way.
+const useArmEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
+
 export function SiteSplash() {
   // Identifies this element so the inert sweep below can skip it. The
   // curtain's own visibility is CSS, not React.
   const rootRef = useRef<HTMLDivElement>(null);
   const [leaving, setLeaving] = useState(false);
+  // Counts cycles. Nothing reads its value: it is a dependency of the effect
+  // that runs one, and the `key` that makes the wordmark redraw.
+  const [replay, setReplay] = useState(0);
 
   const dismiss = useCallback(() => {
     // The injected <style> IS the curtain. Its presence is the armed state and
@@ -89,6 +109,17 @@ export function SiteSplash() {
 
     window.setTimeout(
       () => {
+        // A REPLAY THAT STARTED WHILE THIS FADE WAS IN FLIGHT has already put
+        // a new stylesheet in the head — `armSplash` appends a fresh element
+        // rather than reusing this one precisely so that identity can be
+        // checked here. Without it, the previous cycle's timer lands in the
+        // middle of the new curtain, removes the stylesheet holding it up and
+        // un-inerts the page behind it: the curtain blinks out instead of
+        // playing. Unreachable today, because the nav is `inert` for the whole
+        // cycle including this fade and so the logo cannot be clicked during
+        // it — this is what keeps that from being load-bearing.
+        if (document.getElementById(SPLASH_ARM_ID) !== arm) return;
+
         arm.remove();
         for (const el of document.querySelectorAll("[data-splash-inert]")) {
           el.removeAttribute("inert");
@@ -105,11 +136,48 @@ export function SiteSplash() {
     );
   }, []);
 
+  // ARRIVING ON HOME FROM A LOGO CLICK (2 Sep 2026). The head script only runs
+  // on a real document load, so a client-side navigation carries no curtain of
+  // its own; the nav's logo leaves a request behind instead and this consumes
+  // it. Nothing else does — every other link to `/` finds no request and
+  // arrives on Home unobstructed.
+  //
+  // A LAYOUT EFFECT, and that is the whole reason the arming is not done at
+  // the click. It runs between React's commit and the browser's paint, so the
+  // stylesheet is in force in the same frame the curtain's markup appears. A
+  // passive effect would paint Home and then cover it up a frame later, which
+  // is the exact failure the server-rendered markup exists to avoid.
+  useArmEffect(() => {
+    if (consumeSplashReplay()) armSplash();
+  }, []);
+
+  // A LOGO CLICK MADE WHILE ALREADY ON HOME. Nothing remounts and nothing
+  // navigates, so there is no arrival to hand the request to and no other page
+  // to freeze — this arms on the spot and bumps the cycle, which is the whole
+  // trigger. The request is consumed here too, so the flag cannot survive to
+  // arm a second time on some later arrival.
+  useEffect(
+    () =>
+      onSplashReplay(() => {
+        consumeSplashReplay();
+        armSplash();
+        setReplay((n) => n + 1);
+      }),
+    [],
+  );
+
   useEffect(() => {
-    // Not armed: not Home, or the failsafe already fired. The arming script
-    // is the single decision point — this component never second-guesses it,
-    // so there is exactly one place the rule lives.
+    // Not armed: not Home, or the failsafe already fired. Arming is still the
+    // single decision point and this component still never second-guesses it.
+    // There are two arming SITES now rather than one — the head script on a
+    // document load, the layout effect above on a logo click — and each still
+    // writes the rule about who sees a curtain in exactly one place.
     if (!document.getElementById(SPLASH_ARM_ID)) return;
+
+    // A replay reuses this component rather than remounting it, so the
+    // fade-out class from the previous cycle is still on the element. On the
+    // first run React bails out of a state update that changes nothing.
+    setLeaving(false);
 
     // Hold the page behind the curtain out of the a11y tree and the tab
     // order — everything except the curtain itself.
@@ -184,7 +252,7 @@ export function SiteSplash() {
       window.clearTimeout(ceiling);
       unsubscribe();
     };
-  }, [dismiss]);
+  }, [dismiss, replay]);
 
   return (
     <div
@@ -203,23 +271,65 @@ export function SiteSplash() {
       aria-busy={!leaving}
     >
       <div className="w-full max-w-[64rem]">
-        {/* Gold draws, white floods, and neither is a literal.
-            `--color-accent-gold` is the token; the flood is `currentColor`
-            against a `text-white` wrapper, which is the same white the rest of
-            the site sets on ink and keeps CLAUDE.md's no-hardcoded-hex rule
-            intact. Deliberately NOT `var(--color-background)`, which looks
-            like the right token and is a trap: globals.css carries a `.dark`
-            block that redefines it to near-black, so the flood would disappear
-            into the curtain the day a theme switch is added.
+        {/* WHITE DRAWS, GOLD FLOODS — inverted 3 Sep 2026, and the two
+            colours are the same two as before. Only their jobs swapped, which
+            is why this cost no new token and no new hue: the Accent Ration
+            Rule's ban on "a one-off color chosen in a single component" makes
+            inventing a third colour here the expensive answer, not the
+            obvious one.
 
-            Gold on ink measures 5.39:1 and the Accent Ration Rule permits an
-            accent on large display type, which at this size it comfortably is.
-            Nothing here carries meaning by colour — the wordmark's text is on
-            the wrapper's `aria-label`. */}
+            WHY ROUND THIS WAY. Gold is 5.39:1 on ink and white is 16.9:1, and
+            the two phases do not need contrast equally. The draw is a
+            HAIRLINE, moving, and over in 1.2s; the flood is a solid mass that
+            then sits still. Gold was carrying the hairline and white the mass,
+            which is the harder job given to the weaker colour — measured on
+            screen, the drawn keyline was genuinely dim and the wordmark did
+            not become properly readable until the flood had crossed it. This
+            way the lockup is legible from the first stroke. PRODUCT.md's
+            Priority-2 reader is "frequently older, often reading in a second
+            language under stress", so that is a legibility fix that happens
+            to also look better, not a preference.
+
+            AND IT NOW RESOLVES INTO THE BRAND RATHER THAN OUT OF IT. Gold to
+            white ended the site's one brand-specific colour on its most
+            generic one; white to gold makes the wipe read as the gold
+            ARRIVING. It also matches the handoff: the curtain lifts onto an
+            ink hero carrying a solid `bg-accent-gold` CTA, so the last frame
+            of the opening and the first frame of the page are now the same
+            gold instead of two different palettes.
+
+            NEITHER VALUE IS A LITERAL. `--color-accent-gold` is the token; the
+            stroke is `currentColor` against a `text-white` wrapper, which is
+            the same white the rest of the site sets on ink and keeps
+            CLAUDE.md's no-hardcoded-hex rule intact. Deliberately NOT
+            `var(--color-background)`, which looks like the right token and is
+            a trap: globals.css carries a `.dark` block that redefines it to
+            near-black, so the keyline would disappear into the curtain the day
+            a theme switch is added.
+
+            A BRIGHTER GOLD WAS BUILT AND REJECTED. `#c79f35` at 6.79:1 —
+            gold lifted for a dark ground exactly the way `--color-pending` and
+            the three provenance accents have on-ink counterparts — is richer
+            as a solid mass, where the base gold reads faintly olive. It would
+            also be a SECOND gold, and it would not match that hero CTA seconds
+            later. If the base gold is ever judged too muted at this size, the
+            CTA moves with it; the curtain does not get its own.
+
+            The Accent Ration Rule permits an accent on large display type,
+            which at this size it comfortably is. Nothing here carries meaning
+            by colour — the wordmark's text is on the wrapper's
+            `aria-label`. */}
         <SplashWordmark
+          // A REPLAY REDRAWS, AND THIS IS WHAT MAKES IT REDRAW. The draw and
+          // the flood are CSS animations declared `forwards`, so on a second
+          // cycle the existing elements are already sitting at their finished
+          // state and neither restarts — the curtain would show a wordmark
+          // that is simply, instantly, complete. Remounting the subtree is
+          // what starts the animations over.
+          key={replay}
           className="text-white"
-          strokeColor="var(--color-accent-gold)"
-          fillColor="currentColor"
+          strokeColor="currentColor"
+          fillColor="var(--color-accent-gold)"
           // OUTLINES, NOT TYPE, since 1 Sep 2026. The client asked for the
           // curtain's "Byonyks" to look like the real Byonyks mark; no font
           // contains that B, so the wordmark is now artwork — Pacifico

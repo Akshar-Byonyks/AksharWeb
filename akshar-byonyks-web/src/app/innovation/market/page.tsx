@@ -173,18 +173,18 @@ pendings where a real authority has not yet been read.
           {
             href: "/innovation/how-it-works",
             title: "How peritoneal dialysis works",
-            body: "The therapy this whole argument rests on, explained in plain language — what the peritoneum does and what one exchange is.",
+            body: "The therapy this whole argument rests on, explained in plain language: what the peritoneum does and what one exchange is.",
           },
           {
             href: "/products/the-x1-cycler",
             title: "The X-1 cycler",
-            body: "The machine that runs those exchanges overnight — what is confirmed about it, and what has not been published yet.",
+            body: "The machine that runs those exchanges overnight: what is confirmed about it, and what has not been published yet.",
           },
         ]}
       />
       <CtaBand
         heading="Ask about the India opportunity"
-        body="Investor, distributor, clinician or patient enquiry — we route it to the right person. Investor questions go direct."
+        body="Investor, distributor, clinician or patient enquiry. We route it to the right person. Investor questions go direct."
       />
     </>
   );

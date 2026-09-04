@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "sources": "node scripts/generate-sources.mjs",
+    "prebuild": "npm run sources",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
