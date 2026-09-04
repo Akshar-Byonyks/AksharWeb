@@ -29,6 +29,43 @@
     { "pattern": "www.aksharbyonyks.com", "custom_domain": true }
   ],
 
+  // THE SECOND PUBLIC COPY OF THIS SITE, closed 4 Sep 2026 — once the real
+  // domain above was confirmed serving, and not before.
+  //
+  // `workers_dev` DEFAULTS TO TRUE, so from the first deploy this worker also
+  // answered on `akshar-byonyks-web.<subdomain>.workers.dev`: a complete,
+  // public, crawlable second copy of a medical-device company's site at an
+  // address nobody chose and nothing on the site links to. Every page does emit
+  // an absolute canonical back to `aksharbyonyks.com` (via `metadataBase`), so
+  // the duplicate-content risk was largely contained — but a canonical is a
+  // hint, not a redirect, and the address remains linkable, shareable and
+  // screenshot-able by anyone who has ever seen a build log. There is no reason
+  // for it to exist now that the domain works.
+  //
+  // THE ORDER MATTERED. This stayed `true` deliberately while the nameservers
+  // moved, because it was the only address that could serve the site if the
+  // custom domain failed to provision. Turning it off before the apex was
+  // confirmed would have been removing the safety net while still on the wire.
+  //
+  // `preview_urls` IS NOT AN INDEPENDENT DEFAULT, AND THIS IS THE TRAP. The
+  // config schema advertises `default: false`, which is wrong in the way that
+  // costs you something: Cloudflare documents Preview URLs as *inheriting*
+  // `workers_dev` when not explicitly set — "enabled by default if workers_dev
+  // is enabled, and disabled by default if it is disabled." So `workers_dev:
+  // false` on its own would silently switch off the per-version preview URLs
+  // that Workers Builds produces for non-production branches, and the branch
+  // builds configured in the dashboard would upload versions with no address to
+  // view them at. Declaring `true` here is what keeps that feature alive, and
+  // it has to be explicit precisely because the inherited value would be false.
+  //
+  // PREVIEW URLS ARE PUBLIC BY DEFAULT. They are per-version
+  // (`<version>-<name>.<subdomain>.workers.dev`) rather than a standing address,
+  // but they are not secret. Cloudflare Access is what gates them; if its scope
+  // is set to "All traffic" rather than "Previews only" it will also sit in
+  // front of the production domain, which is not wanted here.
+  "workers_dev": false,
+  "preview_urls": true,
+
   "compatibility_date": "2026-08-15",
   "compatibility_flags": [
     "nodejs_compat",

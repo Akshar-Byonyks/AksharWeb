@@ -77,7 +77,37 @@ export const metadata: Metadata = {
     default: "Akshar Byonyks",
     template: "%s | Akshar Byonyks",
   },
-  description: "Site under development.",
+  // THE ONLY DESCRIPTION HOME HAS, and until 4 Sep 2026 it read "Site under
+  // development." — the placeholder from the first commit, still live on the
+  // front door months after every other route had been written properly.
+  //
+  // IT IS NOT ONLY A SEARCH SNIPPET. Next fills `og:description` and
+  // `twitter:description` from this field whenever `openGraph.description` is
+  // unset, which it is here. So the placeholder was also the caption under the
+  // logo on every WhatsApp and LinkedIn share of the homepage link — measured
+  // in the served HTML, all three tags carrying the same six words. WhatsApp is
+  // the share channel that matters for this audience (see the note on the share
+  // card below), which made this the single most-seen sentence on the site.
+  //
+  // WHY IT LIVES HERE RATHER THAN ON `app/page.tsx`. Every other route declares
+  // its own `description` beside its own content. Home deliberately does not —
+  // its metadata export exists only to declare the Hindi alternate — because a
+  // site-level fallback and a description of the company are the same sentence,
+  // and writing it twice is how the two drift. This one string is therefore
+  // both: Home's description, and the safety net for any future route that
+  // ships without one. That is the job it was always meant to do; it just had
+  // the wrong words in it.
+  //
+  // EVERY CLAUSE IS THE SITE'S OWN WORDING, not new copy written for a crawler.
+  // "Brings Byonyks' FDA-cleared … to India" is Home's H1; "three trips a week"
+  // is the scroll-scrub scene's caption; "overnight" is `the-night.tsx`. The
+  // clearance named is the FDA's, and no Indian regulatory position is implied —
+  // `pending-cdsco` in the claims ledger is explicit that a US clearance is not
+  // an Indian authorisation, so "licensed" was rejected here as a word that
+  // reads, in an Indian medical-device context, as a CDSCO licence this company
+  // does not yet hold.
+  description:
+    "Akshar Byonyks brings Byonyks’ FDA-cleared X-1 automated peritoneal dialysis cycler to India: treatment at home, overnight, instead of three trips a week to a centre.",
   // THE DEFAULT SHARE CARD IS `src/app/opengraph-image.jpg`, NOT A FIELD HERE,
   // and that is the whole trick. Added 1 Sep 2026 with the supplied logo.
   //
