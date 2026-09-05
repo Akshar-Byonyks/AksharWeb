@@ -1,3 +1,5 @@
+import { siteUrl } from "@/lib/site-config";
+
 // Cloudflare Turnstile server-side validation. Endpoint, field names and
 // response shape taken from Cloudflare's server-side-validation documentation
 // rather than from memory (CLAUDE.md requires current docs for Turnstile).
@@ -11,6 +13,33 @@
 // a dormant feature — see the guard in `verifyTurnstile`.
 
 const SITEVERIFY = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+
+/**
+ * The action the widget stamps on its tokens, and the one this endpoint will
+ * accept. It must stay in step with `action:` in `turnstile-widget.tsx` —
+ * changing one without the other rejects every enquiry.
+ *
+ * It exists so that a token minted for some future second challenge on this
+ * site cannot be replayed against the contact form.
+ */
+const EXPECTED_ACTION = "contact";
+
+/**
+ * The hostnames a token may legitimately have been solved on.
+ *
+ * DERIVED FROM `siteUrl` RATHER THAN CONFIGURED SEPARATELY. The canonical
+ * origin is already written down once, in `site-config.ts`, and it is what
+ * `metadataBase` and every canonical URL are built from. A second list of
+ * hostnames in an environment variable would be a second source of truth for
+ * the same fact, and the failure it produces — every enquiry rejected — is
+ * silent from the visitor's side.
+ *
+ * `www` is included because `wrangler.jsonc` attaches both hostnames to this
+ * Worker as custom domains and does not redirect between them, so a visitor
+ * genuinely can solve the challenge on either.
+ */
+const siteHostname = new URL(siteUrl).hostname;
+const expectedHostnames = new Set([siteHostname, `www.${siteHostname}`]);
 
 /**
  * The public site key, read here as well as in the browser so the server can
@@ -81,11 +110,43 @@ export async function verifyTurnstile(
     });
     const data = (await res.json()) as {
       success: boolean;
+      action?: string;
+      hostname?: string;
       ["error-codes"]?: string[];
     };
-    return data.success
-      ? { configured: true, success: true }
-      : { configured: true, success: false, errorCodes: data["error-codes"] ?? [] };
+
+    if (!data.success) {
+      return { configured: true, success: false, errorCodes: data["error-codes"] ?? [] };
+    }
+
+    // SUCCESS IS NOT THE WHOLE ANSWER, and until 5 Sep 2026 this function
+    // treated it as though it were.
+    //
+    // A `success: true` from siteverify means only "this token is genuine and
+    // has not been redeemed." It does not say the token was minted for this
+    // form, or on this site. Both facts come back in the same response and
+    // were being discarded.
+    //
+    // WHAT THAT ALLOWED. A sitekey is public — it ships in the JavaScript
+    // every visitor downloads. Anyone could lift it, render the widget on a
+    // host of their own, solve a challenge legitimately, and post the
+    // resulting token here; the check above would pass it. Cloudflare
+    // restricts token issuance to the widget's registered hostnames, so this
+    // is not wide open — but it is exactly why `localhost` was deliberately
+    // left off this widget when it was created, and validating the hostname
+    // here is what makes registering a development origin safe later.
+    //
+    // FAILING CLOSED, unlike the network branch below. A mismatch is not an
+    // outage: the token is real, and it came from somewhere it should not
+    // have. There is no reading of that which should reach the inbox.
+    if (data.action !== EXPECTED_ACTION) {
+      return { configured: true, success: false, errorCodes: ["action-mismatch"] };
+    }
+    if (!data.hostname || !expectedHostnames.has(data.hostname)) {
+      return { configured: true, success: false, errorCodes: ["hostname-mismatch"] };
+    }
+
+    return { configured: true, success: true };
   } catch {
     // A verification outage must not swallow a real enquiry from a patient on
     // a poor connection. Fail open, and say so in the log.
