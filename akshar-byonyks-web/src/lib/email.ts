@@ -66,8 +66,12 @@ type ResolvedSecrets = {
   sources: Record<string, SecretSource>;
   /** Why the binding lookup could not run, if it could not. */
   contextError?: string;
-  /** Names only, never values. See the note in `resolveSecrets`. */
-  bindingKeys: string[];
+  /**
+   * How many bindings the Worker has, and whether each EXPECTED name is among
+   * them — never the names themselves. See the note in `resolveSecrets`.
+   */
+  bindingCount: number;
+  boundNames: Record<string, boolean>;
   processKeyCount: number;
 };
 
@@ -97,16 +101,29 @@ type ResolvedSecrets = {
  * quotes the runtime's own message, instead of reporting a secret as absent on
  * the strength of never having looked.
  *
- * The binding's KEY NAMES are captured. This is the fact that settles it:
+ * WHETHER EACH EXPECTED NAME IS BOUND is the fact that settles it:
  * `populateProcessEnv` in the adapter's `init.js` copies every string-valued
- * binding into `process.env` on first request, so if `RESEND_API_KEY` is in
- * this list and not in `process.env`, the copy is the broken step — and if it
- * is in neither, the secret is genuinely not bound to this Worker, whatever
- * the Settings page renders.
+ * binding into `process.env` on first request, so if `RESEND_API_KEY` is bound
+ * and not in `process.env`, the copy is the broken step — and if it is neither,
+ * the secret is genuinely not on this Worker, whatever Settings renders.
  *
- * NAMES ONLY, NEVER VALUES, and that distinction is the whole reason this is
- * safe to log. A binding name is configuration; a binding value is a
- * credential. `Object.keys` cannot leak the second.
+ * IT REPORTS A COUNT AND TWO BOOLEANS, NOT THE LIST OF NAMES. The first
+ * version of this logged `Object.keys(env)` in full, on the reasoning that a
+ * binding name is configuration while a binding value is a credential, so
+ * names could never leak anything.
+ *
+ * That reasoning was wrong, and it was wrong the same evening it was written.
+ * A secret got created whose NAME was the Resend API key — the value pasted
+ * into the name argument of `wrangler secret put` — and this line duly wrote
+ * that key into the Worker logs on every failed submission. The premise held
+ * only for names chosen correctly, which is exactly the assumption a
+ * diagnostic for misconfiguration must not make: it runs precisely when
+ * something has been configured wrong.
+ *
+ * So it now answers the only question it ever needed to — are THESE two names
+ * bound — and cannot transcribe an attacker-shaped or fat-fingered name into
+ * a log. The count is kept because "0 bindings" and "3 bindings, neither of
+ * them these" are different faults.
  */
 async function resolveSecrets(names: readonly string[]): Promise<ResolvedSecrets> {
   const values: Record<string, string | undefined> = {};
@@ -123,14 +140,17 @@ async function resolveSecrets(names: readonly string[]): Promise<ResolvedSecrets
   }
 
   let contextError: string | undefined;
-  let bindingKeys: string[] = [];
+  let bindingCount = 0;
+  const boundNames: Record<string, boolean> = {};
+  for (const name of names) boundNames[name] = false;
 
   try {
     const { env } = await getCloudflareContext({ async: true });
     const bindings = (env ?? {}) as unknown as Record<string, unknown>;
-    bindingKeys = Object.keys(bindings);
+    bindingCount = Object.keys(bindings).length;
 
     for (const name of names) {
+      boundNames[name] = name in bindings;
       if (values[name]) continue;
       const fromWorker = bindings[name];
       if (typeof fromWorker === "string" && fromWorker) {
@@ -146,7 +166,8 @@ async function resolveSecrets(names: readonly string[]): Promise<ResolvedSecrets
     values,
     sources,
     contextError,
-    bindingKeys,
+    bindingCount,
+    boundNames,
     processKeyCount: Object.keys(process.env).length,
   };
 }
@@ -209,7 +230,9 @@ export async function deliverEnquiry(input: ContactInput): Promise<DeliveryResul
           `RESEND_API_KEY=${config.sources.RESEND_API_KEY} ` +
           `CONTACT_FROM_ADDRESS=${config.sources.CONTACT_FROM_ADDRESS} ` +
           `| process.env keys: ${config.processKeyCount} ` +
-          `| binding names (${config.bindingKeys.length}): ${config.bindingKeys.join(", ") || "none"} ` +
+          `| bindings: ${config.bindingCount}, ` +
+          `RESEND_API_KEY bound=${config.boundNames.RESEND_API_KEY} ` +
+          `CONTACT_FROM_ADDRESS bound=${config.boundNames.CONTACT_FROM_ADDRESS} ` +
           `| context error: ${config.contextError ?? "none"}`,
       );
       return { status: "unconfigured" };
