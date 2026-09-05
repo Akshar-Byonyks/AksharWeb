@@ -59,21 +59,96 @@ export type DeliveryResult =
  * Cloudflare. A configuration read must not be able to take down the route it
  * is configuring.
  */
-function readSecret(name: string): { value?: string; source: "process" | "worker" | "missing" } {
-  const fromProcess = process.env[name];
-  if (fromProcess) return { value: fromProcess, source: "process" };
+type SecretSource = "process" | "worker" | "missing";
 
-  try {
-    const env = getCloudflareContext().env as unknown as Record<string, unknown>;
-    const fromWorker = env?.[name];
-    if (typeof fromWorker === "string" && fromWorker) {
-      return { value: fromWorker, source: "worker" };
+type ResolvedSecrets = {
+  values: Record<string, string | undefined>;
+  sources: Record<string, SecretSource>;
+  /** Why the binding lookup could not run, if it could not. */
+  contextError?: string;
+  /** Names only, never values. See the note in `resolveSecrets`. */
+  bindingKeys: string[];
+  processKeyCount: number;
+};
+
+/**
+ * Resolves the delivery secrets, and records enough about the attempt to tell
+ * a genuine absence from a failed lookup.
+ *
+ * REWRITTEN 4 SEP 2026, HOURS AFTER THE FIRST VERSION, because the first
+ * version could not answer the question it was written to answer. It reported
+ * `missing` both when a secret was absent and when `getCloudflareContext()`
+ * threw, and its `catch` was silent — so when production logged
+ * "RESEND_API_KEY: missing. CONTACT_FROM_ADDRESS: missing." against a
+ * dashboard that plainly showed both secrets present and encrypted, that line
+ * ruled nothing out. A diagnostic that collapses two hypotheses into one word
+ * is not a diagnostic.
+ *
+ * THREE THINGS CHANGED.
+ *
+ * `async: true`. The synchronous form reads the context off a global that
+ * `init.js` installs per request through an AsyncLocalStorage store, and it
+ * THROWS — with a message naming exactly this mistake — when called from a
+ * static route or above the request scope. The async form is the one the
+ * adapter documents for use inside a handler, and `deliverEnquiry` is already
+ * async, so awaiting costs nothing.
+ *
+ * The catch now keeps the error. If the lookup failed, the log says so and
+ * quotes the runtime's own message, instead of reporting a secret as absent on
+ * the strength of never having looked.
+ *
+ * The binding's KEY NAMES are captured. This is the fact that settles it:
+ * `populateProcessEnv` in the adapter's `init.js` copies every string-valued
+ * binding into `process.env` on first request, so if `RESEND_API_KEY` is in
+ * this list and not in `process.env`, the copy is the broken step — and if it
+ * is in neither, the secret is genuinely not bound to this Worker, whatever
+ * the Settings page renders.
+ *
+ * NAMES ONLY, NEVER VALUES, and that distinction is the whole reason this is
+ * safe to log. A binding name is configuration; a binding value is a
+ * credential. `Object.keys` cannot leak the second.
+ */
+async function resolveSecrets(names: readonly string[]): Promise<ResolvedSecrets> {
+  const values: Record<string, string | undefined> = {};
+  const sources: Record<string, SecretSource> = {};
+
+  for (const name of names) {
+    const fromProcess = process.env[name];
+    if (fromProcess) {
+      values[name] = fromProcess;
+      sources[name] = "process";
+    } else {
+      sources[name] = "missing";
     }
-  } catch {
-    // No Cloudflare context here. Not an error — see the note above.
   }
 
-  return { source: "missing" };
+  let contextError: string | undefined;
+  let bindingKeys: string[] = [];
+
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    const bindings = (env ?? {}) as unknown as Record<string, unknown>;
+    bindingKeys = Object.keys(bindings);
+
+    for (const name of names) {
+      if (values[name]) continue;
+      const fromWorker = bindings[name];
+      if (typeof fromWorker === "string" && fromWorker) {
+        values[name] = fromWorker;
+        sources[name] = "worker";
+      }
+    }
+  } catch (err) {
+    contextError = err instanceof Error ? err.message : String(err);
+  }
+
+  return {
+    values,
+    sources,
+    contextError,
+    bindingKeys,
+    processKeyCount: Object.keys(process.env).length,
+  };
 }
 
 export async function deliverEnquiry(input: ContactInput): Promise<DeliveryResult> {
@@ -113,30 +188,29 @@ export async function deliverEnquiry(input: ContactInput): Promise<DeliveryResul
   // whenever delivery cannot be attempted — but it does mean `next dev` no
   // longer reproduces that particular production fault. Production is
   // unchanged: both missing values still return `unconfigured`, and now say so.
-  const key = readSecret("RESEND_API_KEY");
-  const fromAddress = readSecret("CONTACT_FROM_ADDRESS");
-  const apiKey = key.value;
-  const from = fromAddress.value;
+  const config = await resolveSecrets(["RESEND_API_KEY", "CONTACT_FROM_ADDRESS"]);
+  const apiKey = config.values.RESEND_API_KEY;
+  const from = config.values.CONTACT_FROM_ADDRESS;
 
   if (!apiKey || !from) {
     if (process.env.NODE_ENV === "production") {
-      // LOUD, AND NAMING THE SPECIFIC FAULT. Same reasoning as the
-      // half-configured guard in `turnstile.ts`: this state is always a
-      // deployment fault rather than a legitimate configuration, so it belongs
-      // in the log at error level where `observability` will surface it.
+      // LOUD, AND CARRYING THE EVIDENCE. Same reasoning as the half-configured
+      // guard in `turnstile.ts`: this state is always a deployment fault rather
+      // than a legitimate configuration, so it belongs in the log at error
+      // level where `observability` will surface it.
       //
-      // Presence and source only. A secret's VALUE must never reach a log line,
-      // and the source is the fact that actually discriminates between the two
-      // hypotheses left standing — "the secret was never set on this Worker"
-      // and "the secret is set, and `process.env` is not being populated from
-      // it." The dashboard can only answer the first.
+      // `bindings` is the line that ends the argument. If the two names appear
+      // there, they ARE bound to this Worker and the fault is downstream of
+      // Cloudflare. If they do not, the Settings page and the running Worker
+      // disagree, and no amount of reading the dashboard would ever have shown
+      // it. Either way the next step stops being a guess.
       console.error(
         "[contact] delivery is unconfigured, so this enquiry was NOT sent. " +
-          `RESEND_API_KEY: ${key.source}. ` +
-          `CONTACT_FROM_ADDRESS: ${fromAddress.source}. ` +
-          '("process" = read from process.env, "worker" = read from the ' +
-          'Cloudflare binding because process.env was empty, "missing" = ' +
-          "absent from both, i.e. genuinely not set on this Worker.)",
+          `RESEND_API_KEY=${config.sources.RESEND_API_KEY} ` +
+          `CONTACT_FROM_ADDRESS=${config.sources.CONTACT_FROM_ADDRESS} ` +
+          `| process.env keys: ${config.processKeyCount} ` +
+          `| binding names (${config.bindingKeys.length}): ${config.bindingKeys.join(", ") || "none"} ` +
+          `| context error: ${config.contextError ?? "none"}`,
       );
       return { status: "unconfigured" };
     }
@@ -146,13 +220,16 @@ export async function deliverEnquiry(input: ContactInput): Promise<DeliveryResul
 
   // A successful read from the fallback means `process.env` did not carry a
   // secret the Worker does have. Delivery works, so this is not an error — but
-  // it is worth one line, because it is the signal that the shim is not doing
-  // what this file assumed it did for its first two weeks in production.
-  if (key.source === "worker" || fromAddress.source === "worker") {
+  // it is worth one line, because it is the signal that the adapter's
+  // `populateProcessEnv` step is not doing what this file assumed it did.
+  if (
+    config.sources.RESEND_API_KEY === "worker" ||
+    config.sources.CONTACT_FROM_ADDRESS === "worker"
+  ) {
     console.warn(
       "[contact] a secret was read from the Cloudflare binding because " +
-        "process.env did not carry it. Delivery is working; the Node-compat " +
-        "environment shim is not populating these values.",
+        "process.env did not carry it. Delivery is working; the adapter's " +
+        "environment copy is not populating these values.",
     );
   }
 
