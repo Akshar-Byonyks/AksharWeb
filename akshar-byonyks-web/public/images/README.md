@@ -568,7 +568,30 @@ into two assets by use, rather than scaled until it is a smudge.
 
 - **Crop:** the same trimmed emblem, `contain`ed on white and extended with a 32px margin, at 512×512 and 180×180. Palette PNG, 77KB and 12KB.
 - **The margin is deliberate.** A favicon whose artwork bleeds to its own edges reads as a crop of something larger rather than as a mark.
-- These use Next.js's file convention, so they are picked up automatically and no `icons` entry in `metadata` is needed. The pre-existing `src/app/favicon.ico` is left in place as the legacy fallback.
+- These use Next.js's file convention, so they are picked up automatically and no `icons` entry in `metadata` is needed.
+
+#### src/app/favicon.ico — the tab icon, and the one that was actually showing
+
+**Until 5 Sep 2026 this file was `create-next-app`'s default: Vercel's white
+triangle on black.** It had never been touched since the initial commit. The
+note that stood here said it was "left in place as the legacy fallback," which
+assumed a fallback is something a browser reaches for only when the real icons
+fail. That is not what happened. Next emits all three:
+
+```html
+<link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="16x16"/>
+<link rel="icon" href="/icon.png?..." type="image/png" sizes="512x512"/>
+```
+
+A browser tab wants 16px, `favicon.ico` advertises exactly 16px, and the PNG
+advertises 512. So the `.ico` won on every visit, and the site shipped another
+company's logo in the tab from launch until this was noticed by the client.
+
+- **Crop:** `extract` left 262, top 178, w 224, h 224 from `src/app/icon.png` — the AB monogram and the kidney, excluding the globe and most of the orbital ring. Resized to 16, 32 and 48 with lanczos3, flattened on white.
+- **Why the monogram rather than the whole emblem.** Rendered at true size and inspected before shipping, which is the only way to judge this: at 16px the full emblem resolves to a blue-grey smudge. The continents go first, then the ring. The letterforms are the only part of this artwork that survives a 16px box, and the kidney reads as a red accent that distinguishes it from any other AB.
+- **Output:** a genuine multi-size `.ico` — 16/32/48 PNG payloads in one ICO container, 9.7KB, down from the 25.9KB default. `sharp` cannot write ICO, so the container is encoded directly (6-byte ICONDIR, one 16-byte ICONDIRENTRY per image, then the payloads).
+- **`icon.png` is unchanged** and still carries the full emblem. It is what serves the contexts with room for it — bookmarks, install prompts, tab hover previews.
+- **If this ever needs regenerating,** the script is the one recorded here, not a hand-edit: crop the monogram box out of `icon.png`, emit 16/32/48, wrap in ICO. Do not scale the whole lockup into 16px; that is the mistake this replaced.
 
 **THE WHITE BACKGROUND, KNOCKED OUT — 2 Sep 2026.** Reported directly: over an
 ink section you could see the white box around the mark. You could; the nav
