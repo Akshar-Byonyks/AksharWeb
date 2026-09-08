@@ -243,6 +243,49 @@ export const executives: readonly Executive[] = [
     bio: "Sahil is a former banker inspired to help expand access to effective and affordable dialysis treatments. Growing up around dialysis patients and clinicians, it was clear to him that providers were doing their best with outdated tools. Now, he is committed to offering a modern PD solution to the Indian healthcare provider and patient.",
   },
   {
+    // Supplied by the client, 8 Sep 2026, with the instruction to treat the
+    // record as Akshar Byonyks personnel. Carried verbatim.
+    //
+    // NO POST-NOMINALS, AND THAT IS A DECISION RATHER THAN AN OMISSION. Both
+    // other physicians on this roster carry "MD". This biography says he
+    // "complet[ed] his medical education in India" and then did a US residency
+    // and fellowship — and an Indian medical degree is an MBBS, not an MD. So
+    // the letters that would make his card match his colleagues' are the ones
+    // most likely to be wrong for him specifically. A qualification is not a
+    // formatting detail to be made consistent; it is a claim about a named
+    // physician on a medical-device site. Asked, not guessed.
+    //
+    // The visible cost is real and is the reason this is written down: his
+    // card reads "Rohit Pankhaniya" beside "Vishnu Patel, MD" and "Ronak C.
+    // Shah, MD", which a reader could take as a difference in credentials
+    // rather than in what was supplied. One line from the client closes it.
+    //
+    // NO ROLE, following the precedent set for Dr. Shah and Sahil on 1 Sep
+    // 2026: "board-certified nephrologist practicing in Port Charlotte,
+    // Florida" describes his clinical practice, not his job at this company,
+    // and reading a title out of a description is how a leadership page ends
+    // up asserting something nobody said. The page prints the pending marker.
+    //
+    // `namesALocation` is deliberately NOT set. It exists for the locations
+    // spec F-1's attribution decision keeps off this site; Florida, India and
+    // the two US hospitals are not those, and marking them would drain the
+    // flag of the meaning it was created to carry.
+    slug: "rohit-pankhaniya",
+    name: "Rohit Pankhaniya",
+    organisation: "Akshar Byonyks",
+    // PLACEHOLDER ALT, and it must not ship as one. The pending branch of
+    // `ExecutivePortrait` renders a dashed marker and never reads this string,
+    // so it is unused today — but the moment a photograph is added this
+    // becomes the alt text on a real image of a real person, and alt text
+    // describes what is actually in the frame. Replace it when the file
+    // arrives; do not let a portrait land on top of a guess.
+    portraitPending: true,
+    portraitAlt: "Portrait of Rohit Pankhaniya of Akshar Byonyks.",
+    suppliedBy: "Akshar Byonyks",
+    retrieved: "8 September 2026",
+    bio: "Dr. Rohit Pankhaniya is a board-certified nephrologist practicing in Port Charlotte, Florida.\n\nAfter completing his medical education in India, he pursued advanced training in the United States, completing an Internal Medicine residency at Wayne State University and a Nephrology fellowship at Henry Ford Hospital. He has been providing specialized kidney care in Florida since 2008.\n\nIn addition to his clinical work, Dr. Pankhaniya is involved in commercial real estate development and biotech startup investments.\n\nHis passion for nephrology is deeply personal. Early in life, he witnessed a close family member navigate the significant challenges of peritoneal dialysis in India. This experience inspired his involvement with Byonyks USA beginning in 2024. Working alongside Dr. Patel and the ABI team, he is committed to advancing innovative, life-saving treatments and making them accessible to patients in his home country.",
+  },
+  {
     // THE ONE BYONYKS RECORD THAT STAYS, on the client's explicit instruction
     // of 1 Sep 2026 — "Senthil Kumar stays" — given in the same breath as the
     // instruction to remove the other thirteen. Still transcribed from
