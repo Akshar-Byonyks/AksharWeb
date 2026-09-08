@@ -298,14 +298,37 @@ export function SiteSplash() {
             of the opening and the first frame of the page are now the same
             gold instead of two different palettes.
 
-            NEITHER VALUE IS A LITERAL. `--color-accent-gold` is the token; the
-            stroke is `currentColor` against a `text-white` wrapper, which is
-            the same white the rest of the site sets on ink and keeps
-            CLAUDE.md's no-hardcoded-hex rule intact. Deliberately NOT
-            `var(--color-background)`, which looks like the right token and is
-            a trap: globals.css carries a `.dark` block that redefines it to
-            near-black, so the keyline would disappear into the curtain the day
-            a theme switch is added.
+            WHITE IS NOW OUT OF THIS COMPONENT ENTIRELY — client instruction,
+            8 Sep 2026: the outline takes the same gold as the flood. Read the
+            two paragraphs above as history rather than as the current
+            arrangement; they are kept because the tradeoff they describe is
+            real and is what was traded away.
+
+            WHAT THAT COSTS, STATED PLAINLY. The draw phase is now gold on ink
+            at 5.39:1 instead of white at 16.9:1, which is the legibility
+            regression the round-swap above was made to fix. It clears WCAG AA
+            for large text (3:1) comfortably, and this is display-scale
+            decoration whose text lives on the wrapper's `aria-label`, so
+            nothing is gated on reading it — but the hairline is measurably
+            dimmer while it draws than it was.
+
+            AND THE FLOOD NO LONGER READS AS A COLOUR ARRIVING. White-to-gold
+            made the wipe legible as an event; gold-to-gold makes it a change
+            of WEIGHT only, outline to solid. That is a quieter opening, which
+            may well be the point. The handoff argument survives intact: the
+            curtain still lifts onto an ink hero carrying a solid
+            `bg-accent-gold` CTA, and now the whole opening is that gold rather
+            than only its last frame.
+
+            STILL NOT A LITERAL. `--color-accent-gold` is the token, passed
+            through `style` rather than a `stroke=` attribute because `var()`
+            does not resolve in SVG presentation attributes. The old stroke was
+            `currentColor` against a `text-white` wrapper; both are gone, since
+            `currentColor` was that class's only consumer. Note for anyone
+            reaching for a light keyline again: `var(--color-background)` looks
+            like the right token and is a trap — globals.css carries a `.dark`
+            block that redefines it to near-black, so the keyline would vanish
+            into the curtain the day a theme switch is added.
 
             A BRIGHTER GOLD WAS BUILT AND REJECTED. `#c79f35` at 6.79:1 —
             gold lifted for a dark ground exactly the way `--color-pending` and
@@ -327,8 +350,18 @@ export function SiteSplash() {
           // that is simply, instantly, complete. Remounting the subtree is
           // what starts the animations over.
           key={replay}
-          className="text-white"
-          strokeColor="currentColor"
+          // ONE COLOUR, BOTH PHASES — client instruction, 8 Sep 2026: the
+          // outline takes the same gold as the flood. The wrapper's
+          // `text-white` went with it; `currentColor` was its only consumer,
+          // and a class kept for a reference that no longer exists is how the
+          // next person concludes white still matters here.
+          //
+          // Both values are still tokens, not literals, and both still reach
+          // the SVG through `style` rather than a presentation attribute —
+          // `var()` does not resolve in `stroke=` or `fill=`, which is the
+          // rule that made `SplashWordmark` take paint as props in the first
+          // place.
+          strokeColor="var(--color-accent-gold)"
           fillColor="var(--color-accent-gold)"
           // OUTLINES, NOT TYPE, since 1 Sep 2026. The client asked for the
           // curtain's "Byonyks" to look like the real Byonyks mark; no font
