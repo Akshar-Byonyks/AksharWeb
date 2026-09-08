@@ -350,19 +350,23 @@ export function SiteSplash() {
           // that is simply, instantly, complete. Remounting the subtree is
           // what starts the animations over.
           key={replay}
-          // A BLACK KEYLINE, GOLD FLOOD — client instruction, 8 Sep 2026,
-          // superseding the all-gold arrangement of a few hours earlier. The
-          // wrapper's `text-white` went at that first change; `currentColor`
-          // was its only consumer, and a class kept for a reference that no
-          // longer exists is how the next person concludes white still
-          // matters here.
+          // A CREAM KEYLINE INTO A GOLD FLOOD — client-specified value,
+          // 8 Sep 2026. Third setting that day: white, then a black that
+          // measured 1.24:1 on this ground and all but vanished as it drew,
+          // then this.
           //
-          // BLACK ON THIS GROUND IS 1.24:1 AND THAT IS NOT A MISTAKE. The
-          // curtain paints `--color-ink` (#011a48), so the keyline is very
-          // nearly invisible while it draws and the lockup arrives with the
-          // gold rather than ahead of it. Measured, not estimated, and the
-          // token's own note in `globals.css` says the same thing — do not
-          // "fix" this by lightening the black.
+          // IT ENDS THE TRADE THE OTHER TWO WERE MAKING. Against
+          // `--color-ink`, `--color-splash-keyline` is 15.16:1 at hue 49° and
+          // the gold it floods into is 5.39:1 at 44°. So the draw keeps
+          // essentially all of white's legibility — it is a moving hairline
+          // and needs contrast most — while the two colours sit 5° apart and
+          // read as one warm family. The wipe becomes a shift of value within
+          // a hue rather than white handing over to gold.
+          //
+          // The wrapper's `text-white` went when the all-gold version landed
+          // earlier today; `currentColor` was its only consumer. Do not bring
+          // it back to get a light keyline — that is what this token is, and
+          // its note in `globals.css` carries the measurements.
           //
           // Both values are still tokens, not literals, and both still reach
           // the SVG through `style` rather than a presentation attribute —
