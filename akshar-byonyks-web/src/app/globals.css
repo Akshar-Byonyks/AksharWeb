@@ -17,6 +17,27 @@
      non-text graphics only, never body text. */
   --color-accent-gold: #b08d2f;
 
+  /* The opening curtain's keyline, and the only place on this site that spends
+     a true black. Client instruction, 8 Sep 2026.
+
+     IT IS A TOKEN RATHER THAN A LITERAL only because CLAUDE.md admits no hex
+     in components; it is NOT a new accent and must not be treated as one. The
+     Accent Ration Rule governs hues that carry meaning, and this carries none
+     — it is a neutral outline on one decoration.
+
+     MEASURED, AND THE NUMBER IS THE POINT: 1.24:1 against --color-ink, the
+     ground the curtain paints. That is not a contrast failure to be fixed by
+     lightening it, it is what black on near-black is. The wordmark's draw
+     phase is therefore effectively invisible and the lockup appears only as
+     the gold flood crosses it. Nothing is gated on reading it — the text is on
+     the curtain's aria-label — so this is an aesthetic choice, not an
+     accessibility one, and it is recorded here so the next person does not
+     "fix" it by inventing a lighter black.
+
+     Do not reuse this anywhere else. On any lighter ground the site already
+     has --foreground, and on ink it has white. */
+  --color-splash-keyline: #000000;
+
   /* DEVIATION from spec 6, "blue-plus-one, not blue-plus-two": two more
      named accent roles, added 20 Aug 2026 per explicit user request to
      colorize Home, with explicit sign-off to go beyond the spec. Full

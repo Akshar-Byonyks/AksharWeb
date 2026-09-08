@@ -350,18 +350,26 @@ export function SiteSplash() {
           // that is simply, instantly, complete. Remounting the subtree is
           // what starts the animations over.
           key={replay}
-          // ONE COLOUR, BOTH PHASES — client instruction, 8 Sep 2026: the
-          // outline takes the same gold as the flood. The wrapper's
-          // `text-white` went with it; `currentColor` was its only consumer,
-          // and a class kept for a reference that no longer exists is how the
-          // next person concludes white still matters here.
+          // A BLACK KEYLINE, GOLD FLOOD — client instruction, 8 Sep 2026,
+          // superseding the all-gold arrangement of a few hours earlier. The
+          // wrapper's `text-white` went at that first change; `currentColor`
+          // was its only consumer, and a class kept for a reference that no
+          // longer exists is how the next person concludes white still
+          // matters here.
+          //
+          // BLACK ON THIS GROUND IS 1.24:1 AND THAT IS NOT A MISTAKE. The
+          // curtain paints `--color-ink` (#011a48), so the keyline is very
+          // nearly invisible while it draws and the lockup arrives with the
+          // gold rather than ahead of it. Measured, not estimated, and the
+          // token's own note in `globals.css` says the same thing — do not
+          // "fix" this by lightening the black.
           //
           // Both values are still tokens, not literals, and both still reach
           // the SVG through `style` rather than a presentation attribute —
           // `var()` does not resolve in `stroke=` or `fill=`, which is the
           // rule that made `SplashWordmark` take paint as props in the first
           // place.
-          strokeColor="var(--color-accent-gold)"
+          strokeColor="var(--color-splash-keyline)"
           fillColor="var(--color-accent-gold)"
           // OUTLINES, NOT TYPE, since 1 Sep 2026. The client asked for the
           // curtain's "Byonyks" to look like the real Byonyks mark; no font
