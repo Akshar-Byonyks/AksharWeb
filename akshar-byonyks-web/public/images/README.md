@@ -530,12 +530,22 @@ question that governs everything in the section above.
 - **Edits:** resized to 900×1125 with a `cover` fit anchored **north**, flattened onto white, JPEG q88 (mozjpeg). That is the same normalisation the eleven original transcribed portraits had. **No retouching, no backdrop replacement, no reframing beyond the crop** — the original is near-square (0.964) and the site's frame is 4:5, so the crop is spent on the left and right margins, which on a centred headshot is margin only.
 - **Why north-anchored:** the grid renders portraits with `object-top`, so the crop and the frame agree about where the head is. A centred crop on a portrait takes the top of the head off — the reason that rule exists is recorded on `ExecutivePortrait`.
 
-### leadership/sahil.jpg
+### leadership/sahil-pankhaniya.jpg
 
+- **Renamed from `sahil.jpg` on 8 Sep 2026**, when the client's officer schedule supplied his surname. Every other portrait in this directory is named for a full name; this was the one exception, and it was only an exception because the biography that arrived with it gave no surname. The file's bytes are unchanged — this is a rename, not a re-export.
 - **Source:** supplied by the client as `Sahil Heeadshot.jpg`, 2656×3984, 1 Sep 2026.
-- **What it is:** a headshot of Sahil in a tan sweater over an open-collared white shirt, with an out-of-focus city skyline behind him.
+- **What it is:** a headshot of Sahil Pankhaniya in a tan sweater over an open-collared white shirt, with an out-of-focus city skyline behind him.
 - **Edits:** identical treatment — 900×1125, `cover` anchored north, q88. The crop does real work on this one: the original is a three-quarter-length shot at 0.667, so north-anchoring keeps the head where the frame expects it and spends the crop on the bottom of the frame rather than the top of his head.
 - **The backdrop is a skyline, not a studio ground,** and that is a §9.5 note rather than a defect to fix here. Spec §9.5 asks for "same backdrop, crop and lighting" across the set; all four portraits now share a crop and none of them shares a backdrop — brown studio, white, white, skyline. **The only honest fix is a single shoot.** Editing a real person's photograph to swap the background behind them was tried once on this project, on Dr. Patel's portrait, and the client reversed it the same day (29 Aug 2026).
+
+### leadership/rohit-pankhaniya.jpg
+
+- **Source:** supplied by the client as `Rohit Headshot.png`, 1179×1186, sRGB, no EXIF, no ICC profile, 8 Sep 2026.
+- **What it is:** a head-and-shoulders portrait of Dr. Rohit Pankhaniya — grey-flecked hair and beard, dark-framed glasses, an open-collared white shirt — against a plain grey studio-style backdrop.
+- **Edits:** identical treatment to the other four — 900×1125, `cover` anchored north, flattened onto white, JPEG q88 (mozjpeg). 83KB. **No retouching, no backdrop replacement, no reframing beyond the crop.** The original is near-square at 0.994 against the site's 4:5 frame, the same situation as Dr. Shah's, so the crop is spent on the left and right margins — checked against the rendered card before shipping, and no part of the head is lost.
+- **⚠️ ORIGIN UNCONFIRMED, AND THIS IS A LAUNCH GATE RATHER THAN A NOTE.** Several properties of the file are consistent with an AI-generated or heavily AI-retouched likeness rather than a camera photograph: it arrived as a **PNG** where a camera or a phone produces JPEG, it carries **no EXIF whatsoever** (no camera, no date, no exposure), it is **72dpi and near-square**, and the rendering of the skin, the beard edges and the background falloff has the smoothness characteristic of generated imagery. **None of these is proof on its own** — exporting through an editor, saving from LinkedIn, or a screenshot all strip EXIF and can produce a square PNG — which is exactly why this needs the client to say, not this project to decide.
+- **Why it matters here specifically.** CLAUDE.md's standing rule is "never caption a render as a photograph," and this is a named, board-certified physician on the leadership page of a medical-device company. A generated likeness presented as a portrait is a different kind of claim from a stylised illustration elsewhere on the site. The `portraitAlt` in `leadership.ts` has been written to describe what is in the frame **without asserting it is a photograph**, which is the honest position until the client answers. If they confirm it is generated, both that alt text and this entry need the stronger wording, and the client needs to decide whether it ships at all.
+- **The backdrop is a fifth different ground** — brown studio, white, white, skyline, and now plain grey. Spec §9.5's "same backdrop, crop and lighting" remains unmet across the set, and remains unfixable by editing photographs of real people. One shoot closes it.
 
 ### brand/ — three assets, all cut from one supplied file
 

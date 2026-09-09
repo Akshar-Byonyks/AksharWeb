@@ -33,6 +33,22 @@ const nextConfig: NextConfig = {
         destination: "/products/the-x1-cycler",
         permanent: true,
       },
+      {
+        // Sahil Pankhaniya's profile, which shipped at `/sahil` on 1 Sep 2026
+        // because the supplied biography gave no surname. The client's officer
+        // schedule of 8 Sep supplied one — "President and Chief Executive
+        // Officer: Sahil Pankhaniya" — and the slug follows the name, as every
+        // other profile on the roster does.
+        //
+        // THE OLD PATH WAS PUBLISHED, which is the whole reason this entry
+        // exists rather than a rename on its own. It has been live and in the
+        // submitted sitemap since 1 Sep, so dropping it would 404 the chief
+        // executive's profile for anyone holding the link — and it is exactly
+        // the URL most likely to have been sent to an investor or a partner.
+        source: "/about-us/leadership/sahil",
+        destination: "/about-us/leadership/sahil-pankhaniya",
+        permanent: true,
+      },
     ];
   },
 };

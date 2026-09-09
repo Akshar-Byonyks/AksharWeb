@@ -41,21 +41,27 @@
 // not optional metadata. Do not remove it without a written client decision
 // recorded in deviations.md.
 //
-// ─── TWO THINGS THAT NEED THE CLIENT BEFORE LAUNCH ──────────────────────────
+// ─── ONE THING THAT NEEDS THE CLIENT BEFORE LAUNCH ──────────────────────────
 //
-// (Portraits for Dr. Shah and Sahil were the third. Both were supplied on
-// 1 Sep 2026, hours after these records first shipped with `portraitPending`,
-// and both are now published. `portraitPending` stays on the type because the
-// next supplied record may need it.)
+// (Portraits for Dr. Shah and Sahil were one of the original three. Both were
+// supplied on 1 Sep 2026, hours after those records first shipped with
+// `portraitPending`, and both are now published. `portraitPending` stays on
+// the type because the next supplied record may need it.)
 //
-// 1. **NO JOB TITLE WAS SUPPLIED FOR DR. SHAH OR FOR SAHIL.** `role` is
-//    optional for exactly this reason and both records omit it, so the page
-//    prints "Title to be confirmed" rather than a title this project invented
-//    for a real person. Two titles could have been read out of the supplied
-//    text — "nephrologist" for Dr. Shah, and nothing at all for Sahil — and
-//    guessing the second would have been fabrication. One line each closes it.
-//    **This is now the only gap on two otherwise complete cards**, which makes
-//    it more visible than it was, not less.
+// 1. **JOB TITLES — CLOSED, 8 Sep 2026.** Every card on this roster now names
+//    an office. The client supplied the officer schedule and confirmed it is
+//    current, which answered in one line what this file had spent a week
+//    refusing to guess: Sahil Pankhaniya is President and Chief Executive
+//    Officer, Dr. Shah is Secretary, Dr. Rohit Pankhaniya is Assistant
+//    Secretary, and Dr. Patel holds two offices — Vice President, and Chief
+//    Financial Officer and Treasurer.
+//
+//    Kept here rather than deleted, because the shape of the fix is the point:
+//    "nephrologist" was sitting in Dr. Shah's own biography the whole time and
+//    would have been wrong. He is Secretary. A title read out of a description
+//    is a guess that happens to be well-informed, and this is what it would
+//    have cost. `role` stays optional for the next record that arrives without
+//    one.
 //
 // 2. **DR. SHAH'S BIOGRAPHY IS ABOUT BYONYKS, AND HIS CARD SAYS AKSHAR
 //    BYONYKS.** This is the one thing in this file that could mislead a
@@ -66,9 +72,15 @@
 //    is followed; what this project cannot do is silently rewrite a real
 //    person's biography to say "Akshar Byonyks" where he said "Byonyks", so
 //    the text is carried exactly as given. A reader who opens the profile
-//    therefore meets an Akshar Byonyks label above a Byonyks biography. Either
-//    the title clarifies it (see 1) or the biography needs a line about his
-//    Akshar Byonyks role — the client's call, and their words either way.
+//    therefore meets an Akshar Byonyks label above a Byonyks biography.
+//
+//    **PARTLY ANSWERED, 8 Sep 2026.** His card now reads "Secretary" under
+//    "Akshar Byonyks", which is the clarification option 1 anticipated: a
+//    named office at this company is a much harder fact than an organisation
+//    label, and a reader meeting it above a Byonyks biography can now see that
+//    both are true rather than that one contradicts the other. What is still
+//    open is the biography itself, which describes Byonyks' mission and not
+//    his work here. That needs a line in his own words, not this project's.
 //
 // ─── THE CONTRACT ───────────────────────────────────────────────────────────
 //
@@ -164,7 +176,17 @@ export const executives: readonly Executive[] = [
     slug: "vishnu-patel",
     name: "Vishnu Patel",
     postNominals: "MD",
-    role: "Vice President",
+    // TWO OFFICES, ONE PERSON, AND THE SEMICOLON IS DOING REAL WORK. The
+    // client's officer schedule (8 Sep 2026) lists him twice: "Vice President:
+    // Vishnu Patel" and "Chief Financial Officer and Treasurer: Vishnu Patel".
+    // Client instruction was to carry both, combined.
+    //
+    // The separator is a semicolon rather than a comma because the second
+    // office already contains an "and" — "Vice President, Chief Financial
+    // Officer and Treasurer" reads as one three-part title held by one person,
+    // which is a different claim from two distinct offices held concurrently.
+    // The semicolon is the only punctuation here that keeps them countable.
+    role: "Vice President; Chief Financial Officer and Treasurer",
     organisation: "Akshar Byonyks",
     // Supplied by the client 29 Aug 2026, separately from the biography.
     //
@@ -199,6 +221,9 @@ export const executives: readonly Executive[] = [
     slug: "ronak-shah",
     name: "Ronak C. Shah",
     postNominals: "MD",
+    // From the client's officer schedule, 8 Sep 2026, confirmed current. This
+    // closes one of the two title gaps this file has carried since 1 Sep.
+    role: "Secretary",
     organisation: "Akshar Byonyks",
     // Supplied by the client, 1 Sep 2026, hours after the record shipped with
     // `portraitPending`. Normalised to the set's 900×1125 — a `cover` crop
@@ -227,17 +252,31 @@ export const executives: readonly Executive[] = [
     // SOMEBODY ELSE ABOUT ITS SUBJECT, and the profile's attribution line
     // therefore matters more here than anywhere: it says the words were
     // supplied by Akshar Byonyks rather than written by him.
-    slug: "sahil",
-    name: "Sahil",
+    // A SURNAME AND A SLUG CHANGE, from the client's officer schedule of
+    // 8 Sep 2026: "President and Chief Executive Officer: Sahil Pankhaniya."
+    // He had shipped as "Sahil" alone since 1 Sep because that is all the
+    // supplied biography gave.
+    //
+    // THE OLD SLUG IS REDIRECTED, NOT ABANDONED. `/about-us/leadership/sahil`
+    // was live and in the published sitemap, so changing it silently would
+    // 404 anything already linking to the chief executive's profile. The
+    // permanent redirect is in `next.config.ts`, beside the two the site
+    // already carries for retired paths.
+    //
+    // The portrait file was renamed with him — every other portrait in this
+    // set is named for a full name, and `sahil.jpg` was the one exception.
+    slug: "sahil-pankhaniya",
+    name: "Sahil Pankhaniya",
+    role: "President and Chief Executive Officer",
     organisation: "Akshar Byonyks",
     // Supplied by the client, 1 Sep 2026. Same normalisation as Dr. Shah's —
     // 900×1125, `cover` anchored north, q88 — applied to a 2656×3984 original,
     // so the crop is doing real work here: north-anchoring keeps the head
     // where the grid's `object-top` frame expects it and spends the crop on
     // the bottom of a three-quarter-length shot.
-    portrait: "/images/leadership/sahil.jpg",
+    portrait: "/images/leadership/sahil-pankhaniya.jpg",
     portraitAlt:
-      "Portrait of Sahil, in a tan sweater over an open-collared shirt, with a city skyline behind him.",
+      "Portrait of Sahil Pankhaniya, in a tan sweater over an open-collared shirt, with a city skyline behind him.",
     suppliedBy: "Akshar Byonyks",
     retrieved: "1 September 2026",
     bio: "Sahil is a former banker inspired to help expand access to effective and affordable dialysis treatments. Growing up around dialysis patients and clinicians, it was clear to him that providers were doing their best with outdated tools. Now, he is committed to offering a modern PD solution to the Indian healthcare provider and patient.",
@@ -246,25 +285,22 @@ export const executives: readonly Executive[] = [
     // Supplied by the client, 8 Sep 2026, with the instruction to treat the
     // record as Akshar Byonyks personnel. Carried verbatim.
     //
-    // NO POST-NOMINALS, AND THAT IS A DECISION RATHER THAN AN OMISSION. Both
-    // other physicians on this roster carry "MD". This biography says he
-    // "complet[ed] his medical education in India" and then did a US residency
-    // and fellowship — and an Indian medical degree is an MBBS, not an MD. So
-    // the letters that would make his card match his colleagues' are the ones
-    // most likely to be wrong for him specifically. A qualification is not a
-    // formatting detail to be made consistent; it is a claim about a named
-    // physician on a medical-device site. Asked, not guessed.
+    // "MD" IS THE CLIENT'S ANSWER, 8 Sep 2026, not this project's inference.
+    // The record shipped hours earlier with no post-nominals and a note
+    // explaining why: the biography says he completed his medical education in
+    // India, an Indian medical degree is an MBBS rather than an MD, and the
+    // letters that would have made his card match his colleagues' were the
+    // ones most likely to be wrong for him specifically. A qualification on a
+    // named physician is a claim, not a formatting detail. The question was
+    // asked and answered, which is the only way it could have been settled.
     //
-    // The visible cost is real and is the reason this is written down: his
-    // card reads "Rohit Pankhaniya" beside "Vishnu Patel, MD" and "Ronak C.
-    // Shah, MD", which a reader could take as a difference in credentials
-    // rather than in what was supplied. One line from the client closes it.
-    //
-    // NO ROLE, following the precedent set for Dr. Shah and Sahil on 1 Sep
-    // 2026: "board-certified nephrologist practicing in Port Charlotte,
-    // Florida" describes his clinical practice, not his job at this company,
-    // and reading a title out of a description is how a leadership page ends
-    // up asserting something nobody said. The page prints the pending marker.
+    // THE ROLE IS THE CLIENT'S, from the officer schedule of 8 Sep 2026 and
+    // confirmed current. It shipped hours earlier with no title, because the
+    // only title available was "board-certified nephrologist practicing in
+    // Port Charlotte, Florida" — which describes his clinical practice, not
+    // his job at this company, and reading a title out of a description is how
+    // a leadership page ends up asserting something nobody said. Asked
+    // instead, and this is the answer.
     //
     // `namesALocation` is deliberately NOT set. It exists for the locations
     // spec F-1's attribution decision keeps off this site; Florida, India and
@@ -272,15 +308,29 @@ export const executives: readonly Executive[] = [
     // flag of the meaning it was created to carry.
     slug: "rohit-pankhaniya",
     name: "Rohit Pankhaniya",
+    postNominals: "MD",
+    role: "Assistant Secretary",
     organisation: "Akshar Byonyks",
-    // PLACEHOLDER ALT, and it must not ship as one. The pending branch of
-    // `ExecutivePortrait` renders a dashed marker and never reads this string,
-    // so it is unused today — but the moment a photograph is added this
-    // becomes the alt text on a real image of a real person, and alt text
-    // describes what is actually in the frame. Replace it when the file
-    // arrives; do not let a portrait land on top of a guess.
-    portraitPending: true,
-    portraitAlt: "Portrait of Rohit Pankhaniya of Akshar Byonyks.",
+    // Supplied by the client, 8 Sep 2026, as `Rohit Headshot.png` — 1179×1186,
+    // sRGB, no EXIF. Normalised the same way the other four were: 900×1125,
+    // `cover` anchored north, flattened on white, q88 mozjpeg.
+    //
+    // THE CROP COSTS NOTHING HERE, which is worth recording because it does
+    // not on every portrait. The source is 0.994 against the grid's 4:5, so
+    // `cover` takes the left and right margins rather than the top of a head —
+    // the same situation Dr. Shah's near-square original was in. Checked
+    // against the rendered card frame before shipping, not assumed.
+    //
+    // ITS ORIGIN IS A QUESTION THE CLIENT STILL HAS TO ANSWER. See the entry
+    // in public/images/README.md: this file has several characteristics of a
+    // generated or heavily AI-retouched likeness rather than a photograph, and
+    // CLAUDE.md forbids captioning a render as a photograph. The alt below
+    // therefore describes what is in the frame without asserting it is a
+    // photograph. If the client confirms it is generated, `portraitAlt` and
+    // the README entry both need the stronger wording.
+    portrait: "/images/leadership/rohit-pankhaniya.jpg",
+    portraitAlt:
+      "Rohit Pankhaniya, MD, in an open-collared white shirt and dark-framed glasses, against a plain grey backdrop.",
     suppliedBy: "Akshar Byonyks",
     retrieved: "8 September 2026",
     bio: "Dr. Rohit Pankhaniya is a board-certified nephrologist practicing in Port Charlotte, Florida.\n\nAfter completing his medical education in India, he pursued advanced training in the United States, completing an Internal Medicine residency at Wayne State University and a Nephrology fellowship at Henry Ford Hospital. He has been providing specialized kidney care in Florida since 2008.\n\nIn addition to his clinical work, Dr. Pankhaniya is involved in commercial real estate development and biotech startup investments.\n\nHis passion for nephrology is deeply personal. Early in life, he witnessed a close family member navigate the significant challenges of peritoneal dialysis in India. This experience inspired his involvement with Byonyks USA beginning in 2024. Working alongside Dr. Patel and the ABI team, he is committed to advancing innovative, life-saving treatments and making them accessible to patients in his home country.",
