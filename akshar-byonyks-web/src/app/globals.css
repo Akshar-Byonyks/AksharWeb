@@ -231,6 +231,38 @@
     @apply font-sans;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   TAP TARGET (10 Sep 2026, the mobile pass).
+
+   A link set in running text is exempt from the 44px touch-target floor —
+   WCAG 2.5.8 says so explicitly, and enlarging one would tear a hole in the
+   paragraph around it. A link standing on its own is not exempt, and the
+   mobile sweep found five of them at 19-22px tall: the email and the phone
+   number in `/contact`'s "Reach us directly" list, the phone number on each
+   card in the locations register, the contact address on the Hindi home page,
+   and the "read this in English" switch at the top of every Hindi page. Every
+   one of them is a control a reader on a phone reaches for — one is
+   tap-to-call, on a page whose own comment says "this audience reads it on a
+   phone", and two belong to the Hindi track, which exists for the reader
+   PRODUCT.md places on a phone in the first place.
+
+   THE NEGATIVE MARGIN IS THE POINT. Padding a 19px link up to 44 would move
+   everything under it by 25px and re-space four layouts that are correct as
+   drawn. `margin-block: -0.75rem` gives the 24px back to the flow, so the hit
+   area grows and the page does not move: measured, these links occupy the same
+   line box they did before and answer a 44px finger.
+
+   It is a utility rather than four copies of the incantation because the fifth
+   use is coming, and because a bare `min-h-11` without the margin — the
+   obvious thing to write at the call site — silently re-spaces the block.
+   --------------------------------------------------------------------------- */
+@utility tap-target {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-block: -0.75rem;
+}
 /* ---------------------------------------------------------------------------
    Browser surfaces. The parts of the page nobody draws still ship with a
    default that belongs to no design system, and on a navy-and-white site the

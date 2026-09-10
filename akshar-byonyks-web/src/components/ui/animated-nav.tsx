@@ -67,6 +67,14 @@ const COLLAPSE_SCROLL_THRESHOLD = 80;
 /** Just past the reopening spring, after which the capsule stops clipping. */
 const CLIP_FAILSAFE_MS = 1500;
 
+/**
+ * WHERE THE CAPSULE STARTS. Below this the header is a bar, not a pill — see
+ * the block comment on `isCapsuleWidth` for why, and keep this string equal to
+ * Tailwind's `lg` (64rem), because the two describe the same boundary and the
+ * appearance half of this change is expressed entirely in `lg:` classes.
+ */
+const CAPSULE_MEDIA = "(min-width: 64rem)";
+
 // THE LOGO SLOT, FILLED 1 SEP 2026. The client supplied the Akshar Byonyks
 // lockup; this slot was built on 31 Aug reserving its space so that nothing
 // would reflow on the day it arrived, and nothing did.
@@ -212,6 +220,57 @@ export function AnimatedNav({ items = primaryNav }: { items?: NavItem[] }) {
 
   const shellRef = React.useRef<HTMLDivElement>(null);
 
+  // THE CAPSULE IS A DESKTOP OBJECT, AND BELOW `lg` THIS IS A BAR (10 Sep
+  // 2026). Reported as the nav "not being fully visible on mobile", and the
+  // measurement found something worse than a clipped control: the pill was
+  // sitting ON TOP OF THE PROSE. It is `sticky top-0` inside a transparent
+  // header, so on a phone — where there is no margin either side of the text
+  // column for it to float over — every paragraph scrolls underneath a
+  // translucent white capsule parked across the middle of the measure. On
+  // `/about-us` at 390px it swallowed three consecutive words of a sentence
+  // set on the ink section, and a sweep of fourteen routes at 390px and 768px
+  // found the collapsed dot alone overlapping running text on eleven of them,
+  // by up to 47px — whole words gone behind an opaque circle.
+  //
+  // Two things follow from that, and they are the whole of this change.
+  //
+  // FIRST, THE CHROME. Below `lg` the header stops being a floating object and
+  // becomes what a phone expects: full-bleed, opaque, edge to edge, with the
+  // controls on the edges where thumbs are. Nothing can pass under it, because
+  // it is not transparent and the document already reserves its height — the
+  // component has been in flow rather than `fixed` since it was written, and
+  // that is what makes this a class change rather than twenty route templates.
+  // All of that half is expressed in `lg:` classes, so it is correct in the
+  // very first paint with no measurement and nothing to hydrate.
+  //
+  // SECOND, THE COLLAPSE. It does not run here at all. Shrinking seven links
+  // and a CTA to a dot is a real saving on a desktop bar; below `lg` those
+  // links are already inside the drawer and the bar holds three controls, so
+  // the collapse buys no space, costs a tap to undo, and produces exactly the
+  // floating dot that was landing on the text. PRODUCT.md's Priority-2 reader
+  // is on a phone, on a slow connection, often under stress — a header that
+  // hides itself and has to be summoned back is the wrong trade for them.
+  //
+  // Read at event time rather than kept in state: a media query resolved
+  // during render is a hydration mismatch, and this one does not need to be a
+  // dependency of anything. The listener below is only for the resize case.
+  const isCapsuleWidth = () =>
+    typeof window !== "undefined" &&
+    window.matchMedia(CAPSULE_MEDIA).matches;
+
+  // Crossing down out of capsule territory with the bar collapsed would strand
+  // a dot on a viewport whose bar is meant to be permanent, so the boundary
+  // itself reopens it.
+  React.useEffect(() => {
+    const mq = window.matchMedia(CAPSULE_MEDIA);
+    const sync = () => {
+      if (!mq.matches) setExpanded(true);
+    };
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
   const { scrollY } = useScroll();
   // THE TURNING POINT OF THE CURRENT GESTURE: the shallowest scroll position
   // reached since the bar opened, or the deepest reached since it closed. Both
@@ -238,6 +297,8 @@ export function AnimatedNav({ items = primaryNav }: { items?: NavItem[] }) {
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     if (reduceMotion) return;
+    // Below `lg` the bar is permanent — see `isCapsuleWidth`.
+    if (!isCapsuleWidth()) return;
 
     if (isExpanded) {
       // Open: the anchor rides the shallowest point, so the distance below it
@@ -381,13 +442,26 @@ export function AnimatedNav({ items = primaryNav }: { items?: NavItem[] }) {
     // mid-cycle.
     <header
       className={cn(
-        "sticky top-0 z-50 flex px-4 py-3",
+        "sticky top-0 z-50 flex",
+        // BELOW `lg` THE CHROME LIVES HERE, NOT ON THE PILL. Full-bleed and
+        // opaque, so that no prose is ever read through it — which is the
+        // whole defect this fixes. At `lg` the header goes back to being an
+        // invisible positioner and the capsule carries its own surface.
+        //
+        // `/95` rather than a flat colour so the bar still admits that
+        // something is moving underneath it, and `backdrop-blur` behind that
+        // for the browsers that support it. Neither is transparency in the
+        // sense that broke this: at 95% nothing behind it is legible as text.
+        "border-b border-line bg-background/95 backdrop-blur",
+        "supports-backdrop-filter:bg-background/85",
+        "lg:border-0 lg:bg-transparent lg:px-4 lg:py-3 lg:backdrop-blur-none",
+        "lg:supports-backdrop-filter:bg-transparent",
         isExpanded ? "justify-center" : "justify-end",
       )}
     >
       <div
         ref={shellRef}
-        className="relative"
+        className="relative flex w-full lg:block lg:w-auto"
         onMouseLeave={() => setOpenHref(null)}
         onBlur={handleBlur}
         onKeyDown={(event) => {
@@ -419,7 +493,17 @@ export function AnimatedNav({ items = primaryNav }: { items?: NavItem[] }) {
             // reflow means the bar grows downward rather than the page growing
             // outward. At normal text size the row fits and the pill measures
             // exactly the 48px it always did, so nothing moves.
-            "relative flex max-w-full items-center justify-center rounded-full border border-line bg-background/80 shadow-lg backdrop-blur supports-backdrop-filter:bg-background/70",
+            "relative flex max-w-full items-center",
+            // THE PILL IS THE `lg` FORM. Below it this is a flat row that
+            // fills the header: `grow` rather than `w-full`, because the
+            // variants set an inline `width` and an inline width beats a
+            // class every time — flex-grow is the one lever that still works
+            // alongside it. The surface, the border and the shadow all move up
+            // to the <header>, so what is left here is the row itself.
+            "grow justify-between rounded-none border-0 bg-transparent px-1 shadow-none backdrop-blur-none",
+            "supports-backdrop-filter:bg-transparent",
+            "lg:grow-0 lg:justify-center lg:rounded-full lg:border lg:border-line lg:bg-background/80 lg:px-0 lg:shadow-lg lg:backdrop-blur",
+            "lg:supports-backdrop-filter:bg-background/70",
             // WRAPPING IS FOR THE BAR THAT IS SETTLED OPEN, and the height is
             // pinned while it is moving. Three bugs met here; this is the
             // combination that answers all of them (31 Aug 2026).
@@ -449,38 +533,93 @@ export function AnimatedNav({ items = primaryNav }: { items?: NavItem[] }) {
             // The height pin below is the third leg: while clipped the box is a
             // fixed 3rem, so nothing that happens to the contents inside it can
             // move the box and give the layout animation a delta to find.
+            // THE WRAP STAYS, AND THE ROW WAS MADE TO FIT INSTEAD.
+            //
+            // `flex-nowrap` was tried below `lg` on the way to this, so the
+            // wordmark's `truncate` could fire — `flex-wrap` wraps BEFORE it
+            // shrinks, so with wrapping on the ellipsis can never happen. It
+            // bought a tidy 320px bar and broke the thing wrapping is for:
+            // measured at 320px with 200% text, the row could not fit, could
+            // not wrap, and pushed the document to 360px — a WCAG 1.4.10
+            // reflow failure, which is exactly the defect this component's
+            // `min-h`/`flex-wrap` pair was written to prevent.
+            //
+            // So wrapping is back, and the 320px row was made narrower rather
+            // than made to stay on one line by force: the horizontal padding
+            // on the bar, the home link and the language switch is tightened
+            // below `lg`, which is enough to keep 320px a single row at
+            // ordinary text size. At 200% it wraps and the bar grows
+            // downward, which is the correct outcome and the one the capsule
+            // has always had.
             !isClipped ? "flex-wrap" : "flex-nowrap",
             // On while collapsed or moving, off once settled open — the only
             // state in which a section panel can be showing. `h-12` rides the
             // same flag: see the note above for why the height must not move
             // while the width does. `min-h-12` takes over once settled, so the
             // bar is free to grow downward at large text sizes.
-            isClipped ? "h-12 overflow-hidden" : "min-h-12",
+            // `min-h-14` below `lg`: 56px is the height a bar wants when it is
+            // the real header rather than a floating object, and it is what
+            // gives the three controls room to be 44px targets. The clipped
+            // branch is a capsule state and cannot be reached below `lg`,
+            // where the bar never collapses.
+            isClipped ? "h-12 overflow-hidden" : "min-h-14 lg:min-h-12",
           )}
         >
           <motion.div
             variants={logoVariants}
-            className="flex shrink-0 items-center pl-1.5"
+            // `min-w-0` and shrinkable below `lg` so the wordmark's `truncate`
+            // has something to act on — a `shrink-0` ancestor makes an
+            // ellipsis unreachable and hands the overflow to the document
+            // instead. At `lg` the wordmark is `sr-only` and out of flow, so
+            // the slot goes back to being rigid.
+            className="flex min-w-0 items-center pl-1 lg:shrink-0 lg:pl-1.5"
           >
             <Link
               href="/"
               onClick={handleLogoClick}
               aria-current={pathname === "/" ? "page" : undefined}
               className={cn(
-                "flex items-center rounded-full px-3 py-1.5 text-sm font-medium whitespace-nowrap text-foreground transition-colors hover:bg-surface-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                "flex min-w-0 items-center rounded-full px-1.5 py-1.5 text-sm font-medium whitespace-nowrap text-foreground transition-colors hover:bg-surface-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring lg:px-3",
                 pathname === "/" && "bg-surface-2 font-semibold text-ink",
               )}
             >
               {LOGO ? (
-                <Image
-                  src={LOGO.src}
-                  alt={LOGO.alt}
-                  width={LOGO.width}
-                  height={LOGO.height}
-                  priority
-                  className="w-auto"
-                  style={{ height: LOGO_SLOT_HEIGHT }}
-                />
+                <>
+                  {/* `alt=""` NOW, AND THE NAME IS THE <span> BESIDE IT. The
+                      emblem carried the link's accessible name while it was
+                      the only thing in the slot; below `lg` the company name
+                      is now set beside it in type, and two of them would have
+                      the home link announce "Akshar Byonyks Akshar Byonyks".
+                      `alt` cannot vary by breakpoint, so the text carries the
+                      name at every width and the image is decorative at every
+                      width — the span is merely sighted below `lg` and
+                      screen-reader-only at `lg`, where the capsule needs the
+                      space for seven links and the mark speaks for itself. */}
+                  <Image
+                    src={LOGO.src}
+                    alt=""
+                    width={LOGO.width}
+                    height={LOGO.height}
+                    priority
+                    className="w-auto shrink-0"
+                    style={{ height: LOGO_SLOT_HEIGHT }}
+                  />
+                  {/* THE MOBILE BAR HAD NO NAME ON IT (10 Sep 2026). Below
+                      `lg` the whole of the site's chrome was an emblem, a
+                      language switch and a hamburger: nowhere did it say whose
+                      site this is, and the seven links that answer it on
+                      desktop are behind the drawer. On a 34px mark that is a
+                      globe with a monogram over it, that is not identification
+                      — which is the other half of "not fully visible".
+
+                      `truncate` with `min-w-0` is the 320px behaviour: the
+                      name gives up characters before the row gives up its
+                      layout, so reflow at the WCAG 1.4.10 width degrades to an
+                      ellipsis instead of an overflow. */}
+                  <span className="ml-2 min-w-0 truncate text-base font-bold tracking-tight text-ink not-sr-only lg:sr-only">
+                    {LOGO.alt}
+                  </span>
+                </>
               ) : (
                 // Reads "Home" until the logo PNG lands. Holding the slot's
                 // exact height means the bar does not resize when the image
@@ -581,7 +720,11 @@ export function AnimatedNav({ items = primaryNav }: { items?: NavItem[] }) {
             <Link
               href="/hi"
               lang="hi"
-              className="rounded-full px-2.5 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-surface-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              // `min-h-11` below `lg`: 44px, the touch-target floor, which a
+              // 14px line in `py-1.5` misses by ten pixels. At `lg` the target
+              // is a pointer's and the capsule is 48px tall, so the padding
+              // that always sized it stands.
+              className="flex min-h-11 items-center rounded-full px-1.5 text-sm font-medium text-foreground transition-colors hover:bg-surface-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring lg:min-h-0 lg:py-1.5"
             >
               हिन्दी
             </Link>

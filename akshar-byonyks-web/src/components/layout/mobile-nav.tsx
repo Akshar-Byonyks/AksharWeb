@@ -21,11 +21,14 @@ export function MobileNav() {
         type="button"
         variant="ghost"
         size="icon"
-        className="lg:hidden"
+        // `size-11` (44px) rather than the 36px `size-icon` default: this is
+        // the only way into the site's navigation on a phone, and it was the
+        // smallest target in the bar.
+        className="size-11 lg:hidden"
         aria-label="Open menu"
         onClick={() => dialogRef.current?.showModal()}
       >
-        <Menu aria-hidden="true" />
+        <Menu aria-hidden="true" className="size-5" />
       </Button>
 
       <dialog
@@ -33,16 +36,28 @@ export function MobileNav() {
         aria-label="Site menu"
         className="m-0 h-dvh max-h-none w-dvw max-w-none border-0 bg-background p-0 backdrop:bg-ink/40 open:flex open:flex-col"
       >
-        <div className="flex h-16 items-center justify-between px-4 sm:px-6">
-          <span className="text-lg font-bold text-ink">Akshar Byonyks</span>
+        {/* THE WORDMARK IS A LINK NOW (10 Sep 2026). It was a <span>, and the
+            drawer carries no other route to Home — so the one screen that
+            lists every destination on the site was missing the destination
+            every reader knows the name of. The bar's emblem goes Home, but the
+            bar is behind this dialog while it is open. */}
+        <div className="flex min-h-16 items-center justify-between px-4 sm:px-6">
+          <Link
+            href="/"
+            onClick={() => dialogRef.current?.close()}
+            className="rounded-md py-2 text-lg font-bold text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          >
+            Akshar Byonyks
+          </Link>
           <Button
             type="button"
             variant="ghost"
             size="icon"
+            className="size-11"
             aria-label="Close menu"
             onClick={() => dialogRef.current?.close()}
           >
-            <X aria-hidden="true" />
+            <X aria-hidden="true" className="size-5" />
           </Button>
         </div>
 
@@ -64,7 +79,10 @@ export function MobileNav() {
                         <Link
                           href={child.href}
                           onClick={() => dialogRef.current?.close()}
-                          className="block rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-surface-2 hover:text-foreground"
+                          // `min-h-11` (44px): at `py-2` a 14px line made a
+                          // 37px target, and these are the deepest links in
+                          // the site's only mobile navigation.
+                          className="flex min-h-11 items-center rounded-md px-3 text-sm text-muted-foreground hover:bg-surface-2 hover:text-foreground"
                         >
                           {child.label}
                         </Link>
@@ -76,11 +94,28 @@ export function MobileNav() {
             ))}
           </ul>
 
-          <Button asChild className="mt-4 w-full">
+          <Button asChild className="mt-4 h-11 w-full">
             <Link href={contactCta.href} onClick={() => dialogRef.current?.close()}>
               {contactCta.label}
             </Link>
           </Button>
+
+          {/* THE LANGUAGE SWITCH HAS TO BE IN HERE TOO. It sits in the bar,
+              and this dialog covers the bar — so for as long as a reader had
+              the menu open, the one control that answers "I would rather read
+              this in Hindi" did not exist. PRODUCT.md puts that reader on a
+              phone, which is the only place this drawer appears. Set in
+              Devanagari and marked `lang="hi"`, for the reason the bar's copy
+              of it gives: a switch labelled in the language you cannot read is
+              the standard way this control fails. */}
+          <Link
+            href="/hi"
+            lang="hi"
+            onClick={() => dialogRef.current?.close()}
+            className="mt-2 flex min-h-11 items-center justify-center rounded-md text-base font-medium text-foreground hover:bg-surface-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          >
+            हिन्दी
+          </Link>
         </nav>
       </dialog>
     </>

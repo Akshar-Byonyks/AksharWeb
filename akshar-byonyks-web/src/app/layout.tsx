@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -71,6 +71,31 @@ const notoSans = Noto_Sans({
 // resolve absolute, which spec §11.2 requires on every page. The title
 // template gives child routes "<page> | Akshar Byonyks" without each one
 // repeating the suffix; `default` keeps Home exactly as it was.
+// DECLARED SO THAT `viewport-fit` IS A DECISION RATHER THAN A DEFAULT (10 Sep
+// 2026). The values here are Next's defaults; what is deliberate is the two
+// things this does NOT say.
+//
+// NO `viewportFit: "cover"`. It was tried during the mobile pass and taken
+// back out, and the reason is this site's full-bleed sections. `cover` hands
+// the page the whole screen — notch, rounded corners and all — and a landscape
+// iPhone then puts a ~44px inset on the leading edge that every line of text
+// must be padded away from. The site has no shared shell component to pad:
+// `max-w-[1280px]` is written inline in 71 places, and padding `body` instead
+// would inset the closing ink mass, the silhouette edge and every tonal band
+// away from the screen edge, which is the one thing those sections exist to
+// reach. Against that, `cover` buys a tinted strip under the status bar and
+// nothing else — the drawer is `h-dvh`, so without `cover` iOS insets the
+// layout viewport itself and the home indicator can never overlap it. The
+// browser's own safe viewport is simply the better deal here.
+//
+// NO `maximumScale` or `userScalable`. Capping zoom is a WCAG 1.4.4 failure,
+// and this is a medical-device site whose readers include people who need to
+// enlarge it.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {

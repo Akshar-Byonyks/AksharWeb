@@ -70,7 +70,7 @@ export async function HindiShell({
               <Link
                 href={englishHref}
                 lang="en"
-                className="rounded-sm text-sm font-semibold text-white underline underline-offset-2 hover:text-pending-on-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="tap-target rounded-sm text-sm font-semibold text-white underline underline-offset-2 hover:text-pending-on-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 {t("common.switchToEnglish")}
               </Link>

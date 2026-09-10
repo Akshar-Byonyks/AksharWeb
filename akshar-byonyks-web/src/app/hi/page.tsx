@@ -183,7 +183,7 @@ medical page needs to know how it was made before they read it.
                 <a
                   href={`mailto:${siteContact.email}`}
                   lang="en"
-                  className="rounded-sm font-semibold text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                  className="tap-target rounded-sm font-semibold text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 >
                   {siteContact.email}
                 </a>

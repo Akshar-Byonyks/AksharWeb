@@ -1725,3 +1725,71 @@ So the fill rule now travels per contour, from its source, and the fill layers g
 **The draw phase gets the effect the client actually described for free.** With the counter no longer painted into the mask, the stroke around it is no longer knocked out, so each counter now draws its own smaller outline inside the letter — the "smaller outline of the letter itself" — and then opens to the ink ground when the flood lands.
 
 Verified by cropping the 'o' and the 'a' at 4x in both phases, before and after.
+
+---
+
+## 24. The mobile pass: the capsule was sitting on the prose (10 Sep 2026)
+
+> "adapt for mobile devices. Have noticed issued already in navbra not being fully visible for mobile devices, but want a site wide audit"
+
+The report was about the navbar. The measurement found something worse than a control that could not be seen: **the navbar was sitting on top of the writing.**
+
+### What was actually happening
+
+`AnimatedNav` is `sticky top-0` inside a header that draws nothing — the capsule carries its own surface and the strip around it is transparent. On a desktop viewport there is margin either side of the text column for a floating pill to occupy. On a phone there is none, so every paragraph on the site scrolled underneath a translucent white capsule parked across the middle of the measure.
+
+Measured, at 390px with `prefers-reduced-motion` (where the bar never collapses), on `/about-us`: the expanded pill covered three consecutive words of a sentence set on the ink section — "and the case for" — leaving the line reading "market, an … home dialysis is stronger". A sweep of fourteen routes at 390px and 768px found the **collapsed** dot alone overlapping running text on **eleven of them, by up to 47px** — whole words behind an opaque circle, on `/products`, `/about-us`, `/locations`, `/what-we-know`, `/hi`, `/privacy-policy` and more.
+
+The second half of "not fully visible" was the bar's contents. Below `lg` the seven links are in the drawer, so the whole of the site's chrome was **an emblem, a language switch and a hamburger** — nowhere did it say whose site this is. The emblem is a 34px globe with a monogram over it; that is a mark, not identification.
+
+### What changed
+
+**Below `lg` the header is a bar, and the capsule is a desktop object.** Full-bleed, opaque, edge to edge, with the controls on the edges where thumbs are, and the company name set beside the emblem. Nothing can pass under it because it is not transparent, and the document already reserved its height — this component has been in flow rather than `fixed` since it was written, which is what made this a class change rather than an edit to twenty route templates. The appearance half is expressed entirely in `lg:` classes, so it is correct in the first paint with nothing to hydrate.
+
+**The collapse does not run below `lg` at all.** Shrinking seven links and a CTA to a dot is a real saving on a desktop bar. Below `lg` those links are already behind the drawer and the bar holds three controls, so the collapse bought no space, cost a tap to undo, and produced exactly the floating dot that was landing on the text. PRODUCT.md's Priority-2 reader is on a phone, on a slow connection, often under stress; a header that hides itself and has to be summoned back is the wrong trade for them. The media query is read at event time rather than kept in state — a query resolved during render is a hydration mismatch — with a `change` listener for the resize case only.
+
+**At `lg` and up nothing moved.** The capsule, the collapse, the hysteresis, the panel clipping and every note in §20 stand exactly as they were.
+
+### `viewport-fit=cover` was tried and taken back out
+
+It is the one line that makes `env(safe-area-inset-*)` resolve to anything but 0, and it was added so the bar could tint the strip under the status area. It came out again, and the reason is this site's full-bleed sections.
+
+`cover` hands the page the whole screen — notch, rounded corners and all — and a landscape iPhone then puts a ~44px inset on the leading edge that every line of text has to be padded away from. There is no shared shell component to pad: `max-w-[1280px]` is written inline in **71 places**. Padding `body` instead was tried and is worse — it insets the closing ink mass, the silhouette edge and every tonal band away from the screen edge, which is the one thing those sections exist to reach.
+
+Against that cost, `cover` buys a tinted status-bar strip and nothing else: the drawer is `h-dvh`, so **without** `cover` iOS insets the layout viewport itself and the home indicator can never overlap it. The browser's own safe viewport is the better deal here. A `viewport` export now stands in `layout.tsx` carrying Next's default values, so that this is a recorded decision rather than a default nobody looked at — and so that the absence of `maximumScale` is on the record too.
+
+### The wordmark's size, and why the bar still wraps
+
+Two passes were needed on one row of three controls.
+
+The wordmark first shipped at `text-[0.9375rem]` — 15px, chosen to fit 320px and **off the type ramp**, which the design hook caught. It is `text-base` now, a documented step. At 16px the name measures 122px and does not truncate at any width from 320px up.
+
+Going to 16px made the row wrap at 320px, and the fix for that was briefly `flex-nowrap` below `lg` so the wordmark's `truncate` could fire — **`flex-wrap` wraps before it shrinks**, so with wrapping on an ellipsis is unreachable. That bought a tidy 320px bar and broke the thing wrapping exists for: measured at 320px with 200% text, the row could not fit, could not wrap, and pushed the document to 360px. A WCAG 1.4.10 reflow failure, and precisely the defect this component's `min-h`/`flex-wrap` pair was written to prevent in the first place.
+
+So wrapping stands, and **the row was made narrower instead of made to hold by force**: horizontal padding on the bar (`px-2`→`px-1`), the home link (`px-2`→`px-1.5`) and the language switch (`px-2.5`→`px-1.5`), below `lg` only. Measured after: 320, 360, 390, 430 and 768 are each a single 56px row with a 44×44 trigger, no truncation and no overflow. At 200% the bar wraps and grows downward, which is correct.
+
+**The lesson, recorded because it cost two passes:** `truncate` and `flex-wrap` on the same flex line are mutually exclusive, and wrap wins. Pick one deliberately — do not set both and assume the ellipsis is a safety net, because it is not.
+
+### The drawer had three gaps
+
+It is the only navigation on a phone, and it was missing pieces the bar behind it was carrying.
+
+- **No way Home.** The wordmark at the top was a `<span>`. The bar's emblem goes Home, but the bar is behind this dialog while it is open — so the one screen listing every destination on the site omitted the destination every reader knows the name of. It is a `<Link>` now.
+- **No language switch.** Same cause: it lives in the bar, and the dialog covers the bar. For as long as a reader had the menu open, the control that answers "I would rather read this in Hindi" did not exist. PRODUCT.md puts that reader on a phone, which is the only place this drawer appears.
+- **Targets under 44px.** The child links (`py-2` on a 14px line) made 37px, and the trigger and close buttons were the 36px `size-icon` default.
+
+### Five standalone links were under the touch floor
+
+A link set in running text is exempt from the 44px floor — WCAG 2.5.8 says so, and enlarging one would tear a hole in the paragraph. A link standing on its own is not exempt. Five were at 19–22px: the email and phone in `/contact`'s "Reach us directly" list, the phone on each locations card, the contact address on the Hindi home page, and the "read this in English" switch at the top of every Hindi page. One of them is tap-to-call, on a page whose own comment says "this audience reads it on a phone".
+
+They share a `tap-target` utility rather than five copies of the incantation. **The negative margin is the point**: padding a 19px link up to 44 would move everything under it by 25px and re-space four correct layouts, so `margin-block: -0.75rem` gives the 24px back to the flow. Verified against a screenshot of the contact aside before and after — the hit area grew, the page did not move.
+
+### What the audit did not find
+
+Worth recording, because it is the part that was already right. Across 24 routes at 320px, 390px and 768px there was **no horizontal overflow anywhere** — `document.scrollWidth` never exceeded the viewport — **no content clipped** by an `overflow-x: hidden` ancestor (every hit was `sr-only`, which is what `sr-only` is), no text under 12px, and the one `<table>` on the site (`/products/the-x1-cycler`) already fits 390px inside an `overflow-x: auto` parent without needing to scroll. The responsive skeleton was sound; what was broken was the thing floating on top of it.
+
+### A build error was blocking `npm run dev` entirely
+
+Not a mobile issue, but nothing could be audited until it was fixed. `src/app/favicon.ico` declares three 32bpp entries whose embedded PNGs are **colour type 2 (RGB, no alpha)**. Turbopack's ICO decoder requires RGBA when an entry claims 32bpp and refuses the file: *"The PNG is not in RGBA format"* — served as a full-screen build error on **every route** in dev. Webpack's production path does not check, which is why `next build` passed throughout and this had gone unnoticed.
+
+The three embedded PNGs were re-encoded to colour type 6 in place, preserving the existing artwork rather than re-deriving the icon from `icon.png`. 9,739 → 10,880 bytes.

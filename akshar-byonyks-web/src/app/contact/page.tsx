@@ -129,7 +129,7 @@ which country it rings in.
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-ink">Email</p>
                     <a
-                      className="rounded-sm text-sm text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                      className="tap-target rounded-sm text-sm text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                       href={`mailto:${siteContact.email}`}
                     >
                       {siteContact.email}
@@ -147,7 +147,7 @@ which country it rings in.
                         nothing to ring. It is a real staffed line now, and
                         this audience reads it on a phone. */}
                     <a
-                      className="rounded-sm text-sm text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                      className="tap-target rounded-sm text-sm text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                       href={`tel:${siteContact.phoneTel}`}
                     >
                       {siteContact.phone}

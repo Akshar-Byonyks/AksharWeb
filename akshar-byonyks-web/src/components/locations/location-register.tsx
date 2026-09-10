@@ -194,7 +194,7 @@ function LocationCard({ location }: { location: Location }) {
           <p className="mt-2 text-base">
             <a
               href={`tel:${location.phone.replace(/[^+\d]/g, "")}`}
-              className="rounded-sm text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              className="tap-target rounded-sm text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               {location.phone}
             </a>
