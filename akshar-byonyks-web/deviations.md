@@ -1793,3 +1793,187 @@ Worth recording, because it is the part that was already right. Across 24 routes
 Not a mobile issue, but nothing could be audited until it was fixed. `src/app/favicon.ico` declares three 32bpp entries whose embedded PNGs are **colour type 2 (RGB, no alpha)**. Turbopack's ICO decoder requires RGBA when an entry claims 32bpp and refuses the file: *"The PNG is not in RGBA format"* — served as a full-screen build error on **every route** in dev. Webpack's production path does not check, which is why `next build` passed throughout and this had gone unnoticed.
 
 The three embedded PNGs were re-encoded to colour type 6 in place, preserving the existing artwork rather than re-deriving the icon from `icon.png`. 9,739 → 10,880 bytes.
+
+---
+
+## 25. Byonyks: verbal is enough, and the roster is closed (10 Sep 2026)
+
+> "For Byonyks, verbal confirmation is all we need. Additionally, none of the Byonyks staff will be going into the website"
+
+Two client instructions in one line, and between them they retire the last launch gate this project held over Byonyks.
+
+### The gate was this project's own, and the client is entitled to retire it
+
+`pending-trademark` recorded that Byonyks USA's approval for its name, its marks and its employees' photographs and biographies was verbal, and asserted that **written** permission was required before launch. Nothing external imposed that: no regulator asks for it, and it is not one of the Drugs and Magic Remedies or DPDP obligations the other legal gaps answer to. It was a standard this project set for its client, about its client's own relationship with its own licensor.
+
+So it is **closed, not downgraded**. A ledger entry that says a thing is missing when the only party who can want it has said they do not is not recording a gap — it is the site contradicting its own client in public, on `/what-we-know`.
+
+Removed from `src/lib/claims-ledger.ts`, and the `PendingNote` it fed on `/terms-of-use` came off with it. Those two had to move together: the ledger's build-time contract fails if a page carries a pending note with no matching entry, which is exactly the drift it exists to catch, and it verified this edit.
+
+**The photograph half closed with it.** `leadership.ts` had recorded one surviving portrait-rights question — Senthil Kumar's, the last of fourteen after the 1 Sep removal of thirteen transcribed Byonyks records — and it was gated on precisely this permission. It is covered.
+
+### The roster is closed, and Senthil Kumar stays
+
+The second instruction is forward-looking, and was confirmed as such rather than assumed: **no Byonyks staff go into this site**, and Senthil Kumar stays as the standing 1 Sep exception ("Senthil Kumar stays but add a blurb on India part"). Reading it as a removal would have reversed a specific, recorded client instruction about a named real person, which is not something to infer from a sentence that could equally be read as forward-looking — so it was put back to the client, and the answer was keep.
+
+He is therefore the last Byonyks person on the site rather than the first of a category. Every new leadership record is `organisation: "Akshar Byonyks"`. The `"Byonyks"` member of that union survives for his record alone and is not an invitation to a second. The rule is in CLAUDE.md, because it governs future work rather than describing a gap in this one.
+
+### The ByoTalks clinicians are not staff
+
+Also confirmed rather than assumed, because the alternative reading would have deleted eight sessions, the speaker register and the `/byotalks` routes. They are external nephrologists, not employees; they carry no portraits here, only names and credentials; and two of those credentials read "Byonyks Scientific Advisory Board". Spec finding F-5 had already settled that removing the Advisory Board takes real value off the site. Unchanged, credential lines included.
+
+### What this leaves
+
+`pending-trademark` was one of the seven hard launch blockers on the outstanding list. Six remain, and all six are external obligations rather than this project's own standards: the India registered office address, the CDSCO licence route and authorised agent, the named Grievance Officer, the data retention period, legal sign-off on the patient-in-therapy imagery, and a jurisdiction clause from Indian counsel.
+
+---
+
+## 26. The retention period: two years (10 Sep 2026)
+
+> "Put it in as two years"
+
+`/privacy-policy` said "we keep the email for as long as we need it to deal with your enquiry … then delete it", with a note admitting a real period was owed. It now says two years, and `pending-retention` is out of the claims ledger.
+
+### Ten years was the opening proposal, and was argued down
+
+The number first put forward was ten years. The objection, in short: DPDP 2023's storage-limitation principle asks whether retention is still necessary for the purpose, and the purpose of a contact-form enquiry is served once it has been answered. Ten years is not that. The form takes a name, an organisation, an email, a phone number, a city and a free-text message — and on a dialysis site that message routinely contains the sender's own kidney condition or a family member's. A decade of those in one inbox enlarges the breach surface and the erasure-request burden every month, and buys nothing in year nine.
+
+The likelier origin of "ten years" is a real obligation applied to the wrong thing: device-record or company-record retention stretched across all enquiry mail. That is over-retention by the back door, and naming it is what moved the number.
+
+### The paragraph was rewritten, not patched
+
+A period cannot be dropped into prose written to describe an open-ended hold. "As long as we need it … then delete it" implies a short, purposeful keep; "two years" printed under it would have made the sentence misleading rather than merely vague. So the section states the period as its own sentence, dates it from the day the enquiry is sent, and adds the thing the old wording never offered — that a sender can ask for deletion sooner, without giving a reason.
+
+### It is a company decision, and the ledger no longer says otherwise
+
+The removed entry claimed the period was "being set with counsel". It was not; it was set by the client. Nothing on the page asserts a lawyer chose it, and nothing should be added later that does unless one has.
+
+**One question was raised and deliberately left unanswered rather than guessed:** whether correspondence touching device safety — a malfunction, a complaint, an adverse event — carries a longer obligation on an importer and licensee under the Medical Device Rules 2017. No second period was invented for it. A retention rule this site has not been given is not one it should print; if counsel sets one it belongs in the same section, not in a new gap.
+
+### The half that is not code
+
+Enquiries exist only as email in the Google Workspace inbox behind the contact address — nothing writes them to a database, which is what makes this easy to comply with and also what makes it manual. Two years is now an operational commitment: somebody has to delete on that schedule. A published period nobody acts on is a worse position than the open-ended wording it replaced, because it is a specific promise visibly broken.
+
+Launch blockers: six down to five.
+
+---
+
+## 27. The therapy-imagery gate is retired, and only half of that file's problem with it (10 Sep 2026)
+
+> "patient in therapy imagery has been signed off on"
+
+`x1-in-home.jpg` — Byonyks USA's own photograph of the X-1 on a side table with a man on the sofa beside it — has carried two flags since 28 Aug 2026, both filed under spec §14.4's launch gate. **They were never the same kind of problem, and this closes one of them.**
+
+### What closed
+
+**The Drugs and Magic Remedies (Objectionable Advertisements) Act 1954 flag.** The image depicts a person with a medical device in a therapy context. This repo has applied that constraint strictly enough to patch a bystander's reflection out of a monitor on a different image, so the flag was raised rather than reasoned around, and CLAUDE.md's standing rule states the principle plainly: an image like this is a legal question, not a design one. Using it at all was an explicit client decision on 28 Aug after the risk was put to them; the sign-off is what that decision was always conditional on. The client confirmed on 10 Sep that it has been given, and the gate is retired on that confirmation.
+
+**The record does not name who gave it.** That is stated in `public/images/README.md` rather than papered over, because a legal sign-off with no signatory and no date is a weaker record than it looks, and reconstructing either later is exactly the thing this file exists to prevent. If it is ever needed, it needs adding from someone's memory of the actual event.
+
+### What did not close, and is a different kind of thing entirely
+
+**The subject is not Indian.** A white Western man on an India-market site, against a PRODUCT.md that is emphatic that material which does not transfer gets replaced rather than kept for volume.
+
+This flag sat next to the legal one in the same list and under the same heading, which made it easy to read the two as one item and assume an approval retires both. It does not. **No approval can close it** — it is editorial, and the only thing that closes it is commissioning a photograph shot in India. That is already named at the foot of the README as the single change that would do the most good here, because the same shoot would also fix the standing India-specificity flag on `clinicians-in-discussion.jpg`.
+
+The README now labels the two flags CLOSED and STILL OPEN explicitly rather than leaving them as a numbered pair, and says of the open one that nothing about the sign-off touches it.
+
+### The rule survives the instance
+
+CLAUDE.md's imagery rule is unchanged in force: the next clinical-context image starts flagged like every other one. What was added is that the one instance the site currently carries is cleared, so a future reader does not re-raise a gate that has been answered — and, alongside it, the warning that the second flag on the same file is not covered by the same answer.
+
+Nothing user-facing changed. This gate was never a claims-ledger entry or a `PendingNote`; it lived only in the internal image record, which is why no page copy and no `SOURCES.md` regeneration follow from it.
+
+Launch blockers: five down to four.
+
+---
+
+## 28. Rohit Pankhaniya's portrait is a photograph (10 Sep 2026)
+
+> "Rohit Pankhaniya's is a real image"
+
+The launch gate raised on 8 Sep is closed. The file is what it appeared to be.
+
+**What was flagged, and why it was a reasonable check.** `Rohit Headshot.png` arrived as a 72dpi near-square PNG carrying no EXIF at all — no camera, no date, no exposure — and the skin, beard edges and background falloff had a smoothness characteristic of generated imagery. On the leadership page of a medical-device company, for a named board-certified physician, against a CLAUDE.md rule that says never caption a render as a photograph, that combination was worth stopping on.
+
+**Why it was flagged rather than decided.** Not one of those signals is proof. Every one of them is also what happens to a real photograph exported through an editor, saved off LinkedIn, or screenshotted — all of which strip EXIF and can produce a square PNG. So the question went to the client, which is the only party who could actually answer it, and the answer is that the signals were artefacts of how the file travelled rather than of how the image was made.
+
+**The lesson worth keeping, and it is not "the check was wasted".** Metadata absence is evidence about a file's history, never about its subject. A stripped EXIF block tells you a picture has been through software; it does not tell you a person was generated. The reasoning is kept in `public/images/README.md` rather than deleted, because the check was right to run even though the suspicion was wrong — and the next near-square PNG with no EXIF should get the same treatment and may get the opposite answer.
+
+**Nothing rendered changes.** `portraitAlt` was deliberately written to describe what is in the frame without asserting how the image was made, which is accurate either way, so it stands as written. Nothing on the site ever captioned it as a render. The only edits are to the two records that carried the open question.
+
+**What this does not close.** The set still has five different backdrops — brown studio, white, white, skyline, plain grey — against spec §9.5's "same backdrop, crop and lighting". That is unfixable by editing photographs of real people, and one shoot closes it.
+
+---
+
+## 29. `overflow-wrap: anywhere`, and the seven routes that were failing reflow (10 Sep 2026)
+
+Raised as one defect — the CTA band on `/products` pushing the document to 360px at 320px/200% text — and it was seven routes and a one-word CSS change.
+
+### The rule was already there and was the wrong value
+
+`globals.css` has carried `body { overflow-wrap: break-word }` since it was written, with a comment naming exactly this scenario: a heading like "Specification" at 200% text on a 320px viewport is a single word wider than its container, and WCAG 1.4.4 requires text to reach 200% without loss of content.
+
+**`break-word` only does half of that job, and the half it skips is the half that matters here.**
+
+The two values break lines identically. They differ in one respect: the soft wrap opportunities `break-word` introduces are **not** counted when the browser computes an element's min-content size, and `anywhere`'s **are**. So under `break-word` the long word wraps visually — and the box around it is still sized to the whole unbroken word, because that is still its min-content contribution. Anything sized to fit its content then blows out, and takes the document with it. The text was never clipped; the layout was.
+
+### Seven routes, not one
+
+Measured at 320px with 200% text, before the change:
+
+| Route | Document width | Cause |
+|---|---|---|
+| `/products` | 360px | the word "specification?" |
+| `/about-us/careers` | 492px | a paragraph |
+| `/contact`, `/hi`, `/privacy-policy`, `/terms-of-use`, `/accessibility` | 475–500px | `vishnu@aksharbyonyks.com` |
+
+The contact address is the interesting one: five routes failing on the same unbreakable string, and none of them a heading. **Scoping the fix to `h1`–`h6` was tried and fixed exactly one of the seven.** It belongs on `body`, where it already was.
+
+### The cost was measured rather than assumed
+
+`anywhere` changes intrinsic sizing site-wide, which could in principle shrink anything deliberately sized to its content — a table column, a provenance chip, a `w-fit` box. This site has all three.
+
+Every element's bounding box was captured with and without the change, across eleven routes at 390px and 1280px at normal text size, and compared. **Not one differed** — same widths, same heights, same document height. `anywhere` only acts when a box would otherwise be forced wider than the space it has, which is precisely the case the rule exists for.
+
+After: **zero of twenty-one routes overflow at 320px**, at normal text and at 200%, with the skip link checked in its focused state.
+
+### What it looks like when it fires
+
+At 320px/200% the `/products` heading now breaks as "specificati / on?". That is not pretty, and it is correct: at 48px bold there is no width at which that word fits 256px, so the choice is a mid-word break or lost content, and WCAG 1.4.4 settles it. `hyphens: auto` would render it "specifica- / tion?" instead, which reads better — but it would also hyphenate ordinary paragraphs at ordinary sizes across the whole site, which is a typographic decision rather than a correctness one and was not taken here.
+
+### Not a regression from the mobile pass
+
+Verified against HEAD before touching anything: the same seven routes failed identically with the nav work stashed. This predates §24.
+
+---
+
+## 30. The ledger had gone stale about our own leadership (10 Sep 2026)
+
+`pending-executives` read, on `/what-we-know`, in public:
+
+> Three Akshar Byonyks people are published on the leadership page. Two of them, Dr. Ronak C. Shah and Sahil, arrived with a biography but no job title and no photograph, so their cards say "Title to be confirmed" and "Photograph pending"...
+
+**Every clause of that had become false.** Four Akshar Byonyks people are published, not three. All four carry a job title. All five records on the page carry a portrait, and none sets `portraitPending`. Sahil acquired a surname on 8 Sep with the client's officer schedule. Verified against the rendered pages, not just the data: `/about-us/leadership` returns zero occurrences of "Title to be confirmed" and zero of "Photograph pending".
+
+So the site's transparency register was publishing a statement about this company's own leadership that this company's own leadership page contradicted — which is a worse failure than the gap it was describing ever was.
+
+### The mechanism that failed, because it will fail again
+
+Entries are written beside the pages they describe, and then the pages move on. The build contract pairs a rendered `PendingNote` with a ledger entry and fails if one exists without the other — but **it cannot read prose**. An entry whose *sentences* go stale while its `id` still matches a live gap passes every automated check there is. The note at the head of `claims-ledger.ts` already says this: "The contract at the foot of this file will not catch that — only a person reading both will."
+
+That is exactly what happened. Four separate client instructions landed on the leadership records between 1 and 8 September — a title, a portrait, a surname, a whole new executive — and each one was applied to `leadership.ts` without anyone re-reading the sentence in the ledger that described the old state.
+
+**A ledger of gaps needs re-reading whenever the thing it describes is edited, and nothing enforces that.** Worth knowing before the next roster change.
+
+### Replaced rather than removed, because the gap narrowed instead of vanishing
+
+One pending marker is still rendered on that route: the "On India" chip on `/about-us/leadership/senthil-kumar`. An entry is owed to it, so `pending-executives` becomes `pending-india-note`, describing what is actually missing — the note the client asked for on 1 Sep saying what the one Byonyks person on the roster does for the India programme. His biography is his own, as published by Byonyks, and describes a career in the United States; on an India-market roster that leaves the obvious question unanswered, and the profile publishes it unanswered rather than answering it with a sentence nobody wrote.
+
+The two comments in `about-us/leadership/page.tsx` that pointed at the old id and described "two frames" and "two names" were stale in the same way and were corrected with it. The `Title to be confirmed` and `Photograph pending` branches stay in the markup: no record needs them today, and the next supplied one may.
+
+Claims: 38 to 37.
+
+### Still unestablished, and deliberately not asserted either way
+
+Whether four *is* the complete Akshar Byonyks leadership roster. Open Questions 1.4 asked for five executives, and the removed entry was originally carrying a roster-level "incomplete" claim alongside the per-record ones. Nothing in this repo establishes that the roster is short, and inventing an "incomplete" claim would repeat the error just fixed in the opposite direction. It is a question for the client, not an entry.

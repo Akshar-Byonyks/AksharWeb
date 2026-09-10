@@ -27,14 +27,14 @@ someone who asks.
 
 ## Summary
 
-**39 claims.**
+**37 claims.**
 
 | How it is known | Claims |
 | --- | ---: |
 | On the public record | 1 |
 | Published source | 15 |
 | Company statement | 9 |
-| Not yet established | 14 |
+| Not yet established | 12 |
 
 **On the public record.** Held in a public register anyone can open and check without asking us: the FDA's 510(k) database, a government scheme document, a court or corporate filing.
 
@@ -318,7 +318,7 @@ Announced as the unit for producing tubing sets and assembling machines.
 | **Appears on** | Locations (`/locations`) |
 | **Ledger id** | `location-ahmedabad` |
 
-### Not yet established (14)
+### Not yet established (12)
 
 #### The X-1's Indian regulatory position
 
@@ -340,16 +340,6 @@ The licence to bring the X-1 to India is confirmed to exist. Whether it is exclu
 | **Appears on** | About us (`/about-us`), The X-1 cycler (`/products/the-x1-cycler`) |
 | **Ledger id** | `pending-licence-scope` |
 
-#### Written permission to use the Byonyks name and marks
-
-Byonyks USA's approval for the use of its name, marks and its employees' photographs and biographies on this site is currently verbal. Written permission is required before launch.
-
-| | |
-| --- | --- |
-| **Missing** | Written trade mark permission not yet obtained. |
-| **Appears on** | Terms of use (`/terms-of-use`), Leadership (`/about-us/leadership`) |
-| **Ledger id** | `pending-trademark` |
-
 #### The India office address
 
 Required on the privacy policy and the terms of use, and required before this site goes live. No placeholder is published, and since 1 Sep 2026 there is no published office address of any kind: the Bengaluru row was removed from /locations on the client's instruction, its replacement stated the address as coming soon, and on 2 Sep that replacement was removed too. The office is now named only on the Contact page. Enquiries reach the same people by email and by phone in the meantime.
@@ -370,25 +360,15 @@ India's DPDP Act 2023 requires a named Grievance Officer with published contact 
 | **Appears on** | Grievance redressal (`/grievance-redressal`), Privacy policy (`/privacy-policy`) |
 | **Ledger id** | `pending-grievance-officer` |
 
-#### The data retention period
+#### What the Byonyks executive on the roster does for India
 
-How long an enquiry email is kept is being set with counsel and will be stated as a number of months rather than left to judgement.
-
-| | |
-| --- | --- |
-| **Missing** | Period not yet set. |
-| **Appears on** | Privacy policy (`/privacy-policy`) |
-| **Ledger id** | `pending-retention` |
-
-#### Job titles and photographs for two Akshar Byonyks executives
-
-Three Akshar Byonyks people are published on the leadership page. Two of them, Dr. Ronak C. Shah and Sahil, arrived with a biography but no job title and no photograph, so their cards say “Title to be confirmed” and “Photograph pending” rather than carrying a title or a face this project invented. The fourth person on that page is Byonyks', and each card says which company that person works for.
+Senthil Kumar is the one Byonyks person on the leadership page; the other four are Akshar Byonyks', and every card says which company its subject works for. His biography is his own as published by Byonyks and describes a career in the United States, so on an India-market roster it leaves the obvious question unanswered. The client asked on 1 September 2026 for a note saying what he does for the India programme. It has not been supplied, and the profile publishes that question unanswered rather than answering it with a sentence nobody wrote.
 
 | | |
 | --- | --- |
-| **Missing** | Two job titles and two photographs not yet supplied. |
-| **Appears on** | Leadership (`/about-us/leadership`), About us (`/about-us`) |
-| **Ledger id** | `pending-executives` |
+| **Missing** | India note not yet supplied. |
+| **Appears on** | Leadership (`/about-us/leadership`) |
+| **Ledger id** | `pending-india-note` |
 
 #### The Akshar Byonyks team structure
 

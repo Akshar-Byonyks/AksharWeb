@@ -163,18 +163,25 @@ as not yet answerable.
           </p>
         </LegalSection>
 
+        {/* TWO YEARS, SET 10 SEP 2026, replacing "for as long as we need it".
+            The paragraph was rewritten rather than having a number dropped into
+            it: the old wording was built to describe an open-ended hold — "as
+            long as we need it … then delete it" — and a definite period read
+            underneath it would have made the prose misleading rather than
+            merely vague. A stated period has to be the sentence, not a footnote
+            to a sentence that says something else. */}
         <LegalSection id="retention" title="How long we keep it">
           <p>
             Your enquiry reaches us as an email and is not written to any
-            database. We keep the email for as long as we need it to deal with
-            your enquiry and to keep a record of what we told you, then delete
-            it.
+            database. We keep that email for{" "}
+            <strong className="font-semibold text-ink">two years</strong> from
+            the day you send it, so that we can answer you and keep a record of
+            what we told you. After two years we delete it.
           </p>
-          <PendingNote
-            className="mt-4"
-            note="Retention period pending"
-            label="A specific retention period is being set with counsel and will be stated here as a number of months, not left to judgement."
-          />
+          <p>
+            If you would like it deleted sooner, email <MailLink /> and ask.
+            You do not have to give a reason.
+          </p>
         </LegalSection>
 
         <LegalSection id="recipients" title="Who else sees it">

@@ -196,11 +196,6 @@ sentence comes from claims.ts rather than being rewritten here.
             the source. The recorded ByoTalks sessions are hosted on
             Byonyks&rsquo; own channel.
           </p>
-          <PendingNote
-            className="mt-4"
-            note="Written trade mark permission pending"
-            label="Byonyks USA's approval for use of its name and marks is currently verbal. Written permission covering the name, the marks and the employee photographs and biographies used on this site is required before launch."
-          />
         </LegalSection>
 
         <LegalSection id="acceptable-use" title="Acceptable use">

@@ -16,10 +16,22 @@
 //     are gone. `namesALocation` stays on the type because the next supplied
 //     biography may need it.
 //   • Portrait rights for fourteen named individuals photographed on another
-//     company's website. One remains — Senthil Kumar's — so the written
-//     permission Byonyks USA has only given verbally is still a launch gate,
-//     but over one photograph rather than fourteen. The other three portraits
-//     are the client's own, supplied directly, and carry no rights question.
+//     company's website. One remained — Senthil Kumar's — which left the
+//     written permission Byonyks USA had only given verbally as a launch gate
+//     over one photograph rather than fourteen. The other three portraits are
+//     the client's own, supplied directly, and carry no rights question.
+//
+//     CLOSED 10 SEP 2026, and not by the permission arriving: the client
+//     decided verbal confirmation is all this project needs from Byonyks, so
+//     the gate was retired rather than met. `pending-trademark` came out of
+//     the claims ledger the same day and the note it fed on `/terms-of-use`
+//     came off with it. Senthil Kumar's portrait is covered by that decision.
+//
+//     THE ROSTER IS CLOSED TO BYONYKS PEOPLE from the same instruction: no
+//     Byonyks staff go into this site, and he stays only as the standing
+//     1 Sep exception. A new record must be `organisation: "Akshar Byonyks"`.
+//     The union keeps `"Byonyks"` because his record still needs it — it is
+//     not an invitation to add a second.
 //   • Spec §9.5's "same backdrop, crop and lighting" was unmeetable across a
 //     set assembled from someone else's website. All four portraits are now
 //     published and all four are normalised to the same 900×1125 frame, so
@@ -321,13 +333,21 @@ export const executives: readonly Executive[] = [
     // the same situation Dr. Shah's near-square original was in. Checked
     // against the rendered card frame before shipping, not assumed.
     //
-    // ITS ORIGIN IS A QUESTION THE CLIENT STILL HAS TO ANSWER. See the entry
-    // in public/images/README.md: this file has several characteristics of a
-    // generated or heavily AI-retouched likeness rather than a photograph, and
-    // CLAUDE.md forbids captioning a render as a photograph. The alt below
-    // therefore describes what is in the frame without asserting it is a
-    // photograph. If the client confirms it is generated, `portraitAlt` and
-    // the README entry both need the stronger wording.
+    // ITS ORIGIN WAS QUESTIONED AND IS NOW SETTLED: the client confirmed on
+    // 10 Sep 2026 that this is a real photograph, and the launch gate that
+    // stood on it is closed.
+    //
+    // The file had arrived as a 72dpi near-square PNG with no EXIF at all,
+    // which is a set of signals consistent with a generated likeness — and
+    // equally consistent with a real photograph exported through an editor or
+    // saved off LinkedIn, which is why it was flagged for the client rather
+    // than judged here. It was the second reading. Full reasoning is kept in
+    // public/images/README.md rather than deleted, because the check was right
+    // to run even though the suspicion was wrong.
+    //
+    // `portraitAlt` needs no change. It describes what is in the frame without
+    // asserting how the image was made, which is accurate either way, and
+    // nothing on the site captions it as a render.
     portrait: "/images/leadership/rohit-pankhaniya.jpg",
     portraitAlt:
       "Rohit Pankhaniya, MD, in an open-collared white shirt and dark-framed glasses, against a plain grey backdrop.",

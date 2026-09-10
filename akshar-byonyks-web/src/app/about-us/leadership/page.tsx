@@ -78,10 +78,18 @@ export const metadata: Metadata = {
 // instruction). A "The rest of the Akshar Byonyks team" section used to sit
 // below the grid with a pending note; it is gone.
 //
-// The gaps this page does still publish are per-record and sit where the fact
-// would be: "Photograph pending" in two frames and "Title to be confirmed"
-// under two names. `/what-we-know/` carries the roster-level gap as
-// `pending-executives` and names this page in its "Appears on" list.
+// THE PER-RECORD GAPS ARE ALL CLOSED (10 Sep 2026). This said "'Photograph
+// pending' in two frames and 'Title to be confirmed' under two names", and
+// there are now none of either: all five records carry a role and a portrait.
+// Both branches stay in the markup because the next supplied record may need
+// them, and a record can only go without a portrait on purpose — see
+// `portraitPending` in `leadership.ts`.
+//
+// One gap on this route survives, and it is per-record too: the "On India"
+// chip on `/about-us/leadership/senthil-kumar`. `/what-we-know/` carries it as
+// `pending-india-note` and names this page in its "Appears on" list. That
+// entry replaced `pending-executives`, which had gone false — see the note in
+// `claims-ledger.ts`.
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
@@ -223,12 +231,14 @@ export default function LeadershipPage() {
           Akshar Byonyks team" section — heading, the "one name is published
           above" line, the pending note and the link back to /about-us.
 
-          The gap it declared is not lost. `/what-we-know/` carries it as
-          `pending-executives`, sourced from `claims-ledger.ts`, and that entry
-          names this page in its "Appears on" list — so the roster page still
-          says which company each person works for, and the site still publishes
-          the fact that the Akshar Byonyks roster is incomplete. What went is
-          the section that said it twice. */}
+          The gap it declared is not lost, though what remains of it is smaller
+          than it was. `/what-we-know/` carried it as `pending-executives`
+          until 10 Sep 2026, when that entry was replaced: its sentences had
+          gone false — four Akshar Byonyks people are published, not three, and
+          every one of them now has a title and a portrait. The surviving gap
+          on this route is `pending-india-note`, which names this page in its
+          "Appears on" list. The roster page still says which company each
+          person works for. What went is the section that said it twice. */}
 
       <CtaBand
         heading="Talk to Akshar Byonyks"

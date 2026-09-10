@@ -220,12 +220,43 @@
   body {
     @apply bg-background text-foreground;
     /* A heading like "Specification" at 200% text on a 320px viewport, or a
-       footer label like "Grievance Redressal" in a narrow column, is a single
-       word wider than its container. Without this it paints outside the box
-       and the overflowing half is simply clipped — WCAG 1.4.4 requires text to
-       reach 200% without loss of content. `break-word` only breaks a word that
-       would otherwise overflow, so normal typography is untouched. */
-    overflow-wrap: break-word;
+       footer label like "Grievance Redressal" in a narrow column, or the
+       contact address `vishnu@aksharbyonyks.com` anywhere, is a single
+       unbreakable run wider than its container. Without this it paints outside
+       the box and the overflowing half is simply clipped — WCAG 1.4.4 requires
+       text to reach 200% without loss of content.
+
+       `anywhere`, NOT `break-word`, AND THE DIFFERENCE IS THE WHOLE POINT
+       (10 Sep 2026). This rule said `break-word` from the day it was written,
+       and `break-word` only half-solves what the paragraph above describes.
+
+       The two values break lines identically. They differ in ONE respect: the
+       soft wrap opportunities `break-word` introduces are NOT counted when the
+       browser computes an element's min-content size, and `anywhere`'s ARE.
+       So under `break-word` the long word does wrap visually — and the box
+       around it is still sized to the whole unbroken word, because that is
+       still its min-content width. Anything sized to fit its content then
+       blows out, and takes the document with it.
+
+       Measured at 320px with 200% text, before this change: SEVEN routes
+       pushed the document wider than the viewport — /products at 360px on the
+       word "specification?", and /contact, /hi, /privacy-policy, /terms-of-use
+       and /accessibility at 475-500px, all on the contact email address. That
+       is a horizontal scrollbar on a reflow-sized viewport, which is the
+       WCAG 1.4.10 failure this rule was written to prevent and did not.
+
+       Scoping it to headings was tried and fixed exactly one of the seven; the
+       rest are not headings. It belongs on `body`, where it always was.
+
+       THE COST WAS MEASURED, NOT ASSUMED. `anywhere` changes intrinsic sizing
+       site-wide, which could in principle shrink anything deliberately sized
+       to its content — a table column, a chip, a `w-fit` box. Every element's
+       bounding box was compared with and without it across eleven routes at
+       390px and 1280px at normal text size: not one differed. It only acts
+       when a box would otherwise be forced wider than the space it has, which
+       is precisely the case this rule exists for. Normal typography is
+       untouched, as before. */
+    overflow-wrap: anywhere;
   }
   html {
     @apply font-sans;

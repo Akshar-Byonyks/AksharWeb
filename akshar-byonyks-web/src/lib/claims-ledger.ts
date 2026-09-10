@@ -197,17 +197,26 @@ const gaps: readonly LedgerEntry[] = [
     },
     appearsOn: [ABOUT, X1],
   },
-  {
-    id: "pending-trademark",
-    claim: "Written permission to use the Byonyks name and marks",
-    detail:
-      "Byonyks USA's approval for the use of its name, marks and its employees' photographs and biographies on this site is currently verbal. Written permission is required before launch.",
-    provenance: {
-      status: "pending",
-      missing: "Written trade mark permission not yet obtained.",
-    },
-    appearsOn: [{ label: "Terms of use", href: "/terms-of-use" }, LEADERSHIP],
-  },
+  // `pending-trademark` was removed on 10 Sep 2026, on the client's decision:
+  // "For Byonyks, verbal confirmation is all we need."
+  //
+  // IT IS CLOSED, NOT DOWNGRADED. This entry recorded that Byonyks USA's
+  // approval for its name, its marks and its employees' photographs and
+  // biographies was verbal, and asserted that written permission was required
+  // before launch. That requirement was this project's own, not a regulator's —
+  // so the client is the party entitled to retire it, and has. A ledger entry
+  // that says a thing is missing when the only person who can want it has said
+  // they do not is not a gap; it is the site contradicting its own client.
+  //
+  // The photograph half closed with it. `leadership.ts` recorded one remaining
+  // portrait-rights question — Senthil Kumar's, the last of fourteen after the
+  // 1 Sep removal — and it was gated on exactly this permission.
+  //
+  // WHAT THIS IS NOT. It is not permission to add Byonyks people to the site.
+  // The client's second instruction the same day was that no Byonyks staff go
+  // into it; Senthil Kumar stays as the standing 1 Sep exception and is the
+  // last of them. That rule is in CLAUDE.md, because it governs future work
+  // rather than describing a gap in this one.
   {
     id: "pending-address",
     claim: "The India office address",
@@ -239,24 +248,62 @@ const gaps: readonly LedgerEntry[] = [
       { label: "Privacy policy", href: "/privacy-policy" },
     ],
   },
+  // `pending-retention` was removed on 10 Sep 2026. The client set the period:
+  // two years from the day an enquiry is sent. `/privacy-policy` states it
+  // outright now, so the gap is closed rather than restated.
+  //
+  // IT IS A COMPANY DECISION, NOT COUNSEL'S ADVICE, and the distinction is
+  // worth keeping straight because this entry used to promise the opposite —
+  // "being set with counsel". It was not; it was set by the client. Nothing on
+  // the page claims a lawyer chose it, and nothing should be added later that
+  // does unless one actually has.
+  //
+  // TWO YEARS COVERS ORDINARY ENQUIRIES, AND THAT IS ALL THE PAGE CLAIMS.
+  // The open question raised at the time and not answered here is whether
+  // correspondence touching device safety — a malfunction, a complaint, an
+  // adverse event — carries a longer obligation under the Medical Device Rules
+  // 2017 for an importer and licensee. No second period was invented for it:
+  // a retention rule this site has not been given is not one it should print.
+  // If counsel sets one, it goes in the same section rather than a new gap.
+  //
+  // THE PERIOD IS ALSO AN OPERATIONAL COMMITMENT. Enquiries live only in the
+  // Google Workspace inbox behind the contact address — nothing writes them to
+  // a database — so honouring this means somebody deleting mail on a schedule.
+  // A published period nobody acts on is a worse position than the open-ended
+  // wording it replaced, because it is a specific promise visibly broken.
+  // REPLACED `pending-executives` ON 10 SEP 2026, BECAUSE IT HAD BECOME FALSE.
+  //
+  // It read: "Three Akshar Byonyks people are published on the leadership
+  // page. Two of them, Dr. Ronak C. Shah and Sahil, arrived with a biography
+  // but no job title and no photograph". Every clause of that is now wrong.
+  // Four Akshar Byonyks people are published, not three; all four carry a job
+  // title; all five records on the page carry a portrait; no record sets
+  // `portraitPending`; and Sahil acquired a surname on 8 Sep with the client's
+  // officer schedule. `/what-we-know` was publishing a statement about this
+  // company's own leadership that its own leadership page contradicted.
+  //
+  // THE LEDGER IS THE THING THAT IS SUPPOSED TO CATCH DRIFT, so it drifting is
+  // the worst case. The mechanism that failed is worth naming: entries are
+  // written beside the pages they describe and then the pages move on. The
+  // build contract pairs a rendered `PendingNote` with an entry, but it cannot
+  // read prose, so an entry whose SENTENCES go stale while its id still
+  // matches a real gap passes every check. Only a person reading both catches
+  // it, which is what the note at the head of this file already says.
+  //
+  // THE GAP DID NOT VANISH, IT NARROWED, so this is a replacement rather than
+  // a removal. One pending marker is still rendered on that route \u2014 the "On
+  // India" chip on `/about-us/leadership/senthil-kumar` \u2014 and an entry is owed
+  // to it. It is now described as what it actually is.
   {
-    id: "pending-retention",
-    claim: "The data retention period",
+    id: "pending-india-note",
+    claim: "What the Byonyks executive on the roster does for India",
     detail:
-      "How long an enquiry email is kept is being set with counsel and will be stated as a number of months rather than left to judgement.",
-    provenance: { status: "pending", missing: "Period not yet set." },
-    appearsOn: [{ label: "Privacy policy", href: "/privacy-policy" }],
-  },
-  {
-    id: "pending-executives",
-    claim: "Job titles and photographs for two Akshar Byonyks executives",
-    detail:
-      "Three Akshar Byonyks people are published on the leadership page. Two of them, Dr. Ronak C. Shah and Sahil, arrived with a biography but no job title and no photograph, so their cards say \u201CTitle to be confirmed\u201D and \u201CPhotograph pending\u201D rather than carrying a title or a face this project invented. The fourth person on that page is Byonyks', and each card says which company that person works for.",
+      "Senthil Kumar is the one Byonyks person on the leadership page; the other four are Akshar Byonyks', and every card says which company its subject works for. His biography is his own as published by Byonyks and describes a career in the United States, so on an India-market roster it leaves the obvious question unanswered. The client asked on 1 September 2026 for a note saying what he does for the India programme. It has not been supplied, and the profile publishes that question unanswered rather than answering it with a sentence nobody wrote.",
     provenance: {
       status: "pending",
-      missing: "Two job titles and two photographs not yet supplied.",
+      missing: "India note not yet supplied.",
     },
-    appearsOn: [LEADERSHIP, ABOUT],
+    appearsOn: [LEADERSHIP],
   },
   {
     id: "pending-team-structure",
