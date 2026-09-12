@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
+import { createScrub } from "@/components/motion/scrub";
 import { cn } from "@/lib/utils";
 
 // Added 26 Aug 2026, replacing the treatment-rhythm figure that shipped earlier
@@ -321,13 +322,24 @@ export function TwoPaths() {
     // that actually defines the scroll range; only the host changed.
     const host = track.closest("section") ?? track;
 
+    // Scrubbed with a catch-up rather than written straight from the scroll
+    // offset -- see `scrub.ts`. This band has the longest range of the three
+    // (140vh, ~1300px) so it was the least affected, but a scene whose
+    // neighbours ease and which itself cuts is worse than either treatment
+    // applied consistently.
+    const scrub = createScrub((value) =>
+      host.style.setProperty("--p", value.toFixed(4)),
+    );
+
     let ticking = false;
-    const update = () => {
-      ticking = false;
+    const progress = () => {
       const rect = track.getBoundingClientRect();
       const total = rect.height - window.innerHeight;
-      const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 1;
-      host.style.setProperty("--p", p.toFixed(4));
+      return total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 1;
+    };
+    const update = () => {
+      ticking = false;
+      scrub.set(progress());
     };
     const onScroll = () => {
       if (!ticking) {
@@ -335,6 +347,7 @@ export function TwoPaths() {
         requestAnimationFrame(update);
       }
     };
+    const onResize = () => scrub.jump(progress());
 
     // Listeners only while the band is on screen, the same discipline the
     // silhouette edge uses: a section nobody has scrolled to should not cost a
@@ -344,10 +357,10 @@ export function TwoPaths() {
         if (entry.isIntersecting) {
           update();
           window.addEventListener("scroll", onScroll, { passive: true });
-          window.addEventListener("resize", onScroll);
+          window.addEventListener("resize", onResize);
         } else {
           window.removeEventListener("scroll", onScroll);
-          window.removeEventListener("resize", onScroll);
+          window.removeEventListener("resize", onResize);
         }
       },
       { rootMargin: "10% 0px" }
@@ -356,8 +369,9 @@ export function TwoPaths() {
 
     return () => {
       io.disconnect();
+      scrub.stop();
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("resize", onResize);
       // Hand the section back its default. A resize that un-pins the figure
       // would otherwise strand the ground at whatever dusk it had reached,
       // while the figure itself jumps to its finished state.

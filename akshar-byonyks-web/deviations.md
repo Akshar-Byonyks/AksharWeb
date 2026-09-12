@@ -1977,3 +1977,741 @@ Claims: 38 to 37.
 ### Still unestablished, and deliberately not asserted either way
 
 Whether four *is* the complete Akshar Byonyks leadership roster. Open Questions 1.4 asked for five executives, and the removed entry was originally carrying a roster-level "incomplete" claim alongside the per-record ones. Nothing in this repo establishes that the roster is short, and inventing an "incomplete" claim would repeat the error just fixed in the opposite direction. It is a question for the client, not an entry.
+
+---
+
+## 31. The market page now says Akshar Byonyks manufactures the X-1, and the rest of the site does not (11 Sep 2026)
+
+**Where:** `src/lib/claims.ts` (`indiaManufactureAndLicence`), `src/components/market/timing-and-licensing.tsx`.
+
+### What the project's own rules say
+
+`claims.ts` opens with three non-negotiables carried from PRODUCT.md. The third: **"Never describe Akshar Byonyks as the manufacturer unless and until it manufactures. Manufacturing attributes to Byonyks generically, never to a country (spec F-1, resolved 20 Aug 2026)."** Everything else in the repository agrees with it:
+
+- `manufacturingStatement` — "The X-1 is manufactured at a Byonyks ISO 13485 certified facility." Rendered on `/products/the-x1-cycler`.
+- `compliance.ts` — the ISO 13485 entry sits in the **company-stated** register, attributed to Byonyks, with no certificate number, no issuing body and no expiry.
+- The FDA's own record for K243371 names **Byonyks Pvt, Ltd.** as the applicant.
+- `locations.ts` publishes **no Akshar Byonyks facility at all** — its register is one Byonyks head office and two announced, unopened India hubs whose function `compliance.ts` is explicit must not be described as manufacturing until the CDSCO licence route is settled.
+
+### What shipped instead
+
+Client instruction, verbatim: *"In On what authority, merge the manufactured and licensed boxes. X1 is manufactured at an AKSHAR byonyks site with Akshar byonyks being in charge of everything. Should be no mention of byonyks."*
+
+The `/innovation/market/` "On what authority" band went from four boxes to three. The merged box reads:
+
+> **Manufactured and licensed** — Akshar Byonyks International LLC manufactures the X-1 at its own ISO 13485 certified site and is responsible for the device in India end to end: manufacture, supply, regulatory filing and clinical support.
+
+### What stayed true regardless, and why the scope is one band
+
+- **Nothing else was rewritten.** The instruction named that band. `manufacturingStatement`, the compliance register, the specification table's "Designed and manufactured by: Byonyks" row, the products hero and the leadership hero are untouched. A reader who moves from `/innovation/market/` to `/products/the-x1-cycler/` therefore meets two different answers to "who makes this", and that is a live inconsistency, not a resolved one.
+- **The clearance box still names Byonyks, and must.** `usRegulatoryStatement` ends "held by Byonyks, not by Akshar Byonyks". That is what the FDA's register says. Rule 1 — never state or imply Akshar Byonyks holds the clearance — was not relaxed to satisfy "no mention of byonyks", because doing so would put a false statement about a public record on a medical-device site. This is the one part of the instruction that was not applied, and it was not applied deliberately.
+- **No certificate backs the new sentence.** The ISO 13485 certificate number has never reached this project for *either* company.
+
+### What closes this
+
+The Akshar Byonyks ISO 13485 certificate. When it arrives it goes into `compliance.ts` as its own credential, `manufacturingStatement` changes with it, the specification table's attribution row changes with it, and `indiaManufactureAndLicence` stops being a special case. Until then this entry is the record that one page disagrees with the other four on a question a procurement officer will check.
+
+---
+
+## 32. Searching KDIGO for the four benefit references changed three of the four claims (11 Sep 2026)
+
+**Where:** `src/components/innovation/pd-benefits.tsx`, `src/lib/claims-ledger.ts` (`pending-benefit-references`).
+
+### What the spec says
+
+§9.2 asks `/innovation/how-it-works/` to carry "the four benefits, each with a supporting reference." The section shipped with four visibly empty reference slots, on PRODUCT.md's third principle — "evidence before claims — no statistic ships without a source and a date; an unsourceable claim gets cut, not softened."
+
+### What shipped instead
+
+Client instruction: *"For reference citations, search at https://kdigo.org/."* Searching it settled two things before a single citation was placed.
+
+**First, what KDIGO publishes.** KDIGO has **no clinical practice guideline** on dialysis modality, peritoneal dialysis, or the peritoneal membrane — its guideline programme is anaemia, blood pressure, CKD evaluation, CKD-MBD, diabetes, glomerular disease, heart failure, hepatitis C, lipids, AKI, ADPKD and transplantation. Everything KDIGO says about PD is in **Controversies Conference reports**, so those are what is cited, and the page describes them as conference conclusions rather than as recommendations.
+
+**Second, that two of the four claims said more than KDIGO will say, and one said the opposite.**
+
+| Claim | What KDIGO says | What changed |
+|---|---|---|
+| Protects the peritoneal membrane | Nothing. The closest statement is the inverse framing: a peritoneum "damaged through surgery or inflammation" is an **absolute contraindication** to PD (2023 home dialysis report). | **Still uncited.** The page says KDIGO publishes nothing on this and that a reference has to come from elsewhere. Citing the contraindication line under this heading would be the citation contradicting the claim above it. |
+| Lower total cost of being treated | PD costs are generally lower than in-centre HD, "but this tends to be truer in high-income regions"; in several countries PD costs **more**, "often because of the high costs of consumables", and "local manufacturing of PD fluid reduces shipping and tariffs" (2023). The 2019 report names the same reversal for "countries with no local manufacturing of peritoneal dialysis fluids or with tariffs on importing peritoneal dialysis supplies." | **Qualified on the page.** The single most useful finding of the search for this site: the qualification is about imported consumables, which is India. An India-market page printing the unqualified claim over a source that names the reversal would be citing a paper it had not read. |
+| Supports residual kidney function | Preserving RKF "is important and should be a goal for all clinicians and dialysis patients", but the evidence comparing its decline across modalities is "small, mostly single-center, observational studies from more than 2 decades ago" and "not robust enough to suggest one modality is favorable over another" (2019). | **Reversed.** It read "Home peritoneal dialysis is associated with preserving residual renal function for longer than in-centre hemodialysis." KDIGO explicitly declines that comparison. It now describes what the prescription is managed around — fewer exchanges while function lasts — which is what KDIGO does state. |
+| Clears acid and toxins → **Clears waste and excess fluid** | Small solute clearance is a floor, not the whole measure: keep to "accepted minimums for small solute removal", while adequacy is judged on residual function, volume status, nutrition, symptoms and the patient's goals (2019). | **Retitled and corrected.** "Toxins" is not a term either report uses, and the old body said the cycle removes what builds up "in the dialysate" — which has it backwards; the dialysate is what waste crosses *into*. |
+
+### What stayed true regardless
+
+- **No claim was softened to fit a citation, and no citation was fitted to a claim.** Where KDIGO is silent the slot stays pending and says why; where KDIGO is narrower than the claim, the claim moved.
+- **Every reference links to KDIGO's own PDF**, not to the journal. Both were fetched and read on 11 Sep 2026; `kidney-international.org` and PubMed both refuse an automated fetch, and a citation a reader cannot open is not a citation.
+- **`pending-benefit-references` narrowed rather than closed.** No nephrologist has reviewed any of the four, which is the half of that entry a citation cannot discharge.
+
+### Still outstanding
+
+A reference for the peritoneal-membrane claim. ISPD — which does publish PD-specific guidance, including on solutions and membrane assessment — is the obvious place to look next, and was out of scope here because the instruction named KDIGO.
+
+---
+
+## 33. The navbar's layout animation was measuring against page scroll (11 Sep 2026 — the diagnosis held, the fix did not; see 40)
+
+**Where:** `src/components/ui/animated-nav.tsx`.
+
+### The report
+
+"When opening a byotalk page, the navbar has a bug that makes it enter in the middle of the screen and goes up vertically in position."
+
+### What it actually was
+
+Not a ByoTalks bug. Every route, and ByoTalks is simply the easiest place to trigger it — `/byotalks` is a long index and the session links sit near the bottom, so the reader is always deep in the page when they click.
+
+The capsule carries `layout="position"`. Motion's layout projection measures an element in **page** coordinates: viewport rect plus scroll offset. That is correct for an element in normal flow and wrong for a `position: sticky` one, whose page coordinate moves with the scroll while its painted position does not. On a client-side navigation from 2400px down `/byotalks`, Motion measures the bar at page-y 2400 before the route change and at page-y 0 after Next resets the scroll — a 2400px delta nothing visible travelled through. It then animates the bar from 2400px below its destination up to it, clamped into view by the scroll reset: the bar appears partway down the screen and travels upward.
+
+### The fix that was shipped, and did not work
+
+`layoutRoot` alone on the sticky `<header>`. **It was inert.** Motion documents `layoutRoot` as a modifier on a node that is itself a layout node, and this header had no `layout` prop, so it never became a projection node and there was nothing for the capsule to resolve against. Corrected on 12 Sep 2026 — see deviation 40.
+
+**This shipped unverified**, on the stated ground that no browser automation was available in the session. Playwright was in `node_modules` the whole time. The entry below is the one with measurements in it.
+
+---
+
+## 34. Six client answers, four launch gates closed, and one that only looked closed (11 Sep 2026)
+
+**Where:** `src/lib/site-config.ts`, `src/lib/locations.ts`, `src/lib/claims.ts`, `src/lib/claims-ledger.ts`, `src/lib/about.ts`, `src/lib/compliance.ts`, `/contact`, `/locations`, `/privacy-policy`, `/terms-of-use`, `/grievance-redressal`, `/products`.
+
+Eight outstanding questions were put to the client and six came back with something usable. This entry records what each answer changed, and — the part worth reading — the two places where the obvious reading of an answer would have been wrong.
+
+### What closed
+
+| Gap | Answer | Where it landed |
+|---|---|---|
+| `pending-address` — the India office address, Open Question 1.1 and a §14.4 launch gate carried since the first build | C/O Rashmin Gandhi, M34 Medical Devices Park, Sultanpur Village, Patancheru, Telangana 502319, and a +91 mobile | `siteContact`'s new `indiaOffice`, rendered on `/contact`, `/locations`, `/privacy-policy` and `/terms-of-use` |
+| `pending-grievance-officer` — a named officer, required by the DPDP Act 2023, launch-blocking | "Grievance officer can be Rashmin Gandhi" | `grievanceOfficer`, rendered on `/grievance-redressal` and `/privacy-policy` |
+| `pending-licence-scope` — exclusivity, territory, product scope | "License is exclusive to India covers all machines. X2 and X2,3 as well." | `licenceScope` in `claims.ts`, rendered on `/products` and in the `/about-us` milestone |
+| `pending-india-hubs`, the completion-date half | Summer 2027 for Hyderabad, Late 2027 for Ahmedabad | `expectedCompletion` on both `locations.ts` rows, with a matching field on the parked `indiaHubs` record |
+
+`indiaLicensing.asOf` also moved from 1 to 11 September, because "CDSCO in progress" is a reconfirmation of the status and that field is labelled "Status as of" on both pages that print it.
+
+### The address came back onto `/locations`, which its own source file had pre-authorised
+
+The Bengaluru row went on 1 Sep, its "coming soon" replacement on 2 Sep, and for nine days every row on that page was a Byonyks site. `locations.ts` recorded the consequence and the condition for reversing it in the same note: *"the day the India office has a published address it belongs back on this page."* It does, and it leads the register — `byIndiaFirst` preserves array order, so being first in the array puts it first on the page, which is the right answer to a reader who came to a locations page asking where **this** company is.
+
+**One thing broke on the way, and it is the kind that ships.** The card's image footnote was `Byonyks · ${kind}` / `"Byonyks · no image published"` — two hardcoded strings, correct for as long as every row was Byonyks'. Our office has no photograph, so the card would have printed **"Byonyks · no image published" under Akshar Byonyks' own address**, on the one page whose entire job is keeping the two companies apart. Spec §3.1's first non-negotiable, defeated by a caption. It reads `location.entity` now.
+
+### The two answers that do not mean what they look like
+
+**1. An address is not a registered office.** "C/O Rashmin Gandhi" is a correspondence address at a third party's premises, and the same round of questions returned *"Not sure about indian LLP yet"* — so there may not yet be an Indian entity for a registered office to belong to. Three pages turn on that distinction and they are now split accordingly:
+
+- `/contact`, `/privacy-policy` and the locations register want *where to reach this company*. They get the address, no caveat, no pending note. `/contact` now carries **no pending note at all**, a first for this site.
+- `/terms-of-use` prints the address under "Where to reach us" — deliberately not "our registered office" — and **keeps its jurisdiction pending note**, narrowed to the surviving gap: the seat of the courts follows from a registered office that does not exist yet.
+- The `Organization` structured data on `/about-us` and `/locations` is still withheld. The reason changed rather than disappeared: a crawler reads `PostalAddress` as the seat of the company, which is the one thing the terms still mark pending. Both source comments were rewritten rather than left to go stale.
+
+This is enforced in data, not in prose: `indiaOffice.isRegisteredOffice` is `false`, and flipping it is the commit that changes `/terms-of-use`.
+
+A new ledger entry, `pending-india-entity`, carries what `pending-address` did not.
+
+**2. "Can be" is a designation, not a confirmation.** The client wrote *"Grievance officer can be Rashmin Gandhi."* That is published as the appointment, because the alternative was worse — leaving a launch-blocking note saying nobody had been appointed, after the client named somebody, would be the site contradicting its own client on a legal page. The exact wording is recorded on the constant, and `grievanceOfficer` is the single place to change if the appointment is not final. The profile and photograph the client is sending are for the leadership roster; the DPDP Act asks for a name and contact details, and neither page renders a portrait.
+
+### What the dates do not settle
+
+The client called Hyderabad and Ahmedabad "offices". The site keeps Byonyks' published **function** for both — dialysate manufacturing and distribution, tubing sets and machine assembly — because only the date was being answered, and the two are different claims. A completion date says when a building is finished; it says nothing about what it will be licensed to do, and `compliance.ts`'s standing constraint is that neither may be called a manufacturing facility until the CDSCO route is settled, because that route decides which licence form applies. `pending-india-hubs` was reframed from "completion dates" to "what the hubs will be licensed to do" — same id, so the routes it is attached to keep their entry.
+
+Every rendered date carries the word **Expected**, and both cards repeat it in a sentence. A date on a medical-device site is read by procurement as a supply date.
+
+### Still open after this round
+
+X-1 specifications (battery runtime, dimensions and weight, fill volume, cycle programming — "will get you specs on X1 soon from Byonyks"), X-2/X-3 specifications ("TBD"), the Indian LLP decision, the CDSCO confirmation itself, the two additional Akshar Byonyks leadership records, and Rashmin Gandhi's profile and headshot.
+
+Claims: 37 to 36.
+
+## 35. Two leadership records, one of them with no biography at all (11 Sep 2026)
+
+**Where:** `src/lib/leadership.ts`, `src/app/about-us/leadership/[slug]/page.tsx`, `public/images/leadership/`.
+
+### What the spec says
+
+§9.5 wants the roster consistent — same backdrop, same crop, same lighting — and `leadership.ts` has refused since it was written to publish a biography this project wrote about a real person.
+
+### What shipped instead
+
+Two records arrived on the same afternoon and they were opposite cases.
+
+**Dr. Rashmin Gandhi** came complete: a named role (India Division Lead), a six-paragraph biography, and a portrait. Carried word for word, `suppliedBy` and `retrieved` set.
+
+**Dr. Yogesh Tank** came as a name, post-nominals and a photograph, with "No description yet". Holding a whole person off the roster until a paragraph exists is the wrong trade, and writing a placeholder biography is the one thing `leadership.ts` exists to prevent — so `bio` became optional, gated by a new `bioPending` flag, with the same shape as `portraitPending`: a missing biography **fails the build** unless the record declares the absence. The profile page gained a third pending state to go with "Title to be confirmed" and "Photograph pending".
+
+**No title was inferred from "MD".** It says he is a physician; it does not say what he does at this company. Dr. Shah's record already carries the cost of that guess — "nephrologist" would have been read straight out of his own biography and would have been wrong, because he is Secretary.
+
+### The one open question, and it is about a real person's credentials
+
+Two different sets of post-nominals were supplied for Dr. Gandhi. The client's covering line reads "Rashmin Gandhi, MD". The supplied profile's own signature line reads "Dr. Rashmin Gandhi, FRCS (Edinburgh), FRCS (Glasgow)", and the biography corroborates that pair in prose. **Nothing in the supplied text mentions an MD.**
+
+All three are published, because every alternative involves this project deciding which of a real clinician's stated credentials to drop: removing the MD edits the client's own line about their own person, and removing the FRCS pair discards the qualifications the biography evidences. **If the MD is wrong it should be corrected rather than left.** A medical degree somebody does not hold is a misstatement about a real person on a medical device site, and it is flagged for that and not for tidiness.
+
+### Three roles, one person, deliberately not merged
+
+Dr. Gandhi is the India Division Lead on the roster, the named Grievance Officer under the DPDP Act, and the care-of name on the India office address. `/grievance-redressal` links to his profile so a complainant can see who they are writing to. His card says "India Division Lead" because that is his job; running the statutory appointment into it would make a legal function read as a job title.
+
+### What this closed on its own
+
+The headcount. `/about-us` and the roster page compute from the data, so "6 people at Akshar Byonyks, and one colleague at Byonyks" became true when the sixth record landed rather than by anyone typing a 6. The stale prose around it did **not** self-correct and was fixed by hand: the counts in `leadership.ts`'s header and `leadershipStatus` in `about.ts`, which still described "three Akshar Byonyks people, two without a title or photograph". That is deviation 30's failure mode, in the same file deviation 30 is about.
+
+---
+
+## 36. The benefit references left the page the week they arrived (11 Sep 2026)
+
+**Where:** `src/lib/pd-benefits.ts` (new), `src/components/innovation/pd-benefits.tsx`, `src/lib/market-data.ts`, `src/lib/claims-ledger.ts`, `scripts/generate-sources.mjs`.
+
+### What the spec says
+
+§9.2: `/innovation/how-it-works/` carries "the four benefits, each with a supporting reference."
+
+### What shipped instead
+
+Client instruction: *"In innovation page, References should be placed in seperate document with the rest of the sources."*
+
+This is the **same instruction the 3 Sep pass acted on** when it took the citations off `/innovation/market` — visible sourcing comes off the pages, nothing is deleted from the data, `SOURCES.md` is where the evidence is read. Deviation 32 had put the KDIGO references onto the page one day earlier; they came off the next.
+
+**The mechanism, not a deletion.** `marketSources` gained the two KDIGO reports as `kind: "research"`, which is the existing switch that decides what renders: register sources are still linked on the site, research sources are recorded only in `SOURCES.md`. The generator walks that array, so registering them there is what makes "with the rest of the sources" literal rather than a figure of speech.
+
+**The claims data moved out of the component into `src/lib/pd-benefits.ts`.** `claims-ledger.ts` is what `SOURCES.md` is generated from, and it cannot import a component without dragging React into a Node script. So the four claims now live where the page and the ledger both read them — the pattern `locations.ts`, `compliance.ts` and `market-data.ts` already follow, and the reason `claims-ledger.ts` opens by saying "THIS FILE DERIVES; IT DOES NOT RESTATE."
+
+### Three contracts, because the evidence is no longer visible
+
+While a reference sat under its claim, a missing one was visible to anyone who opened the page. It is now visible only in a generated file nobody opens on a normal day, so the build is the only thing left that will notice. `pd-benefits.ts` throws at module load for:
+
+- a claim with **neither** a source nor a declared gap — a health claim with no evidence and nothing saying so;
+- a claim with **both** — a record contradicting itself about whether it knows something;
+- a claim citing a source **without a note saying what that source concludes.**
+
+The third is the one that matters most, and it is the failure this whole change could have been. On three of these four the source concludes something *narrower* than the sentence above it; one of them reverses what the claim used to say. A bare source id would survive the type checker, generate a tidy-looking `SOURCES.md` row, and lose the only part of the citation that qualifies the claim.
+
+### `pending-benefit-references` split in two, and the id changed
+
+It was one entry carrying two different gaps: that the four claims had no citations, and that no nephrologist had read them. The first is now three derived `published` entries and one derived `pending` entry for the peritoneal-membrane claim — a gap belongs in the data once the data can express it. What is left is `pending-benefit-review`, the half a citation cannot discharge. The id changed because the claim did; keeping a label about references over a record that no longer mentions them is deviation 30's failure mode.
+
+**Ledger: 37 claims to 41. Sources: 6 to 8.**
+
+### What did not quietly revert
+
+The three sentences deviation 32 rewrote to match what KDIGO actually supports. That is worth stating because the opposite would have been easy and invisible: with no citation rendered beneath them, the softened claims could have been restored to their stronger originals and nothing on screen would have contradicted them. **The sources did not stop applying when they stopped being displayed.**
+
+### One heading changed, because it had stopped being true
+
+"Four benefits, and their references" became "Why it is offered", and the lead paragraph promising to set the claims against KDIGO's conclusions went with it. A page cannot announce references it does not show.
+
+---
+
+## 37. The home-therapy photograph now has an Indian subject, and three questions came with it (11 Sep 2026)
+
+**Where:** `public/images/x1-in-home-india.jpg` (new), `public/images/x1-in-home.jpg` (deleted), `src/components/innovation/by-hand-or-machine.tsx`.
+
+### What the spec says
+
+PRODUCT.md is emphatic that content is India-specific and that material which does not transfer gets **replaced rather than kept for volume**.
+
+### What shipped instead
+
+The client supplied a replacement for the one image that had been failing that rule since 28 Aug 2026: Byonyks USA's own living-room photograph of the X-1, whose subject was a white Western man. `public/images/README.md` had recorded that this flag "is closed by commissioning a photograph, not by anyone approving one." A photograph is what closed it — the same room, the same device, the same framing, an Indian subject.
+
+### Three things the swap did not close, all of them the client's
+
+1. **The DMR Act 1954 sign-off does not travel.** The client confirmed sign-off on 10 Sep 2026 **for the old file**. This one depicts a person with a medical device in a therapy context in the same way, and this repo's own rule — written against `clinic-ward-kolkata.jpg` — is that an approval is given for an image and every new instance starts flagged. Probably a formality after the 10 Sep decision. Not this project's formality to complete.
+2. **Nobody has said who took it, so the caption stopped saying.** It read "The X-1 in a home, photographed by Byonyks", which was true of the file it described — that one came from `byonyks.com/wp-content/uploads/2025/07/`. This one did not; checked 11 Sep 2026, the only version of the scene byonyks.com serves is still the original. An attribution is not something to carry over to a file it may not describe. **If Byonyks did shoot it, the line should go back on.**
+3. **How this scene comes to exist twice over is not recorded.** One set dressed and shot with two subjects is an ordinary explanation. So is a commissioned re-shoot. A third is that the frame was derived from the Byonyks photograph rather than taken — and on a medical device site that is materially different from the other two, because it changes what the picture is evidence of and it bears on (1). **This project cannot tell which from the file:** no metadata survives, and at 1024px the usual tells are indistinguishable from downscaling. Asked, not assumed.
+
+   **A second frame arrived within the hour** — same subject, same set, a different and better composition, which replaced the first in place. That is consistent with a real shoot, since a derived single image does not usually come with alternates. It is **not** confirmation of one, and the question stands until the client answers it.
+
+### The cost, stated rather than hidden
+
+**1024×682, against the 1536×1024 it replaces.** The figure renders up to 1216 CSS px, so this is upscaled on a full-width desktop slot even at 1× and well short on any retina screen. Published anyway, because an India-specific subject at 1024px is worth more to this site than a non-Indian one at 1536px — that is PRODUCT.md's ordering, not a preference. **It was not upscaled to disguise the difference**, which would have invented a third of the pixels.
+
+**The second frame landed at 1024×682 as well, which settles where the ceiling comes from.** Two separate attachments from two separate sends arriving at exactly the same long edge is the chat client re-encoding, not the camera. **A larger original exists on the client's side and is worth asking for** — it is a one-line swap here and it removes the only real cost of this change.
+
+### Still open
+
+`clinicians-in-discussion.jpg` carries the same India-specificity flag and is untouched by this. One of the two the README named is now solved.
+
+---
+
+## 38. The company tag came off every leadership card and profile (12 Sep 2026)
+
+**Where:** `src/app/about-us/leadership/page.tsx`, `src/app/about-us/leadership/[slug]/page.tsx`, `src/lib/leadership.ts`, `src/lib/about.ts`.
+
+### What the spec says
+
+§3.1's **first non-negotiable** is that Akshar Byonyks and Byonyks are never blurred. The roster's own code carried this in block capitals: *"WITH THE HEADINGS GONE, THE PER-CARD COMPANY LABEL IS THE WHOLE DEFENCE … Do not remove that label to tidy the cards up."*
+
+### What shipped instead
+
+Client instruction: *"The tag under each person in leadership of Byonyks vs Akshatr Byonyks should be deleted."* Both instances are gone — the plum-railed mono line under the role on every roster card, and the same line on every profile hero.
+
+**The old comment was right about the risk and wrong about being the whole defence.** Checking before deleting is what found what else carries §3.1, and there were three things:
+
+| Still carries it | Where | Derived? |
+|---|---|---|
+| The counts sentence — "6 at Akshar Byonyks and 1 at Byonyks, the company that designs and manufactures the cycler" | Above the roster grid | Yes, from the records |
+| `worksFor` in the JSON-LD, and the per-profile meta description | Every profile page | Yes, from `organisation` |
+| "Portrait of Senthil Kumar, VP Business Development at Byonyks" | His portrait's alt text | **No** |
+
+The third is luck, not a mechanism, and the code now says so. Alt text on this roster is hand-written per record and **only two of the seven name a company at all** — the other five describe clothing and backdrop. It happens to be present on the one record where the distinction matters. It would not survive somebody rewriting his alt.
+
+### What was deliberately not done
+
+**`organisation` stays on the record and stays required.** All three survivors above read it, and deleting the field would have broken the JSON-LD and the meta descriptions — a far larger change than the one asked for. It is no longer printed, which is a different thing from no longer being true. The field's own documentation now carries the sharper version of the risk: a wrong value there is now a wrong value **no reader can see and correct for**.
+
+### Who actually loses something
+
+The sighted visitor who lands on a single card, or screenshots one, without reading the paragraph above the grid. That is the specific case the label existed for, and nothing replaces it. Senthil Kumar — the one Byonyks person, now among six of ours — is the record where that matters.
+
+### Stale prose fixed in the same pass
+
+Three sentences went false the moment the tag came off, and all three were about the tag:
+
+- The roster intro: *"Each card names the company that person works for."*
+- `leadershipStatus` in `about.ts`: *"Senthil Kumar's card is Byonyks', and says so."*
+- `leadership.ts`'s own header: *"printed on every card, printed on every profile."*
+
+Deviation 30 is the entry about exactly this failure mode, and this is the third pass in a week to hit it in these two files.
+
+---
+
+## 39. A LinkedIn mark on the roster card, and the nested-anchor problem it created (12 Sep 2026)
+
+**Where:** `src/components/common/linkedin-mark.tsx` (new), `src/app/about-us/leadership/page.tsx`, `src/lib/leadership.ts`.
+
+### What shipped
+
+Client instruction: put Vishnu Patel's LinkedIn on his leadership card next to his portrait, as a clickable logo rather than a pasted URL. His profile URL went onto his record; the mark renders on the card for **any** executive with a `linkedin` value, so Senthil Kumar's — transcribed from byonyks.com in August — now shows one too.
+
+### The structural problem, which is not cosmetic
+
+**The whole card is a single `<Link>` to the profile page.** An `<a>` inside an `<a>` is invalid HTML, and browsers recover from it by closing the outer anchor early — which would have silently broken the card's own link and left a tab stop pointing nowhere. Nothing would have looked wrong.
+
+So the mark is a **sibling** of the card link, absolutely positioned over the portrait's top-right corner, with the `<li>` made `relative` to be its containing block. That is the only arrangement in which both links work with a keyboard. Verified in the built HTML:
+
+```
+<li><a href="/about-us/leadership/vishnu-patel">…portrait, name, role…</a>
+    <a href="https://www.linkedin.com/in/…" target="_blank" rel="noopener noreferrer">…</a></li>
+```
+
+### Three decisions inside it
+
+- **The mark is an inline SVG, because lucide has no LinkedIn icon** — it dropped brand marks, and every other icon on this site is lucide.
+- **36px, which is the target size and the visible size at once.** WCAG 2.2 SC 2.5.8 asks for 24px minimum; the tile fills its box, so no invisible padding is doing the work. An icon-sized target would have been a link only a mouse could use.
+- **The accessible name is the person's, not "LinkedIn".** A screen reader listing the links on this page would otherwise read "LinkedIn" once per card with no way to tell them apart.
+
+### Revised hours later: the brand tile, and why the supplied PNG was not shipped
+
+It first went in as a monochrome glyph on a white disc — the disc because the backdrops on this roster run white to dark grey to a city skyline, so a bare glyph had no colour that stayed legible over all of them. The client then sent LinkedIn's blue tile and asked for **that image** to be the button.
+
+**The file itself could not be used, and the reason is not stylistic: the supplied PNG has no alpha channel.** Its background is opaque white and the blue tile sits inside a 9% white margin. Dropped onto a photograph — which is exactly where this button lives — it would have rendered as a white square with a blue square inside it.
+
+So the tile is reproduced as SVG, with its geometry measured off the supplied file rather than recalled:
+
+| Measured | Value | Note |
+|---|---|---|
+| Fill | `#0066C8` | Sampled from the flat interior. LinkedIn's current published brand blue is `#0A66C2`; the supplied file is a shade off it and the supplied file wins — it is what was asked for, and the difference is invisible at 32px. |
+| Corner radius | ≈23% of the side | Traced down the left edge of the arc. The generous "squircle" of the modern app icon, not the tighter older favicon radius. |
+
+The SVG was rasterised back to 280px and compared against the original before it shipped.
+
+**Two knock-on changes.** The white disc is gone — the tile brings its own opaque ground, which solves the legibility problem rather than working around it — replaced by a `ring-black/10` hairline that only shows against a pale corner. And hover is now opacity rather than hue, because every other link on this site shifts colour on hover and this one cannot: the colour is another company's trademark.
+
+**The fixed colours are the one deliberate exception to the palette on this site.** `linkedin-mark.tsx` records why: the value of a brand tile is that it is recognised before it is read, and recolouring it into this site's blues would destroy that and be wrong besides.
+
+### Not verified
+
+**That the URL resolves.** It was supplied by the client and is published as given; LinkedIn refuses automated requests, so nothing here confirms the profile exists or belongs to this person. The field's documentation now records why that matters more than it looks: a wrong LinkedIn is a link to **a different real person** under this person's name and face, which is why it must never be filled in from a search.
+
+### The profile page followed the same day
+
+It had kept a gold **"LinkedIn"** text label with a generic external-link chevron. The client asked for that to go and the tile to take its place, so both places a reader can meet this link now look like the same link. Two differences from the card, both deliberate: the tile is **40px rather than 36px**, because on a profile it is the only outbound link on the page and it sits in a hero at display sizes; and the hairline ring flips to `ring-white/20`, because this hero is on ink and `ring-black/10` would be invisible there.
+
+**The trade, named rather than glossed:** there is no longer a visible word "LinkedIn" anywhere on the site. The mark is recognised on sight by nearly everyone, and the accessible name still reads "Vishnu Patel on LinkedIn (opens in a new tab)" in full — but a reader who does not know the glyph now has nothing to read. The instruction was explicit about removing the word.
+
+`ExternalLink` left the import with it; it had no other use in that file. The JSON-LD `sameAs` is untouched.
+
+---
+
+## 40. The navbar fix, measured this time (12 Sep 2026)
+
+**Where:** `src/components/ui/animated-nav.tsx`.
+
+### Why there is a second entry
+
+Deviation 33 diagnosed this correctly and then shipped a fix that did nothing. The client reported the bug again, unchanged, against `/byotalks` **and** `/about-us/leadership`.
+
+Two separate failures, and the second is the one worth keeping:
+
+1. **`layoutRoot` without `layout` is inert.** Motion documents the two as a pair — `layoutRoot` modifies a node that is *itself* a projection node. The header had no `layout` prop, so it never became one, and the capsule below had nothing to resolve against.
+2. **It shipped unverified, and the stated reason was wrong.** Deviation 33 says "no browser automation was available in the session." **Playwright was in `node_modules` the whole time**, with Chromium and WebKit already installed. Nobody looked. A fix to a visual bug that nobody watched is a guess with a commit message.
+
+### What the measurement showed
+
+A Playwright trace sampling the bar's painted `top` every frame across a navigation, before the fix:
+
+| From | Depth | Vertical travel |
+|---|---:|---:|
+| `/byotalks` | 900 | 876px |
+| `/byotalks` | 2400 | 759px |
+| `/about-us/leadership` | 900 | 700px |
+| `/about-us/leadership` | 2400 | 682px |
+| `/news` | 1139 | 990px |
+| `/innovation/market` | 2400 | 1571px |
+| `/innovation/market` | 5000 | **4171px** |
+
+**It was never a ByoTalks bug, and it was never a two-page bug.** It is every route, and the drop is proportional to how deep the reader was — those two pages are simply long indexes whose links sit near the bottom, so a reader is always deep when they click. The trace catches it as a literal transform on the nav: `matrix(1, 0, 0, 1, 0, 681.8)` springing back to zero.
+
+The mechanism is exactly what deviation 33 described: Motion's layout projection measures in page coordinates (viewport rect + scroll offset), which is wrong for anything inside a pinned `position: sticky` ancestor, whose page coordinate moves with the scroll while its painted position does not. Next resets the scroll on navigation, so the before/after measurement differs by the whole scroll depth.
+
+### The fix
+
+`layout` **and** `layoutRoot` on the header, which is the documented pairing:
+
+```jsx
+<motion.div layout layoutRoot>   {/* parent resolves instantly */}
+  <motion.div layout />          {/* child measures relative to it */}
+</motion.div>
+```
+
+The header's own bogus scroll-sized delta now resolves instantly rather than tweening — invisible — and the capsule measures against the header rather than against the document, leaving only the real delta: the centre-to-right travel when the bar collapses.
+
+### What was verified, and how
+
+A regression script covering **12 navigation cases** — four routes at three scroll depths each — plus back-button scroll restoration, at three viewports, against both the dev server and a production `next start`:
+
+- **0px of vertical travel on every case**, against up to 4171px before.
+- **Back-navigation with scroll restoration**: 0px.
+- **Phone (390×844) and tablet (820×1180)**, where the chrome is different: 0px on the nav and 0px on the header itself.
+- **The animation the layout prop exists for still works**: the bar collapses from 733px wide to 48px, slides from left 354 to left 1376, passes through **32 intermediate horizontal positions** rather than jumping, and moves 0px vertically throughout.
+
+The script is in the session scratchpad, not the repo. **It should be in the repo** — this is the second time this bug has been "fixed", and the only thing that distinguishes this attempt from the last one is that something watched it.
+
+### The lesson, stated plainly
+
+Deviation 33's own closing line names the reproduction to run: "scroll to the bottom of `/byotalks`, click a session, watch the bar." Nobody ran it. **A visual bug is not fixed until something has watched it not happen.**
+
+---
+
+## 41. Site-wide audit of the navbar bug class (12 Sep 2026)
+
+**Where:** no code changed. This is the record of what was checked after deviation 40.
+
+### What was audited, and how
+
+Client instruction: check that no other link that leads to a new page has the same or a similar problem. The detector is deliberately general rather than looking for the navbar — after every navigation it samples **every element in the document** for ~900ms and flags two things:
+
+1. **Phantom transform** — any element holding a translate over 24px that is gone by the end of the window. That is this bug's signature: a displacement nothing visible moved through.
+2. **Chrome drift** — the banner, the primary nav or the footer changing painted position by more than 8px after the route has changed.
+
+**The detector was validated against the broken component first.** Run with the fix reverted, it produced 30 findings, up to 5788px. A clean result from an unvalidated detector proves nothing — which is the mistake deviation 40 exists to record.
+
+### Coverage
+
+38 routes crawled (21 static + 17 dynamic); **39 distinct internal targets, all 39 exercised** from a deep scroll position, at three viewports, against a production build.
+
+Two coverage gaps had to be closed by hand, and both are worth knowing about:
+
+- **The nav's dropdown panels are in the DOM on every page**, just visually hidden. That made five links look like global chrome and put them in a pass that could not click them. They were reached instead through body links on their parent pages — and `/about-us/careers` through the footer, which turns out to be the only visible place it is linked at all.
+- **The home page opens behind a splash curtain that locks scrolling** with `overflow: hidden` on `<html>` and `<body>`. The first harness scrolled the page anyway, programmatically — something no reader can do — and caught the header at `top: -7557`, because `overflow: hidden` kills `position: sticky` on a descendant. **That was a false positive of the test, not a site bug**, and the harness now waits the curtain out. It is recorded because the underlying fact is real and load-bearing: if that scroll lock is ever applied while the page is not at the top, the header will unpin and fly off.
+
+### Result
+
+**Chrome drift: none.** Every navigation, at 1440×900, 820×1180 and 390×844.
+
+Three transforms were flagged by the broad phantom detector. All three were identified and all three are intended:
+
+| Element | Transform | What it is |
+|---|---|---|
+| `nav[aria-label="Primary"]` | `translate(680, 0)` | The bar reopening on a route change — it parks right when collapsed and slides back to centre. Horizontal and real. The detector now ignores the nav's horizontal component and keeps watching its vertical one. |
+| The "Life around the clinic" scene card | `translate(-17, -41)` | The home page's own scroll-driven scene, on the page being left, in the frames before the route swaps. |
+| A `fill-ink/35` decorative edge | `translate(0, 29)` | An entrance animation on the destination page. |
+
+### Why the blast radius was always small, and what to watch
+
+Only three things survive a client-side navigation: `<AnimatedNav />`, `<SiteFooter />` and the skip link. **Everything inside `<main>` unmounts and remounts**, so it gets a fresh measurement and cannot carry a stale one across a scroll reset. That is why this bug could only ever have lived in the navbar.
+
+A static sweep confirms Motion's `layout` props exist in exactly one file, `animated-nav.tsx`. The `layout=` hits in `figure-register.tsx` and `modality-mix.tsx` are a plain string prop of those components' own (`"stack" | "two-up"`), not Motion's.
+
+**So the rule to keep: a Motion `layout` prop on anything that both survives navigation and sits inside a `sticky` or `fixed` ancestor reintroduces this bug.** Today that is only the nav. The footer is not sticky and carries no layout animation. If either of those changes, this audit needs re-running.
+
+---
+
+## 42. The reveal wrapper was destroying list semantics site-wide (12 Sep 2026)
+
+**Where:** `scroll-reveal.tsx` gains an `as` prop; eleven call sites change.
+
+Found by `/impeccable audit`, fixed by `/impeccable harden`. 192 failing axe
+nodes, one cause: `ScrollReveal` rendered an unconditional `<div>`.
+
+### What that did
+
+| Container | What the browser actually got |
+|---|---|
+| Leadership `<ul>` | 7 children, **0 of them `<li>`** |
+| ByoTalks `<ol>` | 8 children, 0 `<li>` — and no numbering |
+| Five `<dl>`s | `dl > div > div > dt`, and `<dl>` allows **one** div level |
+
+A screen reader announces a list by counting its items. There were none to
+count, so seven executives and eight sessions arrived as unrelated blocks: no
+"list, 7 items", no position, no way to skip the set. On the `<dl>`s the loss
+is worse than navigation — the terms stopped being associated with their
+definitions at all, which on `/innovation/market` means every figure came
+apart from its label, its detail line and its as-of date. That is the whole of
+spec §3.3 ("every number carries a date and a source") failing silently for
+the readers who most depend on it being programmatic. **WCAG 1.3.1, Level A.**
+
+`leadership/page.tsx` had a comment noting the `<ul>`/`<div>` nesting and
+deciding not to fix it. It was read as a layout quirk. It was an a11y defect.
+
+### The fix
+
+`as?: "div" | "li"`, defaulting to `div`. Deliberately two values, not any
+tag: widening it would invite a `<section>` wrapped around something that is
+not one. Five `<ul>`/`<ol>` call sites now pass `as="li"` and drop their inner
+`<li>`; five `<dl>` call sites merge the inner `<div>`'s classes up so the
+reveal wrapper *is* the one legal group.
+
+`speaker-register.tsx` could not be merged that way — its accent rail is two
+more div levels — so it became what it always was: a `<ul>` of eight people,
+each card holding its own `<dl>`. The rail is untouched.
+
+### The thing worth knowing
+
+**`first:` was dead on every one of these rows.** The inner `<div>` was always
+the only child of its wrapper, so `first:border-t-0 first:pt-0` matched on
+every item and the separators those components ask for have never been drawn.
+Moving the classes onto the wrapper repaired that as a side effect: the rules
+between the X-1's features, between the PD benefits, between the seven
+questions on `/innovation/how-it-works` and between stacked figures are now
+visible, and only the true first item has none. Verified by screenshot.
+
+An a11y wrapper that silently voids `:first-child` is a general hazard, not a
+detail of this one: **any styling hook that depends on sibling position breaks
+when something is wrapped around it.**
+
+### Verified
+
+Production build. axe-core across 20 routes at desktop and mobile: `list`,
+`listitem`, `definition-list` and `dlitem` all at **0 nodes**, from 192. Six
+list sections screenshotted under reduced motion. No horizontal overflow at
+320/390/768/1024/1440, no new scroll at 200% text, `tsc` and `eslint src`
+clean.
+
+### Not a defect, and the audit was wrong about it
+
+The audit also reported the Hindi routes as serving Devanagari under
+`lang="en-IN"`. **They do not.** `src/app/hi/layout.tsx` wraps both pages in
+`lang="hi-IN"`, which is WCAG 3.1.2 (Language of Parts) and is the documented
+pattern for a translated subtree under one root layout. The audit counted
+`lang` attributes on `<html>` and on the language-switch links and missed the
+wrapper. Every string on those pages — English chrome, Hindi body — is
+correctly declared. Nothing to fix, and the finding is withdrawn.
+
+---
+
+## 43. The one link on the site that colour alone had to carry (12 Sep 2026)
+
+**Where:** `locations/page.tsx`, `location-register.tsx`. Two class changes.
+
+Found by `/impeccable audit`, fixed by `/impeccable clarify`. The last axe
+violation on the site.
+
+### The link in the prose
+
+`/locations` has the site's only link set INSIDE a paragraph of body copy —
+"How the licensing relationship works", running through a grey sentence in
+primary blue. It had `hover:underline` and nothing else, so at rest the only
+thing separating it from the text around it was hue. A reader who cannot
+distinguish that blue from that grey had no way to know a link was there;
+hover does not reach them, and on a phone there is no hover at all.
+**WCAG 1.4.1.** It is now underlined at rest, on the site's own in-prose
+convention — `underline underline-offset-2 hover:text-ink` — which the legal
+pages, the provenance marks and every citation link already used.
+
+### What was NOT changed, and why
+
+Twenty-odd other links keep `hover:underline`. They are the standalone
+call-to-action links — bold, on their own line, with an arrow glyph — and the
+breadcrumb and footer navigation. None of those sit in a text block, and none
+of them rely on colour alone: weight, position and iconography all carry.
+1.4.1 is about a link a reader must pick OUT OF running text, and applying a
+resting underline to every CTA on the site would be a visual change wearing an
+accessibility argument. axe agrees: across twenty routes it flagged one link,
+and one is what changed.
+
+### One inconsistency found alongside it
+
+The phone number on each location card was `hover:underline` while the phone
+and email links on `/contact`, `/about-us/careers` and `/hi` were all
+underlined at rest. Not a 1.4.1 failure — it is the whole content of its own
+paragraph, not embedded in prose — but a number a reader is meant to dial
+should look the same everywhere it appears. Brought onto the same convention.
+
+### Also checked, and correct
+
+The page's prose was read against `locations.ts` for deviation 30's failure
+mode. "Four sites, two companies" is four records and two entities; "The first
+site below is ours, in Patancheru" is the `india-office` row leading the
+register; "designed at one of them and announced for the other two" is Itasca
+plus the two `planned` rows. Nothing stale.
+
+### Verified
+
+Production build, axe-core across twenty routes at desktop and mobile:
+**0 rules violated, site-wide.** The in-prose link screenshotted in context;
+the phone link's computed style confirmed as `underline` at 2.88px offset in
+primary. `tsc` and `eslint src` clean.
+
+---
+
+## 44. Polish pass: three values with no author, and one target too small (12 Sep 2026)
+
+**Where:** `button.tsx`, `silk.tsx`, `grievance-redressal/page.tsx`, and one
+deleted image. Found by `/impeccable audit`, fixed by `/impeccable polish`.
+
+### The type step that belonged to nobody
+
+`button.tsx`'s `sm` size carried shadcn's stock `text-[0.8rem]`. DESIGN.md's
+ramp has no 0.8rem step, and the size has exactly one consumer on the site:
+the header's "Contact us" pill — whose every neighbour in the nav, the links,
+the dropdown items and the Hindi switch, is `text-sm`. A 12.8px label sitting
+beside 14px ones was a difference nobody had decided. Now `text-sm`.
+Screenshotted at 1440, 1024, 768 and 390; the capsule absorbs the extra
+width.
+
+### The colour that could never be reached
+
+`silk.tsx` is vendored, and defaulted `color` to `#7B7481` — a grey belonging
+to no palette here. The one caller has always read `--color-primary` from the
+stylesheet and passed it, so the default was dead. Deleting it and leaving the
+prop optional would only move the problem; the prop is now **required**, so a
+future caller cannot silently inherit a wrong hue and the compiler says so.
+Not re-defaulted to the token, because this component cannot read CSS custom
+properties — the caller is where the palette lives. Verified: the hero canvas
+still paints, in primary, with no console errors.
+
+### The 549 KB nobody was loading
+
+`in-center-hemodialysis.png` was retired on 23 Aug 2026 and kept "in case a
+future revision wants the photo back". That revision arrived on 12 Sep and
+wanted a different photograph (`clinic-consult-kashmir.jpg`), so the file had
+spent three weeks as deployed, publicly addressable bytes that no page
+referenced. Deleted; `public/images` goes 5.2 MB to 4.7 MB. **No visitor ever
+downloaded it** — this is deploy weight, not page weight, and the audit should
+have said so. The provenance entry stays, now carrying the one-line
+`git checkout` that brings the file back.
+
+### And one thing the polish pass found that the audit had not
+
+Widening the sweep to `/grievance-redressal` — a route the audit had not
+included — caught the Grievance Officer's phone number at **22px tall on a
+320px screen**, under WCAG 2.2 SC 2.5.8's 24px floor. It is a number a person
+in a complaint is meant to dial, sitting in an `<address>` block where it
+inherits the line box of the text around it.
+
+The site already had the answer: a `tap-target` utility (44px min-height, the
+extra height pulled back out with a negative block margin so text rhythm
+survives), used by the same phone number on `/contact` and `/locations`. This
+was the copy that did not use it. Now it does, and the address block keeps its
+spacing — screenshotted at 320px to confirm.
+
+The three targets still listed by the sweep are links inside sentences, which
+SC 2.5.8 explicitly exempts.
+
+### Verified
+
+Production build. Design detector: **0 findings** across `src`, from 1.
+axe-core, 21 routes × desktop and mobile: **0 rules violated**. No horizontal
+overflow at 320/390/768/1024/1440, no new scroll at 200% text, no console
+errors across 21 routes, all 39 internal links resolve, `tsc` and
+`eslint src` clean.
+
+---
+
+## 45. The scrubbed scenes were shorter than one flick of a touchpad (12 Sep 2026)
+
+**Where:** new `src/components/motion/scrub.ts`; `access-geometry-hero.tsx`,
+`two-paths.tsx`, `silhouette-edge.tsx` use it.
+
+Reported by the client: scrolling "severely spikes the speed and completes
+half of the animation from the smallest of movements". Three earlier readings
+of the complaint were wrong, and the record of that matters more than the fix.
+
+### What was checked first, and found innocent
+
+| Hypothesis | How it was tested | Result |
+|---|---|---|
+| The audit fixes shortened pages | Rebuilt HEAD in a second worktree, measured both | `/byotalks`, `/`, `/news`, `/contact` **identical**; the rest taller |
+| Page height changes during scroll | Stepped 200px at a time, watched `scrollHeight` | No change, no drift, any page |
+| A scroll library or `scroll-behavior` | Grep + computed styles on three routes | None. All browser defaults |
+| The scrub maths | Sampled `--p` every 50px | **Exactly linear**, worst step == average |
+
+Every one of those was a real possibility and every one was wrong. The site
+was behaving correctly at each of them.
+
+### What it actually was
+
+The reader's own input, measured on their machine with a bare HTML page:
+
+```
+zoom                    100%      <- fine
+median wheel event        15px    <- fine, a precision touchpad
+LARGEST single event     785px    <- one inertial flick
+peak rate               6133px/s
+```
+
+Against the scrub ranges:
+
+```
+silhouette edge          550px    <- SHORTER than one wheel event
+access-geometry stack    700px    <- shorter than one wheel event
+two paths               1300px
+```
+
+**A single wheel event could deliver more scroll than an entire animation.**
+`--p` was written straight from the scroll offset, so the scene went 0 -> 1
+between two frames. Not a spike in the animation: a cut, correctly rendering
+a gesture larger than the whole range.
+
+The silhouette edge is the one that made this site-wide. It ships on **every
+page** and has the shortest range of the three, which is why `/byotalks` —
+with no pinned bands and a byte-identical height to HEAD — still felt wrong.
+
+### The fix, and the option not taken
+
+`--p` becomes a target that the written value chases, exponentially and
+**framerate-independently** (`1 - e^(-dt/tau)`, tau 200ms). A fixed per-frame
+fraction is the usual version of this and runs at double speed on a 120Hz
+display — a bug a laptop never shows you. Same device as GSAP's
+`scrub: <seconds>`, and the same reason that option exists there.
+
+**Lengthening the tracks was rejected.** The tracks are pinned, so scroll room
+is time the page holds content still — and the client had already objected to
+the page "ramping up in certain areas", which is the edge of exactly those
+held bands. Lengthening trades one complaint for a worse one. This costs no
+page height at all.
+
+Three details that are not incidental:
+
+- **The first value is never eased.** A reload that restores scroll, a deep
+  link or the back button must find the scene already on the right frame.
+- **Resize jumps rather than eases**, or re-measuring reads as the scene
+  drifting on its own.
+- **`dt` is clamped to 64ms**, because a backgrounded tab hands back one
+  enormous delta and an unclamped step would resolve the whole gap in a single
+  frame — reintroducing the cut this exists to remove.
+
+Only `--p` eases. `--mx` on the silhouette edge tracks the pointer, which is
+already continuous and has no bursts to absorb.
+
+### Verified
+
+Production build. Replaying the client's own 785px event:
+
+| Scene | `--p` after one frame | Settles |
+|---|---|---|
+| access-geometry stack | 0.003 (**was 1.000**) | ~0.6s |
+| silhouette edge | 0.000 (**was 1.000**) | ~0.74s |
+
+`prefers-reduced-motion: reduce` still lands on `--p: 1` with no easing and an
+unpinned Home; no console errors in either motion mode across `/`, `/byotalks`
+and `/locations`; `tsc` and `eslint src` clean.
+
+---

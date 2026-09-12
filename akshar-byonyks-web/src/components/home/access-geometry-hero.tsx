@@ -9,6 +9,7 @@ import {
   AccessGeometrySceneScrubbed,
   AccessGeometrySceneStatic,
 } from "@/components/home/access-geometry-scene";
+import { createScrub } from "@/components/motion/scrub";
 import { Button } from "@/components/ui/button";
 
 // Code-split: pulls in three.js + @react-three/fiber, so it should never
@@ -42,14 +43,24 @@ export function AccessGeometryHero() {
     const track = trackRef.current;
     if (!track) return;
 
+    // SCRUBBED WITH A CATCH-UP, not written straight from the scroll offset.
+    // This track gives the scene 80vh -- about 700px -- and a single inertial
+    // touchpad event was measured at 785px, so one flick could carry the whole
+    // stack from start to finish between two frames. `scrub.ts` carries the
+    // measurement and why lengthening the track was the wrong answer.
+    const scrub = createScrub((value) =>
+      track.style.setProperty("--p", value.toFixed(4)),
+    );
+
     let ticking = false;
-    const update = () => {
-      ticking = false;
+    const progress = () => {
       const rect = track.getBoundingClientRect();
       const total = rect.height - window.innerHeight;
-      const progress =
-        total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
-      track.style.setProperty("--p", progress.toFixed(4));
+      return total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
+    };
+    const update = () => {
+      ticking = false;
+      scrub.set(progress());
     };
     const onScroll = () => {
       if (!ticking) {
@@ -57,12 +68,16 @@ export function AccessGeometryHero() {
         requestAnimationFrame(update);
       }
     };
+    // A resize re-measures the geometry under the reader; easing to the new
+    // value would read as the scene drifting on its own.
+    const onResize = () => scrub.jump(progress());
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    window.addEventListener("resize", onResize);
     return () => {
+      scrub.stop();
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("resize", onResize);
     };
   }, [enhanced]);
 

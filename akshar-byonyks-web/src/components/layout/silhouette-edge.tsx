@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
+import { createScrub } from "@/components/motion/scrub";
 import { cn } from "@/lib/utils";
 
 // The closing transition: the page's last light section hands off to the
@@ -94,8 +95,19 @@ export function SilhouetteEdge({ className }: { className?: string }) {
     let frame: number | null = null;
     let pointerX = 0;
 
-    const update = () => {
-      frame = null;
+    // THE SHORTEST SCRUB ON THE SITE, AND THE ONE THAT NEEDED THIS MOST.
+    // 60% of the viewport is ~550px, and a single inertial touchpad event was
+    // measured at 785px -- more than the entire range, in one event. The band
+    // went from unsettled to settled in one frame, which is not a parallax,
+    // it is a cut. See `scrub.ts`.
+    //
+    // Only `--p` eases. `--mx` tracks the pointer, which is already a
+    // continuous input and has no bursts to absorb.
+    const scrub = createScrub((value) =>
+      el.style.setProperty("--p", value.toFixed(4)),
+    );
+
+    const progress = () => {
       const rect = el.getBoundingClientRect();
       const viewport = window.innerHeight;
       // Deliberately not "enters the bottom, exits the top": this band sits
@@ -103,16 +115,27 @@ export function SilhouetteEdge({ className }: { className?: string }) {
       // enough to push it off the top and that range would never complete.
       // The bottom 60% of the viewport is always traversed the moment the
       // footer is reached, at any page length.
-      const progress = Math.min(
+      return Math.min(
         1,
         Math.max(0, (viewport - rect.top) / (viewport * 0.6))
       );
-      el.style.setProperty("--p", progress.toFixed(4));
+    };
+
+    const update = () => {
+      frame = null;
+      scrub.set(progress());
       el.style.setProperty("--mx", pointerX.toFixed(4));
     };
 
     const schedule = () => {
       if (frame === null) frame = requestAnimationFrame(update);
+    };
+
+    // A resize moves the band under the reader. Easing to the new value would
+    // read as the horizon sliding on its own, so this one lands.
+    const onResize = () => {
+      scrub.jump(progress());
+      el.style.setProperty("--mx", pointerX.toFixed(4));
     };
 
     const onPointerMove = (event: PointerEvent) => {
@@ -130,7 +153,7 @@ export function SilhouetteEdge({ className }: { className?: string }) {
       if (listening) return;
       listening = true;
       window.addEventListener("scroll", schedule, { passive: true });
-      window.addEventListener("resize", schedule);
+      window.addEventListener("resize", onResize);
       if (finePointer.matches) {
         window.addEventListener("pointermove", onPointerMove, { passive: true });
       }
@@ -140,7 +163,7 @@ export function SilhouetteEdge({ className }: { className?: string }) {
       if (!listening) return;
       listening = false;
       window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
+      window.removeEventListener("resize", onResize);
       window.removeEventListener("pointermove", onPointerMove);
     };
 
@@ -165,6 +188,7 @@ export function SilhouetteEdge({ className }: { className?: string }) {
     return () => {
       observer.disconnect();
       unlisten();
+      scrub.stop();
       if (frame !== null) cancelAnimationFrame(frame);
     };
   }, [enhanced]);
