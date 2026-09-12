@@ -29,11 +29,14 @@ import staticAssetsIncrementalCache from "@opennextjs/cloudflare/overrides/incre
 //
 // WHAT IT COST. On 11 Sep, 1,063 of 1,333 requests (80%) ran the worker.
 // During the busiest sixteen minutes of the week, 22 of them died with
-// `exceededResources` — and they died CHEAPLY, 13-18ms of CPU against 35ms
-// for the successes beside them, which is the signature of the 128MB memory
-// ceiling under concurrency rather than a slow page. A scraper on Tencent
-// Cloud sending `cache-control: no-cache` was a good part of that load, and
-// `no-cache` guarantees a full re-render every time when there is no store.
+// `exceededResources`. This file used to call that memory pressure, because
+// the failures burned LESS CPU than the successes beside them (13-18ms against
+// 35ms). The reasoning was backwards: they are the cheapest requests in the
+// dataset BECAUSE they were terminated early, and their 11.9ms median sits on
+// the Free plan's 10ms CPU ceiling. `wrangler.jsonc` carries the full
+// correction. A scraper on Tencent Cloud sending `cache-control: no-cache` was
+// a good part of that load, and `no-cache` guarantees a full re-render every
+// time when there is no store.
 //
 // WHY THE STATIC-ASSETS ADAPTER AND NOT R2 OR KV. Its own documentation is
 // the argument: "should only be used for applications that do NOT want

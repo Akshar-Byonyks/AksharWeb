@@ -2726,9 +2726,31 @@ cache was the disease.
 ### The 22 errors
 
 All `exceededResources`, all on 11 Sep, in two bursts sixteen minutes apart
-(19:30 and 19:46 UTC). Not since. **Not CPU** — they used LESS CPU than the
-successes beside them (13-18ms against 35ms) and died inside 130ms of wall
-time, which is the 128MB isolate memory ceiling under concurrency.
+(19:30 and 19:46 UTC). Not since.
+
+**CORRECTED, later the same day.** This entry first said "Not CPU" and blamed
+the 128MB isolate memory ceiling, reasoning that the failures used LESS CPU
+than the successes beside them (13-18ms against 35ms), so they could not have
+been killed for CPU. That is backwards, and it was wrong.
+
+The account is on the Workers **Free** plan, whose limit is 10ms of CPU per
+invocation. Measured across 8 days and 8,152 requests:
+
+```
+success             8,114 req   mean 91.4ms   p50 27.7ms   max 865ms
+exceededResources      22 req   mean 14.6ms   p50 11.9ms   max  33ms
+```
+
+Those 22 failures are the cheapest requests in the entire dataset **because
+they were terminated early**, and their 11.9ms median sits directly on the 10ms
+line. Error 1102 is Cloudflare's unified "exceeded resource limits" response,
+which is why the outcome reads `exceededResources` rather than `exceededCpu`.
+
+The mean *successful* request is nine times the allowance and returns 200
+anyway, which is what made the wrong reading plausible. Cloudflare grants
+per-isolate slack for workers that "infrequently run over the configured
+limit" — and that slack held right up until the Tencent Cloud scrape removed
+it.
 
 ### What was actually wrong
 

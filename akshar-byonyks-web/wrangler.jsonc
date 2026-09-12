@@ -89,20 +89,40 @@
   // MEASURE LOCALLY, so it is recorded from the first deploy rather than
   // discovered after a 1102.
   //
-  // MEASURED 12 SEP 2026, AND THE 10 MS WORRY BELOW TURNED OUT NOT TO APPLY.
-  // This worker is not on the Free plan's 10 ms ceiling: successful requests
-  // routinely spend 50-300 ms of CPU and one hour averaged 561 ms. Every one
-  // of those would have returned 1102 on Free. The note is kept because the
-  // NUMBER is still the thing to watch -- 459 ms of CPU to serve a page that
-  // was prerendered at build time is not a healthy figure on any plan, and
-  // "open-next.config.ts" now carries the reason it was that high.
+  // MEASURED 12 SEP 2026, THEN RE-READ CORRECTLY THE SAME DAY. THE 10 MS
+  // CEILING DOES APPLY -- this account is on the Workers FREE plan.
   //
-  // WHAT ACTUALLY BROKE, 11 Sep 2026: 22 requests returned
-  // "exceededResources", not "exceededCpu", in two bursts sixteen minutes
-  // apart. They used LESS CPU than the successes beside them (13-18 ms against
-  // 35 ms) and died in under 130 ms of wall time, which is the 128 MB memory
-  // ceiling under concurrency rather than a slow page. Watch this outcome as
-  // well as the CPU one.
+  // This note first claimed the opposite ("not on the Free plan's 10 ms
+  // ceiling"), reasoning backwards from the fact that requests spending
+  // 50-300 ms of CPU were returning 200. They were, and they still do, because
+  // Cloudflare documents per-isolate slack: "some built-in flexibility to
+  // allow for cases where your Worker infrequently runs over the configured
+  // limit." Clearing a limit on grace is not the same as not having one.
+  //
+  // MEASURED OVER 8 DAYS (4-12 Sep), 8,152 requests:
+  //
+  //   success             8,114 req   mean 91.4 ms   p50 27.7 ms   max 865 ms
+  //   exceededResources      22 req   mean 14.6 ms   p50 11.9 ms   max  33 ms
+  //
+  // The mean successful request is NINE TIMES the 10 ms allowance.
+  //
+  // WHAT ACTUALLY BROKE, 11 Sep 2026: 22 requests returned "exceededResources"
+  // in two bursts sixteen minutes apart, during a scrape from Tencent Cloud.
+  // This file used to read their low CPU as proof of memory pressure -- they
+  // burned LESS CPU than the successes beside them, so the theory went, they
+  // cannot have been killed for CPU. That is backwards. They are the CHEAPEST
+  // requests in the entire dataset precisely BECAUSE they were terminated
+  // early, and their 11.9 ms median sits directly on the 10 ms line. Error
+  // 1102 is Cloudflare's unified "exceeded resource limits" response, which is
+  // why the outcome reads "exceededResources" and not "exceededCpu".
+  //
+  // SO THIS SITE RUNS OVER ITS PLAN LIMIT AND SURVIVES ON SLACK, which holds
+  // until traffic spikes and the slack disappears -- exactly what 11 Sep was.
+  // The cache fix in "open-next.config.ts" cut the median to 11.9 ms, which is
+  // better and still over. A Next.js server runtime cannot be tuned under
+  // 10 ms; startup CPU alone exceeds it. The two real exits are the $5/month
+  // Workers Paid plan, or `output: "export"` so that page views never invoke
+  // the worker at all.
   //
   // For the record: the Workers Free plan allows 10 ms of CPU per HTTP
   // request; Paid defaults to 30 s. Exceeding it returns Error 1102 and logs
