@@ -61,11 +61,33 @@ export function SpeakerRegister() {
             </div>
           </ScrollReveal>
 
-          <dl className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2">
+          {/* A LIST OF PEOPLE, EACH OF WHOM IS A TERM AND A DEFINITION.
+              (Restructured 12 Sep 2026.)
+
+              This was one <dl> spanning the whole grid, with each card a
+              <div> inside it. That is not a legal <dl>: the content model
+              allows exactly ONE div grouping level between the list and its
+              <dt>/<dd> pairs, and the accent rail alone contributes two. A
+              screen reader stopped associating the names with the
+              credentials underneath them, which on this page is the entire
+              content.
+
+              The outer structure is now a <ul>, which is what a register of
+              eight speakers actually is — it gains the count and the
+              position each card had been missing — and the term/definition
+              pairing moves inside each card where it has room to be legal.
+              The card wrapper is the <li> itself, so the rail can keep its
+              own markup untouched. */}
+          <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2">
             {speakers.map(({ speaker, credentials, sessionCount }, index) => (
-              <ScrollReveal key={speaker} delayMs={index * 70}>
-                <div className="h-full bg-card p-6">
-                  <AccentRail accent="teal">
+              <ScrollReveal
+                key={speaker}
+                as="li"
+                delayMs={index * 70}
+                className="bg-card p-6"
+              >
+                <AccentRail accent="teal">
+                  <dl>
                     <dt className="text-lg font-semibold text-ink">
                       {speaker}
                     </dt>
@@ -90,11 +112,11 @@ export function SpeakerRegister() {
                           : `${sessionCount} sessions`}
                       </p>
                     </dd>
-                  </AccentRail>
-                </div>
+                  </dl>
+                </AccentRail>
               </ScrollReveal>
             ))}
-          </dl>
+          </ul>
         </div>
       </div>
     </section>

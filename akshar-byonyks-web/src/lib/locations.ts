@@ -1,4 +1,5 @@
 import type { Provenance } from "@/components/common/provenance";
+import { indiaOffice } from "@/lib/site-config";
 
 // WHERE THE GROUP OPERATES, and — the part that carries the weight — which
 // company holds each site.
@@ -67,6 +68,22 @@ export type Location = {
   readonly status: LocationStatus;
   /** The year the site began operating, where Byonyks publishes one. */
   readonly established?: string;
+  /**
+   * WHEN A PLANNED SITE IS EXPECTED TO BE FINISHED. Supplied by the client on
+   * 11 September 2026 for both India hubs, and this is the first time either
+   * has carried one.
+   *
+   * DELIBERATELY A STRING, AND DELIBERATELY IMPRECISE. The client's answer was
+   * "Summer 2027" and "Late 2027". Parsing either into a date would invent a
+   * month, and rendering "2027" alone would drop half of what was said. The
+   * page prints what was given.
+   *
+   * IT IS AN EXPECTATION, NOT A COMMITMENT, and the copy around it must keep
+   * saying so — a construction date on a medical device site is read by
+   * procurement as a supply date, and the CDSCO licence that would make either
+   * building a manufacturing site has not been published for either.
+   */
+  readonly expectedCompletion?: string;
   /** Street address exactly as published. Missing lines are `null`. */
   readonly address?: readonly (string | null)[];
   readonly phone?: string;
@@ -91,6 +108,45 @@ export type Location = {
 };
 
 export const locations: readonly Location[] = [
+  {
+    // OURS, AND BACK ON THIS PAGE AFTER NINE DAYS. The Bengaluru row was
+    // removed on 1 September 2026 and its "coming soon" replacement on
+    // 2 September, which left this register as three Byonyks sites and made
+    // /contact the only page on the site saying an Akshar Byonyks India office
+    // exists. The note below the array anticipated exactly this: "the day the
+    // India office has a published address it belongs back on this page."
+    // The client supplied the address on 11 September 2026.
+    //
+    // IT LEADS THE ARRAY, which means it leads the India block and therefore
+    // the whole register, because byIndiaFirst preserves array order. That
+    // is the ordering decision this page has needed since it lost its only
+    // Akshar Byonyks row: a reader who comes to a locations page is asking
+    // where THIS company is, and the answer should not be third.
+    //
+    // The role field MUST NEVER MATCH THE MANUFACTURING GUARD BELOW. "India office" is
+    // chosen for that as much as for accuracy — Akshar Byonyks is the
+    // licensee, and the contract further down throws if an Akshar Byonyks row
+    // is ever given a manufacturing, assembly or production role.
+    id: "india-office",
+    place: "Patancheru",
+    region: "Telangana",
+    country: "India",
+    entity: "Akshar Byonyks",
+    role: "India office",
+    detail:
+      "Akshar Byonyks' office in India, and where post reaches the company. The Grievance Officer required by the Digital Personal Data Protection Act 2023 is reachable here.",
+    status: "operating",
+    address: [indiaOffice.careOf, ...indiaOffice.lines],
+    phone: indiaOffice.phone,
+    provenance: {
+      status: "stated",
+    },
+    // NO IMAGE, and the type has always allowed that for exactly this row.
+    // Byonyks publishes photographs of its own premises; nobody has supplied
+    // one of this office, and a stock interior would be the fabrication this
+    // whole file is built to refuse.
+    gap: "A correspondence address at a third party's premises, not a registered office. Whether an Indian entity will be formed to hold one is not yet decided.",
+  },
   {
     id: "itasca",
     place: "Itasca",
@@ -125,10 +181,15 @@ export const locations: readonly Location[] = [
     detail:
       "Announced as the group's central hub for dialysate manufacturing and distribution.",
     status: "planned",
+    // Client, 11 September 2026, answering a direct question about completion
+    // dates for both hubs. They called both of them "offices"; this row keeps
+    // Byonyks' published FUNCTION rather than adopting that word, because the
+    // two are different claims and only one of them was being answered.
+    expectedCompletion: "Summer 2027",
     provenance: {
       status: "stated",
     },
-    gap: "No opening date, no operating entity and no CDSCO manufacturing licence has been published for this site.",
+    gap: "The completion date is an expectation, not a commitment. No operating entity and no CDSCO manufacturing licence has been published for this site.",
     image: {
       src: "/images/locations/hyderabad-plan.jpg",
       alt: "An isometric cutaway drawing of a planned facility interior, showing storage racking, workbenches, desks and a forklift.",
@@ -148,10 +209,11 @@ export const locations: readonly Location[] = [
     detail:
       "Announced as the unit for producing tubing sets and assembling machines.",
     status: "planned",
+    expectedCompletion: "Late 2027",
     provenance: {
       status: "stated",
     },
-    gap: "The city is the client audit's correction of a published “Gujarat”. No opening date, operating entity or CDSCO manufacturing licence has been published.",
+    gap: "The city is the client audit's correction of a published “Gujarat”. The completion date is an expectation, not a commitment, and no operating entity or CDSCO manufacturing licence has been published.",
     image: {
       src: "/images/locations/ahmedabad-plan.jpg",
       alt: "A wireframe architectural drawing of a planned industrial building with a long-span roof structure over an open floor.",
@@ -194,27 +256,27 @@ if (byIndiaFirst.length !== locations.length) {
 // `compliance.ts`: the rules that must not be broken are enforced where they
 // cannot be forgotten, not left to review.
 
-// THE "AT LEAST ONE ROW MUST BE OURS" CONTRACT IS GONE, AND ITS QUESTION HAS
-// BEEN ANSWERED (2 Sep 2026, on the client's instruction).
+// THIS PAGE ANSWERS "WHERE ARE YOU" AGAIN, AS OF 11 SEP 2026.
 //
-// That contract was added on 1 Sep to stop this page silently becoming a list
-// of the licensor's buildings, and it said a future edit removing the India
-// office "has to decide what this page is for rather than discover the answer
-// in production". The edit came the next day, so here is the decision rather
-// than a deleted guard:
+// The history is short and worth keeping, because the question was live for
+// nine days. A contract added on 1 Sep required at least one Akshar Byonyks
+// row; the client removed the last one on 2 Sep, the contract came out with
+// it, and this note recorded the resulting decision — that the page was the
+// group's premises register rather than this company's address, and that
+// /contact was the only place on the site saying an India office existed at
+// all. It also said what would reverse that: "the day the India office has a
+// published address it belongs back on this page."
 //
-// **THIS PAGE IS THE GROUP'S PREMISES REGISTER, NOT THIS COMPANY'S ADDRESS.**
-// Every row is now a Byonyks site — one operating head office in Itasca and
-// two announced India facilities — and `entity` still says so on every card,
-// which is the distinction spec F-1 cares about and the reason the field is
-// not decoration. What this page NO LONGER ANSWERS is "where are you", and
-// that is a real consequence rather than a tidy one: **/contact is now the
-// only place on this site that says an Akshar Byonyks India office exists**,
-// and it still carries it with the address marked coming soon.
+// That day was 11 September 2026. The `india-office` row leads the array, so
+// it leads the register.
 //
-// `entity` keeps "Akshar Byonyks" in its union deliberately. The day the
-// India office has a published address it belongs back on this page, and the
-// manufacturing-role guard below is still the rule that will police it.
+// THE CONTRACT IS NOT COMING BACK, and that is deliberate rather than an
+// oversight. A guard requiring at least one row of ours would now pass
+// trivially and would fire, if it ever fired, at exactly the moment somebody
+// had a reason to remove the row — which is a client decision, not a build
+// error. What stays enforced is the rule that actually protects spec F-1: the
+// manufacturing-role guard below, which refuses to let an Akshar Byonyks row
+// claim a role the company does not hold.
 
 for (const l of locations) {
   if (!l.place || !l.country) {

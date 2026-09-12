@@ -45,27 +45,29 @@ export function AskYourNephrologist() {
             </h2>
             <p className="mt-6 text-lg text-muted-foreground">
               Whether this therapy suits a particular person is a clinical
-              decision, and it is not one this site can make. These are the
-              questions the decision usually turns on. Take them to the
-              appointment.
+              decision, and it is not one ABI can make. These are the questions
+              suited for your nephrologist. Take them to the appointment.
             </p>
           </div>
         </ScrollReveal>
 
         <ol className="mt-12 max-w-3xl">
           {questions.map((question, index) => (
-            <ScrollReveal key={question} delayMs={index * 60}>
-              <li className="flex gap-5 border-t border-line py-5 first:border-t-0 first:pt-0">
-                <span
-                  aria-hidden="true"
-                  className="w-8 shrink-0 text-xl font-bold text-primary tabular-nums"
-                >
-                  {index + 1}
-                </span>
-                <span className="min-w-0 text-lg text-foreground">
-                  {question}
-                </span>
-              </li>
+            <ScrollReveal
+              key={question}
+              as="li"
+              delayMs={index * 60}
+              className="flex gap-5 border-t border-line py-5 first:border-t-0 first:pt-0"
+            >
+              <span
+                aria-hidden="true"
+                className="w-8 shrink-0 text-xl font-bold text-primary tabular-nums"
+              >
+                {index + 1}
+              </span>
+              <span className="min-w-0 text-lg text-foreground">
+                {question}
+              </span>
             </ScrollReveal>
           ))}
         </ol>

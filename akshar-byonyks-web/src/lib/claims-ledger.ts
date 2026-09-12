@@ -3,6 +3,7 @@ import { byotalksSessions } from "@/lib/byotalks";
 import { indiaLicensing } from "@/lib/claims";
 import { companyStated, publicRecord } from "@/lib/compliance";
 import { locations } from "@/lib/locations";
+import { benefits } from "@/lib/pd-benefits";
 import {
   accessFigures,
   costFigures,
@@ -62,7 +63,11 @@ const ABOUT = { label: "About us", href: "/about-us" };
 const MARKET = { label: "The India market", href: "/innovation/market" };
 const HOW = { label: "How it works", href: "/innovation/how-it-works" };
 const TALKS = { label: "ByoTalks", href: "/byotalks" };
-const CONTACT = { label: "Contact", href: "/contact" };
+// CONTACT was retired from this list on 11 September 2026. It existed for one
+// entry -- the India office address -- and that entry closed when the client
+// supplied the address. /contact now carries no pending note of any kind,
+// which is a first for this site. Put the constant back if a gap ever lands on
+// that route again.
 const CAREERS = { label: "Careers", href: "/about-us/careers" };
 const LOCATIONS = { label: "Locations", href: "/locations" };
 const LEADERSHIP = { label: "Leadership", href: "/about-us/leadership" };
@@ -164,6 +169,58 @@ const fromFigures: readonly LedgerEntry[] = [
 ];
 
 // ---------------------------------------------------------------------------
+// Derived: the four therapy claims on /innovation/how-it-works.
+//
+// NEW 11 SEP 2026, AND THEY EXIST BECAUSE THE PAGE STOPPED SHOWING THEM.
+// The client's instruction was "References should be placed in separate
+// document with the rest of the sources". The references came off
+// pd-benefits.tsx the same day, and if they had come off without landing
+// anywhere this would have been a deletion dressed as a filing decision. This
+// is where they land: three sourced claims and one declared gap, derived from
+// the same four records the page renders, so /what-we-know and SOURCES.md
+// carry the evidence the page no longer prints.
+//
+// THE NOTE IS THE POINT OF EACH ENTRY, not the link. On three of these four
+// the source concludes something NARROWER than the claim it sits under -- one
+// of them reverses what the claim used to say -- and pd-benefits.ts throws at
+// module load for a source cited without a note, for exactly that reason. The
+// detail below carries the claim and then that qualification, in that order.
+//
+// `asOf` IS THE REPORT'S YEAR. For a figure it is the period the number
+// describes; for a conference conclusion the two are the same thing, because
+// what is being cited is what a body concluded at a particular sitting.
+// ---------------------------------------------------------------------------
+
+const fromBenefits: readonly LedgerEntry[] = benefits.map(
+  (benefit, index): LedgerEntry => {
+    if (!benefit.source) {
+      return {
+        id: `pending-benefit-${index}`,
+        claim: `A reference for "${benefit.title}"`,
+        detail: benefit.pending!,
+        provenance: {
+          status: "pending",
+          missing: "No published reference identified for this claim.",
+        },
+        appearsOn: [HOW],
+      };
+    }
+    const source = getSource(benefit.source);
+    return {
+      id: `benefit-${benefit.source}-${index}`,
+      claim: benefit.title,
+      detail: `${benefit.body} ${benefit.note}`,
+      provenance: {
+        status: "published",
+        source: { label: source.shortName, url: source.url },
+        asOf: source.published,
+      },
+      appearsOn: [HOW],
+    };
+  },
+);
+
+// ---------------------------------------------------------------------------
 // Hand-written: the gaps.
 //
 // These are the only entries not derived, because an absence has no record to
@@ -186,17 +243,20 @@ const gaps: readonly LedgerEntry[] = [
     },
     appearsOn: [X1, ABOUT, { label: "Terms of use", href: "/terms-of-use" }],
   },
-  {
-    id: "pending-licence-scope",
-    claim: "The territory, exclusivity and product scope of the licence",
-    detail:
-      "The licence to bring the X-1 to India is confirmed to exist. Whether it is exclusive, what territory it covers, and whether it extends past the X-1 to the X2 and X3 roadmap have not been given to this project.",
-    provenance: {
-      status: "pending",
-      missing: "Licence terms not yet supplied.",
-    },
-    appearsOn: [ABOUT, X1],
-  },
+  // `pending-licence-scope` was removed on 11 September 2026. It recorded
+  // that the licence was confirmed to exist but that its exclusivity, its
+  // territory and whether it reached past the X-1 had never been supplied.
+  // The client answered all three that day — "License is exclusive to India
+  // covers all machines. X2 and X2,3 as well." — so the gap is closed rather
+  // than restated. The wording is `licenceScope` in `claims.ts` and it
+  // renders on /products and in the /about-us milestone.
+  //
+  // IT IS CLOSED AS A GAP, NOT UPGRADED TO A VERIFIED FACT. Nobody on this
+  // project has read the agreement, and an exclusive licence is the kind of
+  // claim an investor checks. It is carried at `stated` provenance in the
+  // licensee's own words. A ledger entry records what is MISSING; this is no
+  // longer missing, and the provenance scale is where "unverified from here"
+  // continues to be said.
   // `pending-trademark` was removed on 10 Sep 2026, on the client's decision:
   // "For Byonyks, verbal confirmation is all we need."
   //
@@ -217,19 +277,28 @@ const gaps: readonly LedgerEntry[] = [
   // into it; Senthil Kumar stays as the standing 1 Sep exception and is the
   // last of them. That rule is in CLAUDE.md, because it governs future work
   // rather than describing a gap in this one.
+  // `pending-address` was removed on 11 September 2026. The client supplied
+  // the India office address, and it is published on /contact, /locations,
+  // /privacy-policy and /terms-of-use. The oldest gap in this project — Open
+  // Question 1.1, and a §14.4 launch gate — is closed.
+  //
+  // WHAT DID NOT CLOSE WITH IT, and why it is a separate entry rather than a
+  // caveat on this one: the address is a care-of correspondence address, and
+  // `pending-india-entity` below records that nobody has yet decided whether
+  // an Indian entity will exist to hold a REGISTERED office. The governing-law
+  // clause on /terms-of-use turns on the second fact, not the first. One entry
+  // per missing fact, which is this file's rule.
   {
-    id: "pending-address",
-    claim: "The India office address",
+    id: "pending-india-entity",
+    claim: "The Indian entity, and the registered office it would hold",
     detail:
-      "Required on the privacy policy and the terms of use, and required before this site goes live. No placeholder is published, and since 1 Sep 2026 there is no published office address of any kind: the Bengaluru row was removed from /locations on the client's instruction, its replacement stated the address as coming soon, and on 2 Sep that replacement was removed too. The office is now named only on the Contact page. Enquiries reach the same people by email and by phone in the meantime.",
-    provenance: { status: "pending", missing: "No India office address published." },
-    // LOCATIONS came off this list on 2 Sep 2026 with the India office row
-    // itself. `appearsOn` is where a reader is sent to see the claim, and the
-    // gap is no longer visible on that page — it is stated in prose there, but
-    // the row that carried it is gone.
+      "The India office address published on this site is a correspondence address held care of a third party. Whether an Indian LLP or subsidiary will be formed as the operating entity has not been decided, so no registered office can be named — which is why the terms of use do not name the courts having jurisdiction, and why no machine-readable address is published on the locations page.",
+    provenance: {
+      status: "pending",
+      missing: "Indian entity not yet decided.",
+    },
     appearsOn: [
-      CONTACT,
-      { label: "Privacy policy", href: "/privacy-policy" },
+      LOCATIONS,
       { label: "Terms of use", href: "/terms-of-use" },
     ],
   },
@@ -237,17 +306,18 @@ const gaps: readonly LedgerEntry[] = [
   // contact band was a placeholder for the life of this project; the client
   // supplied a real, staffed line that day, so the gap it recorded is closed
   // rather than restated. See `src/lib/site-config.ts`.
-  {
-    id: "pending-grievance-officer",
-    claim: "The named Grievance Officer",
-    detail:
-      "India's DPDP Act 2023 requires a named Grievance Officer with published contact details. Nobody has been appointed. Complaints sent to the published address are read and answered by the team, and this site does not present that as the statutory appointment having been made.",
-    provenance: { status: "pending", missing: "No officer appointed." },
-    appearsOn: [
-      { label: "Grievance redressal", href: "/grievance-redressal" },
-      { label: "Privacy policy", href: "/privacy-policy" },
-    ],
-  },
+  // `pending-grievance-officer` was removed on 11 September 2026. The DPDP
+  // Act 2023 requires a named officer with published contact details; the
+  // client named Rashmin Gandhi, and /grievance-redressal and /privacy-policy
+  // print the name, the postal address and two ways to reach him. This was a
+  // launch-blocking gap and it is closed.
+  //
+  // THE EXACT WORDING IS IN `site-config.ts` AND MATTERS. The client wrote
+  // "Grievance officer can be Rashmin Gandhi" — a designation rather than a
+  // confirmation. It is published because the alternative was worse: leaving
+  // a note saying nobody had been appointed after the client named somebody
+  // would be the site contradicting its own client on a legal page. If the
+  // appointment is not final, `grievanceOfficer` is the one place to change.
   // `pending-retention` was removed on 10 Sep 2026. The client set the period:
   // two years from the day an enquiry is sent. `/privacy-policy` states it
   // outright now, so the gap is closed rather than restated.
@@ -295,10 +365,44 @@ const gaps: readonly LedgerEntry[] = [
   // India" chip on `/about-us/leadership/senthil-kumar` \u2014 and an entry is owed
   // to it. It is now described as what it actually is.
   {
+    // ADDED 11 SEP 2026 with the record it describes. Deviation 30 is the
+    // reason it is added in the same commit rather than a week later: this
+    // register goes stale the moment the roster is edited and nothing catches
+    // it but a person reading both.
+    //
+    // WHY IT IS ONE ENTRY AND NOT TWO. The title and the biography are
+    // missing from the same record, for the same reason -- they have not been
+    // supplied -- and they will arrive together. Two entries would put two
+    // rows on /what-we-know for one email that has not been sent.
+    id: "pending-tank-record",
+    claim: "Dr. Yogesh Tank's job title and biography",
+    detail:
+      "His record was supplied with a name, post-nominals and a photograph and nothing else. The roster card says \"Title to be confirmed\" and the profile says the biography is pending, rather than reading a title out of the post-nominals or writing a paragraph here about a real person. \"MD\" says he is a physician; it does not say what he does at this company.",
+    provenance: {
+      status: "pending",
+      missing: "Title and biography not yet supplied.",
+    },
+    appearsOn: [LEADERSHIP],
+  },
+  {
     id: "pending-india-note",
     claim: "What the Byonyks executive on the roster does for India",
+    // REWRITTEN 11 SEP 2026, AND THIS TIME BEFORE IT WENT STALE. Deviation 30
+    // records how this entry's predecessor came to be publishing sentences
+    // its own page contradicted: four client instructions landed on the
+    // leadership records and nobody re-read the ledger beside them. The same
+    // instruction set that removes the rendered "On India / Pending" block
+    // from Senthil Kumar's profile therefore edits this entry in the same
+    // commit.
+    //
+    // THE GAP DID NOT CLOSE; ITS MARKER DID. The note the client asked for on
+    // 1 September has still not been supplied. What changed on 11 September
+    // is that the client asked for the block that said so to come off the
+    // profile — so the question is now unanswered AND unasked on the page,
+    // which is exactly the kind of silent gap "/what-we-know" exists to keep
+    // a record of. Do not close this entry until the note arrives.
     detail:
-      "Senthil Kumar is the one Byonyks person on the leadership page; the other four are Akshar Byonyks', and every card says which company its subject works for. His biography is his own as published by Byonyks and describes a career in the United States, so on an India-market roster it leaves the obvious question unanswered. The client asked on 1 September 2026 for a note saying what he does for the India programme. It has not been supplied, and the profile publishes that question unanswered rather than answering it with a sentence nobody wrote.",
+      "Senthil Kumar is the one Byonyks person on the leadership page; the other four are Akshar Byonyks', and every card says which company its subject works for. His biography is his own as published by Byonyks and describes a career in the United States, so on an India-market roster it leaves the obvious question unanswered. The client asked on 1 September 2026 for a note saying what he does for the India programme, and it has not been supplied. The profile carried a pending block saying so until 11 September 2026, when the client asked for that block to come off; the question is now neither answered nor visibly asked on the page, and this entry is the only place it is recorded.",
     provenance: {
       status: "pending",
       missing: "India note not yet supplied.",
@@ -322,11 +426,26 @@ const gaps: readonly LedgerEntry[] = [
     appearsOn: [X1],
   },
   {
-    id: "pending-benefit-references",
-    claim: "Clinical references for the four benefits",
+    // SPLIT IN TWO ON 11 SEP 2026, AND THE ID CHANGED WITH IT. This was
+    // "pending-benefit-references", one entry carrying two different gaps:
+    // that the four therapy claims had no citations, and that no nephrologist
+    // had read them. The first of those is now three derived `published`
+    // entries in `fromBenefits` above and one derived `pending` entry for
+    // the peritoneal membrane claim, which is where a gap belongs once the
+    // data can express it. What is left is the half a citation cannot
+    // discharge, and it keeps an entry of its own under this file's rule of
+    // one entry per missing fact.
+    //
+    // The id changed because the claim changed. Keeping
+    // "pending-benefit-references" over a record that no longer says anything
+    // about references would be the stale-label failure deviation 30 is
+    // about, and nothing outside SOURCES.md -- which is regenerated -- reads
+    // these ids.
+    id: "pending-benefit-review",
+    claim: "A nephrologist's review of the four therapy claims",
     detail:
-      "The four reasons peritoneal dialysis is offered are stated on the how-it-works page without citations attached. Each is awaiting a reference and a nephrologist's review before launch.",
-    provenance: { status: "pending", missing: "Citations and clinical review outstanding." },
+      "The four reasons peritoneal dialysis is offered are written from published sources by people who are not clinicians. Three now rest on KDIGO Controversies Conference conclusions and are worded to say no more than those conclusions do; the fourth has no reference. None of the four has been read by a nephrologist, and a citation cannot stand in for that.",
+    provenance: { status: "pending", missing: "No clinical review of the therapy claims." },
     appearsOn: [HOW],
   },
   {
@@ -353,11 +472,23 @@ const gaps: readonly LedgerEntry[] = [
     appearsOn: [{ label: "हिन्दी", href: "/hi" }],
   },
   {
+    // REFRAMED 11 SEPTEMBER 2026, and the id is deliberately unchanged. The
+    // dates arrived — Summer 2027 for Hyderabad, Late 2027 for Ahmedabad —
+    // so the claim this entry names moved from "when" to "under what
+    // licence". Keeping the id means the /locations and /innovation/market
+    // routes it is attached to do not silently lose their entry, and it keeps
+    // one entry for what is still one gap: these are announced buildings with
+    // no published authority to make anything in them.
+    //
+    // Deviation 30 is the reason this was rewritten in the same commit as the
+    // data rather than a week later. A ledger of gaps goes stale the moment
+    // the thing it describes is edited, and nothing enforces that but a
+    // person reading both.
     id: "pending-india-hubs",
-    claim: "Completion dates for the India manufacturing hubs",
+    claim: "What the India hubs will be licensed to do",
     detail:
-      "Hyderabad and Ahmedabad are described as under construction with no confirmed completion date. Akshar Byonyks does not manufacture the X-1 and this site does not describe it as the manufacturer.",
-    provenance: { status: "pending", missing: "No confirmed completion dates." },
+      "Hyderabad and Ahmedabad are under construction, and the client has given expected completion dates of Summer 2027 and Late 2027. Those are expectations rather than commitments. No operating entity and no CDSCO manufacturing licence has been published for either site, which is why neither is described here as a manufacturing facility — that is a separate licence route under the Medical Device Rules 2017.",
+    provenance: { status: "pending", missing: "No CDSCO manufacturing licence or operating entity published." },
     // /locations puts the same two sites in front of a reader as rows of their
     // own (31 Aug 2026). Extending this entry rather than writing a second one:
     // a ledger with two entries for one gap is a ledger that can disagree with
@@ -366,27 +497,34 @@ const gaps: readonly LedgerEntry[] = [
   },
   // `pending-india-address-line` was removed on 1 Sep 2026. It recorded that
   // Byonyks published the Bengaluru office with a dropped line in the middle
-  // of the street address. That row is no longer on /locations, so the gap it
-  // described no longer exists — what replaces it is the broader
-  // `pending-address` above, which now covers the India office as well as the
-  // registered office. One entry per missing fact, which is this file's rule.
+  // of the street address. That row left /locations the same day, so the gap
+  // it described stopped existing. It was replaced by the broader
+  // `pending-address`, which covered the India office and the registered
+  // office together — and THAT entry closed on 11 Sep 2026 when the client
+  // supplied the address. What survives of the pair is
+  // `pending-india-entity` above, which carries the half an address cannot
+  // answer: whether an Indian entity will exist to hold a registered office.
+  // One entry per missing fact, which is this file's rule.
 ];
 
-// Derived from `locations.ts`, per this file's own rule: three premises, all
-// of them Byonyks' published account of itself and none checked against a
-// corporate register, so all three land on `stated`. The fourth row — the
-// Akshar Byonyks India office, which carried `pending` because nothing about
-// its address had been published — was removed on 2 Sep 2026 on the client's
-// instruction; the gap it recorded survives as `pending-address` above. Each
-// row's own `provenance` decides, not this comment.
+// Derived from `locations.ts`. FOUR PREMISES SINCE 11 SEP 2026, not three:
+// the Akshar Byonyks India office came back onto that page when the client
+// supplied its address, after nine days in which every row was Byonyks'.
+//
+// ALL FOUR LAND ON `stated`, AND THE REASON IS NOW TWO REASONS RATHER THAN
+// ONE. Three rows are Byonyks' published account of itself, unchecked against
+// a corporate register. The fourth is this company's own account of its own
+// office, supplied directly — which is a different kind of source and the same
+// verification status, because nobody on this project has checked it against a
+// register either. Each row's own `provenance` decides, not this comment.
 //
 // The gaps those rows carry are deliberately NOT mapped into entries here.
-// Three of the four already exist above or in `fromCompliance` — the hubs'
-// dates as `pending-india-hubs`, the CDSCO licence route as
+// Every one of them already exists above or in `fromCompliance` — the hubs'
+// licence position as `pending-india-hubs`, the CDSCO route as
 // `pending-cdsco-route`, the ISO 13485 certificate number as a compliance
-// credential — and the fourth is `pending-india-address-line` directly above.
-// Deriving them a second time would put two rows on `/what-we-know` for one
-// missing fact.
+// credential, and the India office's care-of status as
+// `pending-india-entity`. Deriving them a second time would put two rows on
+// `/what-we-know` for one missing fact.
 const fromLocations: readonly LedgerEntry[] = locations.map((site): LedgerEntry => {
   // "India, India" is what the naive template produced once the Bengaluru row
   // was replaced by a site that names only its country. A ledger row that
@@ -409,6 +547,7 @@ const fromLocations: readonly LedgerEntry[] = locations.map((site): LedgerEntry 
 export const ledger: readonly LedgerEntry[] = [
   ...fromCompliance,
   ...fromFigures,
+  ...fromBenefits,
   ...fromLocations,
   ...gaps,
 ];

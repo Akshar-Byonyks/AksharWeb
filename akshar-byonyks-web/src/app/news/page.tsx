@@ -166,46 +166,49 @@ export default function NewsPage() {
 
           <ul className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-2">
             {newsByDate.map((article, index) => (
-              <ScrollReveal key={article.slug} delayMs={index * 90}>
-                <li className="h-full">
-                  <Link
-                    href={`${path}/${article.slug}`}
-                    className="group flex h-full flex-col rounded-xl border border-line bg-card p-6 transition-colors hover:border-primary/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:p-8"
-                  >
-                    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                      <time
-                        dateTime={article.published}
-                        className="text-xs font-semibold tracking-wide text-muted-foreground uppercase"
+              <ScrollReveal
+                key={article.slug}
+                as="li"
+                delayMs={index * 90}
+                className="h-full"
+              >
+                <Link
+                  href={`${path}/${article.slug}`}
+                  className="group flex h-full flex-col rounded-xl border border-line bg-card p-6 transition-colors hover:border-primary/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:p-8"
+                >
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                    <time
+                      dateTime={article.published}
+                      className="text-xs font-semibold tracking-wide text-muted-foreground uppercase"
+                    >
+                      {formatDate(article.published)}
+                    </time>
+                    {article.categories.map((category) => (
+                      <span
+                        key={category}
+                        className="rounded-sm border border-line px-2 py-0.5 font-mono text-xs tracking-wide text-muted-foreground"
                       >
-                        {formatDate(article.published)}
-                      </time>
-                      {article.categories.map((category) => (
-                        <span
-                          key={category}
-                          className="rounded-sm border border-line px-2 py-0.5 font-mono text-xs tracking-wide text-muted-foreground"
-                        >
-                          {category}
-                        </span>
-                      ))}
-                    </div>
-                    <h3 className="mt-4 text-xl font-semibold text-balance text-ink group-hover:text-primary sm:text-2xl">
-                      {article.title}
-                    </h3>
-                    <p className="mt-3 text-base text-muted-foreground">
-                      {article.excerpt}
+                        {category}
+                      </span>
+                    ))}
+                  </div>
+                  <h3 className="mt-4 text-xl font-semibold text-balance text-ink group-hover:text-primary sm:text-2xl">
+                    {article.title}
+                  </h3>
+                  <p className="mt-3 text-base text-muted-foreground">
+                    {article.excerpt}
+                  </p>
+                  {/* Whose announcement it is, on every card, always. */}
+                  <AccentRail accent="plum" className="mt-4">
+                    <p className="font-mono text-xs tracking-wide text-plum">
+                      Published by {article.publisher}
                     </p>
-                    {/* Whose announcement it is, on every card, always. */}
-                    <AccentRail accent="plum" className="mt-4">
-                      <p className="font-mono text-xs tracking-wide text-plum">
-                        Published by {article.publisher}
-                      </p>
-                    </AccentRail>
-                    <span className="mt-5 inline-flex items-center gap-1.5 text-base font-semibold text-primary group-hover:underline">
-                      Read the release
-                      <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
-                    </span>
-                  </Link>
-                </li>
+                  </AccentRail>
+                  <span className="mt-5 inline-flex items-center gap-1.5 text-base font-semibold text-primary group-hover:underline">
+                    Read the release
+                    <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
+                  </span>
+                </Link>
               </ScrollReveal>
             ))}
           </ul>

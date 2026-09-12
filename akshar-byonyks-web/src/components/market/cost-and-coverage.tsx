@@ -110,12 +110,14 @@ export function CostAndCoverage() {
             >
               What it costs the household
             </h2>
-            <p className="mt-6 text-lg text-muted-foreground">
-              The best public costing of hemodialysis in an Indian public
-              hospital is 2015&ndash;16 fieldwork. It is used because it is the
-              best there is, and it is labelled everywhere it appears so nobody
-              mistakes it for current.
-            </p>
+            {/* The lead paragraph -- which said that the best public costing
+                of hemodialysis in an Indian public hospital is 2015-16
+                fieldwork, used because it is the best there is -- came off on
+                client instruction, 11 Sep 2026. The fieldwork period itself is
+                NOT hidden: every figure below still prints its own "as of" and
+                its own citation, which is where a reader checks the age of a
+                number anyway. What is gone is the page saying it once, up
+                front, in its own voice. */}
           </div>
         </ScrollReveal>
 

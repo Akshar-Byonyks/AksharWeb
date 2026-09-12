@@ -1,52 +1,40 @@
-import { PendingChip } from "@/components/common/pending-note";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
+import { benefits } from "@/lib/pd-benefits";
 
 // Spec §9.2: this page "carries the four benefits, each with a supporting
 // reference." The four are PRODUCT.md's migrated framework and they already
 // ship on Home, in the patient register, as four hairline rows with accent
 // chips.
 //
-// Repeating that section here would have been the obvious build and it would
-// have added nothing. What this page owes the reader is the half Home cannot
-// carry: the reference each claim rests on. So this is the same four claims
-// set as an evidence register — the claim, then the source slot — and the
-// source slot is empty on all four, visibly, because no reference has been
-// published for any of them yet.
+// THE REFERENCES CAME OFF THIS PAGE ON 11 SEP 2026, and the spec line above
+// is the reason that needs explaining rather than just doing. The client's
+// instruction was "References should be placed in separate document with the
+// rest of the sources", which is the same instruction the 3 Sep pass acted on
+// when it took the citations off `/innovation/market` — visible sourcing
+// comes off the pages, the evidence stays in the data, SOURCES.md is where it
+// is read.
 //
-// That is not a gap being dressed up. PRODUCT.md's third principle is
-// "evidence before claims — no statistic ships without a source and a date; an
-// unsourceable claim gets cut, not softened," and the X-1 page's own direction
-// contract says a specification with four visible gaps is worth more to a
-// nephrologist or an investor than a complete-looking one. This section is
-// that argument applied to the therapy claims rather than to the device
-// specification.
+// So §9.2 is still satisfied, and by the same reading the market page relies
+// on: every one of these four claims still has a reference or a declared
+// absence, `pd-benefits.ts` throws at module load if one does not, and
+// `getSource` throws if the reference is not a registered citation. What
+// changed is where a reader finds it. This page carries the claims; SOURCES.md
+// and `/what-we-know` carry what each one rests on.
+//
+// WHAT THIS SECTION NOW OWES HOME, given that Home already lists the same
+// four. Home's version is a teaser in the patient register with accent chips;
+// this is the full statement of each claim in the register the rest of the
+// page is written in. The lead no longer promises references it does not
+// show, which is the one thing the old version did that this must not.
 //
 // No accent chips, unlike Home's version of the four. Home's group is where
 // the wayfinding colour code is taught and it keeps them; here the treatment
-// is documentary, and colouring a reference register would decorate exactly
-// the thing whose credibility depends on not being decorated. Same reasoning
-// that stripped the chips off the X-1 feature rows.
+// is documentary, and colouring a claim register would decorate exactly the
+// thing whose credibility depends on not being decorated. Same reasoning that
+// stripped the chips off the X-1 feature rows.
 //
 // White ground: DESIGN.md's revised Full-Bleed Rule puts evidence, regulation
 // and specification in the light, and this is evidence.
-const benefits = [
-  {
-    title: "Protects the peritoneal membrane",
-    body: "Peritoneal dialysis filters through the lining of the patient’s own abdomen, so preserving that lining’s integrity over time is part of what the therapy is designed around.",
-  },
-  {
-    title: "Lower total cost of being treated",
-    body: "Home therapy removes the recurring cost of travel to a centre, the working hours lost to it for both the patient and whoever travels with them, and the clinic time itself.",
-  },
-  {
-    title: "Supports residual kidney function",
-    body: "Home peritoneal dialysis is associated with preserving residual renal function for longer than in-centre hemodialysis.",
-  },
-  {
-    title: "Clears acid and toxins",
-    body: "Each cycle removes acid and toxins that build up in the dialysate, the same job healthy kidneys do continuously.",
-  },
-];
 
 export function PdBenefits() {
   return (
@@ -59,33 +47,35 @@ export function PdBenefits() {
                 id="pd-benefits-heading"
                 className="text-3xl font-bold tracking-tight text-balance text-ink sm:text-4xl"
               >
-                Four benefits, and their references
+                Why it is offered
               </h2>
               <p className="mt-4 max-w-md text-lg text-muted-foreground">
-                These are the four reasons peritoneal dialysis is offered. Each
-                one rests on published evidence, and none of those references
-                is on this site yet. They are marked rather than implied.
+                These are the four reasons peritoneal dialysis is offered.
+                Three rest on the conclusions of KDIGO&rsquo;s dialysis
+                conferences, and are written to say no more than those
+                conferences do. The fourth has no published reference behind it
+                yet.
               </p>
             </div>
           </ScrollReveal>
 
+          {/* The claim, and nothing under it.
+
+              The reference slot that used to sit here held a sentence saying
+              what the cited report concludes and a link to the report itself.
+              Both survive in `pd-benefits.ts` and are written into SOURCES.md
+              on every build; neither is rendered. */}
           <dl>
             {benefits.map(({ title, body }, index) => (
-              <ScrollReveal key={title} delayMs={index * 90}>
-                <div className="border-t border-line py-6 first:border-t-0 first:pt-0 sm:py-7">
-                  <dt className="text-lg font-semibold text-ink">{title}</dt>
-                  <dd className="mt-2 max-w-2xl text-base text-muted-foreground">
-                    {body}
-                  </dd>
-                  {/* The reference slot. A chip and a label, not a sentence
-                      each: four identical sentences would be four times the
-                      noise for one fact, which the lead paragraph has already
-                      stated once. */}
-                  <dd className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
-                    <PendingChip label="Reference pending" />
-                    <span>Citation to be added at nephrologist review.</span>
-                  </dd>
-                </div>
+              <ScrollReveal
+                key={title}
+                delayMs={index * 90}
+                className="border-t border-line py-6 first:border-t-0 first:pt-0 sm:py-7"
+              >
+                <dt className="text-lg font-semibold text-ink">{title}</dt>
+                <dd className="mt-2 max-w-2xl text-base text-muted-foreground">
+                  {body}
+                </dd>
               </ScrollReveal>
             ))}
           </dl>

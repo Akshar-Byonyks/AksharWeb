@@ -125,6 +125,15 @@ export const publicRecord: readonly Credential[] = [
  */
 export const companyStated: readonly Credential[] = [
   {
+    // STILL UNDATED, AND DELIBERATELY. January 2024 was put here first on
+    // 11 Sep 2026 and moved to "Therapies delivered" the same day, on the
+    // client's answer to which of the two "Date not stated" rows the date
+    // belonged to. It was the therapy count, not the certification.
+    //
+    // So this row keeps a blank date on top of its missing certificate
+    // number, issuing body and expiry. That is four things unknown about the
+    // one standard the whole device is built under, and the row says so
+    // rather than dating it from the nearest fact to hand.
     title: "ISO 13485 quality management system",
     reference: null,
     referencePending: "Certificate number, issuing body and expiry",
@@ -182,11 +191,21 @@ export const companyStated: readonly Credential[] = [
     },
   },
   {
+    // DATED 11 SEP 2026, on client instruction ("date not stated should be
+    // January 2024"), confirmed against this row rather than the ISO 13485
+    // one above it.
+    //
+    // WHAT THE DATE MEANS HERE. A therapy count is a running total, so a date
+    // beside it is an "as at", not an event: the figure stood at over 10,000
+    // in January 2024 and the row does not claim it has stopped there. The
+    // register prints dates in a single mono column with no per-row label, so
+    // the distinction lives in this comment and in the detail sentence rather
+    // than in a fifth column on a four-column strip.
     title: "Therapies delivered",
     reference: null,
-    date: null,
+    date: "January 2024",
     detail:
-      "Over 10,000 therapies delivered using Byonyks cycler technology, as reported by Byonyks USA.",
+      "Over 10,000 therapies delivered using Byonyks cycler technology as at January 2024, as reported by Byonyks USA.",
     verification: { kind: "company-stated", recordedIn: "Byonyks USA" },
   },
 ];
@@ -219,25 +238,40 @@ export type IndiaHub = {
   readonly city: string;
   readonly state: string;
   readonly status: string;
+  /** The client's expected completion, where one has been given. */
+  readonly expectedCompletion?: string;
   readonly pending: string;
 };
 
+// STILL PARKED, AND STILL EDITED. Nothing renders these — /locations carries
+// the same two sites and is what a reader sees. They are updated anyway on
+// 11 Sep 2026 with the completion dates the client supplied, because a parked
+// record that quietly disagrees with the rendered one is how deviation 30
+// happened: two descriptions of one fact, only one of them maintained.
+//
+// THE CONSTRAINT ABOVE IS UNCHANGED BY THE DATES. A completion date says when
+// a building will be finished. It says nothing about what it will be licensed
+// to do, and this file's rule -- that neither may be called a manufacturing
+// facility until the CDSCO route is settled -- is the one that decides which
+// licence form applies. Do not read a date as an answer to that.
 export const indiaHubs: readonly IndiaHub[] = [
   {
     city: "Hyderabad",
     state: "Telangana",
     status:
       "Under construction. Announced as one of two Akshar Byonyks hubs in India.",
+    expectedCompletion: "Summer 2027",
     pending:
-      "Function and completion date not confirmed. Not described here as a manufacturing facility.",
+      "Function not confirmed, and the completion date is an expectation rather than a commitment. Not described here as a manufacturing facility.",
   },
   {
     city: "Ahmedabad",
     state: "Gujarat",
     status:
       "Under construction. Announced as one of two Akshar Byonyks hubs in India.",
+    expectedCompletion: "Late 2027",
     pending:
-      "Function and completion date not confirmed. Not described here as a manufacturing facility.",
+      "Function not confirmed, and the completion date is an expectation rather than a commitment. Not described here as a manufacturing facility.",
   },
 ];
 

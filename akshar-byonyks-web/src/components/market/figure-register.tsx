@@ -133,36 +133,49 @@ export function FigureRegister({
       )}
     >
       {figures.map((figure, index) => (
-        <ScrollReveal key={`${figure.source}-${figure.label}`} delayMs={index * 90}>
-          <div
-            className={cn(
-              layout === "two-up"
-                ? "py-4"
-                : "border-t border-line py-6 first:border-t-0 first:pt-0 sm:py-7"
-            )}
+        // THE REVEAL WRAPPER IS THE <dl>'s ONE LEGAL <div> GROUP.
+        //
+        // The row classes used to sit on a second <div> inside this one, and
+        // a <dl> may not have two: its content model allows exactly one div
+        // grouping level between the list and its <dt>/<dd> pairs, so the
+        // figures on /innovation/market stopped being associated with their
+        // labels, their detail lines and their as-of dates — which is every
+        // obligation in spec §3.3, silently unmet for a screen reader.
+        //
+        // Merging the classes up also repairs something that had been dead
+        // the whole time: "first:border-t-0" matched on EVERY row, because
+        // the inner div was always the only child of its wrapper. The stack
+        // layout's rules between figures have never been drawn until now.
+        <ScrollReveal
+          key={`${figure.source}-${figure.label}`}
+          delayMs={index * 90}
+          className={cn(
+            layout === "two-up"
+              ? "py-4"
+              : "border-t border-line py-6 first:border-t-0 first:pt-0 sm:py-7"
+          )}
+        >
+          {/* Moved onto the named display-numeral role, 30 Aug 2026. The
+              two steps this component already used ARE the role's "lead"
+              and "dense", so nothing here renders differently — it just
+              stops being a second place where the size and the tabular
+              figures are decided. */}
+          <DisplayFigure
+            as="dt"
+            size={emphasis === "lead" ? "lead" : "dense"}
+            tone="ink"
           >
-            {/* Moved onto the named display-numeral role, 30 Aug 2026. The
-                two steps this component already used ARE the role's "lead"
-                and "dense", so nothing here renders differently — it just
-                stops being a second place where the size and the tabular
-                figures are decided. */}
-            <DisplayFigure
-              as="dt"
-              size={emphasis === "lead" ? "lead" : "dense"}
-              tone="ink"
-            >
-              {figure.value}
-            </DisplayFigure>
-            <dd className="mt-3 max-w-2xl text-lg font-semibold text-ink">
-              {figure.label}
+            {figure.value}
+          </DisplayFigure>
+          <dd className="mt-3 max-w-2xl text-lg font-semibold text-ink">
+            {figure.label}
+          </dd>
+          {figure.detail ? (
+            <dd className="mt-2 max-w-2xl text-base text-muted-foreground">
+              {figure.detail}
             </dd>
-            {figure.detail ? (
-              <dd className="mt-2 max-w-2xl text-base text-muted-foreground">
-                {figure.detail}
-              </dd>
-            ) : null}
-            <AsOf figure={figure} />
-          </div>
+          ) : null}
+          <AsOf figure={figure} />
         </ScrollReveal>
       ))}
     </dl>

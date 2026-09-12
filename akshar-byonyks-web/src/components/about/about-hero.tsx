@@ -38,7 +38,17 @@ const questions = [
   },
   {
     q: "Is this an Indian company?",
-    a: "Yes. Akshar Byonyks exists for one market, and the argument for home dialysis is stronger in that market than in the one that cleared the device.",
+    // EXPANDED 11 SEP 2026, on client instruction: say that the X-1 was built
+    // and cleared for the United States, and that Akshar Byonyks is the
+    // company taking it into India specifically.
+    //
+    // WHAT IT DELIBERATELY DOES NOT SAY. Spec F-1 (20 Aug 2026) attributes
+    // Byonyks to no country, so this answer describes the market the
+    // CLEARANCE covers -- a fact on the FDA's own register -- and never the
+    // licensor's nationality. "Byonyks is an American company" is the
+    // sentence this is written to avoid, and the public record would not
+    // support it either: the applicant on K243371 is Byonyks Pvt, Ltd.
+    a: "Yes. The X-1 was built for the United States and cleared there, and a 510(k) reaches no further than that market. Akshar Byonyks International LLC exists for India alone — the CDSCO route, the supply and the clinical support are being built here, not translated from a US programme. The argument for home dialysis is stronger in this market too: in the United States a trip to a clinic is an inconvenience, and across most of India it is the reason people never receive dialysis at all.",
   },
 ];
 
@@ -53,10 +63,6 @@ export function AboutHero() {
           >
             An Indian company, and a licence.
           </h1>
-          <p className="mt-6 text-xl text-white/75">
-            Three questions decide whether the rest of this site is worth your
-            time. They are answered here rather than further down.
-          </p>
         </div>
 
         {/* A definition list, because that is literally what this is. The

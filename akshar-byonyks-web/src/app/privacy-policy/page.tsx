@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { DirectionContract } from "@/components/common/direction-contract";
-import { PendingNote } from "@/components/common/pending-note";
 import {
   InternalLink,
   LegalPage,
@@ -11,6 +10,7 @@ import {
 } from "@/components/legal/legal-document";
 import { defaultOg } from "@/lib/seo";
 import { enquiryTypes } from "@/lib/contact";
+import { grievanceOfficer, indiaOffice } from "@/lib/site-config";
 
 const path = "/privacy-policy";
 
@@ -121,11 +121,29 @@ as not yet answerable.
             website. That means we decide why and how your personal data is
             used, and we are answerable for it.
           </p>
-          <PendingNote
-            className="mt-4"
-            note="Address pending"
-            label="Our India registered office address is not yet confirmed. It will be published here, and it is required before this site goes live."
-          />
+          {/* THE ADDRESS, 11 SEP 2026, replacing a pending note that said it
+              was not confirmed. The DPDP Act wants a reader to be able to
+              reach the data fiduciary, and this is that: a postal address and
+              a line in India, alongside the email already in "How to reach
+              us". Whether it is also the registered office of record is a
+              separate question and is marked on /terms-of-use, not here —
+              nothing in this policy turns on it. */}
+          <address className="mt-4 rounded-xl border border-line bg-surface-2 p-5 text-base text-foreground not-italic">
+            {indiaOffice.careOf}
+            <br />
+            {indiaOffice.lines.map((line) => (
+              <span key={line}>
+                {line}
+                <br />
+              </span>
+            ))}
+            <a
+              className="mt-2 inline-block rounded-sm text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              href={`tel:${indiaOffice.phoneTel}`}
+            >
+              {indiaOffice.phone}
+            </a>
+          </address>
         </LegalSection>
 
         <LegalSection id="what-we-collect" title="What we collect, and why">
@@ -226,11 +244,15 @@ as not yet answerable.
             </InternalLink>{" "}
             page.
           </p>
-          <PendingNote
-            className="mt-4"
-            note="Grievance Officer pending"
-            label="The DPDP Act requires a named Grievance Officer with published contact details. Nobody has been appointed yet. This is a launch-blocking gap, and it is stated here rather than filled with a generic address."
-          />
+          {/* NAMED, 11 SEP 2026. This was a launch-blocking pending note
+              saying nobody had been appointed. The client named an officer, so
+              the page names him. The wording the appointment rests on is
+              recorded in site-config.ts, where the constant is. */}
+          <p>
+            Our Grievance Officer is{" "}
+            <strong className="text-ink">{grievanceOfficer.name}</strong>, and
+            he can be reached at <MailLink /> or at the address above.
+          </p>
         </LegalSection>
 
         <LegalSection id="children" title="Children">

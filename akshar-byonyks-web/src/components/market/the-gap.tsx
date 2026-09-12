@@ -38,60 +38,120 @@ import { accessFigures, scaleFigures } from "@/lib/market-data";
 // words, and the unit chart draws the one figure on this page that is
 // genuinely a proportion.
 
-const RECEIVED_DIALYSIS = 33;
-const TOTAL_UNITS = 100;
+// THE SPLIT THE FIGURE DRAWS, written once and used by both the bar and the
+// labels beneath it so the two cannot fall out of alignment.
+//
+// Two-to-one rather than a percentage, and that is a claim about the source
+// rather than a shortcut. The figure behind this is word-valued -- market-data
+// records it as "= two thirds", not as 67% -- so a bar drawn at 67/33 would
+// assert a precision the paper does not carry. Two-to-one IS two thirds, and
+// it is the only honest way to draw an approximation at this size.
+// TWO CONSTANTS, BOTH WRITTEN OUT IN FULL, and that is not redundancy.
+// Tailwind builds its stylesheet by scanning source text for whole class
+// names, so a class assembled at runtime ("sm:" + SPLIT) is a candidate the
+// scanner never sees and a rule that is never generated -- the bar would be
+// correct and its labels would silently lose their columns at every width.
+// Each breakpoint's class therefore appears here as a literal string.
+const SPLIT = "grid-cols-[2fr_1fr]";
+const SPLIT_SM = "sm:grid-cols-[2fr_1fr]";
 
 const [incidence, prevalence, untreated] = scaleFigures;
 const [travelled50km, lived100km, dropout] = accessFigures;
 
 /**
- * The proportion, at one unit per person in a hundred.
+ * The proportion, as one bar split once.
  *
- * `aria-hidden` on the grid: a screen reader walking a hundred empty cells
- * gets a hundred nothings. The figure's caption states the proportion in
- * words, which is the whole content, and is not hidden.
+ * REDRAWN 11 SEP 2026, on client instruction: "the visual for 2/3 needs to be
+ * replaced with something that makes it more apparent, don't like the boxes."
+ *
+ * WHAT THE BOXES WERE AND WHY THEY FAILED. A hundred small squares in a
+ * ten-by-ten grid, thirty-three filled white and sixty-seven drawn as outlines
+ * at white/30. As a unit chart it was technically correct, and it asked the
+ * reader to do two jobs before it paid anything back: count, and separate a
+ * 1px outline from a solid fill on a dark ground. In the right column of a
+ * two-column grid those cells landed around 20px, at which size white/30 on
+ * ink is very nearly the ink -- so the honest reading of the old figure was
+ * "a block of white squares and some texture". The one number on this page
+ * that is about people rather than about an opportunity was the hardest thing
+ * on the page to see.
+ *
+ * WHAT REPLACED IT. One bar, one cut, across the full measure. Nothing to
+ * count and nothing to resolve: the gold runs twice as far as the hollow
+ * remainder, which IS the fact, and it reads at a glance and at a distance.
+ * The figure also moved out of the side column and under the sentence it
+ * illustrates, so it gets the whole width rather than a third of it.
+ *
+ * GOLD IS NOT BORROWED HERE. The Wayfinding Rule fixes gold to "home/India"
+ * and this page is the India case; the display figure directly above the bar
+ * has been set in text-accent-gold since this section was built, so the bar is
+ * the same colour as the number it draws. That link is the point -- a reader
+ * who looks up meets the same gold saying the same thing -- and a bar is a
+ * non-text graphic, which is what the Accent Ration Rule permits.
+ *
+ * aria-hidden ON THE BAR AND ITS LABELS, unchanged in spirit from the boxes:
+ * the proportion is stated in words immediately above it and again in the
+ * figcaption, so a screen reader that also walked the bar would be told the
+ * same fact three times.
  */
 function UntreatedFigure() {
   return (
     <figure className="mx-auto max-w-[1280px] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-      <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-16">
-        <div>
-          <p className="text-5xl font-bold tracking-tight text-balance text-accent-gold sm:text-6xl lg:text-7xl">
-            {untreated.value}
-          </p>
-          <p className="mt-5 max-w-md text-xl font-semibold text-balance text-white sm:text-2xl">
-            of people with kidney failure died without ever receiving dialysis
-          </p>
-          <p className="mt-4 max-w-md text-base text-white/70">
-            Not people who stopped treatment, and not people on a waiting list.
-            People for whom the therapy that exists never began.
-          </p>
-          <p className="mt-5 font-mono text-xs tracking-wide text-white/70">
-            {untreated.asOf}
-            <Cite source={untreated.source} onInk />
-          </p>
-        </div>
-
-        <div
-          aria-hidden="true"
-          className="grid grid-cols-10 gap-1.5 sm:gap-2"
-        >
-          {Array.from({ length: TOTAL_UNITS }, (_, i) => (
-            <span
-              key={i}
-              className={
-                i < RECEIVED_DIALYSIS
-                  ? "aspect-square rounded-[3px] bg-white"
-                  : "aspect-square rounded-[3px] border border-white/30"
-              }
-            />
-          ))}
-        </div>
+      <div className="max-w-3xl">
+        <p className="text-5xl font-bold tracking-tight text-balance text-accent-gold sm:text-6xl lg:text-7xl">
+          {untreated.value}
+        </p>
+        <p className="mt-5 text-xl font-semibold text-balance text-white sm:text-2xl">
+          of people with kidney failure died without ever receiving dialysis
+        </p>
+        <p className="mt-4 max-w-xl text-base text-white/70">
+          Not people who stopped treatment, and not people on a waiting list.
+          People for whom the therapy that exists never began.
+        </p>
+        <p className="mt-5 font-mono text-xs tracking-wide text-white/70">
+          {untreated.asOf}
+          <Cite source={untreated.source} onInk />
+        </p>
       </div>
 
-      <figcaption className="mt-10 border-t border-white/15 pt-5 text-sm text-white/60">
-        One hundred people with kidney failure. The solid marks are the roughly
-        one in three who received dialysis.
+      <div aria-hidden="true" className="mt-12">
+        {/* Solid gold against a hollow remainder rather than two solid fills:
+            an outline reads as absence, and the smaller, quieter part of this
+            picture is the third who did receive treatment. The divider is a
+            2px rule in the section's own ground, so the cut reads as a gap
+            rather than as a third colour. */}
+        <div className={`grid overflow-hidden rounded-lg ${SPLIT}`}>
+          <div className="h-20 bg-accent-gold sm:h-28 lg:h-32" />
+          <div className="h-20 border-y border-r border-l-2 border-white/30 border-l-ink bg-white/10 sm:h-28 lg:h-32" />
+        </div>
+
+        {/* The labels sit under their own segments from sm and stack below it.
+            Stacked, the reading order still matches the bar left to right, and
+            each block keeps a rule in its segment's own colour -- AccentRail's
+            grammar, and never the only carrier, because the words say which is
+            which on their own. */}
+        <dl className={`mt-5 grid grid-cols-1 gap-5 sm:gap-8 ${SPLIT_SM}`}>
+          <div className="border-t-2 border-accent-gold pt-3">
+            <dt className="text-lg font-semibold text-white sm:text-xl">
+              Two thirds
+            </dt>
+            <dd className="mt-1 text-sm text-white/70 sm:text-base">
+              Died without ever receiving dialysis
+            </dd>
+          </div>
+          <div className="border-t-2 border-white/30 pt-3">
+            <dt className="text-lg font-semibold text-white sm:text-xl">
+              One third
+            </dt>
+            <dd className="mt-1 text-sm text-white/70 sm:text-base">
+              Received it
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <figcaption className="mt-12 border-t border-white/15 pt-5 text-sm text-white/60">
+        The bar is the proportion, not a count of cases: roughly one person in
+        three with kidney failure received dialysis, and the rest did not.
       </figcaption>
     </figure>
   );

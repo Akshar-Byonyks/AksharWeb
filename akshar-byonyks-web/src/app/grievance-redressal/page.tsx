@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { defaultOg } from "@/lib/seo";
+import { grievanceOfficer, indiaOffice } from "@/lib/site-config";
 
 import { DirectionContract } from "@/components/common/direction-contract";
 import { PendingNote } from "@/components/common/pending-note";
@@ -98,10 +99,13 @@ export default function GrievanceRedressalPage() {
 THESIS: someone arriving here is arriving annoyed, and the page's job is to
 show them a real person and a real process in the first viewport. Read mode,
 and the most operational of the five documents.
-OWN-WORLD: the "show the gaps" instinct at its sharpest. The DPDP Act requires
-a NAMED officer and none has been appointed — so that gap sits at the top of
-the page in the semantic amber, not the bottom, because it is the first thing a
-complainant needs to know. The same applies to the statutory period: the Act
+OWN-WORLD: the "show the gaps" instinct at its sharpest, and as of 11 Sep 2026
+the largest of those gaps is closed. The DPDP Act requires a NAMED officer;
+none had been appointed for the life of this page, so the amber note saying so
+sat at the top rather than the bottom, because it was the first thing a
+complainant needed to know. An officer is now named, with an address and two
+ways to reach him, in that same first position — the slot was right whichever
+answer went in it. What still carries amber is the statutory period: the Act
 leaves it to rules, so the page states the commitment that is ours to make and
 marks the statutory number as counsel's to confirm.
 STORY: who this is for → who handles it (and the gap) → how to complain → what
@@ -139,11 +143,56 @@ timeline we cannot keep or a person who does not exist.
             a Grievance Officer: a specific accountable person, not a
             department.
           </p>
-          <PendingNote
-            className="mt-4"
-            note="Grievance Officer not yet appointed"
-            label="No Grievance Officer has been appointed. This is a launch-blocking gap and it is stated here rather than filled with a generic inbox dressed up as an officer. Until the appointment is made and the name published on this page, complaints sent to the address below are read and answered by the team, and nothing on this page should be taken as the statutory appointment having been made."
-          />
+          {/* NAMED, 11 SEP 2026, AND THIS WAS THE PAGE'S WHOLE PROBLEM. The
+              direction contract above still describes the old state — "the Act
+              requires a NAMED officer and none has been appointed, so that gap
+              sits at the top of the page in the semantic amber". It is not a
+              gap any more, so the amber is gone and the name is in the same
+              slot, which is where a complainant looks for it either way.
+
+              The contact details are deliberately the ones already published
+              on this site rather than a new personal inbox: the Act asks for a
+              route that works, and a second address nobody is watching is a
+              worse answer than the one the team already reads. */}
+          <p>
+            Our Grievance Officer is{" "}
+            <InternalLink href={grievanceOfficer.profile}>
+              {grievanceOfficer.name}
+            </InternalLink>
+            .
+          </p>
+          <address className="mt-4 rounded-xl border border-line bg-surface-2 p-5 text-base text-foreground not-italic">
+            <span className="block font-semibold text-ink">
+              {grievanceOfficer.name}
+            </span>
+            <span className="block">Grievance Officer</span>
+            <span className="mt-3 block">
+              {indiaOffice.careOf}
+              <br />
+              {indiaOffice.lines.map((line) => (
+                <span key={line}>
+                  {line}
+                  <br />
+                </span>
+              ))}
+            </span>
+            <MailLink />
+            <br />
+            {/* `tap-target` because this is a number a person is meant to
+                DIAL, and in an address block it inherits the line box of the
+                text around it: measured at 22px on a 320px phone, under WCAG
+                2.2 SC 2.5.8's 24px floor and a long way under a thumb. The
+                utility takes it to 44px and pulls the extra height back out
+                with a negative block margin, so the address keeps its
+                rhythm. The same phone number on /contact and /locations
+                already used it; this was the copy that did not. */}
+            <a
+              className="tap-target rounded-sm text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              href={`tel:${indiaOffice.phoneTel}`}
+            >
+              {indiaOffice.phone}
+            </a>
+          </address>
         </LegalSection>
 
         <LegalSection id="how-to-complain" title="How to complain">

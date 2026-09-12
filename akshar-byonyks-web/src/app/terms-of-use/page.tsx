@@ -10,6 +10,7 @@ import {
   type LegalSectionRef,
 } from "@/components/legal/legal-document";
 import { defaultOg } from "@/lib/seo";
+import { indiaOffice } from "@/lib/site-config";
 import { fdaClearance, licensingStatement } from "@/lib/claims";
 
 const path = "/terms-of-use";
@@ -100,11 +101,35 @@ sentence comes from claims.ts rather than being rewritten here.
             By using the site you accept these terms. If you do not accept them,
             please stop using the site.
           </p>
-          <PendingNote
-            className="mt-4"
-            note="Registered address pending"
-            label="Our India registered office address is not yet confirmed. It will be published here and on the privacy policy, and it is required before this site goes live."
-          />
+          {/* THE ADDRESS, 11 SEP 2026. The pending note this replaces said no
+              India address was confirmed and that one was required before
+              launch. An address now exists and is published here, on the
+              privacy policy and on /contact.
+
+              WHAT IT IS CALLED HERE MATTERS. "Where to reach us", not "our
+              registered office": the client supplied a care-of correspondence
+              address, and the separate question of whether an Indian entity
+              exists to hold a registered office came back "not sure about
+              indian LLP yet" on the same day. The governing-law clause below
+              is where that distinction has consequences, and it keeps its own
+              note. See "isRegisteredOffice" in site-config.ts. */}
+          <p className="mt-4">Where to reach us:</p>
+          <address className="mt-2 rounded-xl border border-line bg-surface-2 p-5 text-base text-foreground not-italic">
+            {indiaOffice.careOf}
+            <br />
+            {indiaOffice.lines.map((line) => (
+              <span key={line}>
+                {line}
+                <br />
+              </span>
+            ))}
+            <a
+              className="mt-2 inline-block rounded-sm text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              href={`tel:${indiaOffice.phoneTel}`}
+            >
+              {indiaOffice.phone}
+            </a>
+          </address>
         </LegalSection>
 
         <LegalSection id="what-this-site-is" title="What this site is for">
@@ -251,10 +276,19 @@ sentence comes from claims.ts rather than being rewritten here.
           <p>
             These terms are governed by the laws of India.
           </p>
+          {/* NARROWED, NOT CLOSED, 11 SEP 2026. This note used to rest on
+              there being no India address at all. There is one now — it is
+              printed at the top of this document — and the gap that survives
+              is the precise one it always turned on: a care-of correspondence
+              address does not establish a registered office, and the client
+              has not yet decided whether there will be an Indian LLP to hold
+              one. Until that is settled the seat of jurisdiction cannot be
+              named, and the reasoning about arbitration clauses is unchanged
+              and unrelated to the address. */}
           <PendingNote
             className="mt-4"
             note="Jurisdiction seat pending"
-            label="The courts having jurisdiction follow from our registered office, which is not yet confirmed. A dispute-resolution clause has deliberately not been drafted here: arbitration clauses in consumer contracts are treated differently under Indian law than under US law, and this is one for Indian counsel rather than a copied template."
+            label="The courts having jurisdiction follow from our registered office. The address published above is a correspondence address, and whether an Indian entity will hold a registered office here is not yet decided, so no seat is named. A dispute-resolution clause has deliberately not been drafted either: arbitration clauses in consumer contracts are treated differently under Indian law than under US law, and this is one for Indian counsel rather than a copied template."
           />
         </LegalSection>
 

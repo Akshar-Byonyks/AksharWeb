@@ -68,13 +68,15 @@ export function X1Features() {
 
           <dl>
             {features.map(({ title, body }, index) => (
-              <ScrollReveal key={title} delayMs={index * 90}>
-                <div className="border-t border-line py-6 first:border-t-0 first:pt-0 sm:py-7">
-                  <dt className="text-lg font-semibold text-ink">{title}</dt>
-                  <dd className="mt-2 max-w-2xl text-base text-muted-foreground">
-                    {body}
-                  </dd>
-                </div>
+              <ScrollReveal
+                key={title}
+                delayMs={index * 90}
+                className="border-t border-line py-6 first:border-t-0 first:pt-0 sm:py-7"
+              >
+                <dt className="text-lg font-semibold text-ink">{title}</dt>
+                <dd className="mt-2 max-w-2xl text-base text-muted-foreground">
+                  {body}
+                </dd>
               </ScrollReveal>
             ))}
           </dl>

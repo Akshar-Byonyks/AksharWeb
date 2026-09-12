@@ -202,11 +202,6 @@ export function InnovationDoorways() {
             >
               What is in this section
             </h2>
-            <p className="mt-6 text-lg text-muted-foreground">
-              Start with the therapy if the words are new, or with the device
-              if they are not. The market case is where the figures are, and
-              every one of them carries its source.
-            </p>
           </div>
         </ScrollReveal>
 

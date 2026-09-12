@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Hospital } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
@@ -7,20 +6,33 @@ import { cn } from "@/lib/utils";
 // The two-state scene shared by both the scroll-scrubbed hero (motion-safe)
 // and the static side-by-side fallback (motion-reduce / no-JS). "After" (a
 // quiet home night) is Byonyks USA's own official X-1 product render, the
-// same asset already used in "Our answer." "Before" ("Life around the
-// clinic") is DESIGN.md's default for a concept with no real, rights-clear
-// image available: line-art iconography, single stroke weight, colored via
-// the card's own currentColor rather than a hardcoded hex — not the real
-// hemodialysis-machine photo used in earlier revisions, which read as
-// specifically "the control panel" rather than "the routine" the retitled
-// card is now making the point about. Revision 5 (20 Aug 2026): replaced
-// the drawn house/bed/lamp/device scene with the X-1 render. Revision 7
-// (23 Aug 2026): swapped the machine-photo back to line art (a lucide
-// Hospital glyph) after the card's title changed from "The in-center
-// routine" to "Life around the clinic" — the photo no longer matched, and a
-// colored flat-illustration reference the request pointed to would have
-// meant a fifth ad-hoc hue plus a hardcoded red cross, both against
-// DESIGN.md's Accent Ration and Wayfinding rules.
+// same asset already used in "Our answer."
+//
+// "BEFORE" IS A PHOTOGRAPH AGAIN, AND THIS TIME OF THE RIGHT THING
+// (11 Sep 2026, client instruction: the scrolling cards should carry a real
+// image). The history is worth keeping, because this slot has now held four
+// different answers and three of them were wrong for reasons that are easy
+// to repeat:
+//
+//   Revision 5 (20 Aug 2026) replaced a drawn house/bed/lamp scene with the
+//   X-1 render on the home card.
+//   Revision 6 ran a real hemodialysis-machine photo here and it was pulled
+//   on 23 Aug: cropped to the gauges, it read as "the control panel" rather
+//   than "the routine", which is what the retitled card is about.
+//   Revision 7 fell back to a lucide "Hospital" glyph — DESIGN.md's default
+//   for a concept with no real, rights-clear image. CLAUDE.md has since
+//   inverted that default ("reach for a real image first", 28 Aug 2026), and
+//   line art is now the fallback rather than the resting state.
+//   Revision 8 is this one: a photograph of a hospital ward in Kolkata, with
+//   patients in beds and a family member sitting with each of them.
+//
+// WHY THIS FRAME AND NOT A MACHINE OR A BUILDING. The card says "roughly
+// three trips a week, plus the road between them", and the subject of that
+// sentence is a household, not equipment. Two other candidates were
+// downloaded and rejected on sight — a heritage hospital dome that reads as
+// a monument, and an ambulance bay at night that reads as an emergency —
+// both recorded in public/images/README.md, which also carries the DMR Act
+// flag this image is filed under.
 //
 // Presentation: each state is a card (react-bits' "Scroll Stack" pattern —
 // two cards physically stacked, the front one scaling/rotating back and
@@ -140,17 +152,51 @@ function ClinicCard({ className, style }: { className?: string; style?: CSSPrope
       className={className}
       style={style}
     >
-      <Hospital
-        aria-hidden="true"
-        strokeWidth={1.5}
-        // `size-*` is rem-based, so at 200% text this decorative glyph grew to
-        // 224px and pushed a 320px viewport 17px sideways. It is an
-        // illustration, not type: it carries no information that gets easier to
-        // read when it doubles, and WCAG 1.4.4 is about text. Capping the
-        // rendered box keeps the reflow clean while leaving the icon free to
-        // scale at every width where there is room for it.
-        className="mx-auto size-28 max-h-[40vw] max-w-[40vw] sm:size-32"
-      />
+      {/* FRAMED, UNLIKE THE X-1 RENDER OPPOSITE, and the asymmetry is
+          correct rather than an oversight. That render is a transparent PNG
+          with its own silhouette, so a frame round it would draw a box that
+          is not there. This is a rectangular photograph on a dark ground,
+          and an unframed rectangle bleeding into the Silk background reads
+          as a rendering error. The border is white/15 — the same value the
+          clinic card's own edge carries, so the photo sits inside the card's
+          language rather than introducing a second one.
+
+          No scrim and no ScrimmedImage: spec §7.2 requires the scrim where
+          text sits OVER an image, and nothing does here. The caption and the
+          title are on the card, above and below the frame. */}
+      {/* IN COLOUR SINCE 11 SEP 2026, on the client's instruction, and the
+          swap cost this card something worth writing down.
+
+          It was a black-and-white ward in Kolkata, chosen partly BECAUSE it
+          was monochrome: the note in public/images/README.md argued that a
+          colour ward photo competes with the gold on the home card while a
+          grey one reads as the "before" state without spending an accent.
+          That reasoning was sound and it is now overruled, which is the
+          client's call to make.
+
+          What replaces it is a consulting room rather than a ward, and that
+          is the part that is not a like-for-like. The old frame showed the
+          ACCOMPANIMENT — the relative sitting with each patient, which is the
+          half of the in-centre cost that appears in no tariff. Nothing in the
+          colour pool on the sanctioned libraries carried that and was also
+          India, unbranded and clean on the 1954 Act. So the accompaniment
+          argument now lives only in prose, on /innovation/market, which is
+          where its figures are anyway.
+
+          What the swap gained, beyond colour: the patient's face is turned
+          away, so unlike the frame it replaces nobody receiving care here is
+          identifiable. See the README entry for what that does and does not
+          do to the Drugs and Magic Remedies Act 1954 flag. */}
+      <div className="overflow-hidden rounded-xl border border-white/15">
+        <Image
+          src="/images/clinic-consult-kashmir.jpg"
+          alt="A doctor in a consulting room takes a seated patient's blood pressure with a cuff and stethoscope. A desk with an anatomical model of a knee joint stands between them."
+          width={1600}
+          height={1067}
+          className="h-auto w-full"
+          sizes="(min-width: 640px) 380px, 320px"
+        />
+      </div>
     </SceneCard>
   );
 }

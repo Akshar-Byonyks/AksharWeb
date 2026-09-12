@@ -9,7 +9,7 @@ import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { DocumentGrid, GridBlock } from "@/components/layout/document-grid";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { CtaBand } from "@/components/sections/cta-band";
-import { licensingStatement } from "@/lib/claims";
+import { licenceScope, licensingStatement } from "@/lib/claims";
 import { getProduct, x2x3ComingSoon, x2x3Statement } from "@/lib/products";
 import { siteUrl } from "@/lib/site-config";
 
@@ -120,8 +120,7 @@ describes dust sheets, because that is what is in the frame.
           <p className="mt-5 max-w-2xl text-lg text-white/75">
             {licensingStatement} The X-1 is the device this company can put in
             front of a clinician today, with its clearance on a register anyone
-            can open. The X-2 and X-3 are Byonyks&rsquo; announcements, and this
-            page keeps them apart from the device that exists.
+            can open.
           </p>
         </div>
       </section>
@@ -163,12 +162,6 @@ describes dust sheets, because that is what is in the frame.
                   {x1.name}
                 </h2>
                 <p className="mt-5 text-lg text-ink">{x1.summary}</p>
-                <p className="mt-4 text-base text-muted-foreground">
-                  The device page carries the specification with its gaps
-                  marked, the regulatory position in both jurisdictions stated
-                  separately, the quality and compliance record, and the route
-                  for a clinician to request the Instructions for Use.
-                </p>
                 <Link
                   href={x1.href!}
                   className="mt-6 inline-flex items-center gap-2 rounded-sm text-base font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
@@ -223,6 +216,26 @@ describes dust sheets, because that is what is in the frame.
                   {x2x3.name}
                 </h2>
                 <p className="mt-5 text-lg text-ink">{x2x3.summary}</p>
+                {/* WHAT THIS COMPANY WOULD HAVE THE RIGHT TO SELL, added
+                    11 Sep 2026 when the client supplied the licence terms.
+                    Until then this section could say only that two devices had
+                    been announced, which left an investor or a distributor to
+                    guess whether the India licence reached them at all. It
+                    does.
+
+                    IT IS A COMMERCIAL SENTENCE AND MUST NOT BE READ AS A
+                    REGULATORY ONE, which is why the second half is here. An
+                    exclusive licence covering every machine says nothing about
+                    whether either device exists, has a specification, or could
+                    be sold in India — and the whole architecture of this page
+                    is built to keep an announcement from reading as a product.
+                    The scope sentence itself lives in claims.ts. */}
+                <p className="mt-4 text-base text-muted-foreground">
+                  {licenceScope} That is a commercial position, not a
+                  regulatory one: neither device has a published specification,
+                  and no regulatory status has been stated for either in any
+                  jurisdiction.
+                </p>
               </GridBlock>
 
               <GridBlock wide className="mt-10">
@@ -264,14 +277,6 @@ describes dust sheets, because that is what is in the frame.
                     {x2x3ComingSoon}
                   </p>
                 </blockquote>
-
-                <p className="mt-6 text-base text-muted-foreground">
-                  When Byonyks publishes something a clinician can evaluate,
-                  these get pages of their own with the same specification
-                  table, the same marked gaps and the same separate regulatory
-                  statements the X-1 page carries. Until then this section is
-                  the whole of what is known.
-                </p>
               </GridBlock>
             </DocumentGrid>
           </ScrollReveal>

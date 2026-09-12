@@ -2,9 +2,8 @@ import { PendingNote } from "@/components/common/pending-note";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import {
   indiaLicensing,
+  indiaManufactureAndLicence,
   indiaRegulatoryStatement,
-  licensingStatement,
-  manufacturingStatement,
   usRegulatoryStatement,
 } from "@/lib/claims";
 
@@ -38,17 +37,32 @@ import {
 // for the Indian market structure was found in this pass, so the slot is
 // marked rather than filled with an impression. An opportunity claim is
 // precisely the kind an investor checks first.
+//
+// FOUR BOXES BECAME THREE, 11 SEP 2026, on client instruction: "merge the
+// manufactured and licensed boxes." They were two sentences answering one
+// question -- who makes this and who may bring it here -- and the client's
+// answer to both is now the same company, so they are one box. The merged
+// sentence lives in claims.ts, where its conflict with the rest of this
+// repository's manufacturing record is written down in full. Read that note
+// before reusing "indiaManufactureAndLicence" anywhere else; it is scoped to
+// this band on purpose.
+//
+// THE CLEARANCE BOX STILL NAMES BYONYKS AND MUST. "usRegulatoryStatement"
+// ends "held by Byonyks, not by Akshar Byonyks", which is what the FDA's own
+// register says about K243371. Rule 1 in claims.ts -- never state or imply
+// Akshar Byonyks holds the clearance -- is the oldest non-negotiable on this
+// project, and dropping that clause to remove a mention of Byonyks would put
+// a false statement about a public record on a medical device site.
 const facts = [
   { heading: "Cleared", body: usRegulatoryStatement },
-  { heading: "Manufactured", body: manufacturingStatement },
-  { heading: "Licensed", body: licensingStatement },
+  { heading: "Manufactured and licensed", body: indiaManufactureAndLicence },
   // The heading changed on 1 Sep 2026 with the client's "show as in progress"
   // instruction. "Not yet saleable in India" was accurate and told an investor
   // only what cannot happen; "Licensing in progress in India" is the same fact
   // read forward, and the sentence under it still says plainly that a US
   // clearance does not authorise sale here. The date rides in the heading
-  // rather than a fifth column, because this band is four sentences of status
-  // and a fifth would make it a table.
+  // rather than a fourth column, because this band is three sentences of
+  // status and a fourth would make it a table.
   {
     heading: `Licensing in progress in India, as of ${indiaLicensing.asOf}`,
     body: indiaRegulatoryStatement,
@@ -77,11 +91,6 @@ export function TimingAndLicensing() {
               >
                 On what authority
               </h2>
-              <p className="mt-3 text-base text-muted-foreground">
-                Whether the thing being proposed can be done, by this company,
-                from where it stands today, including the part that
-                cannot be done yet.
-              </p>
             </div>
             <PendingNote
               className="sm:max-w-xs"
@@ -91,15 +100,23 @@ export function TimingAndLicensing() {
           </div>
         </ScrollReveal>
 
-        <dl className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-2 xl:grid-cols-4">
+        {/* Three columns from md, not the old two-then-four. The band lost a
+            box when "Manufactured" and "Licensed" merged, and three cells in a
+            two-column grid leave one cell empty -- which on this strip is not
+            whitespace but a bare panel of "bg-line" showing through the
+            "gap-px", reading as a fourth card that failed to load. Three
+            across from md fills the row exactly; below md it stacks. */}
+        <dl className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-3">
           {facts.map(({ heading, body }, index) => (
-            <ScrollReveal key={heading} delayMs={index * 70}>
-              <div className="h-full bg-card p-5 sm:p-6">
-                <dt className="font-mono text-xs tracking-wide text-primary">
-                  {heading}
-                </dt>
-                <dd className="mt-3 text-sm text-foreground">{body}</dd>
-              </div>
+            <ScrollReveal
+              key={heading}
+              delayMs={index * 70}
+              className="h-full bg-card p-5 sm:p-6"
+            >
+              <dt className="font-mono text-xs tracking-wide text-primary">
+                {heading}
+              </dt>
+              <dd className="mt-3 text-sm text-foreground">{body}</dd>
             </ScrollReveal>
           ))}
         </dl>

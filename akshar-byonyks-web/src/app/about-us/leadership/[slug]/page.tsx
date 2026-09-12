@@ -4,10 +4,11 @@ import { notFound } from "next/navigation";
 // lucide dropped its brand icons, so this is the generic external-link mark
 // rather than a LinkedIn logo. A wordmark we do not have the right to redraw
 // is not worth a dependency.
-import { ArrowLeft, Clock, ExternalLink } from "lucide-react";
+import { ArrowLeft, Clock } from "lucide-react";
 
 import { ExecutivePortrait } from "@/components/about/executive-portrait";
 import { AccentRail } from "@/components/common/accent-rail";
+import { LinkedInMark } from "@/components/common/linkedin-mark";
 import { PendingChip } from "@/components/common/pending-note";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { CtaBand } from "@/components/sections/cta-band";
@@ -71,8 +72,6 @@ export default async function ExecutivePage({
   if (!executive) notFound();
 
   const path = `/about-us/leadership/${executive.slug}`;
-  // The attribution line only claims a portrait when there is one.
-  const carriedNoun = executive.portrait ? "Biography and portrait" : "Biography";
 
   // `Person`, with `worksFor` naming the actual employer rather than assuming
   // it is this site's company. Spec §3.1's first non-negotiable, in the
@@ -147,30 +146,54 @@ export default async function ExecutivePage({
                   Title to be confirmed
                 </p>
               )}
-              {/* Plum on ink, matching the roster card this page was opened
-                  from. The one line on a profile that a reader is most likely
-                  to complete wrongly — "an executive, on the Akshar Byonyks
-                  site, therefore an Akshar Byonyks executive" — is the one
-                  line the page had set at 60% white. */}
-              <AccentRail accent="plum" tone="dark" className="mt-2">
-                <p className="font-mono text-xs tracking-wide text-plum-on-ink">
-                  {executive.organisation}
-                </p>
-              </AccentRail>
+              {/* THE COMPANY LINE CAME OFF HERE TOO, 12 Sep 2026, same client
+                  instruction as the roster card — "the tag under each person".
+                  It was plum on ink, directly under the role.
+
+                  This is the instance that cost more of the two. The comment
+                  it replaces named the exact misreading it existed to stop:
+                  "an executive, on the Akshar Byonyks site, therefore an
+                  Akshar Byonyks executive" — and on a profile page, unlike the
+                  roster, there is no counts paragraph nearby to carry the
+                  distinction instead. What still carries it here is the
+                  JSON-LD `worksFor` below, the portrait's alt text, and the
+                  page's own meta description; all three read `organisation`,
+                  which is why that field stays required. None of the three is
+                  visible on the page. See deviation 38. */}
+              {/* THE BRAND TILE, REPLACING A TEXT LINK (12 Sep 2026, client
+                  instruction). This was a gold "LinkedIn" label with a generic
+                  external-link chevron; it is now the same blue tile the
+                  roster card carries, so the two places a reader can meet this
+                  link look like the same link.
+
+                  BIGGER HERE THAN ON THE CARD — 40px against 36px. On the
+                  roster the tile is an attribute pinned to a thumbnail among
+                  six others; on a profile it is the only outbound link on the
+                  page and it sits in a hero at display sizes, where 36px reads
+                  as an afterthought.
+
+                  THE RING FLIPS TO WHITE because this hero is on ink. The card
+                  uses ring-black/10 to hold an edge against a pale photograph;
+                  the same value here would be invisible, and a blue tile on
+                  dark navy is exactly the case that needs one.
+
+                  NO VISIBLE WORD "LINKEDIN" ANY MORE, which is a real trade
+                  and worth naming: the mark is recognised on sight by almost
+                  everyone and the accessible name still says it in full, but a
+                  reader who does not know the glyph now has nothing to read.
+                  The instruction was explicit about removing the word. */}
               {executive.linkedin ? (
                 <p className="mt-6">
                   <a
                     href={executive.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-sm py-1 text-base font-semibold text-accent-gold hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                    className="inline-flex size-10 overflow-hidden rounded-lg shadow-sm ring-1 ring-white/20 transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                   >
-                    <ExternalLink
-                      className="size-4 shrink-0"
-                      aria-hidden="true"
-                    />
-                    LinkedIn
-                    <span className="sr-only"> (opens in a new tab)</span>
+                    <LinkedInMark className="size-full" />
+                    <span className="sr-only">
+                      {executive.name} on LinkedIn (opens in a new tab)
+                    </span>
                   </a>
                 </p>
               ) : null}
@@ -186,35 +209,57 @@ export default async function ExecutivePage({
           </h2>
           <div className="max-w-3xl">
             {/* Paragraphs come from the data, split on blank lines, so a bio
-                is authored as prose rather than as markup. */}
-            {executive.bio.split(/\n\s*\n/).map((paragraph) => (
-              <p
-                key={paragraph.slice(0, 40)}
-                className="mt-5 text-lg text-foreground first:mt-0"
-              >
-                {paragraph}
-              </p>
-            ))}
+                is authored as prose rather than as markup.
 
-            {/* Where the biography came from, on the page and not only in
-                the data. Nothing here was written by this project: the Byonyks
-                records are transcribed from each subject's own page, and Dr.
-                Patel's was supplied by Akshar Byonyks. A quoted biography of a
-                real person with no visible origin is the same defect as an
-                uncited statistic, and this site does not ship those — so the
-                supplied record gets an attribution line too, not just the ones
-                with a URL to point at. */}
-            {executive.sourceUrl ? (
-              <p className="mt-8 border-t border-line pt-5 text-sm text-muted-foreground">
-                {carriedNoun} as published by {executive.organisation}, carried
-                here word for word. Retrieved {executive.retrieved}.
+                THE SECOND BRANCH IS NEW (11 Sep 2026) and it is this page's
+                third pending state, after "Title to be confirmed" and
+                "Photograph pending" in the hero above. A record can now
+                arrive as a name, a title and a face with the words still to
+                come — `bioPending` in leadership.ts — and this is where the
+                page says so instead of rendering a profile with nothing on
+                it. Same grammar as the other two: the chip, the amber, and a
+                sentence naming what is missing rather than a blank. */}
+            {executive.bio ? (
+              executive.bio.split(/\n\s*\n/).map((paragraph) => (
+                <p
+                  key={paragraph.slice(0, 40)}
+                  className="mt-5 text-lg text-foreground first:mt-0"
+                >
+                  {paragraph}
+                </p>
+              ))
+            ) : (
+              <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-lg text-muted-foreground">
+                <PendingChip label="Biography pending" />
+                <span>
+                  {executive.name}&rsquo;s biography has not been supplied yet.
+                  It will be published here in their own words, as every other
+                  biography on this roster is.
+                </span>
               </p>
-            ) : executive.suppliedBy ? (
-              <p className="mt-8 border-t border-line pt-5 text-sm text-muted-foreground">
-                {carriedNoun} supplied by {executive.suppliedBy}, carried here
-                word for word. Received {executive.retrieved}.
-              </p>
-            ) : null}
+            )}
+
+            {/* THE ATTRIBUTION LINE CAME OFF, 11 Sep 2026, on client
+                instruction. It printed one of two sentences under every
+                biography — "as published by <organisation>, carried here word
+                for word, retrieved <date>" for the transcribed records, and
+                "supplied by <supplier>, carried here word for word, received
+                <date>" for the client's own copy — and it is the last of this
+                site's visible provenance marks to go, after the 2 and 3 Sep
+                removals took the rest.
+
+                WHAT WENT WITH IT, so nobody has to reconstruct it. Every
+                biography on this roster is somebody else's text carried
+                verbatim; none was written here. That is still true and is
+                still recorded, in "leadership.ts" per record and in
+                SOURCES.md. The page simply no longer says it, so a reader now
+                meets a quoted biography of a real person with no stated
+                origin.
+
+                "sourceUrl", "suppliedBy" and "retrieved" are all still
+                required by the module-load contract in "leadership.ts" and
+                must stay populated. They are the record; this was only its
+                rendering. */}
 
             {/* WHAT THIS PERSON DOES FOR INDIA — a separate block below the
                 biography and its attribution line, never spliced into the
@@ -231,26 +276,26 @@ export default async function ExecutivePage({
                 an India-market roster, "what does he do here" is a question
                 worth publishing unanswered rather than answering with a
                 sentence nobody supplied. */}
-            {executive.indiaNote || executive.indiaNotePending ? (
+            {/* THE PENDING BRANCH IS GONE, 11 Sep 2026, on client
+                instruction: Senthil Kumar's profile should not carry an
+                "On India / Pending" block saying his role in the India
+                programme has not been supplied. Only a record that actually
+                HAS an "indiaNote" renders this section now.
+
+                "indiaNotePending" stays on the type and stays true on his
+                record in "leadership.ts", because it is still an accurate
+                note of something the client was asked for and has not sent.
+                It simply renders nothing. If a blurb arrives, set "indiaNote"
+                and clear the flag — the contract in that file still refuses
+                both at once. */}
+            {executive.indiaNote ? (
               <AccentRail accent="gold" className="mt-10">
                 <h2 className="text-lg font-semibold text-ink">
                   On India
                 </h2>
-                {executive.indiaNote ? (
-                  <p className="mt-3 text-lg text-foreground">
-                    {executive.indiaNote}
-                  </p>
-                ) : (
-                  <p className="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-base text-muted-foreground">
-                    <PendingChip label="Pending" />
-                    <span>
-                      {executive.name}&rsquo;s role in the India programme has
-                      not been supplied, and the biography above (his
-                      own, as published by {executive.organisation})
-                      does not describe one.
-                    </span>
-                  </p>
-                )}
+                <p className="mt-3 text-lg text-foreground">
+                  {executive.indiaNote}
+                </p>
               </AccentRail>
             ) : null}
 

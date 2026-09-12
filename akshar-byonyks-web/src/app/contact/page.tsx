@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 
 import { DirectionContract } from "@/components/common/direction-contract";
-import { PendingNote } from "@/components/common/pending-note";
 import { ContactForm } from "@/components/contact/contact-form";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { SilhouetteEdge } from "@/components/layout/silhouette-edge";
 import { defaultOg } from "@/lib/seo";
 import { enquiryFromParam } from "@/lib/contact";
-import { siteContact } from "@/lib/site-config";
+import { indiaOffice, siteContact } from "@/lib/site-config";
 import { Mail, MapPin, Phone } from "lucide-react";
 
 const path = "/contact";
@@ -141,7 +140,14 @@ which country it rings in.
                     <Phone className="size-4.5" aria-hidden="true" />
                   </span>
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold text-ink">Phone</p>
+                    {/* "Phone, United States" since 11 Sep 2026, when a
+                        second number joined it. A row labelled "Phone" above a
+                        row labelled "Phone, India" reads as the general case
+                        and the special case, which is the wrong way round on
+                        an India-market site: this is the foreign one. */}
+                    <p className="text-sm font-semibold text-ink">
+                      Phone, United States
+                    </p>
                     {/* DIALLABLE, NOT JUST PRINTED. This was a `<p>` for as
                         long as the number was a placeholder — there was
                         nothing to ring. It is a real staffed line now, and
@@ -162,6 +168,27 @@ which country it rings in.
                     </p>
                   </div>
                 </li>
+                {/* THE INDIA LINE, ADDED 11 SEP 2026 with the address below.
+                    It sits above the US number rather than under it because
+                    it is the only locally diallable number this site has ever
+                    had, and PRODUCT.md's Priority-2 reader is on a phone in
+                    India. The +1 line keeps its place and its warning. */}
+                <li className="flex items-start gap-3">
+                  <span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-accent text-primary">
+                    <Phone className="size-4.5" aria-hidden="true" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-ink">
+                      Phone, India
+                    </p>
+                    <a
+                      className="tap-target rounded-sm text-sm text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                      href={`tel:${indiaOffice.phoneTel}`}
+                    >
+                      {indiaOffice.phone}
+                    </a>
+                  </div>
+                </li>
                 <li className="flex items-start gap-3">
                   <span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-accent text-primary">
                     <MapPin className="size-4.5" aria-hidden="true" />
@@ -170,26 +197,42 @@ which country it rings in.
                     <p className="text-sm font-semibold text-ink">
                       India office
                     </p>
-                    {/* "Coming soon" IS THE CLIENT'S OWN WORDING (1 Sep 2026),
-                        replacing a pending note that said the address was
-                        unconfirmed. It is a row on the list now rather than a
-                        marker under it, because a reader scanning for an
-                        address should find the answer where they look for it
-                        — and the answer is that there is not one yet. */}
-                    <p className="text-sm text-muted-foreground">Coming soon</p>
+                    {/* THE ADDRESS, 11 SEP 2026. This row read "Coming soon"
+                        in the client's own wording from 1 September, and
+                        before that carried a pending note. The client supplied
+                        the address, so the row says it.
+
+                        A real <address> element, not a stack of <p>s: this is
+                        the contact address for the page's own organisation,
+                        which is exactly what the element is for, and it gives
+                        assistive technology the block boundary that six loose
+                        lines do not. "not-italic" because browsers italicise
+                        it by default and an italic postal address reads as a
+                        quotation. */}
+                    <address className="text-sm text-muted-foreground not-italic">
+                      {indiaOffice.careOf}
+                      <br />
+                      {indiaOffice.lines.map((line) => (
+                        <span key={line}>
+                          {line}
+                          <br />
+                        </span>
+                      ))}
+                    </address>
                   </div>
                 </li>
               </ul>
 
-              {/* One genuine gap, marked rather than invented — the same
-                  treatment the X-1 specification table uses. The phone is no
-                  longer among them: a real, staffed line replaced the
-                  placeholder on 1 Sep 2026, closing that §14.4 launch gate. */}
-              <PendingNote
-                className="mt-4"
-                note="Address pending"
-                label="The India registered office address is not yet confirmed, so none is published here. Enquiries reach the same people by email and phone in the meantime."
-              />
+              {/* THE ADDRESS PENDING NOTE CAME OFF, 11 SEP 2026. It said the
+                  India registered office was not confirmed and that none was
+                  published. Both halves are now out of date on this page: the
+                  address above is published, and the question of whether it is
+                  the REGISTERED office is a different one, which lives where
+                  it actually matters — the governing-law clause on
+                  /terms-of-use. See "isRegisteredOffice" in site-config.ts.
+
+                  That leaves this panel with no pending note at all, which is
+                  a first. Do not add one back to fill the space. */}
 
               <div className="mt-8 border-t border-line pt-6">
                 <h3 className="text-sm font-semibold text-ink">What happens next</h3>

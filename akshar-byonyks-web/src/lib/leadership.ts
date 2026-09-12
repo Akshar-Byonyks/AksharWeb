@@ -39,19 +39,37 @@
 //     skyline. A single shoot closes it; nothing else honestly can, because
 //     the remaining fix is editing photographs of real people.
 //
-// FOUR RECORDS, THREE OF THEM THIS COMPANY'S OWN. Dr. Vishnu Patel, Dr. Ronak
-// C. Shah and Sahil are Akshar Byonyks; Senthil Kumar is Byonyks and stays on
-// the client's explicit instruction. The list is still ONE list (client
-// instruction, 29 Aug 2026: "Dont make Akshar Byonyks and Byonyks 2 seperate
-// lists. Should be one in the same.").
+// SEVEN RECORDS, SIX OF THEM THIS COMPANY'S OWN (11 Sep 2026). Sahil
+// Pankhaniya, Dr. Vishnu Patel, Dr. Ronak C. Shah, Dr. Rohit Pankhaniya,
+// Dr. Rashmin Gandhi and Dr. Yogesh Tank are Akshar Byonyks; Senthil Kumar is
+// Byonyks and stays on the client's explicit instruction. The list is still
+// ONE list (client instruction, 29 Aug 2026: "Dont make Akshar Byonyks and
+// Byonyks 2 seperate lists. Should be one in the same.").
 //
-// WHICH KEEPS `organisation` LOAD-BEARING, and arguably more so than before.
-// It is on every record, printed on every card, printed on every profile, and
-// in the JSON-LD's `worksFor`. Spec §3.1's first non-negotiable is that the
-// two companies are never blurred; with one Byonyks person among three of
-// ours, the per-card label is the only thing that says which is which. It is
-// not optional metadata. Do not remove it without a written client decision
-// recorded in deviations.md.
+// THE COUNTS IN THIS HEADER ARE MAINTAINED, and that is not housekeeping.
+// Deviation 30 records what happened the last time they were not: four client
+// instructions landed on these records across a week, nobody re-read the prose
+// describing them, and the site's own transparency register ended up
+// publishing a statement about this company's leadership that the leadership
+// page contradicted. If you change the roster, change the sentences that count
+// it — here, in `leadershipStatus` below in about.ts, and in the ledger.
+//
+// WHICH KEEPS `organisation` REQUIRED, THOUGH IT STOPPED BEING PRINTED ON
+// 12 SEP 2026. The client asked for the per-person company tag to come off the
+// roster cards and the profile heroes, and it did — see deviation 38. The
+// field did not go with it, and the distinction between the two companies did
+// not either; what changed is that no sighted reader is now shown it beside a
+// face.
+//
+// WHAT STILL READS THIS FIELD: the counts sentence on the roster page, the
+// per-profile meta description, and the JSON-LD's `worksFor`. Spec §3.1's
+// first non-negotiable is that the two companies are never blurred, and those
+// three are what hold it now. Deleting the field would break all three at
+// once and would be a far larger change than the one that was asked for.
+//
+// The old note here read "Do not remove it without a written client decision
+// recorded in deviations.md." That is exactly what happened, so the sentence
+// did its job. Keep the same bar for the field itself.
 //
 // ─── ONE THING THAT NEEDS THE CLIENT BEFORE LAUNCH ──────────────────────────
 //
@@ -101,8 +119,10 @@
 // verbatim: padding a 124-word bio to 150 means inventing facts about a real
 // person, and cutting a 517-word one means deciding which half of someone's
 // career matters. Verbatim records answer to a different contract —
-// provenance — and that is the one enforced on them. All four records here
-// are verbatim, so none is length-checked and every one carries a date.
+// provenance — and that is the one enforced on them. Six of the seven records
+// here are verbatim, so none of those is length-checked and every one carries
+// a date. The seventh, Dr. Yogesh Tank's, has no biography at all yet and
+// declares `bioPending`; see that field.
 
 export type Executive = {
   readonly slug: string;
@@ -119,14 +139,52 @@ export type Executive = {
    */
   readonly role?: string;
   /**
-   * Which company this person is an executive of. Printed on every card and
-   * every profile, and never inferred from the site it appears on.
+   * Which company this person is an executive of. Never inferred from the site
+   * it appears on.
+   *
+   * NO LONGER PRINTED ON THE CARD OR THE PROFILE (12 Sep 2026, client
+   * instruction, deviation 38). Still required, and still read by the roster's
+   * counts sentence, the profile meta description and the JSON-LD
+   * `worksFor` — so a wrong value here is now a wrong value a reader cannot
+   * see and correct for, which makes it more dangerous than it was, not less.
    */
   readonly organisation: "Akshar Byonyks" | "Byonyks";
-  /** 150–250 words when authored here; verbatim when transcribed or supplied. */
-  readonly bio: string;
+  /**
+   * 150-250 words when authored here; verbatim when transcribed or supplied.
+   *
+   * OPTIONAL SINCE 11 SEP 2026, and only in the same way `role` is: a record
+   * may arrive as a name, a title and a photograph with the words still to
+   * come, and holding the whole person off the roster until a paragraph
+   * exists is the wrong trade. What is NOT optional is saying so — a record
+   * without a bio must set `bioPending`, or the contract at the foot of this
+   * file throws.
+   *
+   * Do not write a placeholder biography. That is the one failure this field
+   * being optional exists to prevent: a sentence composed here about a real
+   * person, to fill a page, reading as though they had supplied it.
+   */
+  readonly bio?: string;
+  /**
+   * No biography provided yet. The record publishes and the profile page says
+   * the biography is to come, in the same grammar the portrait frame uses for
+   * "Photograph pending" and the card uses for "Title to be confirmed".
+   *
+   * Deliberately explicit, like `portraitPending`: a missing `bio` alone
+   * fails the build, so a biography can only go missing on purpose.
+   */
+  readonly bioPending?: boolean;
   readonly portrait?: string;
   readonly portraitAlt: string;
+  /**
+   * A LinkedIn profile URL, if the person has one and the client has given it.
+   *
+   * RENDERED IN TWO PLACES, DIFFERENTLY. The profile page has a labelled text
+   * link; the roster card, since 12 Sep 2026, has the LinkedIn mark pinned to
+   * the corner of the portrait. Both are optional per record and the card
+   * simply has no mark where this is absent, which is why it must never be
+   * filled with a guessed or searched-for profile: a wrong LinkedIn is a link
+   * to a different real person under this person's name and face.
+   */
   readonly linkedin?: string;
   /** Where a transcribed record came from. Required for transcribed records. */
   readonly sourceUrl?: string;
@@ -182,9 +240,10 @@ export const executives: readonly Executive[] = [
     //
     // He leads the roster on client instruction. The list is one list — Akshar
     // Byonyks and Byonyks together — also on client instruction, 29 Aug 2026.
-    // The `organisation` on every record is what now carries the distinction
-    // spec §3.1 requires, so it is printed on every card and every profile and
-    // in the JSON-LD's `worksFor`.
+    // The `organisation` on every record still carries the distinction spec
+    // §3.1 requires, but since 12 Sep 2026 it is no longer printed on the card
+    // or the profile — only in the roster's counts sentence, the profile meta
+    // description and the JSON-LD's `worksFor`. See deviation 38.
     slug: "vishnu-patel",
     name: "Vishnu Patel",
     postNominals: "MD",
@@ -210,6 +269,10 @@ export const executives: readonly Executive[] = [
     portrait: "/images/leadership/vishnu-patel.jpg",
     portraitAlt:
       "Portrait of Vishnu Patel, MD, Vice President at Akshar Byonyks.",
+    // Supplied by the client 12 Sep 2026. Second record on this roster to
+    // carry one, after Senthil Kumar's, which was transcribed from
+    // byonyks.com in August.
+    linkedin: "https://www.linkedin.com/in/vishnu-patel-b07b4232a/",
     suppliedBy: "Akshar Byonyks",
     retrieved: "29 August 2026",
     bio: "Dr. Vishnu Patel is Vice President of Akshar Byonyks International (ABI), bringing extensive experience in nephrology, dialysis care, healthcare leadership, and business development. As a practicing nephrologist and physician executive, he provides clinical and strategic insight to ABI’s mission of expanding access to innovative, patient-centered peritoneal dialysis technology.\n\nAt Akshar Byonyks, Dr. Patel focuses on strategic partnerships, clinical integration, and the development of manufacturing and distribution capabilities in India and international markets. His work is guided by a commitment to making high-quality home dialysis solutions more accessible, affordable, and scalable for patients worldwide.\n\nDr. Patel also serves in physician leadership and healthcare business roles in the United States, giving him a practical perspective on translating medical innovation into sustainable solutions that improve patient care.",
@@ -356,6 +419,83 @@ export const executives: readonly Executive[] = [
     bio: "Dr. Rohit Pankhaniya is a board-certified nephrologist practicing in Port Charlotte, Florida.\n\nAfter completing his medical education in India, he pursued advanced training in the United States, completing an Internal Medicine residency at Wayne State University and a Nephrology fellowship at Henry Ford Hospital. He has been providing specialized kidney care in Florida since 2008.\n\nIn addition to his clinical work, Dr. Pankhaniya is involved in commercial real estate development and biotech startup investments.\n\nHis passion for nephrology is deeply personal. Early in life, he witnessed a close family member navigate the significant challenges of peritoneal dialysis in India. This experience inspired his involvement with Byonyks USA beginning in 2024. Working alongside Dr. Patel and the ABI team, he is committed to advancing innovative, life-saving treatments and making them accessible to patients in his home country.",
   },
   {
+    // SUPPLIED BY THE CLIENT, 11 SEP 2026, AND CARRIED WORD FOR WORD. The
+    // second of the two records added that day, and the opposite case to
+    // Yogesh Tank directly below: a full biography, a named role, and a
+    // photograph all arriving together.
+    //
+    // TWO SETS OF POST-NOMINALS WERE GIVEN AND BOTH ARE CARRIED. The client's
+    // covering line reads "Rashmin Gandhi, MD"; the supplied profile's own
+    // signature line reads "Dr. Rashmin Gandhi, FRCS (Edinburgh), FRCS
+    // (Glasgow)", and the biography corroborates the second pair in prose
+    // ("holds FRCS qualifications from both Edinburgh and Glasgow"). Nothing
+    // in the supplied text mentions an MD.
+    //
+    // Publishing both is the only option here that does not involve this
+    // project deciding which of a real clinician's stated credentials to drop.
+    // Dropping the MD would edit the client's own line about their own person;
+    // dropping the FRCS pair would discard the qualifications the biography
+    // actually evidences. **If the MD is wrong, this is the field to fix, and
+    // it should be fixed rather than left** — a medical degree somebody does
+    // not hold is a real misstatement about a real person on a medical device
+    // site, and it is flagged for that reason rather than for tidiness.
+    //
+    // HE IS ALSO THE GRIEVANCE OFFICER AND THE CARE-OF NAME ON THE INDIA
+    // ADDRESS. Three roles, one person, across three parts of this site —
+    // `grievanceOfficer` and `indiaOffice` in site-config.ts are the other
+    // two. /grievance-redressal links to this profile so a complainant can
+    // see who they are writing to. The roles are deliberately NOT merged:
+    // "India Division Lead" is his job and "Grievance Officer" is a statutory
+    // appointment under the DPDP Act, and a card that ran them together would
+    // make the second look like a job title rather than a legal function.
+    //
+    // NO `indiaNote`. That field exists for a record whose biography does not
+    // describe an India role — Senthil Kumar's is the only one. This
+    // biography is about the India role from its first sentence.
+    slug: "rashmin-gandhi",
+    name: "Rashmin Gandhi",
+    postNominals: "MD, FRCS (Edinburgh), FRCS (Glasgow)",
+    role: "India Division Lead",
+    organisation: "Akshar Byonyks",
+    bio: "Dr. Rashmin Gandhi is a distinguished ophthalmic surgeon, healthcare leader, researcher, and medical technology innovator who serves as India Division Lead for Akshar Byonyks International (ABI). In this role, he helps guide ABI\u2019s strategy, clinical engagement, partnerships, and development initiatives across India.\n\nDr. Gandhi brings more than two decades of experience spanning clinical medicine, academic leadership, medical technology, research, and international healthcare initiatives. He currently serves in several leadership roles, including Director of Axon Medtech Pvt Ltd, Managing Director of Foresight Worldwide, Consultant and Director of Neuro-Ophthalmology at Centre for Sight in Hyderabad, and Fellowship Director and Board Member of the World Headache Society. He is also a founding member of the Indian Neuro-Ophthalmology Society and Country Director for the Davos Alzheimer\u2019s Collaborative.\n\nHis academic and research work includes investigations into ocular movement and pupil responses as potential biomarkers for dementia and Alzheimer\u2019s disease, along with collaborations involving IIT Madras, IIIT Hyderabad, and the University of Hyderabad.\n\nDr. Gandhi holds FRCS qualifications from both Edinburgh and Glasgow and completed a Fellowship in Neuro-Ophthalmology at Johns Hopkins University in the United States.\n\nThroughout his career, he has combined clinical excellence with innovation, education, and global outreach. He has led international surgical and teaching missions, participated in scientific meetings worldwide for more than 25 years, contributed to books and peer-reviewed publications, and mentored ophthalmologists and fellows.\n\nAt ABI, Dr. Gandhi brings extensive clinical, academic, technology, and healthcare leadership experience to support the organization\u2019s growth and development in India.",
+    portrait: "/images/leadership/rashmin-gandhi.jpg",
+    portraitAlt:
+      "Rashmin Gandhi, photographed head and shoulders against a plain white background, in a navy jacket over a light blue checked shirt and dark-framed glasses.",
+    suppliedBy: "Akshar Byonyks",
+    retrieved: "11 September 2026",
+  },
+  {
+    // SUPPLIED BY THE CLIENT, 11 SEP 2026 — a name, post-nominals and a
+    // photograph, with the biography still to come. The first record on this
+    // roster to publish with no words at all, which is what `bioPending` was
+    // added for.
+    //
+    // NOTHING IS INFERRED FROM THE PHOTOGRAPH OR THE POST-NOMINALS. "MD" says
+    // he is a physician; it does not say he is a nephrologist, and it says
+    // nothing about what he does at this company. Dr. Shah's record already
+    // carries the cost of guessing a title from a description — see the note
+    // at the head of this file, where "nephrologist" would have been read out
+    // of his own biography and would have been wrong, because he is Secretary.
+    // So `role` is omitted and the card says "Title to be confirmed".
+    slug: "yogesh-tank",
+    name: "Yogesh Tank",
+    postNominals: "MD",
+    organisation: "Akshar Byonyks",
+    bioPending: true,
+    portrait: "/images/leadership/yogesh-tank.jpg",
+    // The alt describes the photograph, not the person's profession. It is
+    // the same discipline the products teaser's alt keeps: say what is in the
+    // frame, and do not put a claim in the accessibility layer that the
+    // picture cannot make.
+    portraitAlt:
+      "Yogesh Tank, photographed from the chest up in a brown tweed jacket over a blue checked shirt, against a softly blurred office interior.",
+    // NO `suppliedBy` AND NO `retrieved`, and that is correct rather than an
+    // omission. Those two fields are the provenance of a VERBATIM BIOGRAPHY,
+    // and there is no biography here yet. The photograph's provenance is in
+    // public/images/README.md, which is where CLAUDE.md requires it. When the
+    // words arrive, both fields go on with them.
+  },
+  {
     // THE ONE BYONYKS RECORD THAT STAYS, on the client's explicit instruction
     // of 1 Sep 2026 — "Senthil Kumar stays" — given in the same breath as the
     // instruction to remove the other thirteen. Still transcribed from
@@ -364,10 +504,13 @@ export const executives: readonly Executive[] = [
     //
     // HIS INDIA BLURB WAS ASKED FOR AND HAS NOT ARRIVED. `indiaNotePending`
     // marks it. The biography below runs 35 years through Viisage, PeakPoint
-    // and Oasis and mentions India nowhere; on a roster of four for an
-    // India-market company, "what does he do here" is the question his card
-    // raises and the page had better not answer it by guessing. See the field
-    // documentation on `indiaNote`.
+    // and Oasis and mentions India nowhere; on an India-market roster that is
+    // otherwise entirely this company's own people, "what does he do here" is
+    // the question his card raises and the page had better not answer it by
+    // guessing. See the field documentation on `indiaNote`. The pending block
+    // that used to state this on his profile came off on 11 Sep 2026 at the
+    // client's request, so `pending-india-note` in the claims ledger is now
+    // the only place the question is recorded.
     slug: "senthil-kumar",
     name: "Senthil Kumar",
     role: "VP Business Development",
@@ -397,6 +540,60 @@ export const byonyksExecutives = executives.filter(
 export const aksharExecutives = executives.filter(
   (executive) => executive.organisation === "Akshar Byonyks",
 );
+
+/**
+ * THE TWO PRINCIPAL OFFICERS, AND EVERYONE ELSE.
+ *
+ * Client instruction, 11 Sep 2026: "put President and Vice President in their
+ * own row at the top. Everyone should go below." The roster page renders
+ * these two first, in their own two-up row, then "otherExecutives" in the
+ * three-column grid it has always used.
+ *
+ * MATCHED ON THE OFFICE, NOT ON A HAND-WRITTEN LIST OF SLUGS. The officer
+ * schedule the client supplied on 8 Sep 2026 is the source of "role", and a
+ * hardcoded ["sahil-pankhaniya", "vishnu-patel"] here would silently keep
+ * showing two people as principals after an officer change. Reading the
+ * titles means the row follows the schedule.
+ *
+ * PRESIDENT BEFORE VICE PRESIDENT, always, regardless of roster order: a row
+ * of two that puts the deputy first is a worse statement than no row at all.
+ * "Vice President" contains "President", so the president test excludes it
+ * explicitly rather than relying on substring luck.
+ *
+ * ONE MORE THING THE WORD BOUNDARY IS DOING. Dr. Patel holds two offices and
+ * his "role" reads "Vice President; Chief Financial Officer and Treasurer",
+ * so the match has to survive a compound title. It does, because it tests for
+ * the office anywhere in the string rather than for equality.
+ */
+const isPresident = (executive: Executive) =>
+  /\bpresident\b/i.test(executive.role ?? "") &&
+  !/\bvice president\b/i.test(executive.role ?? "");
+
+const isVicePresident = (executive: Executive) =>
+  /\bvice president\b/i.test(executive.role ?? "");
+
+export const principalExecutives: readonly Executive[] = [
+  ...executives.filter(isPresident),
+  ...executives.filter(isVicePresident),
+];
+
+export const otherExecutives: readonly Executive[] = executives.filter(
+  (executive) => !principalExecutives.includes(executive),
+);
+
+/**
+ * The roster in the order the page actually renders it.
+ *
+ * The leadership page's JSON-LD emits an "ItemList" with a "position" on every
+ * entry, and a position that disagrees with the reading order is a worse
+ * statement than no position at all — it tells a crawler the deputy is first.
+ * So the page reads this rather than "executives", and the two orders cannot
+ * drift apart the way they did the moment the principals row was added.
+ */
+export const rosterOrder: readonly Executive[] = [
+  ...principalExecutives,
+  ...otherExecutives,
+];
 
 export function getExecutive(slug: string): Executive | undefined {
   return executives.find((executive) => executive.slug === slug);
@@ -429,6 +626,28 @@ if (byonyksExecutives.length >= aksharExecutives.length) {
     `leadership: ${byonyksExecutives.length} Byonyks records against ${aksharExecutives.length} Akshar Byonyks. ` +
       "A roster under this masthead that is mostly the licensor's staff answers the wrong question. " +
       "Add the Akshar Byonyks people, or get a written client decision before changing this rule.",
+  );
+}
+
+// THE TOP ROW IS A ROW OF TWO, AND THE PAGE'S LAYOUT ASSUMES IT. The roster
+// renders "principalExecutives" in a two-column grid above the main list, so
+// a third principal would silently produce a two-up row with a lone card
+// hanging under it. If the officer schedule ever puts three people in that
+// row, change the grid in the same commit that changes this rule.
+if (principalExecutives.length !== 2) {
+  throw new Error(
+    `leadership: ${principalExecutives.length} principal officers matched, expected 2 ` +
+      "(one President and one Vice President). The roster page renders them as a " +
+      "two-up row above everyone else; fix the officer titles, or change the grid " +
+      "and this contract together.",
+  );
+}
+
+// AND NOBODY MAY BE IN BOTH HALVES OR NEITHER. Cheap to check, and it is the
+// invariant the page depends on to render each person exactly once.
+if (principalExecutives.length + otherExecutives.length !== executives.length) {
+  throw new Error(
+    "leadership: the principal/other split does not account for every record exactly once.",
   );
 }
 
@@ -466,6 +685,31 @@ for (const executive of executives) {
       `leadership: "${executive.name}" has an India note and is also marked pending. Clear the flag.`,
     );
   }
+
+  // A BIOGRAPHY CAN BE ABSENT, BUT ONLY ON PURPOSE — the same rule, and the
+  // same reasoning, as `portraitPending` above. A record that quietly renders
+  // a profile page with no words on it reads as broken; one that says the
+  // biography is to come reads as deliberate, and the gap stays visible to
+  // the client every time they open the page, which is how the words
+  // eventually arrive.
+  if (!executive.bio && !executive.bioPending) {
+    throw new Error(
+      `leadership: "${executive.name}" has no biography and has not declared \`bioPending\`. ` +
+        "Add the biography, or mark it pending so the page can say so. Do not write one here.",
+    );
+  }
+
+  // AND NEVER BOTH. A record carrying real words under a marker saying the
+  // words are missing is the same contradiction `indiaNotePending` refuses
+  // two checks above.
+  if (executive.bio && executive.bioPending) {
+    throw new Error(
+      `leadership: "${executive.name}" has a biography and is also marked pending. Clear the flag.`,
+    );
+  }
+
+  // Nothing below this line can run without a biography to measure.
+  if (!executive.bio) continue;
 
   if (executive.sourceUrl || executive.suppliedBy) {
     // Not authored here. The contract is provenance, not length — see the

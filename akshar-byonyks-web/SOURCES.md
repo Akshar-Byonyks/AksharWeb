@@ -27,13 +27,13 @@ someone who asks.
 
 ## Summary
 
-**37 claims.**
+**41 claims.**
 
 | How it is known | Claims |
 | --- | ---: |
 | On the public record | 1 |
-| Published source | 15 |
-| Company statement | 9 |
+| Published source | 18 |
+| Company statement | 10 |
 | Not yet established | 12 |
 
 **On the public record.** Held in a public register anyone can open and check without asking us: the FDA's 510(k) database, a government scheme document, a court or corporate filing.
@@ -61,7 +61,7 @@ Class II device under 21 CFR 876.5630, product code FKX, classified as an automa
 | **Appears on** | The X-1 cycler (`/products/the-x1-cycler`), Home (`/`), About us (`/about-us`) |
 | **Ledger id** | `record-0` |
 
-### Published source (15)
+### Published source (18)
 
 #### 2.2 lakh: New end-stage renal disease patients each year
 
@@ -226,7 +226,40 @@ Among 9,245 people on dialysis, one of the highest shares in Latin America, in a
 | **Appears on** | The India market (`/innovation/market`), About us (`/about-us`) |
 | **Ledger id** | `figure-gkha-india-died-without` |
 
-### Company statement (9)
+#### Lower total cost of being treated
+
+Home therapy removes the recurring cost of travel to a centre, the working hours lost to it for both the patient and whoever travels with them, and the clinic time itself. The conference report finds PD costs are generally lower than in-centre haemodialysis, and is explicit that this can reverse where dialysis fluid is imported rather than made locally, because of consumable costs and tariffs.
+
+| | |
+| --- | --- |
+| **Source** | [KDIGO Controversies Conference on Home Dialysis, 2023](https://kdigo.org/wp-content/uploads/2023/04/Home-Dialysis-Conclusions-from-a-KDIGO-Controversies-Conference.pdf) |
+| **Period described** | 2023 |
+| **Appears on** | How it works (`/innovation/how-it-works`) |
+| **Ledger id** | `benefit-kdigo-home-1` |
+
+#### Supports residual kidney function
+
+Preserving whatever kidney function remains is a goal for everyone on dialysis, and a peritoneal prescription can be set around it — fewer exchanges a day while that function lasts, increasing as it declines. The conference report calls preserving residual kidney function a goal for all clinicians and patients, and states that the evidence comparing its decline between modalities is not robust enough to favour one over the other.
+
+| | |
+| --- | --- |
+| **Source** | [KDIGO Controversies Conference on Dialysis Initiation, Modality Choice, Access and Prescription, 2019](https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Dialysis-Initiation-conf-report-FINAL.pdf) |
+| **Period described** | 2019 |
+| **Appears on** | How it works (`/innovation/how-it-works`) |
+| **Ledger id** | `benefit-kdigo-initiation-2` |
+
+#### Clears waste and excess fluid
+
+Each cycle removes solutes and the fluid that builds up between exchanges, the work healthy kidneys do continuously. The conference report treats small solute clearance as a floor rather than the whole measure: clinicians should keep to accepted minimums for it, while adequacy is judged on residual function, volume status, nutrition, symptoms and the patient’s own goals as well.
+
+| | |
+| --- | --- |
+| **Source** | [KDIGO Controversies Conference on Dialysis Initiation, Modality Choice, Access and Prescription, 2019](https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Dialysis-Initiation-conf-report-FINAL.pdf) |
+| **Period described** | 2019 |
+| **Appears on** | How it works (`/innovation/how-it-works`) |
+| **Ledger id** | `benefit-kdigo-initiation-3` |
+
+### Company statement (10)
 
 #### ISO 13485 quality management system
 
@@ -280,13 +313,23 @@ Conducted via TÜV SÜD, Minnesota, alongside human factors work, in the month t
 
 #### Therapies delivered
 
-Over 10,000 therapies delivered using Byonyks cycler technology, as reported by Byonyks USA.
+Over 10,000 therapies delivered using Byonyks cycler technology as at January 2024, as reported by Byonyks USA.
+
+| | |
+| --- | --- |
+| **Dated** | January 2024 |
+| **Appears on** | The X-1 cycler (`/products/the-x1-cycler`), Home (`/`) |
+| **Ledger id** | `stated-5` |
+
+#### Akshar Byonyks operates from Patancheru, India
+
+Akshar Byonyks' office in India, and where post reaches the company. The Grievance Officer required by the Digital Personal Data Protection Act 2023 is reachable here.
 
 | | |
 | --- | --- |
 | **Stated by** | Byonyks Medical Devices (undated) |
-| **Appears on** | The X-1 cycler (`/products/the-x1-cycler`), Home (`/`) |
-| **Ledger id** | `stated-5` |
+| **Appears on** | Locations (`/locations`) |
+| **Ledger id** | `location-india-office` |
 
 #### Byonyks operates from Itasca, United States
 
@@ -320,9 +363,19 @@ Announced as the unit for producing tubing sets and assembling machines.
 
 ### Not yet established (12)
 
+#### A reference for "Protects the peritoneal membrane"
+
+KDIGO publishes no guideline or conference statement on preserving the peritoneal membrane. Its home dialysis report treats an intact peritoneum as a prerequisite for the therapy rather than an outcome of it, so this claim still needs a reference from elsewhere.
+
+| | |
+| --- | --- |
+| **Missing** | No published reference identified for this claim. |
+| **Appears on** | How it works (`/innovation/how-it-works`) |
+| **Ledger id** | `pending-benefit-0` |
+
 #### The X-1's Indian regulatory position
 
-A United States clearance is not an Indian authorisation. Licensing under the Medical Device Rules 2017 is in progress as of 1 September 2026, which is a statement about work under way and not about an outcome: which CDSCO licence route applies, who holds it, and the import licence position are all still unconfirmed. Until they are, nothing on this site should be read as saying the device is approved for sale in India.
+A United States clearance is not an Indian authorisation. Licensing under the Medical Device Rules 2017 is in progress as of 11 September 2026, which is a statement about work under way and not about an outcome: which CDSCO licence route applies, who holds it, and the import licence position are all still unconfirmed. Until they are, nothing on this site should be read as saying the device is approved for sale in India.
 
 | | |
 | --- | --- |
@@ -330,39 +383,29 @@ A United States clearance is not an Indian authorisation. Licensing under the Me
 | **Appears on** | The X-1 cycler (`/products/the-x1-cycler`), About us (`/about-us`), Terms of use (`/terms-of-use`) |
 | **Ledger id** | `pending-cdsco` |
 
-#### The territory, exclusivity and product scope of the licence
+#### The Indian entity, and the registered office it would hold
 
-The licence to bring the X-1 to India is confirmed to exist. Whether it is exclusive, what territory it covers, and whether it extends past the X-1 to the X2 and X3 roadmap have not been given to this project.
-
-| | |
-| --- | --- |
-| **Missing** | Licence terms not yet supplied. |
-| **Appears on** | About us (`/about-us`), The X-1 cycler (`/products/the-x1-cycler`) |
-| **Ledger id** | `pending-licence-scope` |
-
-#### The India office address
-
-Required on the privacy policy and the terms of use, and required before this site goes live. No placeholder is published, and since 1 Sep 2026 there is no published office address of any kind: the Bengaluru row was removed from /locations on the client's instruction, its replacement stated the address as coming soon, and on 2 Sep that replacement was removed too. The office is now named only on the Contact page. Enquiries reach the same people by email and by phone in the meantime.
+The India office address published on this site is a correspondence address held care of a third party. Whether an Indian LLP or subsidiary will be formed as the operating entity has not been decided, so no registered office can be named — which is why the terms of use do not name the courts having jurisdiction, and why no machine-readable address is published on the locations page.
 
 | | |
 | --- | --- |
-| **Missing** | No India office address published. |
-| **Appears on** | Contact (`/contact`), Privacy policy (`/privacy-policy`), Terms of use (`/terms-of-use`) |
-| **Ledger id** | `pending-address` |
+| **Missing** | Indian entity not yet decided. |
+| **Appears on** | Locations (`/locations`), Terms of use (`/terms-of-use`) |
+| **Ledger id** | `pending-india-entity` |
 
-#### The named Grievance Officer
+#### Dr. Yogesh Tank's job title and biography
 
-India's DPDP Act 2023 requires a named Grievance Officer with published contact details. Nobody has been appointed. Complaints sent to the published address are read and answered by the team, and this site does not present that as the statutory appointment having been made.
+His record was supplied with a name, post-nominals and a photograph and nothing else. The roster card says "Title to be confirmed" and the profile says the biography is pending, rather than reading a title out of the post-nominals or writing a paragraph here about a real person. "MD" says he is a physician; it does not say what he does at this company.
 
 | | |
 | --- | --- |
-| **Missing** | No officer appointed. |
-| **Appears on** | Grievance redressal (`/grievance-redressal`), Privacy policy (`/privacy-policy`) |
-| **Ledger id** | `pending-grievance-officer` |
+| **Missing** | Title and biography not yet supplied. |
+| **Appears on** | Leadership (`/about-us/leadership`) |
+| **Ledger id** | `pending-tank-record` |
 
 #### What the Byonyks executive on the roster does for India
 
-Senthil Kumar is the one Byonyks person on the leadership page; the other four are Akshar Byonyks', and every card says which company its subject works for. His biography is his own as published by Byonyks and describes a career in the United States, so on an India-market roster it leaves the obvious question unanswered. The client asked on 1 September 2026 for a note saying what he does for the India programme. It has not been supplied, and the profile publishes that question unanswered rather than answering it with a sentence nobody wrote.
+Senthil Kumar is the one Byonyks person on the leadership page; the other four are Akshar Byonyks', and every card says which company its subject works for. His biography is his own as published by Byonyks and describes a career in the United States, so on an India-market roster it leaves the obvious question unanswered. The client asked on 1 September 2026 for a note saying what he does for the India programme, and it has not been supplied. The profile carried a pending block saying so until 11 September 2026, when the client asked for that block to come off; the question is now neither answered nor visibly asked on the page, and this entry is the only place it is recorded.
 
 | | |
 | --- | --- |
@@ -390,15 +433,15 @@ Battery runtime, dimensions and weight, and fill volume and cycle programming ar
 | **Appears on** | The X-1 cycler (`/products/the-x1-cycler`) |
 | **Ledger id** | `pending-spec` |
 
-#### Clinical references for the four benefits
+#### A nephrologist's review of the four therapy claims
 
-The four reasons peritoneal dialysis is offered are stated on the how-it-works page without citations attached. Each is awaiting a reference and a nephrologist's review before launch.
+The four reasons peritoneal dialysis is offered are written from published sources by people who are not clinicians. Three now rest on KDIGO Controversies Conference conclusions and are worded to say no more than those conclusions do; the fourth has no reference. None of the four has been read by a nephrologist, and a citation cannot stand in for that.
 
 | | |
 | --- | --- |
-| **Missing** | Citations and clinical review outstanding. |
+| **Missing** | No clinical review of the therapy claims. |
 | **Appears on** | How it works (`/innovation/how-it-works`) |
-| **Ledger id** | `pending-benefit-references` |
+| **Ledger id** | `pending-benefit-review` |
 
 #### Human-verified captions on the ByoTalks recordings
 
@@ -430,13 +473,13 @@ The Hindi pages are a translation of approved English copy and have not been che
 | **Appears on** | हिन्दी (`/hi`) |
 | **Ledger id** | `pending-hindi-review` |
 
-#### Completion dates for the India manufacturing hubs
+#### What the India hubs will be licensed to do
 
-Hyderabad and Ahmedabad are described as under construction with no confirmed completion date. Akshar Byonyks does not manufacture the X-1 and this site does not describe it as the manufacturer.
+Hyderabad and Ahmedabad are under construction, and the client has given expected completion dates of Summer 2027 and Late 2027. Those are expectations rather than commitments. No operating entity and no CDSCO manufacturing licence has been published for either site, which is why neither is described here as a manufacturing facility — that is a separate licence route under the Medical Device Rules 2017.
 
 | | |
 | --- | --- |
-| **Missing** | No confirmed completion dates. |
+| **Missing** | No CDSCO manufacturing licence or operating entity published. |
 | **Appears on** | The India market (`/innovation/market`), Locations (`/locations`) |
 | **Ledger id** | `pending-india-hubs` |
 
@@ -444,9 +487,20 @@ Hyderabad and Ahmedabad are described as under construction with no confirmed co
 
 ## Source register
 
-The full citations behind the figures on `/innovation/market`. `kind` is
-read by the `Cite` component: `register` sources are still linked on the
-site, `research` sources are not, and are recorded only here.
+The full citations behind the site's sourced claims — the figures on
+`/innovation/market`, and since 11 Sep 2026 the therapy claims on
+`/innovation/how-it-works` as well. `kind` is read by the `Cite`
+component: `register` sources are still linked on the site, `research`
+sources are not, and are recorded only here.
+
+The two KDIGO entries are the reason this section is no longer only the
+market page's. The how-it-works page carried them as a visible References
+block for one day; the client asked on 11 Sep 2026 that references be kept
+"in separate document with the rest of the sources", which is this file.
+What each report actually concludes — narrower, on three of the four
+claims, than the claim it supports — is under "Every claim on the site"
+above rather than here, because it is a fact about a claim and not about a
+citation.
 
 ### Health Ministry, Government of India
 
@@ -512,6 +566,32 @@ Natarajan H. “Peritoneal Dialysis in the Comfort of Home — Regain Your Indep
 | **Kind** | research — recorded here only |
 | **URL** | <https://doi.org/10.25259/ijn_374_23> |
 | **Source id** | `ijn-pd` |
+
+### KDIGO Controversies Conference on Home Dialysis, 2023
+
+Conclusions from a Kidney Disease: Improving Global Outcomes (KDIGO) Controversies Conference on home dialysis. Kidney International 103(5):842–858.
+
+| | |
+| --- | --- |
+| **Publisher** | KDIGO, published in Kidney International |
+| **Published** | 2023 |
+| **Describes** | Conference conclusions on home dialysis, including cost |
+| **Kind** | research — recorded here only |
+| **URL** | <https://kdigo.org/wp-content/uploads/2023/04/Home-Dialysis-Conclusions-from-a-KDIGO-Controversies-Conference.pdf> |
+| **Source id** | `kdigo-home` |
+
+### KDIGO Controversies Conference on Dialysis Initiation, Modality Choice, Access and Prescription, 2019
+
+Conclusions from a Kidney Disease: Improving Global Outcomes (KDIGO) Controversies Conference on dialysis initiation, modality choice, access, and prescription. Kidney International 96(1):37–47.
+
+| | |
+| --- | --- |
+| **Publisher** | KDIGO, published in Kidney International |
+| **Published** | 2019 |
+| **Describes** | Conference conclusions on modality choice, residual kidney function and adequacy |
+| **Kind** | research — recorded here only |
+| **URL** | <https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Dialysis-Initiation-conf-report-FINAL.pdf> |
+| **Source id** | `kdigo-initiation` |
 
 ### Kidney360, 2020
 

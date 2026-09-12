@@ -139,7 +139,7 @@ const routes = [
     term: "Continuous ambulatory peritoneal dialysis (CAPD)",
     strip: "A day divided into waking and sleeping hours, with several separate exchanges marked across the waking part.",
     definition:
-      "The exchanges are done by hand, several times through the day, using gravity and a bag. There is no machine. Each one takes some of the day.",
+      "The exchanges are done by hand, several times through the day, using gravity and a bag. There is no machine. Each exchange takes a few hours of the day.",
   },
   {
     variant: "automated" as const,
@@ -179,28 +179,30 @@ export function ByHandOrMachine() {
             <InViewStage>
               <dl>
                 {routes.map(({ variant, term, strip, definition }, index) => (
-                  <ScrollReveal key={term} delayMs={index * 90}>
-                    <div className="border-t border-line py-7 first:border-t-0 first:pt-0 sm:py-8">
-                      <dt className="text-lg font-semibold text-ink">{term}</dt>
-                      <dd className="mt-5 max-w-md">
-                        <DayNightStrip variant={variant} title={strip} />
-                        {/* The two words that make the strip readable. In flow
-                            beneath it rather than inside it: at 200% text an
-                            SVG label would either overflow the strip or be
-                            scaled down out of legibility, and this figure is
-                            small enough that there is no room for either. */}
-                        <span
-                          aria-hidden="true"
-                          className="mt-2 grid grid-cols-[213fr_107fr] text-xs font-semibold tracking-wide text-muted-foreground uppercase"
-                        >
-                          <span>Day</span>
-                          <span>Night</span>
-                        </span>
-                      </dd>
-                      <dd className="mt-5 max-w-2xl text-base text-muted-foreground">
-                        {definition}
-                      </dd>
-                    </div>
+                  <ScrollReveal
+                    key={term}
+                    delayMs={index * 90}
+                    className="border-t border-line py-7 first:border-t-0 first:pt-0 sm:py-8"
+                  >
+                    <dt className="text-lg font-semibold text-ink">{term}</dt>
+                    <dd className="mt-5 max-w-md">
+                      <DayNightStrip variant={variant} title={strip} />
+                      {/* The two words that make the strip readable. In flow
+                          beneath it rather than inside it: at 200% text an
+                          SVG label would either overflow the strip or be
+                          scaled down out of legibility, and this figure is
+                          small enough that there is no room for either. */}
+                      <span
+                        aria-hidden="true"
+                        className="mt-2 grid grid-cols-[213fr_107fr] text-xs font-semibold tracking-wide text-muted-foreground uppercase"
+                      >
+                        <span>Day</span>
+                        <span>Night</span>
+                      </span>
+                    </dd>
+                    <dd className="mt-5 max-w-2xl text-base text-muted-foreground">
+                      {definition}
+                    </dd>
                   </ScrollReveal>
                 ))}
               </dl>
@@ -248,38 +250,46 @@ export function ByHandOrMachine() {
           </div>
         </div>
 
-        {/* The device where the therapy actually happens (28 Aug 2026).
-            Byonyks USA's own photograph of the X-1 on a side table in a living
-            room — the manufacturer's asset for the device Akshar Byonyks is
-            licensed to bring here, so provenance is the same as the render on
-            the X-1 page.
+        {/* The device where the therapy actually happens.
 
-            It earns a place on *this* page rather than that one because it is
-            not a product shot. It is a picture of a person doing something
-            else while the machine works, which is the only claim this section
-            makes about a cycler and the hardest one to make in words.
+            It earns a place on *this* page rather than on the X-1 page because
+            it is not a product shot. It is a picture of a person doing
+            something else while the machine works, which is the only claim
+            this section makes about a cycler and the hardest one to make in
+            words.
 
-            Two flags recorded in `public/images/README.md` and both for the
-            launch gate: the subject is not Indian, which PRODUCT.md would
-            replace rather than keep; and it depicts a person with a medical
-            device, which the Drugs and Magic Remedies Act 1954 constrains.
-            Shipping it was an explicit client decision after the risk was
-            raised, and it needs legal sign-off rather than a designer's. */}
+            REPLACED 11 SEP 2026, AND THE REPLACEMENT CLOSES THE OLDER OF THE
+            TWO FLAGS ON THIS SLOT. It used to be `x1-in-home.jpg`, Byonyks
+            USA's own photograph of the same room, whose subject was a white
+            Western man. That carried an open India-specificity flag from the
+            day it shipped, and public/images/README.md said in terms that the
+            flag "is closed by commissioning a photograph, not by anyone
+            approving one". The client supplied one: the same set, the same
+            device, an Indian subject.
+
+            TWO THINGS THE SWAP DID NOT CLOSE, both recorded against
+            `x1-in-home-india.jpg` in public/images/README.md. The Drugs and
+            Magic Remedies Act 1954 sign-off given on 10 Sep 2026 was given for
+            the old file and does not travel to this one — that README's own
+            rule starts every new instance flagged. And the caption no longer
+            says who took the photograph, because this file did not come from
+            byonyks.com and nobody has said who made it. An attribution is not
+            something to carry over from the file it replaced. */}
         <ScrollReveal>
           <figure className="mt-16">
             <div className="relative aspect-[3/2] overflow-hidden rounded-2xl border border-line sm:aspect-[2/1]">
               <Image
-                src="/images/x1-in-home.jpg"
-                alt="A cycler on a side table in a living room, its screen showing a setup step, tubing coiled beside it. A man sits on the sofa alongside with a laptop and a mug."
+                src="/images/x1-in-home-india.jpg"
+                alt="A cycler on a side table in a living room, its screen showing a setup step, tubing running down from it to the floor. An older man with grey hair and glasses sits on the sofa alongside, a laptop open on his knee and a mug in his hand."
                 fill
                 sizes="(min-width: 1280px) 1216px, 100vw"
                 className="object-cover"
               />
             </div>
             <figcaption className="mt-4 text-sm text-muted-foreground">
-              The X-1 in a home, photographed by Byonyks. The therapy runs on a
-              schedule set with a nephrologist; what the machine changes is
-              where the person has to be while it does.
+              The X-1 in a home. The therapy runs on a schedule set with a
+              nephrologist; what the machine changes is where the person has to
+              be while it does.
             </figcaption>
           </figure>
         </ScrollReveal>

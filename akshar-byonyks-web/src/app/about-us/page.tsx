@@ -36,8 +36,14 @@ export const metadata: Metadata = {
 // No `founder` property: Akshar Byonyks' own founders are Open Question 1.4 and
 // naming Byonyks' founder in that slot would assert something false in
 // machine-readable form — the exact error the visible copy is built to avoid.
-// No `address`, because the India office is Open Question 1.1 and a placeholder
-// in structured data is a placeholder a crawler will publish.
+// No `address`. The reason changed on 11 Sep 2026 and the property did not:
+// it used to be that there was no India address at all (Open Question 1.1,
+// now closed), and it is now that the address the client supplied is a
+// care-of correspondence address at a third party's premises, with no
+// decision yet on whether an Indian entity will hold a registered office.
+// A crawler reads `PostalAddress` on an organisation as its seat, which is
+// the one thing /terms-of-use still marks pending. Same refusal on
+// /locations, for the same reason and in the same words.
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "AboutPage",

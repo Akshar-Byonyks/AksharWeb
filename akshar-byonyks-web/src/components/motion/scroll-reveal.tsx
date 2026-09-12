@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -41,6 +41,30 @@ import { cn } from "@/lib/utils";
 // first pass did. The observer is never disconnected except on unmount —
 // `setVisible` just tracks `entry.isIntersecting` directly.
 //
+// WHAT ELEMENT THIS RENDERS, AND WHY IT IS A PROP (12 Sep 2026).
+//
+// This wrapper used to be an unconditional <div>, and that quietly destroyed
+// the semantics of every list it was used inside. The leadership roster's
+// <ul> had seven children and not one of them was an <li>; ByoTalks' <ol>
+// had eight and lost its numbering with them. A screen reader announces a
+// list by counting its list items, so what those readers got was seven or
+// eight unrelated blocks with no "list, 7 items", no position, no way to
+// skip the set. The same wrapper inside a <dl> put a second <div> between
+// the list and its <dt>/<dd> pairs, which is not a near-miss: HTML's content
+// model for <dl> allows EXACTLY ONE div grouping level, so the terms and
+// their definitions stopped being associated at all.
+//
+// WCAG 1.3.1 Level A, 192 failing nodes across five routes, and one root
+// cause. So the element is now the caller's to choose:
+//
+//   <ul>  ->  <ScrollReveal as="li">        the reveal wrapper IS the item
+//   <dl>  ->  <ScrollReveal>                the div is the one legal group,
+//                                           so <dt>/<dd> sit directly inside
+//
+// Only "div" and "li" are offered, because those are the two the markup
+// actually needs. Widening it to any tag would invite the opposite mistake —
+// a <section> or an <article> wrapped around content that is not either.
+//
 // Two variants: "rise" (translate-y + opacity) for cards appearing as a
 // list — the default. "settle" (scale + opacity) for a single focal
 // element easing into place, used once for the X-1 render in Our Answer;
@@ -51,13 +75,21 @@ export function ScrollReveal({
   delayMs = 0,
   variant = "rise",
   className,
+  as = "div",
 }: {
   children: React.ReactNode;
   delayMs?: number;
   variant?: "rise" | "settle";
   className?: string;
+  as?: "div" | "li";
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  // A callback ref rather than useRef<HTMLDivElement>, because the node is
+  // now one of two element types and everything below only ever reads it as
+  // an HTMLElement: getBoundingClientRect and IntersectionObserver.observe.
+  const ref = useRef<HTMLElement | null>(null);
+  const setNode = useCallback((node: HTMLElement | null) => {
+    ref.current = node;
+  }, []);
   // `visible` starts true so the server-rendered markup *is* the visible
   // state. `armed` gates the transition separately, so the client's first
   // hide is instant and only what follows it animates.
@@ -103,27 +135,31 @@ export function ScrollReveal({
     };
   }, []);
 
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        // Transition classes only exist once the client has taken over. Before
-        // that there is nothing to animate, because nothing is hidden.
-        armed && [
-          "transition-[opacity,transform] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none",
-          variant === "rise" ? "duration-700" : "duration-[600ms]",
-        ],
-        visible
-          ? "translate-y-0 scale-100 opacity-100"
-          : cn(
-              "opacity-0 motion-reduce:translate-y-0 motion-reduce:scale-100 motion-reduce:opacity-100",
-              variant === "rise" ? "translate-y-6" : "scale-[0.96]"
-            ),
-        className
-      )}
-      style={{ transitionDelay: visible ? `${delayMs}ms` : "0ms" }}
-    >
-      {children}
-    </div>
+  const props = {
+    ref: setNode,
+    className: cn(
+      // Transition classes only exist once the client has taken over. Before
+      // that there is nothing to animate, because nothing is hidden.
+      armed && [
+        "transition-[opacity,transform] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none",
+        variant === "rise" ? "duration-700" : "duration-[600ms]",
+      ],
+      visible
+        ? "translate-y-0 scale-100 opacity-100"
+        : cn(
+            "opacity-0 motion-reduce:translate-y-0 motion-reduce:scale-100 motion-reduce:opacity-100",
+            variant === "rise" ? "translate-y-6" : "scale-[0.96]"
+          ),
+      className
+    ),
+    style: { transitionDelay: visible ? `${delayMs}ms` : "0ms" },
+  };
+
+  // Branching on the tag rather than rendering <Tag> keeps the JSX typed
+  // against the real intrinsic element in each arm.
+  return as === "li" ? (
+    <li {...props}>{children}</li>
+  ) : (
+    <div {...props}>{children}</div>
   );
 }

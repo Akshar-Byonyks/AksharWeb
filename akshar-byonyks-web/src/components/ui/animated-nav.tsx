@@ -440,7 +440,67 @@ export function AnimatedNav({ items = primaryNav }: { items?: NavItem[] }) {
     // that announces itself as a loading status. Found while wiring the logo
     // to replay that curtain, which the gap would have let a reader retrigger
     // mid-cycle.
-    <header
+    // "layout" AND "layoutRoot" TOGETHER, AND THE PAIRING IS THE POINT.
+    //
+    // THE BUG. Reported twice: open a page from deep inside /byotalks or
+    // /about-us/leadership and the navbar arrives partway down the viewport
+    // and springs up into place.
+    //
+    // IT WAS NEVER A BYOTALKS BUG. Measured on 12 Sep 2026 with a Playwright
+    // trace that samples the bar's painted top every frame across a
+    // navigation. Every route does it, and the drop is the depth you were at:
+    //
+    //     /byotalks        @2400  ->  759px of vertical travel
+    //     /about-us/…      @2400  ->  682px
+    //     /innovation/market @5000 -> 4171px
+    //
+    // ByoTalks and the leadership roster are simply the long indexes whose
+    // links sit near the bottom, so a reader is always deep when they click.
+    //
+    // THE MECHANISM. The capsule below carries "layout=\"position\"".
+    // Motion's layout projection measures an element in PAGE coordinates: the
+    // viewport rect plus the scroll offset. That is right for an element in
+    // normal flow and wrong for one inside a pinned "position: sticky"
+    // ancestor, whose page coordinate moves with the scroll while its painted
+    // position does not. So across a client-side navigation Motion measures
+    // the bar at page-y 2400 before and page-y 0 after Next resets the scroll,
+    // and animates a delta nothing visible moved through. The trace catches it
+    // as a literal transform on the nav: matrix(1, 0, 0, 1, 0, 681.8),
+    // springing back to zero.
+    //
+    // WHY "layoutRoot" ALONE DID NOT FIX IT — the 11 Sep attempt, which
+    // shipped without a browser to check it in and did not work. Motion
+    // documents "layoutRoot" as a modifier on a node that is ITSELF a layout
+    // node:
+    //
+    //     <motion.div layout layoutRoot>   <- parent resolves instantly
+    //       <motion.div layout />          <- child measures relative to it
+    //
+    // Without "layout" on this header it never became a projection node at
+    // all, so there was nothing for the capsule to resolve against and the
+    // prop was inert. The header now carries both. Its own (bogus,
+    // scroll-sized) delta resolves instantly because of "layoutRoot" — no
+    // visible animation — and the capsule measures against the header rather
+    // than against the document, so the only delta left is the real one: the
+    // centre-to-right travel when the bar collapses.
+    //
+    // VERIFIED, NOT REASONED. 12 navigation cases across four routes at three
+    // scroll depths each, plus back-button scroll restoration: 0px of vertical
+    // travel on all of them, against up to 4171px before. The collapse gesture
+    // still slides horizontally through 32 intermediate positions rather than
+    // jumping, which is the animation this layout prop exists for. Do not
+    // remove "layout" from this header to tidy it up; on its own,
+    // "layoutRoot" does nothing.
+    //
+    // IT IS A <motion.header> ONLY FOR THOSE TWO PROPS. It is still the
+    // banner landmark, still sticky, still the element "site-splash.tsx"
+    // selects to hold the page inert behind the curtain, and it animates
+    // nothing of its own that a reader can see. Do not give it an "animate"
+    // or "variants" prop; the chrome below "lg" is plain CSS on purpose,
+    // correct in the first paint with nothing to hydrate.
+    <motion.header
+      layout
+      layoutRoot
       className={cn(
         "sticky top-0 z-50 flex",
         // BELOW `lg` THE CHROME LIVES HERE, NOT ON THE PILL. Full-bleed and
@@ -781,6 +841,6 @@ export function AnimatedNav({ items = primaryNav }: { items?: NavItem[] }) {
           </motion.button>
         </motion.nav>
       </div>
-    </header>
+    </motion.header>
   );
 }

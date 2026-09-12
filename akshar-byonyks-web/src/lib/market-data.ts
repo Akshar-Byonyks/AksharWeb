@@ -89,7 +89,17 @@ export type Source = {
 };
 
 /**
- * The sources. Order no longer carries meaning: the numbered register section
+ * The sources.
+ *
+ * NOT ONLY THE MARKET PAGE'S, SINCE 11 SEP 2026. The file is still named for
+ * the market because that is where every source in it originated and renaming
+ * a module that fourteen files import is not worth the churn — but this is now
+ * the site's one source register, and `/innovation/how-it-works` cites two
+ * entries in it. Anything that needs a citation registers it here, so that
+ * SOURCES.md has one list to walk and there is one place to look for whether a
+ * source is already known.
+ *
+ * Order no longer carries meaning: the numbered register section
  * at the foot of the page was cut on 28 Aug 2026 for ending the page on a wall
  * of grey text, and citations are now inline — `shortName` beside the figure,
  * linked to the source itself.
@@ -178,6 +188,65 @@ export const marketSources = [
     describes: "Editorial estimates, 2024",
     url: "https://doi.org/10.25259/ijn_374_23",
   },
+  // THE TWO KDIGO REPORTS (11 Sep 2026). They arrived on the how-it-works
+  // page first, as a References block rendered beside the four benefit
+  // claims, and they were moved in here the same week on the client's
+  // instruction: "References should be placed in separate document with the
+  // rest of the sources."
+  //
+  // This is that instruction read literally, and it is the same instruction
+  // the 3 Sep pass acted on — visible sourcing comes off the pages, nothing
+  // is deleted from the data, SOURCES.md is where the evidence lives. Putting
+  // them in this array rather than in a second registry is what makes them
+  // land there: scripts/generate-sources.mjs walks this array and writes
+  // every entry, and `kind: "research"` is what keeps them off the page.
+  //
+  // `kind` IS "research" AND THAT IS A JUDGEMENT, NOT A DEFAULT. A register is
+  // an official body's own document about a regulated thing, where the link is
+  // what makes the statement checkable. KDIGO is a guideline developer, not a
+  // regulator, and neither of these is even a guideline — see the comment on
+  // `kdigo-home` below. So they are research, and they do not render.
+  //
+  // THE URLS GO TO KDIGO'S OWN PDFs rather than to the journal. Both were
+  // fetched and read on 11 Sep 2026; kidney-international.org and PubMed both
+  // refuse an automated fetch, and a citation a reader cannot open is not a
+  // citation.
+  {
+    id: "kdigo-home",
+    kind: "research",
+    shortName: "KDIGO Controversies Conference on Home Dialysis, 2023",
+    // NOT A GUIDELINE, AND THE CITATION SAYS SO IN ITS OWN WORDS. Searching
+    // kdigo.org as instructed settled first what KDIGO does and does not
+    // publish: it has no clinical practice guideline on dialysis modality, on
+    // peritoneal dialysis or on the peritoneal membrane. Its guideline
+    // programme covers anaemia, blood pressure, CKD evaluation, CKD-MBD,
+    // diabetes, glomerular disease, heart failure, hepatitis C, lipids, AKI,
+    // ADPKD and transplantation. Everything KDIGO says about peritoneal
+    // dialysis is in its Controversies Conference reports. Citing a
+    // conference conclusion as though it were a guideline recommendation
+    // would overstate it by a whole tier of evidence, so the word
+    // "Controversies Conference" is in the short name where it cannot be
+    // dropped by a renderer that only prints the short form.
+    citation:
+      "Conclusions from a Kidney Disease: Improving Global Outcomes (KDIGO) Controversies Conference on home dialysis. Kidney International 103(5):842–858.",
+    publisher: "KDIGO, published in Kidney International",
+    published: "2023",
+    describes: "Conference conclusions on home dialysis, including cost",
+    url: "https://kdigo.org/wp-content/uploads/2023/04/Home-Dialysis-Conclusions-from-a-KDIGO-Controversies-Conference.pdf",
+  },
+  {
+    id: "kdigo-initiation",
+    kind: "research",
+    shortName:
+      "KDIGO Controversies Conference on Dialysis Initiation, Modality Choice, Access and Prescription, 2019",
+    citation:
+      "Conclusions from a Kidney Disease: Improving Global Outcomes (KDIGO) Controversies Conference on dialysis initiation, modality choice, access, and prescription. Kidney International 96(1):37–47.",
+    publisher: "KDIGO, published in Kidney International",
+    published: "2019",
+    describes:
+      "Conference conclusions on modality choice, residual kidney function and adequacy",
+    url: "https://kdigo.org/wp-content/uploads/2017/02/KDIGO-Dialysis-Initiation-conf-report-FINAL.pdf",
+  },
   {
     id: "gkha-guatemala",
     kind: "research",
@@ -206,7 +275,7 @@ export function getSource(id: SourceId): Source {
   const source = marketSources.find((entry) => entry.id === id);
   if (!source) {
     throw new Error(
-      `market-data: no source registered for id "${id}". Every figure on /innovation/market/ must cite a source in marketSources.`
+      `market-data: no source registered for id "${id}". Every figure on /innovation/market/ and every referenced claim elsewhere must cite a source in marketSources.`
     );
   }
   return source;

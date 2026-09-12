@@ -91,82 +91,85 @@ export function SessionIndex() {
 
         <ol className="mt-12 grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2">
           {byotalksSessions.map((session, index) => (
-            <ScrollReveal key={session.slug} delayMs={(index % 2) * 90}>
-              <li className="h-full">
-                <Link
-                  href={`/byotalks/${session.slug}`}
-                  className="group flex h-full flex-col rounded-2xl border border-line bg-card p-4 hover:border-primary/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:p-5"
-                >
-                  <div className="relative aspect-video overflow-hidden rounded-xl bg-ink">
-                    <Image
-                      src={session.thumbnail}
-                      alt={`Session card for “${session.title}”, showing the speakers and their credentials.`}
-                      fill
-                      sizes="(min-width: 768px) 42vw, 92vw"
-                      className="object-cover"
-                    />
-                    {/* Play affordance. The card links to the session page, not
-                        to the video — it is a promise that a video is there,
-                        which is what a preview is. */}
-                    <span
-                      aria-hidden="true"
-                      className="absolute inset-0 flex items-center justify-center bg-ink/25 opacity-0 transition-opacity duration-[250ms] group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
-                    >
-                      {/* A NEUTRAL CONTROL, DELIBERATELY (30 Aug 2026). This circle was gold,
-                            and gold means "home / India" under the Wayfinding Rule —
-                            an accent spent on a play button, which is an
-                            affordance and not a meaning. Teal was the obvious
-                            swap and is just as wrong for the same reason: a
-                            control is not clinical evidence. Teal on this page
-                            marks the credentials instead, which is the thing
-                            that actually is. */}
-                      <span className="flex size-14 items-center justify-center rounded-full bg-white text-ink">
-                        <Play className="size-6 translate-x-0.5" />
-                      </span>
+            <ScrollReveal
+              key={session.slug}
+              as="li"
+              delayMs={(index % 2) * 90}
+              className="h-full"
+            >
+              <Link
+                href={`/byotalks/${session.slug}`}
+                className="group flex h-full flex-col rounded-2xl border border-line bg-card p-4 hover:border-primary/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:p-5"
+              >
+                <div className="relative aspect-video overflow-hidden rounded-xl bg-ink">
+                  <Image
+                    src={session.thumbnail}
+                    alt={`Session card for “${session.title}”, showing the speakers and their credentials.`}
+                    fill
+                    sizes="(min-width: 768px) 42vw, 92vw"
+                    className="object-cover"
+                  />
+                  {/* Play affordance. The card links to the session page, not
+                      to the video — it is a promise that a video is there,
+                      which is what a preview is. */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0 flex items-center justify-center bg-ink/25 opacity-0 transition-opacity duration-[250ms] group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
+                  >
+                    {/* A NEUTRAL CONTROL, DELIBERATELY (30 Aug 2026). This circle was gold,
+                          and gold means "home / India" under the Wayfinding Rule —
+                          an accent spent on a play button, which is an
+                          affordance and not a meaning. Teal was the obvious
+                          swap and is just as wrong for the same reason: a
+                          control is not clinical evidence. Teal on this page
+                          marks the credentials instead, which is the thing
+                          that actually is. */}
+                    <span className="flex size-14 items-center justify-center rounded-full bg-white text-ink">
+                      <Play className="size-6 translate-x-0.5" />
                     </span>
-                    <span className="absolute right-2 bottom-2 rounded-md bg-ink/85 px-2 py-1 font-mono text-xs tracking-wide text-white tabular-nums">
-                      {formatDuration(session.durationSeconds)}
-                    </span>
-                  </div>
-
-                  <h3 className="mt-5 text-xl font-semibold text-balance text-ink group-hover:text-primary">
-                    {session.title}
-                  </h3>
-
-                  {/* Teal, because this is what teal means. Spec F-5 makes
-                      these credentials the reason this page exists — "for the
-                      clinician audience, those names are the credential that
-                      opens a conversation" — and they were rendering as the
-                      same grey as everything else on the card. */}
-                  <AccentRail accent="teal" className="mt-3">
-                    <p className="text-base font-semibold text-ink">
-                      {session.speaker}
-                    </p>
-                    <ul className="mt-1.5 space-y-1">
-                      {session.credentials.map((credential) => (
-                        <li
-                          key={credential}
-                          className="text-sm text-muted-foreground"
-                        >
-                          {credential}
-                        </li>
-                      ))}
-                    </ul>
-                  </AccentRail>
-
-                  <p className="mt-4 grow text-base text-muted-foreground">
-                    {session.summary}
-                  </p>
-
-                  <span className="mt-5 inline-flex items-center gap-1.5 text-base font-semibold text-primary group-hover:underline">
-                    Open the session
-                    <ArrowRight
-                      className="size-4 shrink-0 transition-transform duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
-                      aria-hidden="true"
-                    />
                   </span>
-                </Link>
-              </li>
+                  <span className="absolute right-2 bottom-2 rounded-md bg-ink/85 px-2 py-1 font-mono text-xs tracking-wide text-white tabular-nums">
+                    {formatDuration(session.durationSeconds)}
+                  </span>
+                </div>
+
+                <h3 className="mt-5 text-xl font-semibold text-balance text-ink group-hover:text-primary">
+                  {session.title}
+                </h3>
+
+                {/* Teal, because this is what teal means. Spec F-5 makes
+                    these credentials the reason this page exists — "for the
+                    clinician audience, those names are the credential that
+                    opens a conversation" — and they were rendering as the
+                    same grey as everything else on the card. */}
+                <AccentRail accent="teal" className="mt-3">
+                  <p className="text-base font-semibold text-ink">
+                    {session.speaker}
+                  </p>
+                  <ul className="mt-1.5 space-y-1">
+                    {session.credentials.map((credential) => (
+                      <li
+                        key={credential}
+                        className="text-sm text-muted-foreground"
+                      >
+                        {credential}
+                      </li>
+                    ))}
+                  </ul>
+                </AccentRail>
+
+                <p className="mt-4 grow text-base text-muted-foreground">
+                  {session.summary}
+                </p>
+
+                <span className="mt-5 inline-flex items-center gap-1.5 text-base font-semibold text-primary group-hover:underline">
+                  Open the session
+                  <ArrowRight
+                    className="size-4 shrink-0 transition-transform duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+                    aria-hidden="true"
+                  />
+                </span>
+              </Link>
             </ScrollReveal>
           ))}
         </ol>

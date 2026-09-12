@@ -200,20 +200,23 @@ headcount we do not have.
             {values.map((value, index) => {
               const Icon = value.icon;
               return (
-                <ScrollReveal key={value.name} delayMs={(index % 3) * 90}>
-                  <li className="h-full rounded-xl border border-line bg-card p-6 sm:p-8">
-                    <Icon
-                      className="size-6 text-primary"
-                      strokeWidth={1.5}
-                      aria-hidden="true"
-                    />
-                    <h3 className="mt-4 text-xl font-semibold text-balance text-ink">
-                      {value.name}
-                    </h3>
-                    <p className="mt-2 text-base text-muted-foreground">
-                      {value.body}
-                    </p>
-                  </li>
+                <ScrollReveal
+                  key={value.name}
+                  as="li"
+                  delayMs={(index % 3) * 90}
+                  className="h-full rounded-xl border border-line bg-card p-6 sm:p-8"
+                >
+                  <Icon
+                    className="size-6 text-primary"
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                  />
+                  <h3 className="mt-4 text-xl font-semibold text-balance text-ink">
+                    {value.name}
+                  </h3>
+                  <p className="mt-2 text-base text-muted-foreground">
+                    {value.body}
+                  </p>
                 </ScrollReveal>
               );
             })}

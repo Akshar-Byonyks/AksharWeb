@@ -12,7 +12,7 @@ import { byIndiaFirst } from "@/lib/locations";
 const path = "/locations";
 
 const description =
-  "Where the group operates: Byonyks' head office in the United States, and the two India facilities it has announced but not opened. No Akshar Byonyks India address has been published. The Contact page is where to reach the office.";
+  "Where the group operates: Akshar Byonyks' office in Patancheru, Telangana, Byonyks' head office in the United States, and the two India facilities announced but not yet built.";
 
 export const metadata: Metadata = {
   title: "Locations",
@@ -47,12 +47,22 @@ export const metadata: Metadata = {
 // on 31 Aug against the standing audit direction, so their removal restores
 // spec F-1 rather than departing from it.
 //
-// The consequence of the second removal is worth stating here as well as in
-// the data: **every row on this page is now a Byonyks site**, so the page is
-// the group's premises register and no longer answers "where are you" under
-// this company's masthead. /contact is the only place that still says the
-// India office exists. `src/lib/locations.ts` carries the full reasoning and
+// THE INDIA OFFICE CAME BACK ON 11 SEP 2026, when the client supplied its
+// address. For nine days every row here was a Byonyks site and this page did
+// not answer "where are you" under its own masthead — /contact was the only
+// page that said an Akshar Byonyks India office existed at all. It leads the
+// register now. `src/lib/locations.ts` carries the full reasoning and
 // deviations.md §9 records the turns.
+//
+// THE STRUCTURED-DATA REFUSAL ABOVE STILL STANDS, and the reason has narrowed
+// rather than gone. There is a real postal address now, so "there is nothing
+// to publish" is no longer the argument. What replaces it: the address is a
+// care-of correspondence address, the client has not decided whether an Indian
+// entity will exist to hold a registered office, and `PostalAddress` on an
+// `Organization` is read by a crawler as the seat of the company. Emitting it
+// would assert in machine-readable form the one thing /terms-of-use still
+// marks pending. When the registered office is confirmed, this is the page
+// that gets the structured data.
 export default function LocationsPage() {
   return (
     <>
@@ -89,13 +99,30 @@ export default function LocationsPage() {
                 one map and letting the reader assume.
               </p>
               <p className="mt-4 text-lg text-muted-foreground">
-                One of the sites below is ours, and its address is still coming.
-                The rest are Byonyks&rsquo;, and are listed because the device
-                this company brings to India is designed at one of them and
-                announced for the other two.{" "}
+                The first site below is ours, in Patancheru. The rest are
+                Byonyks&rsquo;, and are listed because the device this company
+                brings to India is designed at one of them and announced for
+                the other two.{" "}
+                {/* UNDERLINED AT REST, NOT ON HOVER. This is the one link on
+                    the site that sits INSIDE a paragraph of body prose, and
+                    that changes what it owes the reader: with only colour
+                    separating it from the sentence around it, anyone who
+                    cannot distinguish this blue from the grey it runs through
+                    has no way to know a link is there at all. Hover does not
+                    help them, and on a phone there is no hover.
+
+                    WCAG 1.4.1. The standalone call-to-action links elsewhere
+                    are a different case and keep hover-underline: they are
+                    bold, set on their own line, and carry an arrow, so colour
+                    is never the only cue.
+
+                    This is also simply the site's own convention arriving
+                    late — every in-prose link in the legal pages, the
+                    provenance marks and the citation links is already
+                    "underline underline-offset-2 hover:text-ink". */}
                 <Link
                   href="/about-us"
-                  className="rounded-sm text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                  className="rounded-sm text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 >
                   How the licensing relationship works
                 </Link>
@@ -121,67 +148,23 @@ export default function LocationsPage() {
               the re-sort that a section heading would not. */}
           <LocationRegister
             id="sites"
-            title="All three sites, India first"
-            lead="The two India sites lead, then Byonyks' head office. Hyderabad and Ahmedabad are announced rather than open. Neither has a published opening date, and neither is called a manufacturing site here, because that is a separate CDSCO licence route and no licence has been published for either. Every card names the company that holds the building."
+            title="All four sites, India first"
+            lead="Akshar Byonyks' own office leads, then the two announced India facilities, then Byonyks' head office. Hyderabad and Ahmedabad are announced rather than open: both now carry an expected completion date, and neither is called a manufacturing site here, because that is a separate CDSCO licence route and no licence has been published for either. Every card names the company that holds the building."
             items={byIndiaFirst}
           />
         </div>
       </div>
 
-      {/* WHAT THIS PAGE CANNOT TELL YOU, stated by the page rather than left
-          for a reader to notice. Every other register on this site closes the
-          same way, and a locations page has more to declare than most: two of
-          the three rows are announcements, and since 2 Sep 2026 none of them
-          is ours. A reader who came here to find Akshar Byonyks has to be told
-          that in words rather than left to infer it from three cards that all
-          say Byonyks. */}
-      <section
-        aria-labelledby="locations-limits-heading"
-        className="mx-auto max-w-[1280px] px-4 py-16 sm:px-6 lg:px-8 lg:py-20"
-      >
-        <ScrollReveal>
-          <DocumentGrid>
-            <GridBlock>
-              <h2
-                id="locations-limits-heading"
-                className="text-2xl font-bold tracking-tight text-balance text-ink sm:text-3xl"
-              >
-                What this page does not say
-              </h2>
-              <p className="mt-6 text-base text-ink">
-                Every address, function and date above is Byonyks&rsquo; own
-                account of itself, published on its website and retrieved on one
-                day. None of it has been checked against a corporate register,
-                which is why no row is marked as being on the public record.
-              </p>
-              <p className="mt-4 text-base text-ink">
-                Every site above belongs to Byonyks. Akshar Byonyks&rsquo; own
-                India office is not listed, because no address for it has been
-                published.{" "}
-                <Link
-                  href="/contact"
-                  className="rounded-sm text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                >
-                  Contact
-                </Link>{" "}
-                is where to reach it. The ISO&nbsp;13485
-                certification the X-1 is built under is real and central to the
-                device, but its certificate number has never reached this
-                project, and the facility behind it is no longer named on this
-                page. The{" "}
-                <Link
-                  href="/products/the-x1-cycler"
-                  className="rounded-sm text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                >
-                  quality and compliance record
-                </Link>{" "}
-                sets out exactly which numbers are and are not held.
-              </p>
-
-            </GridBlock>
-          </DocumentGrid>
-        </ScrollReveal>
-      </section>
+      {/* "What this page does not say" — the closing limits section — was
+          removed on client instruction, 11 Sep 2026. It stated in words that
+          every row on this page is Byonyks' own account of itself, unchecked
+          against a corporate register, and that no Akshar Byonyks India
+          address is published. Nothing replaced it, so a reader now meets
+          three cards with no note of what is and is not on the record. The
+          facts themselves are unchanged: /contact still carries the pending
+          note for the unpublished India office, and the quality and
+          compliance record on /products/the-x1-cycler still sets out which
+          certificate numbers are held. */}
 
       {/* No `leadIn`: this band follows a section on the plain `background`,
           which is what `SilhouetteEdge` already draws against by default. It

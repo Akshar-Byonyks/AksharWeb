@@ -141,7 +141,16 @@ const SilkPlane = forwardRef<
 export interface SilkProps {
   speed?: number;
   scale?: number;
-  color?: string;
+  /**
+   * REQUIRED, though the vendored original defaulted it to "#7B7481" — a grey
+   * belonging to no palette on this site. The one caller has always read
+   * `--color-primary` and passed it, so the default was unreachable; leaving
+   * it in place meant a second, wrong hue sitting in the file a future caller
+   * could silently inherit. Required instead of re-defaulted to the token,
+   * because this component cannot read CSS custom properties itself — the
+   * caller is where the palette lives, and now the compiler says so.
+   */
+  color: string;
   noiseIntensity?: number;
   rotation?: number;
   /** Project addition — fires once, after the first frame is on screen. */
@@ -151,7 +160,7 @@ export interface SilkProps {
 export default function Silk({
   speed = 5,
   scale = 1,
-  color = "#7B7481",
+  color,
   noiseIntensity = 1.5,
   rotation = 0,
   onFirstFrame,

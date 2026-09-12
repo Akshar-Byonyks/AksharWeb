@@ -170,6 +170,25 @@ function LocationCard({ location }: { location: Location }) {
           </p>
         ) : null}
 
+        {/* THE EXPECTED COMPLETION, on the two announced sites, since 11 Sep
+            2026. It sits in the same mono slot "Operating since" uses, because
+            they are the same fact at two ends of a building's life and a
+            reader should find the date in one place whichever card they open.
+
+            "EXPECTED" IS NOT A HEDGE ADDED BY THIS COMPONENT — it is the whole
+            claim. The client gave a season and a year for buildings that are
+            not built, under no published CDSCO licence. A procurement officer
+            reads a date on a medical-device site as a supply date, so the word
+            in front of it is doing more work than the date is. The gap note a
+            few lines down says the same thing again in a sentence, which is
+            deliberate: this is the one number on the card most likely to be
+            screenshotted on its own. */}
+        {location.expectedCompletion ? (
+          <p className="mt-3 font-mono text-xs tracking-wide text-muted-foreground uppercase">
+            Expected {location.expectedCompletion}
+          </p>
+        ) : null}
+
         {location.address ? (
           <address className="mt-4 text-base leading-relaxed text-muted-foreground not-italic">
             {location.address.map((line, i) =>
@@ -190,11 +209,15 @@ function LocationCard({ location }: { location: Location }) {
           </address>
         ) : null}
 
+        {/* Underlined, to match the phone and email links on /contact,
+            /about-us/careers and the Hindi page. A number a reader is meant
+            to dial should look the same everywhere it appears; this was the
+            one place that did not. */}
         {location.phone ? (
           <p className="mt-2 text-base">
             <a
               href={`tel:${location.phone.replace(/[^+\d]/g, "")}`}
-              className="tap-target rounded-sm text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              className="tap-target rounded-sm text-primary underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               {location.phone}
             </a>
@@ -208,13 +231,23 @@ function LocationCard({ location }: { location: Location }) {
           </p>
         ) : null}
 
-        {/* The picture's own provenance, kept with the picture rather than in a
-            page-level footnote. A drawing of an unbuilt factory and a
-            photograph of a real one must never be indistinguishable. */}
+        {/* The picture's own provenance, kept with the picture rather than in
+            a page-level footnote. A drawing of an unbuilt factory and a
+            photograph of a real one must never be indistinguishable.
+
+            THE COMPANY IS READ FROM THE ROW, NOT HARDCODED (11 Sep 2026). Both
+            branches printed the literal "Byonyks", which was true for as long
+            as every row on this page was Byonyks'. The Akshar Byonyks India
+            office came back that day with no photograph, and the hardcoded
+            string would have printed "Byonyks · no image published" under our
+            own address — attributing this company's office to the licensor on
+            the one page whose entire job is keeping the two apart. Exactly the
+            blur spec §3.1's first non-negotiable exists to prevent, arriving
+            through a caption. */}
         <p className="mt-5 border-t border-line pt-3 font-mono text-xs tracking-wide text-muted-foreground">
           {location.image
-            ? `Byonyks · ${location.image.kind}`
-            : "Byonyks · no image published"}
+            ? `${location.entity} · ${location.image.kind}`
+            : `${location.entity} · no image published`}
         </p>
       </div>
     </details>

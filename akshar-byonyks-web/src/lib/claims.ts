@@ -96,9 +96,74 @@ export const indiaRegulatoryStatement =
  */
 export const indiaLicensing = {
   status: "In progress",
-  asOf: "1 September 2026",
+  // RECONFIRMED 11 SEPTEMBER 2026. The client was asked for the CDSCO
+  // confirmation when it arrives and answered "CDSCO in progress", which is a
+  // restatement of the status rather than the confirmation. That is exactly
+  // what this field is for: the pages label it "Status as of", so a
+  // reconfirmation with no change in status still changes the date, and a
+  // reader can see how fresh the statement is. Nothing else here moves until
+  // the licence is granted.
+  asOf: "11 September 2026",
   framework: "Medical Device Rules 2017",
 } as const;
+
+/**
+ * THE SCOPE OF THE LICENCE, supplied by the client on 11 September 2026:
+ * "License is exclusive to India covers all machines. X2 and X2,3 as well."
+ *
+ * IT CLOSES `pending-licence-scope`, which had recorded since this site was
+ * built that the licence "is confirmed to exist" but that its exclusivity,
+ * its territory and whether it reached past the X-1 had never been given to
+ * this project. All three are answered: exclusive, India, every machine
+ * including the X-2 and X-3.
+ *
+ * IT IS A COMPANY STATEMENT AND IS NOT DRESSED AS ANYTHING ELSE. Nobody on
+ * this project has read the agreement. An exclusive licence is a materially
+ * stronger commercial claim than "licensed to bring the X-1 to India" — it is
+ * the kind of sentence an investor checks and a competitor challenges — so it
+ * is carried at `stated` provenance, in the licensee's own words, and never
+ * as a verified contract term. Do not upgrade it to a fact about a document
+ * this project has not seen.
+ *
+ * WHERE IT MAY AND MAY NOT GO. It belongs wherever the site is describing the
+ * commercial relationship: /products, /about-us, the investor material on
+ * /innovation/market. It must never travel into a REGULATORY sentence — an
+ * exclusive licence says nothing about whether the X-2 or X-3 may be sold in
+ * India, or about whether either device exists, and rules 1 and 2 at the top
+ * of this file are untouched by it.
+ */
+export const licenceScope =
+  "The licence is exclusive to India and covers every Byonyks machine, including the announced X-2 and X-3.";
+
+/**
+ * THE MERGED MANUFACTURE-AND-LICENCE SENTENCE, AND THE ONE PLACE IT IS USED.
+ *
+ * Client instruction, 11 Sep 2026, against the "On what authority" band on
+ * /innovation/market/: "merge the manufactured and licensed boxes. X1 is
+ * manufactured at an AKSHAR byonyks site with Akshar byonyks being in charge
+ * of everything. Should be no mention of byonyks."
+ *
+ * IT CONTRADICTS EVERY OTHER RECORD IN THIS REPOSITORY, AND THAT IS WRITTEN
+ * DOWN HERE RATHER THAN SMOOTHED OVER. Rule 3 at the top of this file says
+ * never to describe Akshar Byonyks as the manufacturer unless and until it
+ * manufactures. "manufacturingStatement" below still attributes the ISO 13485
+ * facility to Byonyks; "compliance.ts" records the ISO 13485 entry as a
+ * Byonyks statement with no certificate number attached; the FDA's own record
+ * for K243371 names Byonyks Pvt, Ltd. as the applicant; and "locations.ts"
+ * publishes no Akshar Byonyks facility at all. So a reader who moves from
+ * /innovation/market/ to /products/the-x1-cycler/ meets two different answers
+ * to "who makes this".
+ *
+ * THE SCOPE IS DELIBERATELY ONE BAND. The instruction named that band, so
+ * this constant is used there and nowhere else, and nothing about the
+ * clearance, the compliance register or the device page was rewritten to
+ * match. Closing the contradiction is a decision for the client plus the
+ * certificate: when the Akshar Byonyks ISO 13485 certificate arrives, it goes
+ * into "compliance.ts", "manufacturingStatement" changes with it, and this
+ * constant stops being a special case. Until then, do not propagate it.
+ */
+export const indiaManufactureAndLicence =
+  "Akshar Byonyks International LLC manufactures the X-1 at its own ISO 13485 certified site and is responsible for the device in India end to end: manufacture, supply, regulatory filing and clinical support.";
 
 /** Rule 3, and the licensing relationship, at the gated wording only. */
 export const licensingStatement =

@@ -7,15 +7,32 @@
 - **Why it's fine to use:** Akshar Byonyks is Byonyks USA's licensed India partner for this exact device (PRODUCT.md Positioning) — this is the same product, from the manufacturer's own public marketing material, not a third party's asset.
 - **Still true:** no real photography of the physical device exists yet (PRODUCT.md). If Byonyks or Akshar produces real photography later, replace this render rather than running both.
 
-## in-center-hemodialysis.png — retired 23 Aug 2026
+## in-center-hemodialysis.png — retired 23 Aug 2026, deleted 12 Sep 2026
+
+**The file is no longer in the working tree.** It is in git, and one command
+brings it back:
+
+```
+git checkout 08bee91 -- public/images/in-center-hemodialysis.png
+```
 
 No longer referenced. It was the visual counterpart to the X-1 render on the
 Home hero's access-geometry "in-center routine" card; that card was
 retitled "Life around the clinic" and swapped to a lucide-react `Hospital`
 line-art glyph (DESIGN.md's default treatment for a concept with no real,
 rights-clear image), since the machine-control-panel photo read as "the
-control panel" rather than "the routine" the new title is about. File left
-in place in case a future revision wants the photo back.
+control panel" rather than "the routine" the new title is about.
+
+It was kept on disk for three weeks "in case a future revision wants the
+photo back", and then the card was given a real photograph instead
+(`clinic-consult-kashmir.jpg`, 12 Sep 2026), so the revision it was waiting
+for arrived and did not want it. Meanwhile it was 549 KB of `public/` —
+deployed, publicly addressable, and reachable by URL — that no page has
+referenced since August. Git is the right place for a file nothing loads.
+
+**This entry stays regardless.** The licence attribution below is a record of
+what was used and what was changed; and this file's own preamble says why an
+image was *not* used is the more useful half of a provenance file.
 
 - **Source:** `https://commons.wikimedia.org/wiki/File:Hemodialysismachine.jpg`, photo by Patrick Glanz, fetched 20 Aug 2026.
 - **License:** dual-licensed CC BY-SA 3.0 Unported / GNU Free Documentation License 1.2+. This note is the required attribution, plus a record of the changes made (required by the license), for as long as the file remains in the repo.
@@ -44,7 +61,19 @@ Requested by name ("more stock/images pulled from byonyks site or general Intern
 - **Note:** portrait orientation (1600×2400). Cropped by `object-position` in the hero rather than re-cut, so the original file stays the original file.
 - **Used on:** `/innovation/` hero, behind the mandated scrim.
 
-### x1-in-home.jpg
+### x1-in-home.jpg — REPLACED 11 SEPTEMBER 2026, FILE DELETED
+
+**Superseded by `x1-in-home-india.jpg`** (entry at the foot of this file).
+The record below is left exactly as it was written, because it is the reason
+the replacement exists: it says in terms that the India-specificity flag "is
+closed by commissioning a photograph, not by anyone approving one", and a
+photograph is what closed it. The file itself is gone from the repository —
+nothing referenced it after the swap, and an unused asset that two other
+entries in this file cross-reference by name is better recorded than kept.
+
+Those cross-references, further down, are **not** rewritten. They are dated
+notes about decisions made while this file existed, and editing them to point
+at its replacement would falsify the log they are part of.
 
 - **Source:** `https://byonyks.com/wp-content/uploads/2025/07/f4bea109-c03e-4962-bde6-018ab3f36f3a.jpeg`, fetched 28 Aug 2026.
 - **What it is:** Byonyks USA's own lifestyle photograph of the X-1 — the cycler on a side table in a living room, a man on the sofa beside it with a laptop and a mug.
@@ -740,3 +769,218 @@ Neither rule works for both. Non-zero on the traced half leaves the 'o' a solid 
 on all twenty-one routes to serve one decoration on one of them.** The curtain
 now needs no webfont at all, renders identically on the server and in the first
 paint, and can no longer show a fallback face and then jump.
+
+---
+
+## Added 11 September 2026 — the clinic card gets a photograph
+
+Client instruction: "Life in the clinic in scrolling cards should have a real
+image." The slot is the "Today / Life around the clinic" card in Home's
+access-geometry scene (`components/home/access-geometry-scene.tsx`), which had
+carried a lucide `Hospital` glyph since 23 August 2026.
+
+### clinic-ward-kolkata.jpg — REPLACED 11 SEPTEMBER 2026, FILE DELETED
+
+**Superseded by `clinic-consult-kashmir.jpg`** (entry at the foot of this
+file), on the client's instruction that the card carry a colour image. The
+record below is left as written. Read the "why monochrome is a feature here"
+line in it before adding another greyscale photograph to a card that sits
+beside a gold accent — the argument was sound, it was overruled by a client
+decision rather than by being wrong, and it will apply again.
+
+- **Source:** Pexels photo 21826918, `https://images.pexels.com/photos/21826918/pexels-photo-21826918.jpeg`, fetched 11 Sep 2026 at `w=1600` (1600×1036).
+- **Photographer:** Sayan Mondal.
+- **License:** Pexels License — free for commercial use, no attribution required. Recorded here as provenance, not as a legal obligation.
+- **What it is:** a black-and-white photograph of a hospital ward described by the photographer as being in Kolkata. Two adjacent bays, a patient resting in each bed, a female relative sitting with each of them, a vital-signs monitor between the bays, a drawn curtain down the middle. No device is in use in the frame and no treatment is being administered.
+- **Edits made:** none. The file is the Pexels `w=1600` render, unmodified.
+- **Why this one.** The card's caption is "Roughly three trips a week, plus the road between them," and the subject of that sentence is a household, not equipment. This is the only candidate found that shows the *accompaniment* — the person who came with the patient and is sitting there — which is the half of the in-centre cost that appears in no tariff and is the whole argument `/innovation/market/` makes about the road. It is also India-specific, which CLAUDE.md prefers over a stronger generic frame.
+- **Why monochrome is a feature here.** The card sits on the moving Silk ink background beside a gold-accented home card. A colour ward photo competes with gold; a black-and-white one reads as the "before" state without spending an accent to say so.
+- **FLAGGED FOR LEGAL SIGN-OFF BEFORE LAUNCH (spec §14.4).** It depicts identifiable people in a clinical setting, which is the category India's Drugs and Magic Remedies (Objectionable Advertisements) Act 1954 constrains, and which CLAUDE.md rules is a legal question rather than a designer's judgement. The 10 Sep 2026 sign-off on `x1-in-home.jpg` **does not cover this file** — that approval was given for that image, and this rule explicitly starts every new instance flagged. Two things narrow the exposure and neither closes it: nobody in the frame is receiving the therapy this site sells, and the image is used to depict the status quo the product is offered *against*, not the product's effect.
+- **Used on:** `/` (Home), the access-geometry scene, both the scroll-scrubbed and the motion-reduce/no-JS variants.
+
+### Rejected on inspection
+
+Both were downloaded and looked at before being rejected, per CLAUDE.md's first hard gate, and neither could have been rejected from its filename.
+
+- **Pexels 12092934**, the dome and façade of Osmania General Hospital, Hyderabad. A real, named Indian public hospital and exactly the right institution — and the frame is all Nizam-era domes and finials against a dusk sky. It reads as a monument or a palace. Nothing in it says "clinic", and a card captioned "roughly three trips a week" under a picture of a heritage skyline is asking the reader to do work the photograph is not doing.
+- **Pexels 32768190**, an ambulance bay at night, Sahibzada Ajit Singh Nagar. Unambiguously India (Haryana plates, Indian ambulances) and a genuinely good photograph. Rejected on register: it is lit by two red EMERGENCY signs and reads as an acute crisis. The clinic card is about a routine that repeats three times a week for years, and an emergency department is the wrong claim about what in-centre dialysis is.
+- **Pexels 26244207**, an elderly couple waiting on a bench in a hospital corridor. The best frame of the set for what the card means — the waiting, the walking stick, the bag on the lap. Rejected because the signage in it is Turkish ("YANGIN"), so the location is legible to any reader who looks, and it is not India. `x1-in-home.jpg` already carries an open editorial flag for having a non-Indian subject; adding a second, in a frame where the give-away is printed on the wall, would make that a pattern rather than a single constrained exception.
+
+---
+
+## Added 11 September 2026 — leadership portraits
+
+### leadership/yogesh-tank.jpg
+
+- **Source:** supplied by the client, 11 September 2026, as `Tank Headshot.png` (1254×1254 PNG, 2.1 MB), alongside the roster entry "Yogesh Tank, MD".
+- **What it is:** a studio headshot, chest up, brown tweed jacket over a blue checked shirt, against a softly blurred office interior with daylight windows and greenery.
+- **Edits made:** cropped from square to 4:5 by keeping the full height and taking the centre 1003px of the 1254px width — the subject sits on the vertical centre line, so the crop is symmetrical and takes only background; resized to **900×1125**; encoded as JPEG at quality 88 (mozjpeg). No retouching, no colour change, nothing added or removed from the frame.
+- **Why 900×1125:** it is the roster's normalised frame. `sahil-pankhaniya.jpg`, `ronak-shah.jpg` and `rohit-pankhaniya.jpg` are all 900×1125, and `ExecutivePortrait` renders every portrait in a 4:5 box. Supplying an exact 4:5 file means the component's `object-top` crop has nothing left to cut, so no part of the head can be lost at any breakpoint.
+- **Backdrop:** a bright, softly blurred office interior. That is a fourth distinct backdrop on this roster, after two whites, a brown studio ground and a city skyline. `leadership.ts` records that spec §9.5's "same backdrop, crop and lighting" is unmeetable across a set assembled from separate shoots and that only a single commissioned session closes it. This file does not make that worse or better; the crop and the frame are normalised, the backdrop is not, and it cannot be without editing a photograph of a real person.
+- **No DMR Act flag.** This is a portrait of a named executive in business dress, not a person in a clinical or therapy context. The 1954 Act's constraint does not reach it.
+- **Used on:** `/about-us/leadership` (roster card) and `/about-us/leadership/yogesh-tank` (profile).
+
+### leadership/rashmin-gandhi.jpg
+
+- **Source:** supplied by the client, 11 September 2026, as `Gandhi Headshot.png` (1024×913 PNG), alongside the full roster entry for Dr. Rashmin Gandhi, India Division Lead.
+- **What it is:** a head-and-shoulders portrait against a plain white background — navy jacket, light blue checked shirt, dark-framed glasses.
+- **Edits made:** cropped from 1024×913 to 4:5 by keeping the full height and taking the centre 730px of the width (`left: 147`), which removes background only — the subject is on the vertical centre line. Encoded as JPEG at quality 90 (mozjpeg). No resize, no retouching, no colour change.
+- **Why no upscale, unlike `yogesh-tank.jpg`:** the source is landscape-ish, so cropping to 4:5 leaves 730×913. Resizing that up to the roster's 900×1125 would invent a quarter more pixels than the photograph contains, and the largest box it renders into is about 380px wide. `vishnu-patel.jpg` is already 525×598, so the roster does not depend on a single intrinsic size — what it depends on is the **ratio**, because `ExecutivePortrait` renders a 4:5 box and crops anything that is not one. An exact 4:5 file means that crop takes nothing at any breakpoint, which is the whole point.
+- **No DMR Act flag.** A portrait of a named executive in business dress, not a person in a clinical or therapy context.
+- **Used on:** `/about-us/leadership` (roster card), `/about-us/leadership/rashmin-gandhi` (profile), and reached from `/grievance-redressal`, where he is the named Grievance Officer.
+
+---
+
+## 11 September 2026 — the India-subject replacement
+
+### x1-in-home-india.jpg
+
+- **Source:** supplied directly by the client on 11 Sep 2026, pasted into the
+  working session rather than sent as a file. There is no filename, no EXIF,
+  no ICC profile and no stated author.
+- **SECOND FRAME, SAME DAY.** The client sent a first frame, saw it in place,
+  and sent a better one an hour later; the file was replaced in situ rather
+  than given a new name, because it had not left this machine and a second
+  filename for the same asset in the same slot buys nothing. What changed
+  between them: this frame is sharper at the same pixel dimensions, the
+  exposure on the subject's face is cleaner, the laptop faces the camera
+  square, and **the tubing's path out of the cycler is legible** where in the
+  first frame it read as coiled at the machine. The alt text was rewritten for
+  that last one — it describes the frame that is actually published, which is
+  the only rule alt text has here.
+- **What it is:** the X-1 on a side table in a living room, an older man on the
+  sofa beside it with a laptop on his knee and a mug in his hand. **The same
+  room, the same device, the same furniture, the same light and very nearly the
+  same framing as `x1-in-home.jpg`, with a different person in it** — the
+  subject is South Asian where the previous one was a white Western man.
+- **Used on:** `/innovation/how-it-works`, in the `by-hand-or-machine` figure,
+  in the slot `x1-in-home.jpg` occupied from 28 Aug 2026.
+
+**WHAT IT CLOSES.** The India-specificity flag carried on `x1-in-home.jpg`
+since the day it shipped. PRODUCT.md is emphatic that content is India-specific
+and that material which does not transfer gets replaced rather than kept for
+volume; the old entry recorded that only a commissioned photograph would fix
+it, and named this as one of the two things that "photography shot in India for
+Akshar Byonyks" would solve. One of those two is now solved.
+`clinicians-in-discussion.jpg` still carries the same flag and is untouched by
+this.
+
+**THREE THINGS IT DOES NOT CLOSE. All three need the client, not a designer.**
+
+1. **The Drugs and Magic Remedies Act 1954 sign-off does not travel.** The
+   client confirmed sign-off on 10 Sep 2026 **for `x1-in-home.jpg`**. This file
+   depicts a person with a medical device in a therapy context in the same way,
+   and this file's own rule — stated against `clinic-ward-kolkata.jpg` — is
+   that an approval is given for an image and "this rule explicitly starts
+   every new instance flagged". So this is flagged under spec §14.4 until the
+   client says the sign-off covers it. It is very likely a formality given the
+   10 Sep decision; it is not this project's formality to complete.
+2. **Nobody has said who made it, and the caption no longer guesses.** The old
+   caption read "The X-1 in a home, photographed by Byonyks", which was true of
+   the file it described: that one came from
+   `byonyks.com/wp-content/uploads/2025/07/` and was the manufacturer's own
+   asset. This one did not. Checked 11 Sep 2026: the only version of this scene
+   byonyks.com serves is still the original, white-subject file. So the
+   attribution came off the figcaption rather than being carried across to a
+   file it may not describe. **If Byonyks did shoot this, the attribution
+   should go back on** — it is worth more than an uncredited image, and the
+   line is one string in `by-hand-or-machine.tsx`.
+3. **How this scene comes to exist twice over is not recorded, and it should
+   be.** A set dressed once and shot with two subjects is an ordinary and
+   entirely innocent explanation. So is a commissioned re-shoot. A third is
+   that the frame was derived from the Byonyks photograph rather than taken,
+   and on a medical device site that one is materially different from the other
+   two: it changes what the picture is evidence of, and it is the kind of thing
+   the DMR Act question in (1) turns on. **This project cannot tell which from
+   the file** — there is no metadata, and at 1024px the usual tells are
+   indistinguishable from downscaling. That a second, differently-composed
+   frame of the same set arrived on request is consistent with a real shoot and
+   is **not** confirmation of one. It is a question for the client and it is
+   asked rather than assumed.
+
+**RESOLUTION IS A REGRESSION AND IT IS VISIBLE.** 1024×682, against the
+1536×1024 of the file it replaces. The figure renders up to 1216 CSS px wide,
+so this is upscaled on a full-width desktop slot even at 1× and well short on
+any retina screen. It is published anyway because an India-specific subject at
+1024px is worth more to this site than a non-Indian one at 1536px — that is
+PRODUCT.md's own ordering, not a preference. **It was not upscaled to hide the
+difference**, which would invent a third of the pixels; and 1024px on the long
+edge is exactly where chat attachments are re-encoded, so a larger original
+almost certainly exists. **Ask the client for the full-resolution file.** That
+is a one-line swap here and it removes the only real cost of this change.
+
+- **Processing:** none but a re-encode — no crop, no resize, JPEG q90 mozjpeg,
+  75 KB. The input was already a lossy JPEG, so this is one further generation
+  and nothing else. Identical treatment to the frame it replaced, so the two
+  are comparable on their own merits rather than on what was done to them.
+
+---
+
+## 11 September 2026 — the clinic card goes to colour
+
+### clinic-consult-kashmir.jpg
+
+- **Source:** Pexels photo 14558560, `https://images.pexels.com/photos/14558560/pexels-photo-14558560.jpeg`, fetched 11 Sep 2026 at `w=1600` (1600×1067).
+- **Photographer:** Imad Clicks, whose Pexels profile gives their location as Kashmir and whose catalogue is tagged "Jammu And Kashmir" and "Northern India".
+- **License:** Pexels License — free for commercial use, no attribution required. Recorded here as provenance, not as a legal obligation.
+- **What it is:** a doctor in a consulting room taking a seated patient's blood pressure with a cuff and stethoscope. A blue desk between them carries an anatomical model of a knee joint, a prescription pad and two phones; patterned wallpaper behind.
+- **Edits made:** none. The file is the Pexels `w=1600` render, unmodified.
+- **Used on:** `/` (Home), the access-geometry scene, both the scroll-scrubbed and the motion-reduce/no-JS variants.
+
+**WHY THIS ONE, OUT OF EVERYTHING THE COLOUR REQUIREMENT LEFT STANDING.**
+
+- **It is in colour, which was the requirement** — green sweater, blue desk, purple shirt, teal cardigan. Not a warm-toned near-monochrome dressed up as colour, which two of the rejected candidates were.
+- **It is India, and the frame proves it rather than the caption asserting it.** The socket plate on the left wall is an Indian-standard round-pin bank, legible at full size, and the BP cuff is a Diamond — an Indian brand. Those are physical corroboration, which matters because the photographer's stated location, "Kashmir", spans two countries. Nothing here rests on the word alone.
+- **The patient is not identifiable.** His face is turned away from the camera. That is the single biggest difference from the file it replaces, where two patients and two relatives are all clearly recognisable.
+- **No institution is named or branded**, so nothing implies a real hospital endorses this company. That objection has now disqualified three candidates across three passes, including one in this one.
+- **A blood pressure check is on-topic rather than adjacent.** Hypertension management is part of chronic kidney disease care, so this is the clinic visit the card's title actually means — not another specialty's procedure standing in for it.
+
+**WHAT WAS LOST, AND IT IS NOT NOTHING.** The old frame showed a relative sitting with each patient. That accompaniment is the half of the in-centre cost that appears in no tariff, and it was the stated reason that photograph was chosen. **Nothing in the colour pool carried it** and was also India, unbranded, and clean of an identifiable patient mid-treatment. The argument now survives only in prose on `/innovation/market`, where its figures are. If India-shot photography is ever commissioned, a waiting family is the frame to ask for.
+
+**STILL FLAGGED FOR LEGAL SIGN-OFF BEFORE LAUNCH (spec §14.4).** It depicts a person in a clinical setting, which is the category the Drugs and Magic Remedies (Objectionable Advertisements) Act 1954 constrains, and this file's rule starts every new instance flagged. **Three things narrow it and none of them closes it:** the patient is not identifiable; nobody in the frame is receiving the therapy this site sells; and a blood pressure check is a routine examination rather than a treatment. The identifiable person in the frame is the clinician, and he is shown doing his job, not endorsing anything.
+
+**ON THE TRANSPARENT BACKGROUND, WHICH WAS ASKED FOR AND IS NOT DELIVERED.**
+The request was for a cutout if one could be found, to sit on the dark Silk
+ground the way `x1-apd-cycler.png` does on the card opposite. It could not,
+and the reasons are worth recording so nobody re-runs the search:
+
+1. **The sanctioned libraries serve JPEG, which has no alpha channel.** Pexels
+   has no transparent-PNG category at all. Unsplash could not be searched —
+   as of 11 Sep 2026 its search endpoint returns **HTTP 401** without an API
+   key, which is the same obstacle this file recorded on 1 Sep and it has got
+   worse rather than better.
+2. **Keying one out needs either a plain backdrop or a segmentation model.** A
+   luminance key works on a subject shot against white seamless; this is a
+   room, and a room has no subject to isolate. No background-removal model is
+   available in this environment, and a hand-cut mask of a whole interior is
+   not something to fake.
+3. **A cutout would change what the card argues, not just how it looks.** The
+   only thing in this scene that could be isolated is an object, and the card
+   opposite already owns the object comparison. "Life around the clinic" is a
+   place and the people in it; reducing it to a floating piece of equipment
+   would make both cards about machines and delete the contrast the pair
+   exists to draw.
+
+**What would actually deliver it:** a commissioned photograph or render shot
+against seamless white, which is how `x1-apd-cycler.png` came to have an
+alpha channel in the first place.
+
+### Rejected on inspection
+
+Eleven candidates were downloaded and viewed. The instructive ones:
+
+- **Pexels 33216690**, a treatment room with two teal infusion chairs and IV poles. **The closest call.** Strong colour, landscape, no institution named, and — uniquely in the set — **no people at all**, which would have closed the 1954 Act flag outright rather than narrowing it. Rejected on two grounds: its own Pexels title is "Modern Hospital Chemotherapy Room Setup", and a chemotherapy suite standing in for dialysis is exactly the quiet mismatch a nephrologist would catch on a site whose credibility rests on not overstating; and it is plainly European, so it would have traded India-specificity for tidiness.
+- **Pexels 33812025**, a clinic reception in Kerala. India, no people, no 1954 Act exposure. Rejected because **"PULPATTA MEDICAL CENTRE" is on the wall in letters**, which is the same objection that disqualified Pexels 36035002 on 28 Aug.
+- **Pexels 18870282**, a doctor examining an older Sikh man. Colour, South Asian, landscape, and genuinely warm. Rejected because a named clinic's poster — "APEX SKY MEDICAL CLINIC", with its logo and its patient-policy text — is legible on the right, and cropping it out would have been solving a branding problem by removing a third of the frame.
+- **Pexels 32768190**, a hospital emergency entrance in Haryana at night. India, colour, no patients. Rejected on register: it is lit entirely by red EMERGENCY signage, and thrice-weekly maintenance dialysis is the opposite of an emergency. The red would also have fought the gold on the card beside it.
+- **Pexels 31076496**, families waiting on hospital steps under a sign reading "THIS IS NOT A PLACE OF ANGER / THIS IS A PLACE OF HEALING". The single best photograph in the set and the closest to what the old image was chosen for. **Rejected because it is black and white**, which is the one thing this pass exists to fix — and because the signage is Bengali and the bins are branded "GAZI TANKS", placing it in Bangladesh.
+- **Pexels 6011574**, a man in a hospital gown pushing a child in a wheelchair, both on nasal cannulas, both visibly in oncology treatment. Rejected on sight. Whatever else a marketing card does, it does not do that.
+- **Pexels 7179233**, an older man in a trial lens frame during an eye test. Superb colour and unmistakably India. Rejected because it is optometry — a reader asking what refraction has to do with kidney failure is a reader the card has lost.
+- **Pexels 6129438 / 6129107 / 6129051**, a staged North American stock series. Same blue walls and framed prints in every frame. Rejected as the generic stock CLAUDE.md warns makes a site look worse rather than better.
+- **Pexels 4515033**, masked people spaced along a bench. Good composition, anonymous. Rejected: East Asian, pandemic-dated, and the room is not legibly a clinic.
+
+**The standing rule held again:** every one of the eleven was downloaded and
+looked at. Four of them could not have been rejected from their filename or
+their search description — the two with institution names on the wall, the
+oncology frame, and the one whose search result did not mention it was
+monochrome.

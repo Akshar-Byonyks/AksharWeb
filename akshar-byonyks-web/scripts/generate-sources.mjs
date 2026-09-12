@@ -177,9 +177,20 @@ w("---", "");
 w(
   "## Source register",
   "",
-  "The full citations behind the figures on `/innovation/market`. `kind` is",
-  "read by the `Cite` component: `register` sources are still linked on the",
-  "site, `research` sources are not, and are recorded only here.",
+  "The full citations behind the site's sourced claims — the figures on",
+  "`/innovation/market`, and since 11 Sep 2026 the therapy claims on",
+  "`/innovation/how-it-works` as well. `kind` is read by the `Cite`",
+  "component: `register` sources are still linked on the site, `research`",
+  "sources are not, and are recorded only here.",
+  "",
+  "The two KDIGO entries are the reason this section is no longer only the",
+  "market page's. The how-it-works page carried them as a visible References",
+  "block for one day; the client asked on 11 Sep 2026 that references be kept",
+  "\"in separate document with the rest of the sources\", which is this file.",
+  "What each report actually concludes — narrower, on three of the four",
+  "claims, than the claim it supports — is under \"Every claim on the site\"",
+  "above rather than here, because it is a fact about a claim and not about a",
+  "citation.",
   "",
 );
 

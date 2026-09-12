@@ -1,3 +1,5 @@
+import { licenceScope } from "@/lib/claims";
+
 // Who Akshar Byonyks is: the origin, the timeline, and what is still blocked.
 //
 // MEASURED BEFORE IT WAS BUILT (29 Aug 2026), which is the process change
@@ -130,11 +132,27 @@ export const milestones: readonly Milestone[] = [
     hrefLabel: "The record, and how to check it",
   },
   {
-    when: "Not yet stated",
+    // DATED 11 SEP 2026, on client instruction. This entry carried
+    // "Not yet stated" and a pending chip from the day the timeline was
+    // built, because no execution date had reached this project. The client
+    // has now supplied one.
+    //
+    // IT IS "company-stated", NOT "public-record". A licence between two
+    // private companies is not on a register this project can open, which is
+    // the same distinction compliance.ts draws between the FDA clearance and
+    // everything Byonyks asserts about its own testing.
+    //
+    // THE TERMS ARRIVED LATER THE SAME DAY. This comment read "a date is not
+    // the terms" and pointed at "pending-licence-scope" for the territory, the
+    // exclusivity and the product scope. The client supplied all three on
+    // 11 September 2026 — exclusive, India, every machine including the X-2
+    // and X-3 — so that ledger entry is closed and the sentence below states
+    // the scope instead of marking it missing. The wording comes from
+    // "licenceScope" in claims.ts rather than being retyped here.
+    when: "September 2026",
     title: "Akshar Byonyks licensed for India",
-    detail:
-      "The date the licence was executed has not been given to this project, and the agreement's territory, exclusivity and product scope are still to be specified.",
-    verification: "pending",
+    detail: `The month the licence was executed, as given to this project. ${licenceScope}`,
+    verification: "company-stated",
   },
 ];
 
@@ -160,9 +178,19 @@ export const milestones: readonly Milestone[] = [
 // because the gaps it describes are still in the data — but nothing on the site
 // displays it, so do not assume editing it changes a page.
 export const leadershipStatus = {
-  note: "Titles and photographs pending",
+  // REWRITTEN 11 SEP 2026, THOUGH NOTHING RENDERS IT. The note above says this
+  // is kept "because it is still an accurate record of what is missing" — and
+  // by that morning it was not: it described three Akshar Byonyks people, two
+  // of them without a title or a photograph, and there are now six, all with
+  // both. Deviation 30 is the entry about precisely this failure mode, so
+  // leaving a second instance of it in place would be the lesson recorded and
+  // ignored in the same file.
+  //
+  // `note` is now the only gap that survives: Dr. Yogesh Tank arrived with a
+  // name, post-nominals and a photograph, and no title and no biography.
+  note: "One title and one biography pending",
   label:
-    "Three Akshar Byonyks people are published. Two of them have no job title and no photograph yet. Both were requested from the client on 1 September 2026, and the page marks each gap rather than guessing. Senthil Kumar's card is Byonyks', and says so.",
+    "Six Akshar Byonyks people are published, and one colleague at Byonyks. All seven carry a photograph. One record, Dr. Yogesh Tank's, has no job title and no biography yet; the card says \"Title to be confirmed\" and the profile says the biography is pending, rather than either being guessed at. Since 12 September 2026 no card or profile prints which of the two companies a person works for; the roster page still splits the count between them in the paragraph above the grid.",
   meanwhile:
     "The nephrologists who advise Byonyks do appear on this site, by name and credential, as the speakers in ByoTalks.",
 } as const;
