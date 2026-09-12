@@ -2715,3 +2715,102 @@ unpinned Home; no console errors in either motion mode across `/`, `/byotalks`
 and `/locations`; `tsc` and `eslint src` clean.
 
 ---
+
+## 46. Prerendered pages were being re-rendered on every request (12 Sep 2026)
+
+**Where:** `open-next.config.ts`, and a correction to `wrangler.jsonc`.
+
+Started as "Cloudflare is firing 22 errors". The errors were the symptom; the
+cache was the disease.
+
+### The 22 errors
+
+All `exceededResources`, all on 11 Sep, in two bursts sixteen minutes apart
+(19:30 and 19:46 UTC). Not since. **Not CPU** — they used LESS CPU than the
+successes beside them (13-18ms against 35ms) and died inside 130ms of wall
+time, which is the 128MB isolate memory ceiling under concurrency.
+
+### What was actually wrong
+
+```
+11 Sep, zone-wide:   1,333 requests
+  served from cache:   270  (20%)
+  ran the worker:    1,063  (80%)
+```
+
+On a site where **all 48 content routes are prerendered at build time**. The
+live headers said it outright:
+
+```
+x-nextjs-prerender: 1      <- built at compile time
+x-nextjs-cache: MISS       <- re-rendered anyway, every request
+```
+
+One sampled request spent **459ms of CPU** rendering a page that had not
+changed since the build; hourly means reached 561ms.
+
+### The comment that was wrong, and why it read as right
+
+`open-next.config.ts` said: *"every content route is statically prerendered
+... There's no ISR revalidation to cache, so the default is sufficient."*
+
+The premise holds. The conclusion does not. **"No ISR to revalidate" is not
+"nothing to read."** App Router routes are served through the worker rather
+than as flat files, because one URL must answer with HTML or an RSC payload
+depending on request headers — which is what the `Vary: rsc, next-router-*`
+on every response is for. So the worker runs on every page view, and with no
+incremental cache it had no store to read the prerendered output from. It
+rendered the page again.
+
+This is a deviation-30 failure with a twist: not stale prose describing
+changed data, but **reasoning that was sound locally and false in production**,
+where nothing in the dev loop shows a cache header.
+
+### Fix
+
+`staticAssetsIncrementalCache`. Its own documentation is the argument: "should
+only be used for applications that do NOT want revalidation and ONLY want to
+serve prerendered data." It reads from assets already uploaded beside the
+worker — no bucket, no namespace, no binding, no bill. R2 or KV would be the
+answer the day a route adopts ISR; today they would be infrastructure serving
+a cache that never invalidates.
+
+**If a route ever adopts ISR this must change.** The adapter cannot write, so
+a revalidating route would serve its build-time copy forever. The trade is
+deliberate and safe only while spec 12.1 holds.
+
+### Verified
+
+`opennextjs-cloudflare build` + `populateCache local` wrote 45 cache entries to
+`.open-next/assets/cdn-cgi/_next_cache`. Against the built worker on wrangler:
+
+| Route | before | after |
+|---|---|---|
+| `/` | MISS | **HIT** |
+| `/innovation/how-it-works` | MISS | **HIT** |
+| `/byotalks` | MISS | **HIT** |
+| `/about-us/leadership` | MISS | **HIT** |
+| `/products/the-x1-cycler` | MISS | **HIT** |
+
+`deploy`, `upload` and `preview` all call `populateCache` themselves, so the
+existing npm scripts carry this with no change. **A plain `wrangler deploy`
+would not** — it skips the populate step and the cache would silently miss.
+
+### Also corrected
+
+`wrangler.jsonc` warned about the Free plan's 10ms CPU ceiling. This worker is
+not on it — requests routinely spend 50-500ms and succeed, and every one would
+have returned 1102 on Free. The note is kept, because 459ms to serve a
+prerendered page is unhealthy on any plan, but it no longer tells the next
+reader the wrong thing. The outcome to watch is `exceededResources`, not
+`exceededCpu`.
+
+### Not fixed here, because it is not code
+
+The load included a scraper on Tencent Cloud (AS132203, `zh-CN`, a spoofed
+2019 iPhone UA, plain HTTP) sending `cache-control: no-cache` — which
+guarantees a full re-render when there is no store. Edge caching of HTML, Bot
+Fight Mode and Always-Use-HTTPS are dashboard settings on a Free zone and are
+the client's to apply.
+
+---

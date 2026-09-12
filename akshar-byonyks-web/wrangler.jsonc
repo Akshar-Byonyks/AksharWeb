@@ -89,11 +89,27 @@
   // MEASURE LOCALLY, so it is recorded from the first deploy rather than
   // discovered after a 1102.
   //
-  // The Workers Free plan allows 10 ms of CPU per HTTP request; Paid defaults
-  // to 30 s. Exceeding the limit returns Error 1102 and logs the invocation
-  // outcome as "exceededCpu". Cloudflare's stated average across all Workers
-  // is 2.2 ms, but this worker serves prerendered pages through a full Next.js
-  // server runtime (29 MB unbundled), so the average is not a safe proxy.
+  // MEASURED 12 SEP 2026, AND THE 10 MS WORRY BELOW TURNED OUT NOT TO APPLY.
+  // This worker is not on the Free plan's 10 ms ceiling: successful requests
+  // routinely spend 50-300 ms of CPU and one hour averaged 561 ms. Every one
+  // of those would have returned 1102 on Free. The note is kept because the
+  // NUMBER is still the thing to watch -- 459 ms of CPU to serve a page that
+  // was prerendered at build time is not a healthy figure on any plan, and
+  // "open-next.config.ts" now carries the reason it was that high.
+  //
+  // WHAT ACTUALLY BROKE, 11 Sep 2026: 22 requests returned
+  // "exceededResources", not "exceededCpu", in two bursts sixteen minutes
+  // apart. They used LESS CPU than the successes beside them (13-18 ms against
+  // 35 ms) and died in under 130 ms of wall time, which is the 128 MB memory
+  // ceiling under concurrency rather than a slow page. Watch this outcome as
+  // well as the CPU one.
+  //
+  // For the record: the Workers Free plan allows 10 ms of CPU per HTTP
+  // request; Paid defaults to 30 s. Exceeding it returns Error 1102 and logs
+  // the outcome as "exceededCpu". Cloudflare's stated average across all
+  // Workers is 2.2 ms, but this worker serves prerendered pages through a full
+  // Next.js server runtime (29 MB unbundled), so the average is not a safe
+  // proxy.
   //
   // `invocation_logs` is what carries `cpuTime` and `wallTime`. Sampling stays
   // at 1 (every request) — this site's request volume is nowhere near a level
