@@ -1,5 +1,4 @@
 import type { Provenance } from "@/components/common/provenance";
-import { indiaOffice } from "@/lib/site-config";
 
 // WHERE THE GROUP OPERATES, and — the part that carries the weight — which
 // company holds each site.
@@ -109,45 +108,6 @@ export type Location = {
 
 export const locations: readonly Location[] = [
   {
-    // OURS, AND BACK ON THIS PAGE AFTER NINE DAYS. The Bengaluru row was
-    // removed on 1 September 2026 and its "coming soon" replacement on
-    // 2 September, which left this register as three Byonyks sites and made
-    // /contact the only page on the site saying an Akshar Byonyks India office
-    // exists. The note below the array anticipated exactly this: "the day the
-    // India office has a published address it belongs back on this page."
-    // The client supplied the address on 11 September 2026.
-    //
-    // IT LEADS THE ARRAY, which means it leads the India block and therefore
-    // the whole register, because byIndiaFirst preserves array order. That
-    // is the ordering decision this page has needed since it lost its only
-    // Akshar Byonyks row: a reader who comes to a locations page is asking
-    // where THIS company is, and the answer should not be third.
-    //
-    // The role field MUST NEVER MATCH THE MANUFACTURING GUARD BELOW. "India office" is
-    // chosen for that as much as for accuracy — Akshar Byonyks is the
-    // licensee, and the contract further down throws if an Akshar Byonyks row
-    // is ever given a manufacturing, assembly or production role.
-    id: "india-office",
-    place: "Patancheru",
-    region: "Telangana",
-    country: "India",
-    entity: "Akshar Byonyks",
-    role: "India office",
-    detail:
-      "Akshar Byonyks' office in India, and where post reaches the company. The Grievance Officer required by the Digital Personal Data Protection Act 2023 is reachable here.",
-    status: "operating",
-    address: [indiaOffice.careOf, ...indiaOffice.lines],
-    phone: indiaOffice.phone,
-    provenance: {
-      status: "stated",
-    },
-    // NO IMAGE, and the type has always allowed that for exactly this row.
-    // Byonyks publishes photographs of its own premises; nobody has supplied
-    // one of this office, and a stock interior would be the fabrication this
-    // whole file is built to refuse.
-    gap: "A correspondence address at a third party's premises, not a registered office. Whether an Indian entity will be formed to hold one is not yet decided.",
-  },
-  {
     id: "itasca",
     place: "Itasca",
     region: "Illinois",
@@ -232,6 +192,21 @@ export const locations: readonly Location[] = [
 // the two that are not built) and each unbuilt card states what is not yet
 // known. A status that lives on the card survives re-sorting; a status that
 // lives in a section heading does not.
+// COUNTS FOR THE PAGE'S PROSE, DERIVED RATHER THAN WRITTEN OUT.
+//
+// The heading and the register's title used to spell these numbers: "Four
+// sites, two companies" and "All four sites, India first". Deviation 43 read
+// both against this file and found them correct, which they were on 12 Sep
+// 2026 at 04:00. They were wrong by that afternoon, when the client asked for
+// the Akshar Byonyks row to come off and the page became three sites held by
+// one company — with the prose still saying four and two.
+//
+// That is deviation 30's failure mode exactly: the data is edited and the
+// sentence about the data is not re-read. Auditing the strings again would
+// only schedule the next occurrence, so the strings are gone.
+export const siteCount = locations.length;
+export const entityCount = new Set(locations.map((l) => l.entity)).size;
+
 export const byIndiaFirst: readonly Location[] = [
   ...locations.filter((l) => l.country === "India"),
   ...locations.filter((l) => l.country !== "India"),

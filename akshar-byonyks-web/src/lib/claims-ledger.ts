@@ -11,7 +11,6 @@ import {
   GUATEMALA_PD_SHARE,
   LIVE_OVER_100KM,
   modalityFigures,
-  PD_RECENT_ESTIMATE,
   scaleFigures,
   TRAVEL_OVER_50KM,
   type Figure,
@@ -145,7 +144,6 @@ const fromFigures: readonly LedgerEntry[] = [
   ...modalityFigures.map((f, i) => figureEntry(f, 300 + i, [MARKET])),
   figureEntry(TRAVEL_OVER_50KM, 400, [MARKET]),
   figureEntry(LIVE_OVER_100KM, 401, [MARKET]),
-  figureEntry(PD_RECENT_ESTIMATE, 402, [MARKET]),
   figureEntry(GUATEMALA_PD_SHARE, 403, [MARKET]),
   // The one figure that leaves the market page. `origin-story.tsx` carries it
   // under the same citation rather than retyping the number, and it is listed
@@ -278,8 +276,9 @@ const gaps: readonly LedgerEntry[] = [
   // last of them. That rule is in CLAUDE.md, because it governs future work
   // rather than describing a gap in this one.
   // `pending-address` was removed on 11 September 2026. The client supplied
-  // the India office address, and it is published on /contact, /locations,
-  // /privacy-policy and /terms-of-use. The oldest gap in this project — Open
+  // the India office address, and it is published on /contact, /privacy-policy
+  // and /terms-of-use. It left /locations on 12 Sep 2026, when the client asked
+  // for that row to come off; the address itself is untouched. The oldest gap in this project — Open
   // Question 1.1, and a §14.4 launch gate — is closed.
   //
   // WHAT DID NOT CLOSE WITH IT, and why it is a separate entry rather than a
@@ -292,15 +291,12 @@ const gaps: readonly LedgerEntry[] = [
     id: "pending-india-entity",
     claim: "The Indian entity, and the registered office it would hold",
     detail:
-      "The India office address published on this site is a correspondence address held care of a third party. Whether an Indian LLP or subsidiary will be formed as the operating entity has not been decided, so no registered office can be named — which is why the terms of use do not name the courts having jurisdiction, and why no machine-readable address is published on the locations page.",
+      "The India office address published on this site is a correspondence address held care of a third party. Whether an Indian LLP or subsidiary will be formed as the operating entity has not been decided, so no registered office can be named — which is why the terms of use do not name the courts having jurisdiction.",
     provenance: {
       status: "pending",
       missing: "Indian entity not yet decided.",
     },
-    appearsOn: [
-      LOCATIONS,
-      { label: "Terms of use", href: "/terms-of-use" },
-    ],
+    appearsOn: [{ label: "Terms of use", href: "/terms-of-use" }],
   },
   // `pending-phone` was removed on 1 Sep 2026. The number published in the
   // contact band was a placeholder for the life of this project; the client
@@ -370,17 +366,17 @@ const gaps: readonly LedgerEntry[] = [
     // register goes stale the moment the roster is edited and nothing catches
     // it but a person reading both.
     //
-    // WHY IT IS ONE ENTRY AND NOT TWO. The title and the biography are
-    // missing from the same record, for the same reason -- they have not been
-    // supplied -- and they will arrive together. Two entries would put two
-    // rows on /what-we-know for one email that has not been sent.
+    // NARROWED 12 SEP 2026. This was one entry for a missing title AND a
+      // missing biography, on the reasoning that both were absent for the same
+      // reason and would arrive together. The title arrived on its own, so the
+      // entry now records only what is still outstanding.
     id: "pending-tank-record",
-    claim: "Dr. Yogesh Tank's job title and biography",
+    claim: "Dr. Yogesh Tank's biography",
     detail:
-      "His record was supplied with a name, post-nominals and a photograph and nothing else. The roster card says \"Title to be confirmed\" and the profile says the biography is pending, rather than reading a title out of the post-nominals or writing a paragraph here about a real person. \"MD\" says he is a physician; it does not say what he does at this company.",
+      "His record was supplied with a name, post-nominals and a photograph and nothing else. The client supplied his title, India Division Co-Lead, on 12 September 2026. The biography has not arrived, so the profile says it is pending rather than writing a paragraph here about a real person.",
     provenance: {
       status: "pending",
-      missing: "Title and biography not yet supplied.",
+      missing: "Biography not yet supplied.",
     },
     appearsOn: [LEADERSHIP],
   },
@@ -507,9 +503,11 @@ const gaps: readonly LedgerEntry[] = [
   // One entry per missing fact, which is this file's rule.
 ];
 
-// Derived from `locations.ts`. FOUR PREMISES SINCE 11 SEP 2026, not three:
-// the Akshar Byonyks India office came back onto that page when the client
-// supplied its address, after nine days in which every row was Byonyks'.
+// Derived from `locations.ts`. THREE PREMISES SINCE 12 SEP 2026, all of them
+// Byonyks': the Akshar Byonyks India office was on this page from 11 Sep, when
+// the client supplied its address, until 12 Sep, when the client asked for the
+// row to come off. The address is still published on /contact and the legal
+// pages, which is what the DPDP Act 2023 requires of it.
 //
 // ALL FOUR LAND ON `stated`, AND THE REASON IS NOW TWO REASONS RATHER THAN
 // ONE. Three rows are Byonyks' published account of itself, unchecked against

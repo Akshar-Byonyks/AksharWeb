@@ -3,7 +3,6 @@ import { Cite, FigureRegister } from "@/components/market/figure-register";
 import {
   GUATEMALA_PD_SHARE,
   modalityFigures,
-  PD_RECENT_ESTIMATE,
 } from "@/lib/market-data";
 
 // Leg 4 of spec §3.3: "India's PD share of dialysis versus comparable
@@ -169,23 +168,6 @@ export function ModalityMix() {
               />
             </div>
 
-            <figcaption className="mt-8 space-y-3 border-t border-line pt-5 text-sm text-muted-foreground">
-              <p>
-                Share of people on dialysis who are on peritoneal dialysis. The
-                two figures are from different years and different national
-                reporting systems and are not a like-for-like registry
-                comparison; they are shown together because the difference is an
-                order of magnitude, which no reasonable adjustment closes.
-              </p>
-              <p>
-                A later estimate puts India&rsquo;s peritoneal dialysis
-                population lower still, at {PD_RECENT_ESTIMATE.value} in{" "}
-                {PD_RECENT_ESTIMATE.asOf}, a different author on a
-                different method, so the direction is not something this site
-                will assert.
-                <Cite source={PD_RECENT_ESTIMATE.source} />
-              </p>
-            </figcaption>
           </figure>
         </ScrollReveal>
       </div>

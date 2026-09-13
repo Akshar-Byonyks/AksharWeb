@@ -121,8 +121,8 @@
 // career matters. Verbatim records answer to a different contract —
 // provenance — and that is the one enforced on them. Six of the seven records
 // here are verbatim, so none of those is length-checked and every one carries
-// a date. The seventh, Dr. Yogesh Tank's, has no biography at all yet and
-// declares `bioPending`; see that field.
+// a date. The seventh, Dr. Yogesh Tank's, has a title but no biography yet
+// and declares `bioPending`; see that field.
 
 export type Executive = {
   readonly slug: string;
@@ -470,16 +470,25 @@ export const executives: readonly Executive[] = [
     // roster to publish with no words at all, which is what `bioPending` was
     // added for.
     //
-    // NOTHING IS INFERRED FROM THE PHOTOGRAPH OR THE POST-NOMINALS. "MD" says
-    // he is a physician; it does not say he is a nephrologist, and it says
-    // nothing about what he does at this company. Dr. Shah's record already
-    // carries the cost of guessing a title from a description — see the note
-    // at the head of this file, where "nephrologist" would have been read out
-    // of his own biography and would have been wrong, because he is Secretary.
-    // So `role` is omitted and the card says "Title to be confirmed".
+    // THE TITLE ARRIVED ON CLIENT INSTRUCTION, 12 SEP 2026: "India Division
+    // Co-Lead". It is set here rather than inferred, which is the same rule
+    // that kept it blank before — nothing was ever read out of the
+    // post-nominals. "MD" says he is a physician; it does not say what he does
+    // at this company, and Dr. Shah's record already carries the cost of
+    // guessing a title from a description (see the note at the head of this
+    // file, where "nephrologist" would have been wrong, because he is
+    // Secretary).
+    //
+    // CO-LEAD SITS BESIDE Dr. Rashmin Gandhi's "India Division Lead" directly
+    // above. Two related titles on one division is what the client supplied.
+    //
+    // THE BIOGRAPHY IS STILL PENDING, so `bioPending` stays and the gap in
+    // `about.ts` and the ledger entry `pending-tank-record` narrow to the
+    // biography alone rather than closing.
     slug: "yogesh-tank",
     name: "Yogesh Tank",
     postNominals: "MD",
+    role: "India Division Co-Lead",
     organisation: "Akshar Byonyks",
     bioPending: true,
     portrait: "/images/leadership/yogesh-tank.jpg",

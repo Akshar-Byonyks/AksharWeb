@@ -187,10 +187,9 @@ export const leadershipStatus = {
   // ignored in the same file.
   //
   // `note` is now the only gap that survives: Dr. Yogesh Tank arrived with a
-  // name, post-nominals and a photograph, and no title and no biography.
-  note: "One title and one biography pending",
+  // name, post-nominals and a photograph and nothing else. The client supplied
+  // his title on 12 Sep 2026; the biography has still not arrived.
+  note: "One biography pending",
   label:
-    "Six Akshar Byonyks people are published, and one colleague at Byonyks. All seven carry a photograph. One record, Dr. Yogesh Tank's, has no job title and no biography yet; the card says \"Title to be confirmed\" and the profile says the biography is pending, rather than either being guessed at. Since 12 September 2026 no card or profile prints which of the two companies a person works for; the roster page still splits the count between them in the paragraph above the grid.",
-  meanwhile:
-    "The nephrologists who advise Byonyks do appear on this site, by name and credential, as the speakers in ByoTalks.",
+    "Six Akshar Byonyks people are published, and one colleague at Byonyks. All seven carry a photograph. One record, Dr. Yogesh Tank's, has a job title but no biography yet; the profile says the biography is pending rather than writing one here about a real person. Since 12 September 2026 no card or profile prints which of the two companies a person works for; the roster page still splits the count between them in the paragraph above the grid.",
 } as const;

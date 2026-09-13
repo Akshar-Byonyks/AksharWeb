@@ -474,12 +474,14 @@ export const catastropheLadder = {
 // Leg 4: modality mix. The Guatemala comparison the spec asked to keep, at the
 // value its source states rather than the one the US site carries.
 //
-// CUT from the register: the 2024 estimate of ~6,500 people on peritoneal
-// dialysis. Two national counts from two authors on two methods, disagreeing
-// in direction, is a real and interesting uncertainty and it was the third
-// thing a reader met in this section rather than a footnote to the first two.
-// It survives as exactly that — see PD_RECENT_ESTIMATE — because deleting an
-// inconvenient later figure outright is a different act from subordinating it.
+// CUT from the register, then cut altogether on client instruction
+// (12 Sep 2026): the 2024 estimate of ~6,500 people on peritoneal dialysis.
+// It was first demoted from the figure register to a footnote under the
+// Guatemala comparison, on the reasoning that deleting an inconvenient later
+// figure outright is a different act from subordinating it. The client asked
+// for the footnote to come off, so the figure no longer appears anywhere on
+// the site and its ledger entry (402) was withdrawn with it. The source
+// `ijn-pd` is untouched and still available should the number return.
 // ---------------------------------------------------------------------------
 export const modalityFigures: readonly Figure[] = [
   {
@@ -498,15 +500,6 @@ export const modalityFigures: readonly Figure[] = [
   },
 ];
 
-/** Subordinated, not deleted. Rendered as a footnote under the comparison. */
-export const PD_RECENT_ESTIMATE: Figure = {
-  value: "≈ 6,500",
-  label: "A later estimate of the same count",
-  detail:
-    "Lower than the 2018 figure, from a different author on a different method. The direction is not something this site will assert.",
-  source: "ijn-pd",
-  asOf: "2024",
-};
 
 /** The comparison the fourth leg exists to make. */
 export const GUATEMALA_PD_SHARE: Figure = {

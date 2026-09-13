@@ -2836,3 +2836,69 @@ Fight Mode and Always-Use-HTTPS are dashboard settings on a Free zone and are
 the client's to apply.
 
 ---
+
+## 47. Six client cuts, and the prose that described what was cut (12 Sep 2026)
+
+**Where:** `innovation-india-context.tsx`, `modality-mix.tsx`,
+`cost-and-coverage.tsx`, `about.ts`, `leadership.ts`, `locations.ts`,
+`locations/page.tsx`, and the ledger entries behind them.
+
+Six instructions, all content. Five removals, one title, one layout fix.
+
+### The layout fix was not a wrapping edge case
+
+`11.1%`, `38.1%` and `51.9%` in the catastrophe ladder each rendered on **two
+lines, at every viewport** — not just narrow ones. The box was `w-20` (80px);
+`51.9%` at `text-3xl` bold needs ~91px and at `lg:text-4xl` ~109px. It had
+never fit. Now `w-28 lg:w-32` with `whitespace-nowrap`, verified at 1440 /
+1024 / 390 / 320px with no horizontal overflow introduced.
+
+### A figure that was kept on principle is now gone
+
+The `≈ 6,500` 2024 estimate was demoted from the figure register to a footnote
+under the Guatemala comparison, with this file's own reasoning that "deleting
+an inconvenient later figure outright is a different act from subordinating
+it." The client asked for the footnote to come off. With no renderer left,
+`PD_RECENT_ESTIMATE` and ledger entry 402 were withdrawn rather than kept as a
+dead export claiming to be rendered. The `ijn-pd` source is untouched.
+
+### The stale prose, which is deviation 30 for the third time
+
+Removing the `india-office` row left `/locations` with three rows held by one
+company, and this page saying **"Four sites, two companies"** in its `h1` and
+**"All four sites, India first"** on its register.
+
+Deviation 43 audited both strings against `locations.ts` and recorded them
+under "Also checked, and correct". They were correct that morning and wrong by
+the afternoon. Auditing them again would only schedule the next occurrence, so
+the strings are gone: `siteCount` and `entityCount` are derived in
+`locations.ts` and spelled out at the call site. The register's `lead` — which
+named the Akshar Byonyks office as leading the order — was rewritten, because
+that is prose and no count would have caught it.
+
+### What did not move
+
+The India office **address** is untouched and still published on `/contact`,
+`/privacy-policy`, `/terms-of-use` and `/grievance-redressal`. Only the
+locations row came off. The DPDP Act 2023 grievance address is unaffected.
+
+`locations.ts` anticipated this exact removal: "a guard requiring at least one
+row of ours would fire at exactly the moment somebody had a reason to remove
+the row — which is a client decision, not a build error." No guard fired.
+
+### Dr. Yogesh Tank
+
+Title supplied: **India Division Co-Lead**, beside Dr. Rashmin Gandhi's "India
+Division Lead". "Title to be confirmed" no longer appears anywhere. The
+biography is still pending, so `bioPending` stays and the gap in `about.ts`
+plus ledger entry `pending-tank-record` **narrow** rather than close — the
+entry existed as one row on the reasoning that title and biography would
+arrive together. They did not.
+
+### Verified
+
+`tsc --noEmit` and `eslint src` clean. Production build: 48/48 static pages,
+every guard in `locations.ts` and the ledger passed. Percentages and the
+locations heading confirmed in a browser against the built output.
+
+---

@@ -71,7 +71,7 @@ function CatastropheLadder() {
                   style={{ width: `${percent}%` }}
                 />
               </div>
-              <span className="w-20 shrink-0 text-right text-3xl font-bold text-ink tabular-nums lg:text-4xl">
+              <span className="w-28 shrink-0 text-right text-3xl font-bold whitespace-nowrap text-ink tabular-nums lg:w-32 lg:text-4xl">
                 {share}
               </span>
             </dd>
@@ -147,15 +147,6 @@ export function CostAndCoverage() {
                   hemodialysis services and peritoneal dialysis
                   services.
                   <Cite source="pmndp" />
-                </p>
-                <p className="mt-4 text-base text-muted-foreground">
-                  That second component matters more than its size suggests.
-                  Home peritoneal dialysis is not a therapy the Indian public
-                  system would have to be persuaded to recognise. It is already
-                  named in the programme. A published cost-effectiveness
-                  analysis has since found starting patients on peritoneal
-                  dialysis rather than hemodialysis to be cost-saving in India.
-                  <Cite source="pd-first" />
                 </p>
               </div>
             </ScrollReveal>

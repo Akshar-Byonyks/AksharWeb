@@ -3,7 +3,6 @@ import { ArrowRight } from "lucide-react";
 
 import { DocumentGrid, GridBlock } from "@/components/layout/document-grid";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
-import { leadershipStatus } from "@/lib/about";
 import { aksharExecutives, byonyksExecutives } from "@/lib/leadership";
 
 // The team, on the About page.
@@ -33,7 +32,13 @@ export function LeadershipPending() {
               titles and no photographs. The page simply no longer says so, so
               a reader now meets an incomplete roster with nothing explaining
               why. `leadershipStatus.label` is kept in `lib/about.ts` and is
-              no longer rendered anywhere; see the note there. */}
+              no longer rendered anywhere; see the note there.
+
+              `leadershipStatus.meanwhile` followed it off the page on client
+              instruction, 12 Sep 2026 — the sentence pointing a reader at the
+              ByoTalks speakers as the nephrologists who advise Byonyks. That
+              field is deleted from `about.ts` rather than left unrendered,
+              because this was the only thing that read it. */}
           <GridBlock>
             <h2
               id="leadership-heading"
@@ -61,10 +66,6 @@ export function LeadershipPending() {
                 The leadership team
                 <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
               </Link>
-            </p>
-
-            <p className="mt-8 text-base text-muted-foreground">
-              {leadershipStatus.meanwhile}
             </p>
           </GridBlock>
         </ScrollReveal>

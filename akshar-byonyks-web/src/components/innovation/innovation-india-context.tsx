@@ -66,12 +66,6 @@ export function InnovationIndiaContext() {
                 matters more here than it does in the markets it was cleared
                 in.
               </p>
-              <p className="text-base text-muted-foreground">
-                The sourced version of this argument (scale, cost,
-                coverage and the mix of therapies actually in use, each figure
-                dated and attributed to a source you can open) is the
-                market page.
-              </p>
             </div>
 
             <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3">

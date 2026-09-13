@@ -7,12 +7,20 @@ import { LocationRegister } from "@/components/locations/location-register";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { CtaBand } from "@/components/sections/cta-band";
 import { defaultOg } from "@/lib/seo";
-import { byIndiaFirst } from "@/lib/locations";
+import { byIndiaFirst, entityCount, siteCount } from "@/lib/locations";
+
+// Spelled out because these sit in a headline and in a section title, where a
+// numeral reads as data rather than as prose. Small range by design: if this
+// register ever passes eight rows the fallback prints the numeral, which is
+// ugly enough to be noticed and fixed.
+const NUMBER_WORDS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight"] as const;
+const inWords = (n: number) => NUMBER_WORDS[n] ?? String(n);
+const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const path = "/locations";
 
 const description =
-  "Where the group operates: Akshar Byonyks' office in Patancheru, Telangana, Byonyks' head office in the United States, and the two India facilities announced but not yet built.";
+  "Where the group operates: Byonyks' head office in the United States, and the two India facilities announced but not yet built.";
 
 export const metadata: Metadata = {
   title: "Locations",
@@ -48,11 +56,13 @@ export const metadata: Metadata = {
 // spec F-1 rather than departing from it.
 //
 // THE INDIA OFFICE CAME BACK ON 11 SEP 2026, when the client supplied its
-// address. For nine days every row here was a Byonyks site and this page did
-// not answer "where are you" under its own masthead — /contact was the only
-// page that said an Akshar Byonyks India office existed at all. It leads the
-// register now. `src/lib/locations.ts` carries the full reasoning and
-// deviations.md §9 records the turns.
+// address, AND CAME OFF AGAIN ON 12 SEP, on the client's instruction. So every
+// row here is a Byonyks site once more and this page does not answer "where
+// are you" under its own masthead. That is a client decision rather than an
+// oversight, and the address itself is untouched: /contact, /privacy-policy,
+// /terms-of-use and /grievance-redressal all still publish it, which is what
+// the DPDP Act 2023 requires of the grievance address. `src/lib/locations.ts`
+// carries the full reasoning and deviations.md §9 records the turns.
 //
 // THE STRUCTURED-DATA REFUSAL ABOVE STILL STANDS, and the reason has narrowed
 // rather than gone. There is a real postal address now, so "there is nothing
@@ -89,20 +99,19 @@ export default function LocationsPage() {
                 id="locations-heading"
                 className="text-4xl font-bold tracking-tight text-balance text-ink sm:text-5xl"
               >
-                Four sites, two companies
+                {capitalise(inWords(siteCount))} {siteCount === 1 ? "site" : "sites"},{" "}
+                {inWords(entityCount)} {entityCount === 1 ? "company" : "companies"}
               </h1>
               <p className="mt-6 text-lg text-ink">
                 Akshar Byonyks is the India licensee for the X-1 cycler. Byonyks
                 designed the device, manufactures it, and holds its FDA
-                clearance. Those are two companies with separate premises, and
-                this page keeps them apart on every row rather than presenting
-                one map and letting the reader assume.
+                clearance. Those are two companies with separate premises, and every row
+                below names which of them holds the building.
               </p>
               <p className="mt-4 text-lg text-muted-foreground">
-                The first site below is ours, in Patancheru. The rest are
-                Byonyks&rsquo;, and are listed because the device this company
-                brings to India is designed at one of them and announced for
-                the other two.{" "}
+                The sites below are Byonyks&rsquo;, and are listed because the
+                device this company brings to India is designed at one of them
+                and announced for the other two.{" "}
                 {/* UNDERLINED AT REST, NOT ON HOVER. This is the one link on
                     the site that sits INSIDE a paragraph of body prose, and
                     that changes what it owes the reader: with only colour
@@ -148,8 +157,8 @@ export default function LocationsPage() {
               the re-sort that a section heading would not. */}
           <LocationRegister
             id="sites"
-            title="All four sites, India first"
-            lead="Akshar Byonyks' own office leads, then the two announced India facilities, then Byonyks' head office. Hyderabad and Ahmedabad are announced rather than open: both now carry an expected completion date, and neither is called a manufacturing site here, because that is a separate CDSCO licence route and no licence has been published for either. Every card names the company that holds the building."
+            title={`All ${inWords(siteCount)} sites, India first`}
+            lead="The two announced India facilities lead, then Byonyks' head office. Hyderabad and Ahmedabad are announced rather than open: both now carry an expected completion date, and neither is called a manufacturing site here, because that is a separate CDSCO licence route and no licence has been published for either. Every card names the company that holds the building."
             items={byIndiaFirst}
           />
         </div>

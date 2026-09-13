@@ -27,13 +27,13 @@ someone who asks.
 
 ## Summary
 
-**41 claims.**
+**39 claims.**
 
 | How it is known | Claims |
 | --- | ---: |
 | On the public record | 1 |
-| Published source | 18 |
-| Company statement | 10 |
+| Published source | 17 |
+| Company statement | 9 |
 | Not yet established | 12 |
 
 **On the public record.** Held in a public register anyone can open and check without asking us: the FDA's 510(k) database, a government scheme document, a court or corporate filing.
@@ -61,7 +61,7 @@ Class II device under 21 CFR 876.5630, product code FKX, classified as an automa
 | **Appears on** | The X-1 cycler (`/products/the-x1-cycler`), Home (`/`), About us (`/about-us`) |
 | **Ledger id** | `record-0` |
 
-### Published source (18)
+### Published source (17)
 
 #### 2.2 lakh: New end-stage renal disease patients each year
 
@@ -193,17 +193,6 @@ At this distance the journey, not the therapy, sets the shape of the week.
 | **Appears on** | The India market (`/innovation/market`) |
 | **Ledger id** | `figure-gkha-india-401` |
 
-#### ≈ 6,500: A later estimate of the same count
-
-Lower than the 2018 figure, from a different author on a different method. The direction is not something this site will assert.
-
-| | |
-| --- | --- |
-| **Source** | [Indian Journal of Nephrology, 2024](https://doi.org/10.25259/ijn_374_23) |
-| **Period described** | 2024 |
-| **Appears on** | The India market (`/innovation/market`) |
-| **Ledger id** | `figure-ijn-pd-402` |
-
 #### 45%: Share of dialysis patients on peritoneal dialysis in Guatemala
 
 Among 9,245 people on dialysis, one of the highest shares in Latin America, in a country with a fraction of India’s health budget.
@@ -259,7 +248,7 @@ Each cycle removes solutes and the fluid that builds up between exchanges, the w
 | **Appears on** | How it works (`/innovation/how-it-works`) |
 | **Ledger id** | `benefit-kdigo-initiation-3` |
 
-### Company statement (10)
+### Company statement (9)
 
 #### ISO 13485 quality management system
 
@@ -321,16 +310,6 @@ Over 10,000 therapies delivered using Byonyks cycler technology as at January 20
 | **Appears on** | The X-1 cycler (`/products/the-x1-cycler`), Home (`/`) |
 | **Ledger id** | `stated-5` |
 
-#### Akshar Byonyks operates from Patancheru, India
-
-Akshar Byonyks' office in India, and where post reaches the company. The Grievance Officer required by the Digital Personal Data Protection Act 2023 is reachable here.
-
-| | |
-| --- | --- |
-| **Stated by** | Byonyks Medical Devices (undated) |
-| **Appears on** | Locations (`/locations`) |
-| **Ledger id** | `location-india-office` |
-
 #### Byonyks operates from Itasca, United States
 
 Byonyks' corporate base: the company that designed the X-1, holds its FDA clearance, and licenses it to Akshar Byonyks for India.
@@ -385,21 +364,21 @@ A United States clearance is not an Indian authorisation. Licensing under the Me
 
 #### The Indian entity, and the registered office it would hold
 
-The India office address published on this site is a correspondence address held care of a third party. Whether an Indian LLP or subsidiary will be formed as the operating entity has not been decided, so no registered office can be named — which is why the terms of use do not name the courts having jurisdiction, and why no machine-readable address is published on the locations page.
+The India office address published on this site is a correspondence address held care of a third party. Whether an Indian LLP or subsidiary will be formed as the operating entity has not been decided, so no registered office can be named — which is why the terms of use do not name the courts having jurisdiction.
 
 | | |
 | --- | --- |
 | **Missing** | Indian entity not yet decided. |
-| **Appears on** | Locations (`/locations`), Terms of use (`/terms-of-use`) |
+| **Appears on** | Terms of use (`/terms-of-use`) |
 | **Ledger id** | `pending-india-entity` |
 
-#### Dr. Yogesh Tank's job title and biography
+#### Dr. Yogesh Tank's biography
 
-His record was supplied with a name, post-nominals and a photograph and nothing else. The roster card says "Title to be confirmed" and the profile says the biography is pending, rather than reading a title out of the post-nominals or writing a paragraph here about a real person. "MD" says he is a physician; it does not say what he does at this company.
+His record was supplied with a name, post-nominals and a photograph and nothing else. The client supplied his title, India Division Co-Lead, on 12 September 2026. The biography has not arrived, so the profile says it is pending rather than writing a paragraph here about a real person.
 
 | | |
 | --- | --- |
-| **Missing** | Title and biography not yet supplied. |
+| **Missing** | Biography not yet supplied. |
 | **Appears on** | Leadership (`/about-us/leadership`) |
 | **Ledger id** | `pending-tank-record` |
 
